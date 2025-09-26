@@ -1,0 +1,19 @@
+/* stye.css */
+
+/* El anidamiento no protege por si solo si hay otros selectores en el mismo nivel para .texto */
+.contenido {
+  .texto {
+    background-color: aqua;
+  }
+}
+
+/* @scope si proteje el estilo .texto   */
+@scope (.contenido) {
+  .texto {
+    border: 1px solid red;
+  }
+}
+
+.texto {
+  color: blue;
+}
