@@ -10,12 +10,40 @@
 </head>
 
 <body>
-  <p> EJERCICIO MECANOGRAFÍA</p>
-  <button id="btnComienzo">Comenzar Test</button>
-  <p> Tiempo (sgs): <span id="tiempo">0</span></p>
-  <p> Palabras correctas: <span id="palabrasCorrectas">0</span></p>
-  <p> Palabra de muestra: <span id="palabraDeMuestra">Palabra</span></p>
-  <input type="text" id="entrada" autocomplete="off" placeholder="Escriba la palabra" />
+  <main class="main">
+    <h1 class="main__title">Test de Mecanografía</h1>
+    <p class="main__instructions">Haz clic en "Comenzar Test" y escribe las palabras mostradas lo más rápido posible. Presiona Enter para validar cada palabra.</p>
+    
+    <div class="config-container">
+      <label for="numPalabras" class="config-container__label">Número de palabras (opcional):</label>
+      <input type="number" id="numPalabras" class="config-container__input" min="1" placeholder="e.g., 10" />
+      
+      <label for="tiempoMax" class="config-container__label">Tiempo máximo (segundos, opcional):</label>
+      <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="e.g., 60" />
+      
+      <button id="btnAyuda" class="config-container__button">Ayuda</button>
+    </div>
+    
+    <div class="test-container">
+      <button id="btnComienzo" class="test-container__button">Comenzar Test</button>
+      <button id="btnPausa" class="test-container__button" disabled>Pausar</button>
+      <p class="test-container__info">Tiempo (sgs): <span id="tiempo" class="test-container__span">0</span></p>
+      <p class="test-container__info">Palabras correctas: <span id="palabrasCorrectas" class="test-container__span">0</span></p>
+      <p class="test-container__info">Palabra de muestra: <span id="palabraDeMuestra" class="test-container__span">Palabra</span></p>
+      <input type="text" id="entrada" class="test-container__input" autocomplete="off" placeholder="Escriba la palabra" disabled />
+    </div>
+    
+    <!-- Modal explicativo -->
+    <div id="modalAyuda" class="modal">
+      <div class="modal__content">
+        <span id="cerrarModal" class="modal__close">&times;</span>
+        <h2>Instrucciones del Test</h2>
+        <p><strong>Escribe las palabras mostradas lo más rápido posible.</strong> El temporizador cuenta segundos transcurridos.</p>
+        <p>Puedes <strong>pausar/reanudar</strong> el test en cualquier momento. También puedes fijar un <strong>número de palabras</strong> o un <strong>tiempo máximo</strong> antes de comenzar.</p>
+        <p><strong>Variantes disponibles:</strong> Pausa temporal, límite de palabras, tiempo máximo, y esta ayuda.</p>
+      </div>
+    </div>
+  </main>
 </body>
 
 </html>

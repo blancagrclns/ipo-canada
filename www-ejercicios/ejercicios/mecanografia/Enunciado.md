@@ -48,10 +48,10 @@ La implementación se apoya en:
 
 # Variantes
 
-- Permitir que el usuario puede pausar temporalmente el test
-- Fijar de antemano el número de palabras que deben ser mecanografiadas
-- Facilitar distintos juegos de palabras
-- Poder fijar un tiempo máximo (para medir cuantas palabras correctas se han mecanografiado en dicho tiempo)
-- Test bilingue: la palabra se muestra en un idioma (ej: inglés) y se debe mecanografiar otro (ej: español)
-- Asociar acciones a teclas numéricas (ej: Cada número es un nivel de dificultad de las palabras)
-- Añadir un componente explicativo mediante una ventana modal
+- [x] Permitir que el usuario puede pausar temporalmente el test
+- [x] Fijar de antemano el número de palabras que deben ser mecanografiadas
+- [ ] Facilitar distintos juegos de palabras
+- [x] Poder fijar un tiempo máximo (para medir cuantas palabras correctas se han mecanografiado en dicho tiempo)
+- [ ] Test bilingue: la palabra se muestra en un idioma (ej: inglés) y se debe mecanografiar otro (ej: español)
+- [ ] Asociar acciones a teclas numéricas (ej: Cada número es un nivel de dificultad de las palabras)
+- [x] Añadir un componente explicativo mediante una ventana modal
