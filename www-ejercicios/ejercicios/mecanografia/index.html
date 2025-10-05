@@ -4,8 +4,10 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css" />
-  <script type="module" src="script.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+  <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled /> 
+  <script type="module" src="js/theme-toggle.js"></script>
+  <script type="module" src="js/script.js"></script>
   <title>Mecanografía</title>
 </head>
 
@@ -22,6 +24,7 @@
       <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="e.g., 60" />
       
       <button id="btnAyuda" class="config-container__button">Ayuda</button>
+      <button id="btnTema" class="config-container__button">Tema Oscuro</button> <!-- Toggle manual para tema -->
     </div>
     
     <div class="test-container">
@@ -41,6 +44,14 @@
         <h2>Instrucciones del Test</h2>
         <p><strong>Escribe las palabras mostradas lo más rápido posible.</strong> El temporizador cuenta segundos transcurridos.</p>
         <p>Puedes <strong>pausar/reanudar</strong> el test en cualquier momento. También puedes fijar un <strong>número de palabras</strong> o un <strong>tiempo máximo</strong> antes de comenzar.</p>
+        <p><strong>Dificultad dinámica:</strong> Presiona teclas numéricas (0-4) para cambiar dificultad en tiempo real sin detener el test:</p>
+        <ul>
+          <li><strong>0:</strong> Default (palabras mixtas)</li>
+          <li><strong>1:</strong> Fácil (monosílabos)</li>
+          <li><strong>2:</strong> Media (agudas/llanas)</li>
+          <li><strong>3:</strong> Difícil (esdrújulas)</li>
+          <li><strong>4:</strong> Muy difícil (sobresdrújulas/acentos)</li>
+        </ul>
         <p><strong>Variantes disponibles:</strong> Pausa temporal, límite de palabras, tiempo máximo, y esta ayuda.</p>
       </div>
     </div>

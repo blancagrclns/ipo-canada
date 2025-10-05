@@ -1,10 +1,33 @@
 import { recuperaElementoAleatorio } from './utils.js';
 
-// Array de palabras para el test (ejemplo; expándelo según necesidades)
-const palabras = [
+// Arrays de palabras por dificultad 
+const palabrasDefault = [
   'casa', 'perro', 'gato', 'sol', 'luna', 'agua', 'fuego', 'tierra', 'viento', 'mar',
-  'cielo', 'montaña', 'rio', 'bosque', 'flor', 'arbol', 'piedra', 'estrella', 'nube', 'lluvia'
+  'cielo', 'montaña', 'río', 'bosque', 'flor', 'árbol', 'piedra', 'estrella', 'nube', 'lluvia'
 ];
+
+const palabrasFaciles = ["sol", "pan", "mar", "voz", "sal",
+  "flor", "pez", "tren", "luz", "rey",
+  "mil", "mes", "club", "cruz", "sed",
+  "gas", "fin", "dos", "tres", "bien"]; // Monosílabos
+
+const palabrasMedias = ["reloj", "pared", "salud", "hotel", "canal",
+  "animal", "doctor", "papel", "cantar", "comer",
+  "azul", "feliz", "actor", "legal", "control",
+  "motor", "señal", "natural", "final", "ideal", "mesa", "carro", "lunes", "plaza", "libro",
+  "fuerte", "verde", "nube", "cielo", "calle",
+  "puerta", "fruta", "piedra", "silla", "camisa",
+  "ratón", "zapato", "ventana", "cama", "sólido"]; // Agudas/llanas
+
+const palabrasDificiles = ["murciélago", "teléfono", "pájaro", "brújula", "rápido",
+  "próximo", "esdrújula", "químico", "físico", "político",
+  "artístico", "matemático", "gramático", "técnico", "médico",
+  "plástico", "músico", "lógico", "económico", "histórico"]; // Esdrújulas
+
+const palabrasMuyDificiles = ["dígamelo", "repíteselo", "cuéntamelo", "devuélvemelo", "explícaselo",
+  "entrégaselo", "tráemelo", "díselo", "muéstramelo", "regrésamelo",
+  "préstamelo", "confírmamelo", "recuérdaselo", "llévaselo", "envíaselo",
+  "compréndemelo", "tradúcemelo", "acláramelo", "organízamelo", "resuélvemelo"]; // Sobresdrújulas
 
 // Elementos del DOM (buenas prácticas: constantes para evitar reasignaciones)
 const btnComienzo = document.getElementById('btnComienzo');
@@ -34,6 +57,37 @@ let palabraActual = '';
 let numPalabrasObjetivo = null;
 let tiempoMaximo = null;
 let pausado = false;
+let dificultadActual = 0; // 0: default, 1: fácil, etc.
+let palabrasActuales = palabrasDefault; // Array actual basado en dificultad
+
+// Función para cambiar dificultad (buenas prácticas: modular)
+function cambiarDificultad(nivel) {
+  dificultadActual = nivel;
+  switch (nivel) {
+    case 0:
+      palabrasActuales = palabrasDefault;
+      alert('Dificultad: Default');
+      break;
+    case 1:
+      palabrasActuales = palabrasFaciles;
+      alert('Dificultad: Fácil (monosílabos)');
+      break;
+    case 2:
+      palabrasActuales = palabrasMedias;
+      alert('Dificultad: Media (agudas/llanas)');
+      break;
+    case 3:
+      palabrasActuales = palabrasDificiles;
+      alert('Dificultad: Difícil (esdrújulas)');
+      break;
+    case 4:
+      palabrasActuales = palabrasMuyDificiles;
+      alert('Dificultad: Muy difícil (sobresdrújulas/acentos)');
+      break;
+  }
+  // Actualizar palabra inmediatamente al cambiar dificultad
+  cambiarPalabra();
+}
 
 // Función para iniciar el test (buenas prácticas: función pura y modular)
 function iniciarTest() {
@@ -73,9 +127,9 @@ function togglePausa() {
   entrada.disabled = pausado;
 }
 
-// Función para cambiar la palabra de muestra (usa utils.js)
+// Función para cambiar la palabra de muestra (usa utils.js y dificultad actual)
 function cambiarPalabra() {
-  palabraActual = recuperaElementoAleatorio(palabras);
+  palabraActual = recuperaElementoAleatorio(palabrasActuales);
   palabraDeMuestraSpan.textContent = palabraActual;
   entrada.value = '';
 }
@@ -139,6 +193,15 @@ cerrarStats.addEventListener('click', () => {
   modalStats.style.display = 'none';
 });
 entrada.addEventListener('keydown', verificarEntrada);
+
+// Listener para teclas numéricas (dificultad dinámica) - Evita entrada en input
+document.addEventListener('keydown', (event) => {
+  const key = parseInt(event.key);
+  if (key >= 0 && key <= 4) {
+    event.preventDefault(); // Evita que entre en input
+    cambiarDificultad(key);
+  }
+});
 
 // Cerrar modales al hacer clic fuera
 window.addEventListener('click', (event) => {
