@@ -27,6 +27,7 @@
     <div class="test-container">
       <button id="btnComienzo" class="test-container__button">Comenzar Test</button>
       <button id="btnPausa" class="test-container__button" disabled>Pausar</button>
+      <button id="btnFin" class="test-container__button" disabled>Fin</button>
       <p class="test-container__info">Tiempo (sgs): <span id="tiempo" class="test-container__span">0</span></p>
       <p class="test-container__info">Palabras correctas: <span id="palabrasCorrectas" class="test-container__span">0</span></p>
       <p class="test-container__info">Palabra de muestra: <span id="palabraDeMuestra" class="test-container__span">Palabra</span></p>
@@ -41,6 +42,17 @@
         <p><strong>Escribe las palabras mostradas lo más rápido posible.</strong> El temporizador cuenta segundos transcurridos.</p>
         <p>Puedes <strong>pausar/reanudar</strong> el test en cualquier momento. También puedes fijar un <strong>número de palabras</strong> o un <strong>tiempo máximo</strong> antes de comenzar.</p>
         <p><strong>Variantes disponibles:</strong> Pausa temporal, límite de palabras, tiempo máximo, y esta ayuda.</p>
+      </div>
+    </div>
+    
+    <!-- Modal de estadísticas -->
+    <div id="modalStats" class="modal">
+      <div class="modal__content">
+        <span id="cerrarStats" class="modal__close">&times;</span>
+        <h2>Estadísticas del Test</h2>
+        <p>Tiempo transcurrido: <strong><span id="statsTiempo">0</span> segundos</strong></p>
+        <p>Palabras acertadas: <strong><span id="statsCorrectas">0</span></strong></p>
+        <p>Palabras falladas: <strong><span id="statsFalladas">0</span></strong></p>
       </div>
     </div>
   </main>

@@ -9,20 +9,27 @@ const palabras = [
 // Elementos del DOM (buenas prácticas: constantes para evitar reasignaciones)
 const btnComienzo = document.getElementById('btnComienzo');
 const btnPausa = document.getElementById('btnPausa');
+const btnFin = document.getElementById('btnFin');
 const btnAyuda = document.getElementById('btnAyuda');
 const cerrarModal = document.getElementById('cerrarModal');
 const modalAyuda = document.getElementById('modalAyuda');
+const cerrarStats = document.getElementById('cerrarStats');
+const modalStats = document.getElementById('modalStats');
 const tiempoSpan = document.getElementById('tiempo');
 const palabrasCorrectasSpan = document.getElementById('palabrasCorrectas');
 const palabraDeMuestraSpan = document.getElementById('palabraDeMuestra');
 const entrada = document.getElementById('entrada');
 const numPalabrasInput = document.getElementById('numPalabras');
 const tiempoMaxInput = document.getElementById('tiempoMax');
+const statsTiempo = document.getElementById('statsTiempo');
+const statsCorrectas = document.getElementById('statsCorrectas');
+const statsFalladas = document.getElementById('statsFalladas');
 
 // Variables de estado (buenas prácticas: let para mutabilidad controlada)
 let intervaloTemporizador = null;
 let tiempoTranscurrido = 0;
 let palabrasCorrectas = 0;
+let palabrasFalladas = 0;
 let palabraActual = '';
 let numPalabrasObjetivo = null;
 let tiempoMaximo = null;
@@ -32,6 +39,7 @@ let pausado = false;
 function iniciarTest() {
   tiempoTranscurrido = 0;
   palabrasCorrectas = 0;
+  palabrasFalladas = 0;
   pausado = false;
   tiempoSpan.textContent = tiempoTranscurrido;
   palabrasCorrectasSpan.textContent = palabrasCorrectas;
@@ -42,6 +50,7 @@ function iniciarTest() {
   entrada.focus();
   btnComienzo.disabled = true;
   btnPausa.disabled = false;
+  btnFin.disabled = false;
   btnPausa.textContent = 'Pausar';
 
   // Iniciar temporizador con setInterval (inspirado en intervalos)
@@ -51,7 +60,7 @@ function iniciarTest() {
       tiempoSpan.textContent = tiempoTranscurrido;
       if (tiempoMaximo && tiempoTranscurrido >= tiempoMaximo) {
         detenerTest();
-        alert(`Tiempo máximo alcanzado. Palabras correctas: ${palabrasCorrectas}`);
+        mostrarStats();
       }
     }
   }, 1000);
@@ -80,11 +89,12 @@ function verificarEntrada(event) {
       palabrasCorrectasSpan.textContent = palabrasCorrectas;
       if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
         detenerTest();
-        alert(`Objetivo alcanzado. Tiempo: ${tiempoTranscurrido}s`);
+        mostrarStats();
       } else {
         cambiarPalabra();
       }
     } else {
+      palabrasFalladas++;
       alert('Palabra incorrecta. Inténtalo de nuevo.');
       entrada.value = '';
     }
@@ -100,9 +110,18 @@ function detenerTest() {
   entrada.disabled = true;
   btnComienzo.disabled = false;
   btnPausa.disabled = true;
+  btnFin.disabled = true;
 }
 
-// Función para mostrar/ocultar modal
+// Función para mostrar modal de estadísticas
+function mostrarStats() {
+  statsTiempo.textContent = tiempoTranscurrido;
+  statsCorrectas.textContent = palabrasCorrectas;
+  statsFalladas.textContent = palabrasFalladas;
+  modalStats.style.display = 'flex';
+}
+
+// Función para mostrar/ocultar modal de ayuda
 function toggleModal() {
   modalAyuda.style.display = modalAyuda.style.display === 'flex' ? 'none' : 'flex';
 }
@@ -110,14 +129,24 @@ function toggleModal() {
 // Event listeners (buenas prácticas: delegación y separación de concerns)
 btnComienzo.addEventListener('click', iniciarTest);
 btnPausa.addEventListener('click', togglePausa);
+btnFin.addEventListener('click', () => {
+  detenerTest();
+  mostrarStats();
+});
 btnAyuda.addEventListener('click', toggleModal);
 cerrarModal.addEventListener('click', toggleModal);
+cerrarStats.addEventListener('click', () => {
+  modalStats.style.display = 'none';
+});
 entrada.addEventListener('keydown', verificarEntrada);
 
-// Cerrar modal al hacer clic fuera
+// Cerrar modales al hacer clic fuera
 window.addEventListener('click', (event) => {
   if (event.target === modalAyuda) {
     toggleModal();
+  }
+  if (event.target === modalStats) {
+    modalStats.style.display = 'none';
   }
 });
 
