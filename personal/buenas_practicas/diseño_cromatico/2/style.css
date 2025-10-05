@@ -1,0 +1,58 @@
+/* style.css */
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* outline: 1px solid red */
+}
+
+
+
+/* Diseño cromático y tipográfico */
+:root {
+ 
+    --color-fondo: hsl(0, 13%, 95%);
+    --color-fondo-secundario: hsl(0, 0%, 98%);
+    
+    --tono: 210;
+    --tono-secundario: calc(var(--tono) + 180);
+    
+    --color-primario: hsl(var(--tono), 100%, 50%);
+    --color-primario-texto: hsl(var(--tono), 0%, 20%);
+    --color-primario-borde: hsl(var(--tono), 0%, 80%);
+
+    --color-secundario: hsl(var(--tono-secundario), 100%, 40%);
+    --color-secundario-texto: hsl(var(--tono-secundario), 0%, 40%);
+    --color-secundario-borde: hsl(var(--tono-secundario), 0%, 100%);
+
+    --fuente-principal: 'Helvetica Neue', sans-serif;
+    --fuente-secundaria: 'Georgia', serif;
+}
+
+
+
+
+body, html, .uno, .dos {
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-fondo);
+} 
+
+.uno {
+    font-family: var(--fuente-principal);
+    background-color: var(--color-primario);
+    color: var(--color-primario-texto);
+    border: 5px solid var(--color-primario-borde);
+    margin: 20px;
+    padding: 0;
+}
+
+.dos {
+    font-family: var(--fuente-secundaria);
+    background-color: var(--color-secundario);
+    color: var(--color-secundario-texto);
+    margin: 0;
+    padding: 0;
+}

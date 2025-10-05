@@ -1,0 +1,59 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --color-primario: hsl(204, 70%, 53%);
+    --color-secundario: hsl(210, 22%, 49%);
+    --color-fondo: hsl(0, 0%, 94%);
+    --color-borde: hsl(0, 0%, 80%);
+
+    --fuente-principal: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    padding: 0.6rem;
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    border: 2px solid var(--color-borde);
+    border-radius: 0.5rem;
+    padding: 0.7rem 0.9rem;
+
+    background-color: var(--color-fondo);
+
+
+
+    .tarjeta__titulo {
+        color: var(--color-primario);
+        font-weight: bold;
+    }
+}
+
+.tarjeta {
+    font-size: 1.4rem;
+}
+
+.tarjeta--01 .tarjeta__titulo {
+    font-size: 1.9rem;
+}
+.tarjeta--01 .tarjeta__informacion {
+    font-size: 1.3rem;
+}
+
+.tarjeta--02 .tarjeta__titulo {
+    font-size: 1.9em;
+}
+.tarjeta--02 .tarjeta__informacion {
+    font-size: 1.3em;
+}
+

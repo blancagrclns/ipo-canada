@@ -1,0 +1,30 @@
+/* style.css */
+
+:root {
+    --tono: 30;
+    --tono-secundario: calc(var(--tono) + 180);
+    
+    --color-primario: hsl(var(--tono), 100%, 50%);
+    --color-primario-texto: hsl(var(--tono), 10%, 20%);
+
+    --color-secundario: hsl(var(--tono-secundario), 70%, 40%);
+    --color-secundario-texto: hsl(var(--tono-secundario), 70%, 90%);
+
+    --fuente-tamaño: 1.2rem;
+}
+
+.cita {
+    padding: 1.3rem;
+    font-size: var(--fuente-tamaño);
+}
+
+.mantra {
+    background-color: var(--color-primario);
+    color: var(--color-primario-texto);
+}
+
+.proverbio {
+    background-color: var(--color-secundario);
+    color: var(--color-secundario-texto);
+}
+
