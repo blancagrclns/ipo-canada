@@ -1,0 +1,85 @@
+/* Toggle switch para modo bilingüe */
+.config-container__toggle {
+  display: flex;
+  align-items: center;
+}
+
+.config-container__checkbox {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.config-container__toggle-label {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 26px;
+  background-color: hsl(0, 0%, 85%);
+  border-radius: 34px;
+  transition: background-color 0.3s;
+  cursor: pointer;
+}
+
+.config-container__toggle-label::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 3px;
+  width: 20px;
+  height: 20px;
+  background-color: hsl(0, 0%, 100%);
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+.config-container__checkbox:checked + .config-container__toggle-label {
+  background-color: hsl(211, 100%, 50%);
+}
+
+.config-container__checkbox:checked + .config-container__toggle-label::after {
+  transform: translateX(34px);
+}
+
+/* Grupo de selectores de idioma */
+.config-container__select-group {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.config-container__select {
+  padding: 0.4rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: var(--tamanyo-base);
+  background-color: hsl(0, 0%, 100%);
+}
+
+.config-container__arrow {
+  font-weight: bold;
+  color: var(--color-acento);
+}
+
+/* Clase para elementos ocultos */
+.config-container__group--hidden,
+.test-container__info--hidden {
+  display: none;
+}
+
+/* Estilo para elementos deshabilitados */
+.config-container__checkbox:disabled + .config-container__toggle-label {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.config-container__select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.config-container__group--disabled {
+  opacity: 0.7;
+}

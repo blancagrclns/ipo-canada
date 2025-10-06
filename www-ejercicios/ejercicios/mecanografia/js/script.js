@@ -1,4 +1,9 @@
 import { recuperaElementoAleatorio } from './utils.js';
+import { inicializarModoBilingue, iniciarTestBilingue, verificarEntradaBilingue } from './bilingue.js';
+
+// Exponer funciones globalmente de forma inmediata
+window.iniciarTestBilingue = iniciarTestBilingue;
+window.verificarEntradaBilingue = verificarEntradaBilingue;
 
 // Arrays de palabras por dificultad 
 const palabrasDefault = [
@@ -99,7 +104,25 @@ function iniciarTest() {
   palabrasCorrectasSpan.textContent = palabrasCorrectas;
   numPalabrasObjetivo = parseInt(numPalabrasInput.value) || null;
   tiempoMaximo = parseInt(tiempoMaxInput.value) || null;
-  cambiarPalabra();
+  
+  // Verificar si estamos en modo bilingüe
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  const estamosEnModoBilingue = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  
+  if (estamosEnModoBilingue) {
+    try {
+      // Usar nuestra función importada en lugar de window.iniciarTestBilingue
+      iniciarTestBilingue();
+    } catch (error) {
+      console.error("Error al iniciar el test bilingüe:", error);
+      // Fallback al modo normal
+      cambiarPalabra();
+    }
+  } else {
+    // Modo normal: usar la función original
+    cambiarPalabra();
+  }
+  
   entrada.disabled = false;
   entrada.focus();
   btnComienzo.disabled = true;
@@ -137,20 +160,49 @@ function cambiarPalabra() {
 // Función para verificar la entrada del usuario (evento keydown para Enter)
 function verificarEntrada(event) {
   if (event.key === 'Enter') {
-    const palabraTecleada = entrada.value.trim();
-    if (palabraTecleada === palabraActual) {
-      palabrasCorrectas++;
-      palabrasCorrectasSpan.textContent = palabrasCorrectas;
-      if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
-        detenerTest();
-        mostrarStats();
-      } else {
-        cambiarPalabra();
+    // Verificar si estamos en modo bilingüe
+    const modoBilingueCheckbox = document.getElementById('modoBilingue');
+    
+    if (modoBilingueCheckbox && modoBilingueCheckbox.checked) {
+      try {
+        // Usar nuestra función importada en lugar de window.verificarEntradaBilingue
+        verificarEntradaBilingue(event);
+      } catch (error) {
+        console.error("Error al verificar entrada bilingüe:", error);
+        // Fallback: comportamiento normal
+        const palabraTecleada = entrada.value.trim();
+        if (palabraTecleada === palabraActual) {
+          palabrasCorrectas++;
+          palabrasCorrectasSpan.textContent = palabrasCorrectas;
+          if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
+            detenerTest();
+            mostrarStats();
+          } else {
+            cambiarPalabra();
+          }
+        } else {
+          palabrasFalladas++;
+          alert('Palabra incorrecta. Inténtalo de nuevo.');
+          entrada.value = '';
+        }
       }
     } else {
-      palabrasFalladas++;
-      alert('Palabra incorrecta. Inténtalo de nuevo.');
-      entrada.value = '';
+      // Modo normal: verificación estándar
+      const palabraTecleada = entrada.value.trim();
+      if (palabraTecleada === palabraActual) {
+        palabrasCorrectas++;
+        palabrasCorrectasSpan.textContent = palabrasCorrectas;
+        if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
+          detenerTest();
+          mostrarStats();
+        } else {
+          cambiarPalabra();
+        }
+      } else {
+        palabrasFalladas++;
+        alert('Palabra incorrecta. Inténtalo de nuevo.');
+        entrada.value = '';
+      }
     }
   }
 }
@@ -165,6 +217,30 @@ function detenerTest() {
   btnComienzo.disabled = false;
   btnPausa.disabled = true;
   btnFin.disabled = true;
+  
+  // Volver a habilitar el checkbox de modo bilingüe
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  if (modoBilingueCheckbox) {
+    modoBilingueCheckbox.disabled = false;
+    
+    // También volver a habilitar los selectores de idioma
+    const idiomaOrigen = document.getElementById('idiomaOrigen');
+    const idiomaDestino = document.getElementById('idiomaDestino');
+    if (idiomaOrigen) idiomaOrigen.disabled = false;
+    if (idiomaDestino) idiomaDestino.disabled = false;
+    
+    // Quitar clase de estilo visual deshabilitado
+    const opcionesBilingue = document.getElementById('opcionesBilingue');
+    if (opcionesBilingue) {
+      opcionesBilingue.classList.remove('config-container__group--disabled');
+    }
+  }
+  
+  // Ocultar elementos del modo bilingüe si estuviera activo
+  const palabraTraduccion = document.getElementById('palabraTraduccion');
+  if (palabraTraduccion) {
+    palabraTraduccion.classList.add('test-container__info--hidden');
+  }
 }
 
 // Función para mostrar modal de estadísticas
@@ -181,18 +257,48 @@ function toggleModal() {
 }
 
 // Event listeners
-btnComienzo.addEventListener('click', iniciarTest);
-btnPausa.addEventListener('click', togglePausa);
-btnFin.addEventListener('click', () => {
-  detenerTest();
-  mostrarStats();
+document.addEventListener('DOMContentLoaded', () => {
+  btnComienzo.addEventListener('click', iniciarTest);
+  btnPausa.addEventListener('click', togglePausa);
+  btnFin.addEventListener('click', () => {
+    detenerTest();
+    mostrarStats();
+  });
+  btnAyuda.addEventListener('click', toggleModal);
+  cerrarModal.addEventListener('click', toggleModal);
+  cerrarStats.addEventListener('click', () => {
+    modalStats.style.display = 'none';
+  });
+  entrada.addEventListener('keydown', verificarEntrada);
+  
+  // Inicializar modo bilingüe inmediatamente
+  inicializarModoBilingue({
+    cambiarPalabra,
+    detenerTest,
+    mostrarStats,
+    getDificultadActual: () => dificultadActual,
+    incrementarCorrectas: () => {
+      palabrasCorrectas++;
+      palabrasCorrectasSpan.textContent = palabrasCorrectas;
+    },
+    incrementarFalladas: () => {
+      palabrasFalladas++;
+    },
+    getNumPalabrasObjetivo: () => numPalabrasObjetivo
+  });
+  /*
+  // Implementación básica del cambio de tema
+  const btnTema = document.getElementById('btnTema');
+  const darkThemeCSS = document.getElementById('dark-theme');
+  
+  if (btnTema) {
+    btnTema.addEventListener('click', () => {
+      darkThemeCSS.disabled = !darkThemeCSS.disabled;
+      btnTema.textContent = darkThemeCSS.disabled ? 'Tema Oscuro' : 'Tema Claro';
+    });
+  }
+    */
 });
-btnAyuda.addEventListener('click', toggleModal);
-cerrarModal.addEventListener('click', toggleModal);
-cerrarStats.addEventListener('click', () => {
-  modalStats.style.display = 'none';
-});
-entrada.addEventListener('keydown', verificarEntrada);
 
 // Listener para teclas numéricas (dificultad dinámica) - Evita entrada en input
 document.addEventListener('keydown', (event) => {
