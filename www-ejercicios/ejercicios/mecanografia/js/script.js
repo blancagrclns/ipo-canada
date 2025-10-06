@@ -90,8 +90,18 @@ function cambiarDificultad(nivel) {
       alert('Dificultad: Muy difícil (sobresdrújulas/acentos)');
       break;
   }
-  // Actualizar palabra inmediatamente al cambiar dificultad
-  cambiarPalabra();
+  
+  // Verificar si estamos en modo bilingüe para actualizar correctamente
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  const estamosEnModoBilingue = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  
+  if (estamosEnModoBilingue && window.cambiarPalabraBilingue) {
+    // Si estamos en modo bilingüe, usar la función específica para actualizar palabra y traducción
+    window.cambiarPalabraBilingue(nivel);
+  } else {
+    // Modo normal: usar la función original
+    cambiarPalabra();
+  }
 }
 
 // Función para iniciar el test
@@ -108,6 +118,23 @@ function iniciarTest() {
   // Verificar si estamos en modo bilingüe
   const modoBilingueCheckbox = document.getElementById('modoBilingue');
   const estamosEnModoBilingue = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  
+  // Deshabilitar TODOS los controles de configuración durante el test
+  if (modoBilingueCheckbox) {
+    modoBilingueCheckbox.disabled = true;
+    
+    // Deshabilitar explícitamente los selectores de idioma
+    const idiomaOrigen = document.getElementById('idiomaOrigen');
+    const idiomaDestino = document.getElementById('idiomaDestino');
+    if (idiomaOrigen) idiomaOrigen.disabled = true;
+    if (idiomaDestino) idiomaDestino.disabled = true;
+    
+    // Añadir clase para estilo visual de deshabilitado
+    const opcionesBilingue = document.getElementById('opcionesBilingue');
+    if (opcionesBilingue) {
+      opcionesBilingue.classList.add('config-container__group--disabled');
+    }
+  }
   
   if (estamosEnModoBilingue) {
     try {

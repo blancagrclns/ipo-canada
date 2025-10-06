@@ -1,0 +1,222 @@
+/* Estilos específicos para modales siguiendo buenas prácticas */
+
+/* Contenedor principal del modal */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsla(0, 0%, 0%, 0.75);
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  padding: 2rem 1rem;
+}
+
+/* Contenido del modal con tamaño mejorado */
+.modal__content {
+  background-color: hsl(0, 0%, 100%);
+  padding: 2.5rem;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 5px 30px hsla(0, 0%, 0%, 0.3);
+  margin: auto;
+}
+
+/* Botón de cierre */
+.modal__close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: hsl(0, 0%, 96%);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: background-color 0.2s, transform 0.2s;
+}
+
+.modal__close:hover {
+  background-color: hsl(0, 0%, 90%);
+  transform: scale(1.1);
+}
+
+/* Título del modal */
+.modal__title {
+  font-size: 1.75rem;
+  color: var(--color-acento);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid hsl(211, 100%, 90%);
+}
+
+/* Secciones en el modal */
+.modal__section {
+  margin-bottom: 2rem;
+}
+
+.modal__section-title {
+  font-size: 1.25rem;
+  color: hsl(211, 70%, 40%);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.modal__section-title::before {
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--color-acento);
+  margin-right: 8px;
+  border-radius: 50%;
+}
+
+/* Listas en el modal */
+.modal__list {
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.modal__list-item {
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+}
+
+.modal__list-item--highlight {
+  background-color: hsl(50, 100%, 95%);
+  padding: 0.5rem;
+  border-radius: 4px;
+  border-left: 3px solid hsl(50, 100%, 50%);
+}
+
+/* Tabla de atajos de teclado */
+.modal__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.modal__table th, 
+.modal__table td {
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid hsl(0, 0%, 90%);
+}
+
+.modal__table th {
+  background-color: hsl(211, 50%, 95%);
+  font-weight: bold;
+}
+
+.modal__table tr:nth-child(even) {
+  background-color: hsl(0, 0%, 98%);
+}
+
+.modal__table td:first-child {
+  font-family: monospace;
+  font-weight: bold;
+  background-color: hsl(211, 20%, 95%);
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+  .modal__content {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
+  
+  .modal__title {
+    font-size: 1.5rem;
+  }
+  
+  .modal__section-title {
+    font-size: 1.1rem;
+  }
+  
+  .modal__table {
+    font-size: 0.9rem;
+  }
+}
+
+/* Añadir estas reglas para el tema oscuro */
+
+/* Ajuste del modal para tema oscuro */
+[data-theme="dark"] .modal__content {
+  background-color: hsl(0, 0%, 15%);
+  color: hsl(0, 0%, 90%);
+  box-shadow: 0 5px 30px hsla(0, 0%, 0%, 0.5);
+}
+
+[data-theme="dark"] .modal__close {
+  background-color: hsl(0, 0%, 25%);
+  color: hsl(0, 0%, 90%);
+}
+
+[data-theme="dark"] .modal__close:hover {
+  background-color: hsl(0, 0%, 30%);
+}
+
+[data-theme="dark"] .modal__title {
+  border-bottom-color: hsl(211, 100%, 30%);
+}
+
+/* Corrección para el destacado */
+[data-theme="dark"] .modal__list-item--highlight {
+  background-color: hsl(50, 60%, 15%);
+  color: hsl(50, 100%, 80%);
+  border-left-color: hsl(50, 70%, 40%);
+}
+
+/* Correcciones para la tabla */
+[data-theme="dark"] .modal__table th,
+[data-theme="dark"] .modal__table td {
+  border-color: hsl(0, 0%, 30%);
+}
+
+[data-theme="dark"] .modal__table th {
+  background-color: hsl(211, 50%, 20%);
+}
+
+[data-theme="dark"] .modal__table tr:nth-child(even) {
+  background-color: hsl(0, 0%, 18%);
+}
+
+[data-theme="dark"] .modal__table td:first-child {
+  background-color: hsl(211, 20%, 25%);
+}
+
+[data-theme="dark"] .modal__section-title {
+  color: hsl(211, 70%, 70%);
+}
+
+[data-theme="dark"] .modal__section-title::before {
+  background-color: hsl(211, 100%, 60%);
+}
+
+/* Para asegurar que los enlaces dentro del modal sean visibles */
+[data-theme="dark"] .modal__content a {
+  color: hsl(211, 100%, 70%);
+}
+
+[data-theme="dark"] .modal__content strong {
+  color: hsl(0, 0%, 100%);
+}
+
+/* Para la sección del modo bilingüe específicamente */
+[data-theme="dark"] .modal__list-item--highlight {
+  background-color: hsl(50, 30%, 20%);
+  border-left-color: hsl(50, 70%, 40%);
+  color: hsl(50, 70%, 70%);
+}

@@ -23,6 +23,27 @@
   cursor: pointer;
 }
 
+.config-container__toggle-label::before {
+  content: "OFF";
+  position: absolute;
+  right: 8px;
+  top: 5px;
+  font-size: 12px;
+  color: hsl(0, 0%, 30%);
+  font-weight: bold;
+}
+
+.config-container__checkbox:checked + .config-container__toggle-label {
+  background-color: hsl(211, 100%, 50%);
+}
+
+.config-container__checkbox:checked + .config-container__toggle-label::before {
+  content: "ON";
+  left: 8px;
+  right: auto;
+  color: white;
+}
+
 .config-container__toggle-label::after {
   content: "";
   position: absolute;
@@ -33,10 +54,6 @@
   background-color: hsl(0, 0%, 100%);
   border-radius: 50%;
   transition: transform 0.3s;
-}
-
-.config-container__checkbox:checked + .config-container__toggle-label {
-  background-color: hsl(211, 100%, 50%);
 }
 
 .config-container__checkbox:checked + .config-container__toggle-label::after {
@@ -73,13 +90,54 @@
 .config-container__checkbox:disabled + .config-container__toggle-label {
   opacity: 0.6;
   cursor: not-allowed;
+  background-color: hsl(0, 0%, 75%);
 }
 
 .config-container__select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+  background-color: hsl(0, 0%, 95%);
 }
 
 .config-container__group--disabled {
   opacity: 0.7;
+}
+
+.config-container__group--disabled select,
+.config-container__group--disabled .config-container__arrow {
+  pointer-events: none;
+}
+
+/* Estilos para indicador de traducción */
+.test-container__span {
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+/* Estilo para el signo de interrogación */
+#traduccionCorrecta:contains("?") {
+  font-size: 1.2em;
+  color: var(--color-borde);
+}
+
+/* Añadir un tooltip explicativo */
+#palabraTraduccion {
+  position: relative;
+}
+
+#palabraTraduccion::after {
+  content: "Escribe la traducción correcta";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: -20px;
+  font-size: 0.8em;
+  color: var(--color-acento);
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+#palabraTraduccion:hover::after {
+  opacity: 1;
 }

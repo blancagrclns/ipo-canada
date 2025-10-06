@@ -7,6 +7,7 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" />
   <link rel="stylesheet" href="css/bilingue.css" />
+  <link rel="stylesheet" href="css/modal.css" />
   <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled />
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
@@ -48,7 +49,7 @@
           <label for="modoBilingue" class="config-container__label">Modo bilingüe:</label>
           <div class="config-container__toggle">
             <input type="checkbox" id="modoBilingue" class="config-container__checkbox" />
-            <label for="modoBilingue" class="config-container__toggle-label">Activar</label>
+            <label for="modoBilingue" class="config-container__toggle-label"></label>
           </div>
         </div>
 
@@ -89,26 +90,100 @@
           id="traduccionCorrecta" class="test-container__span">-</span></p>
     </div>
 
-    <!-- Modal explicativo -->
+    <!-- Modal explicativo - reemplazar el contenido existente -->
     <div id="modalAyuda" class="modal">
       <div class="modal__content">
-        <span id="cerrarModal" class="modal__close">&times;</span>
-        <h2>Instrucciones del Test</h2>
-        <p><strong>Escribe las palabras mostradas lo más rápido posible.</strong> El temporizador cuenta segundos
-          transcurridos.</p>
-        <p>Puedes <strong>pausar/reanudar</strong> el test en cualquier momento. También puedes fijar un <strong>número
-            de palabras</strong> o un <strong>tiempo máximo</strong> antes de comenzar.</p>
-        <p><strong>Dificultad dinámica:</strong> Presiona teclas numéricas (0-4) para cambiar dificultad en tiempo real
-          sin detener el test:</p>
-        <ul>
-          <li><strong>0:</strong> Default (palabras mixtas)</li>
-          <li><strong>1:</strong> Fácil (monosílabos)</li>
-          <li><strong>2:</strong> Media (agudas/llanas)</li>
-          <li><strong>3:</strong> Difícil (esdrújulas)</li>
-          <li><strong>4:</strong> Muy difícil (sobresdrújulas/acentos)</li>
-        </ul>
-        <p><strong>Variantes disponibles:</strong> Pausa temporal, límite de palabras, tiempo máximo, y esta ayuda.</p>
-        <p><strong>Modo Bilingüe:</strong> Se muestra una palabra en un idioma y debes escribir su traducción.</p>
+        <button id="cerrarModal" class="modal__close">&times;</button>
+        <h2 class="modal__title">Guía del Test de Mecanografía</h2>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Funcionamiento Básico</h3>
+          <p>El test mide tu velocidad de escritura mostrando palabras que debes teclear correctamente. El temporizador
+            cuenta los segundos transcurridos.</p>
+          <ul class="modal__list">
+            <li class="modal__list-item">Haz clic en <strong>Comenzar Test</strong> para iniciar</li>
+            <li class="modal__list-item">Escribe la palabra mostrada y presiona <strong>Enter</strong> para validar
+            </li>
+            <li class="modal__list-item">El test finaliza al alcanzar el número de palabras o tiempo establecido
+            </li>
+          </ul>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Configuración</h3>
+          <ul class="modal__list">
+            <li class="modal__list-item">Puedes establecer un <strong>número máximo de palabras</strong> (opcional)
+            </li>
+            <li class="modal__list-item">Puedes fijar un <strong>tiempo máximo en segundos</strong> (opcional)</li>
+            <li class="modal__list-item">Activa el <strong>Modo Bilingüe</strong> para practicar traducción entre
+              idiomas</li>
+          </ul>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Niveles de Dificultad</h3>
+          <p>Cambia la dificultad en tiempo real <span class="modal__list-item--highlight">presionando teclas
+              numéricas (0-4)</span> durante el test:</p>
+
+          <table class="modal__table">
+            <tr>
+              <th>Tecla</th>
+              <th>Nivel</th>
+              <th>Descripción</th>
+            </tr>
+            <tr>
+              <td>0</td>
+              <td>Default</td>
+              <td>Palabras mixtas de uso común</td>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td>Fácil</td>
+              <td>Monosílabos (sol, pan, mar...)</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Medio</td>
+              <td>Palabras agudas/llanas (reloj, hotel...)</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Difícil</td>
+              <td>Palabras esdrújulas (teléfono, pájaro...)</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Muy Difícil</td>
+              <td>Palabras sobresdrújulas/acentuadas (dígamelo...)</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Modo Bilingüe</h3>
+          <p>Practica la traducción entre idiomas:</p>
+          <ul class="modal__list">
+            <li class="modal__list-item">Verás una palabra en un idioma (por ejemplo, en inglés)</li>
+            <li class="modal__list-item">Deberás escribir su traducción en el otro idioma (por ejemplo, en español)
+            </li>
+            <li class="modal__list-item">Puedes configurar la dirección de la traducción (inglés→español o
+              español→inglés)</li>
+            <li class="modal__list-item--highlight">El modo bilingüe solo se puede activar/desactivar antes de
+              comenzar el test</li>
+          </ul>
+        </div>
+
+        <div class="modal__section">
+          <h3 class="modal__section-title">Controles Adicionales</h3>
+          <ul class="modal__list">
+            <li class="modal__list-item">El botón <strong>Pausar</strong> te permite detener temporalmente el test
+            </li>
+            <li class="modal__list-item">El botón <strong>Fin</strong> finaliza el test y muestra tus estadísticas
+            </li>
+            <li class="modal__list-item">Puedes cambiar entre tema claro y oscuro con el botón <strong>Tema
+                Oscuro</strong></li>
+          </ul>
+        </div>
       </div>
     </div>
 

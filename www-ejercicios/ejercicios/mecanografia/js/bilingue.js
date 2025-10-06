@@ -84,7 +84,7 @@ const diccionarioBilingue = {
     'political': 'político',
     'artistic': 'artístico',
     'mathematical': 'matemático',
-    'grammatical': 'gramático',
+    'grammatical': 'gramática',
     'technical': 'técnico',
     'medical': 'médico',
     'plastic': 'plástico',
@@ -140,29 +140,35 @@ export function verificarEntradaBilingue(event) {
     if (palabraTecleada === palabraTraducida.toLowerCase()) {
       // Correcta
       gameAPI.incrementarCorrectas();
-      const numPalabrasObjetivo = gameAPI.getNumPalabrasObjetivo();
-      const palabrasCorrectas = parseInt(document.getElementById('palabrasCorrectas').textContent);
       
-      if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
-        gameAPI.detenerTest();
-        gameAPI.mostrarStats();
-      } else {
-        cambiarPalabraBilingue();
-      }
+      // Mostrar brevemente la respuesta correcta como refuerzo positivo
+      traduccionCorrecta.textContent = palabraTraducida + " ✓";
+      traduccionCorrecta.style.color = "var(--color-acento)";
+      
+      setTimeout(() => {
+        // Pasar a la siguiente palabra después de un breve momento
+        const numPalabrasObjetivo = gameAPI.getNumPalabrasObjetivo();
+        const palabrasCorrectas = parseInt(document.getElementById('palabrasCorrectas').textContent);
+        
+        if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
+          gameAPI.detenerTest();
+          gameAPI.mostrarStats();
+        } else {
+          cambiarPalabraBilingue();
+        }
+      }, 800);
+      
     } else {
       // Incorrecta
       gameAPI.incrementarFalladas();
       
-      // Mostrar la traducción correcta brevemente
-      const textoOriginal = traduccionCorrecta.textContent;
-      const colorOriginal = traduccionCorrecta.style.color;
-      
-      traduccionCorrecta.textContent = palabraTraducida + ' ✗';
-      traduccionCorrecta.style.color = 'var(--color-error)';
+      // Mostrar la traducción correcta brevemente como pista
+      traduccionCorrecta.textContent = palabraTraducida + " ✗";
+      traduccionCorrecta.style.color = "var(--color-error)";
       
       setTimeout(() => {
-        traduccionCorrecta.textContent = textoOriginal;
-        traduccionCorrecta.style.color = colorOriginal;
+        traduccionCorrecta.textContent = "?";
+        traduccionCorrecta.style.color = "";
       }, 1500);
       
       entrada.value = '';
@@ -210,6 +216,7 @@ export function inicializarModoBilingue(api) {
   // Exponer funciones globalmente
   window.iniciarTestBilingue = iniciarTestBilingue;
   window.verificarEntradaBilingue = verificarEntradaBilingue;
+  window.cambiarPalabraBilingue = cambiarPalabraBilingue; // Exponer esta función también
 }
 
 // Crear elementos necesarios si no existen en el HTML
@@ -218,7 +225,7 @@ function crearElementosHTML() {
   palabraTraduccion = document.createElement('p');
   palabraTraduccion.id = 'palabraTraduccion';
   palabraTraduccion.className = 'test-container__info test-container__info--hidden';
-  palabraTraduccion.innerHTML = 'Traducción: <span id="traduccionCorrecta" class="test-container__span">-</span>';
+  palabraTraduccion.innerHTML = 'Traducción: <span id="traduccionCorrecta" class="test-container__span">?</span>';
   
   // Añadir después de la palabra de muestra
   const palabraDeMuestraContainer = document.querySelector('.test-container__info:last-of-type');
@@ -287,8 +294,9 @@ function crearElementosHTML() {
 }
 
 // Función para cambiar la palabra en modo bilingüe
-function cambiarPalabraBilingue() {
-  const dificultad = gameAPI.getDificultadActual();
+export function cambiarPalabraBilingue(nivelForzado = null) {
+  // Usar el nivel forzado si se proporciona, de lo contrario usar el nivel actual del juego
+  const dificultad = nivelForzado !== null ? nivelForzado : gameAPI.getDificultadActual();
   const palabras = diccionarioBilingue[dificultad];
   
   // Si no hay diccionario para esta dificultad, usar nivel 0 (default)
@@ -304,18 +312,19 @@ function cambiarPalabraBilingue() {
   if (idiomaOrigen.value === 'en' && idiomaDestino.value === 'es') {
     // Inglés → Español
     palabraDeMuestra.textContent = english;
-    traduccionCorrecta.textContent = spanish;
     palabraOriginal = english;
     palabraTraducida = spanish;
   } else {
     // Español → Inglés
     palabraDeMuestra.textContent = spanish;
-    traduccionCorrecta.textContent = english;
     palabraOriginal = spanish;
     palabraTraducida = english;
   }
   
-  // Mostrar sección de traducción
+  // Ocultar la traducción correcta - NO mostrarla de antemano
+  traduccionCorrecta.textContent = "?";
+  
+  // Mostrar sección de traducción pero sin revelar la respuesta
   palabraTraduccion.classList.remove('test-container__info--hidden');
   
   // Limpiar entrada
