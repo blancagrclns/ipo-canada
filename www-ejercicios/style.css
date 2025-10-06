@@ -1,88 +1,84 @@
-/* Estilos generales siguiendo buenas prácticas CSS */
-
-/* 1. Reset y box-sizing */
+/* Reset y box-sizing */
 *,
 *::before,
 *::after {
-    margin: 5;
-    padding: 5;
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
 
-/* 2. Variables CSS para colores y fuentes */
+/* Variables CSS */
 :root {
     --color-fondo: #eaf6f0;
-    --color-principal-cabecerapie: #3a5d3cc0;
+    --color-principal-cabecerapie: #3a5d3cd4;
     --color-principal-ejercicios: #3a5d3c;
     --color-principal-texto: #fff;
-    --color-principal-borde: #2e46306a;
-    --color-acento: #b3e0ff;
-    --color-link-hover: #1b3b2a51;
-    --color-blanco: #fff;
     --fuente-principal: 'Arial', sans-serif;
     --radio-borde: 10px;
     --transicion: 0.2s;
 }
 
-/* 3. Body y estructura principal */
+/* Estructura principal */
 body {
     font-family: var(--fuente-principal);
     background: var(--color-fondo);
     min-height: 100vh;
-    margin: 0;
-    position: relative;
-    overflow-x: hidden;
-    color: var(--color-principal-borde);
-    line-height: 1.5;
+    color: #2e4630;
 }
 
-/* 4. Contenedor principal */
 .contenedor-ipo {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    position: relative;
-    z-index: 1;
 }
 
-/* 5. Cabecera */
+/* Cabecera */
 .cabecera-ipo {
     background-color: var(--color-principal-cabecerapie);
     color: var(--color-principal-texto);
-    padding: 0.5rem 1rem;
-    box-shadow: 0 2px 8px #0001;
+    padding: 0.3rem;
 }
 
 .titulo {
     text-align: center;
     text-transform: uppercase;
     font-weight: bold;
-    font-size: 1.3rem;
-    letter-spacing: 2px;
-    text-shadow: 0 2px 8px #2a2a2a33;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+}
+.titulo__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: inherit;
+  text-decoration: none;
 }
 
-/* 6. Área principal con fondo natural */
+.titulo__link:hover,
+.titulo__link:focus {
+  text-decoration: underline;
+}
+
+
+/* Área principal con fondo natural */
 .ejercicios-ipo {
     flex: 1;
-    padding: 2.5rem;
-    position: relative;
-    z-index: 1;
+    padding: 2rem;
     display: flex;
     align-items: stretch;
     justify-content: center;
-    background:
-        linear-gradient(rgba(255,255,255,0.18), rgba(179,224,255,0.18)),
-        url('canada.jpeg') center center/cover no-repeat;
+    position: relative;
 
+    background: linear-gradient(rgba(189, 220, 193, 0.35), rgba(104, 171, 103, 0.18)),
+        url('canada.jpeg') center center/cover no-repeat;
 }
 
-/* 7. Lista de ejercicios */
+/* Lista de ejercicios */
 .lista-ejercicios {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.2rem;
     width: 100%;
     max-width: 400px;
     margin: auto;
@@ -95,48 +91,74 @@ body {
     text-transform: uppercase;
     color: var(--color-principal-ejercicios);
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.721);
-    padding: 0.7rem 1.2rem;
+    background: rgba(255, 255, 255, 0.85);
+    padding: 0.6rem 1rem;
     border-radius: var(--radio-borde);
-    box-shadow: 0 2px 8px #0001;
     transition: background var(--transicion), color var(--transicion);
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .lista-ejercicios__item a:hover,
 .lista-ejercicios__item a:focus {
     text-decoration: underline;
-    background: var(--color-acento);
-    color: var(--color-link-hover);
+    background: #d6eadd;
+    color: #1b3b2a;
     outline: none;
 }
 
-/* 8. Pie de página */
 .pie-ipo {
     background-color: var(--color-principal-cabecerapie);
     color: var(--color-principal-texto);
-    padding: 0.8rem 1rem;
-    text-align: center;
-    box-shadow: 0 -2px 8px #0001;
-    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    position: relative; /* para posicionar el GitHub */
+    text-align: center; /* centra el logo de la ETSII */
+    font-size: 0.95rem;
 }
 
-/* 9. Accesibilidad: Enlaces con foco visible */
-a:focus-visible {
-    outline: 2px solid var(--color-acento);
-    outline-offset: 2px;
+.pie-ipo__centro {
+    display: inline-block;
 }
 
-/* 10. Responsive */
+.pie-ipo__logo {
+    height: 2em;
+    max-width: 100%;
+    vertical-align: middle;
+}
+
+/* Posiciona el logo de GitHub en la esquina derecha */
+.pie-ipo__github {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.pie-ipo__logo--github {
+    height: 1.8em; /* puedes ajustar el tamaño si quieres */
+    width: auto;
+}
+
+.pie-ipo__github:hover img,
+.pie-ipo__github:focus img {
+    opacity: 0.8; /* pequeño efecto al pasar el ratón */
+    transition: opacity 0.2s;
+}
+
+
+/* Responsive */
 @media (max-width: 600px) {
     .ejercicios-ipo {
         padding: 1rem;
-        border-radius: 0 0 10px 10px;
     }
+
     .lista-ejercicios {
         max-width: 100%;
     }
+
     .titulo {
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
-}   
+}
