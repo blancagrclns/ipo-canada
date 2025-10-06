@@ -4,15 +4,16 @@
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
+    margin: 5;
+    padding: 5;
     box-sizing: border-box;
 }
 
 /* 2. Variables CSS para colores y fuentes */
 :root {
     --color-fondo: #eaf6f0;
-    --color-principal: #3a5d3c;
+    --color-principal-cabecerapie: #3a5d3cc0;
+    --color-principal-ejercicios: #3a5d3c;
     --color-principal-texto: #fff;
     --color-principal-borde: #2e46306a;
     --color-acento: #b3e0ff;
@@ -46,7 +47,7 @@ body {
 
 /* 5. Cabecera */
 .cabecera-ipo {
-    background-color: var(--color-principal);
+    background-color: var(--color-principal-cabecerapie);
     color: var(--color-principal-texto);
     padding: 0.5rem 1rem;
     box-shadow: 0 2px 8px #0001;
@@ -71,7 +72,7 @@ body {
     align-items: stretch;
     justify-content: center;
     background:
-        linear-gradient(rgba(255,255,255,0.18), rgba(179,224,255,0.10)),
+        linear-gradient(rgba(255,255,255,0.18), rgba(179,224,255,0.18)),
         url('canada.jpeg') center center/cover no-repeat;
 
 }
@@ -81,7 +82,7 @@ body {
     list-style: none;
     display: flex;
     flex-direction: column;
-    gap: 1.2rem;
+    gap: 1.5rem;
     width: 100%;
     max-width: 400px;
     margin: auto;
@@ -92,9 +93,9 @@ body {
     text-align: center;
     text-decoration: none;
     text-transform: uppercase;
-    color: var(--color-principal);
+    color: var(--color-principal-ejercicios);
     font-weight: bold;
-    background: rgba(255, 255, 255, 0.521);
+    background: rgba(255, 255, 255, 0.721);
     padding: 0.7rem 1.2rem;
     border-radius: var(--radio-borde);
     box-shadow: 0 2px 8px #0001;
@@ -112,7 +113,7 @@ body {
 
 /* 8. Pie de página */
 .pie-ipo {
-    background-color: var(--color-principal);
+    background-color: var(--color-principal-cabecerapie);
     color: var(--color-principal-texto);
     padding: 0.8rem 1rem;
     text-align: center;
