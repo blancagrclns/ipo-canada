@@ -1,4 +1,4 @@
-/* ====== Reseteo (evitar problemas de estilos en navegadores) ====== */
+/* ====== Reseteo ====== */
 * {
   margin: 0;
   padding: 0;
@@ -81,7 +81,7 @@ body {
   color: var(--color-footer);
 }
 
-/* Estilos para las estrofas (cuartetos y tercetos) */
+/* Estilos para las estrofas  */
 .sonnet__cuarteto,
 .sonnet__terceto {
   display: flex;
