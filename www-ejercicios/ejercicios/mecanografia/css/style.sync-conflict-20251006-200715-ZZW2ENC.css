@@ -16,14 +16,34 @@
   --color-acento: hsl(211, 100%, 50%);
   --color-error: hsl(0, 75%, 60%);
   --color-borde: hsl(0, 0%, 85%);
+  
+  /* Colores neutros */
+  --color-blanco: hsl(0, 0%, 100%);
+  --color-gris-10: hsl(0, 0%, 98%);
+  --color-gris-20: hsl(0, 0%, 95%);
+  --color-gris-30: hsl(0, 0%, 90%);
+  --color-gris-40: hsl(0, 0%, 85%);
+  --color-gris-50: hsl(0, 0%, 80%);
+  --color-gris-60: hsl(0, 0%, 70%);
+  --color-gris-70: hsl(0, 0%, 60%);
+  --color-gris-80: hsl(0, 0%, 40%);
+  --color-gris-90: hsl(0, 0%, 20%);
+  --color-negro: hsl(0, 0%, 10%);
+  
+  /* Colores de acento secundarios */
+  --color-alerta: hsl(50, 100%, 50%);
+  --color-alerta-claro: hsl(50, 100%, 95%);
+  --color-alerta-oscuro: hsl(50, 100%, 40%);
 
   /* Fuente */
   --fuente-principal: 'Arial', sans-serif;
   
   /* Dimensiones */
   --tamanyo-base: 1.1rem;
-  --espaciado: 1rem;
-
+  --espaciado-pequeno: 0.5rem;
+  --espaciado-normal: 1rem;
+  --espaciado-grande: 2rem;
+  --borde-radius: 4px;
 }
 
 /* ====== Layout general  ====== */
