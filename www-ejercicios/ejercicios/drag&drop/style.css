@@ -1,0 +1,32 @@
+:root {
+  --color-elemento: hsl(182, 30%, 75%);
+
+  --color-en-arrastre: hsl(0, 0%, 100%);
+  --color-en-sobrevuelo: hsl(11, 86%, 54%);
+  --color-en-soltado: hsl(260, 58%, 69%);
+}
+
+.contenedor {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  gap: 3em;
+}
+
+.elemento {
+  background-color: var(--color-elemento);
+  color: var(--color-texto-elemento-oscuro);
+  padding: 0.4em;
+}
+
+.elemento-en-arrastre{
+  color: var(--color-en-arrastre)
+}
+
+.elemento-en-sobrevuelo {
+  color: var(--color-en-sobrevuelo);
+}
+
+.elemento-soltado {
+  background-color: var(--color-en-soltado);
+}

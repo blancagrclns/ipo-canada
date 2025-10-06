@@ -29,7 +29,7 @@ const palabrasMuyDificiles = ["dígamelo", "repíteselo", "cuéntamelo", "devué
   "préstamelo", "confírmamelo", "recuérdaselo", "llévaselo", "envíaselo",
   "compréndemelo", "tradúcemelo", "acláramelo", "organízamelo", "resuélvemelo"]; // Sobresdrújulas
 
-// Elementos del DOM (buenas prácticas: constantes para evitar reasignaciones)
+// Elementos del DOM 
 const btnComienzo = document.getElementById('btnComienzo');
 const btnPausa = document.getElementById('btnPausa');
 const btnFin = document.getElementById('btnFin');
@@ -48,7 +48,7 @@ const statsTiempo = document.getElementById('statsTiempo');
 const statsCorrectas = document.getElementById('statsCorrectas');
 const statsFalladas = document.getElementById('statsFalladas');
 
-// Variables de estado (buenas prácticas: let para mutabilidad controlada)
+// Variables de estado 
 let intervaloTemporizador = null;
 let tiempoTranscurrido = 0;
 let palabrasCorrectas = 0;
@@ -60,7 +60,7 @@ let pausado = false;
 let dificultadActual = 0; // 0: default, 1: fácil, etc.
 let palabrasActuales = palabrasDefault; // Array actual basado en dificultad
 
-// Función para cambiar dificultad (buenas prácticas: modular)
+// Función para cambiar dificultad
 function cambiarDificultad(nivel) {
   dificultadActual = nivel;
   switch (nivel) {
@@ -89,7 +89,7 @@ function cambiarDificultad(nivel) {
   cambiarPalabra();
 }
 
-// Función para iniciar el test (buenas prácticas: función pura y modular)
+// Función para iniciar el test
 function iniciarTest() {
   tiempoTranscurrido = 0;
   palabrasCorrectas = 0;
@@ -155,7 +155,7 @@ function verificarEntrada(event) {
   }
 }
 
-// Función para detener el test (buenas prácticas: limpieza de intervalos)
+// Función para detener el test
 function detenerTest() {
   if (intervaloTemporizador) {
     clearInterval(intervaloTemporizador);
@@ -180,7 +180,7 @@ function toggleModal() {
   modalAyuda.style.display = modalAyuda.style.display === 'flex' ? 'none' : 'flex';
 }
 
-// Event listeners (buenas prácticas: delegación y separación de concerns)
+// Event listeners
 btnComienzo.addEventListener('click', iniciarTest);
 btnPausa.addEventListener('click', togglePausa);
 btnFin.addEventListener('click', () => {
@@ -213,5 +213,5 @@ window.addEventListener('click', (event) => {
   }
 });
 
-// Detener test al cerrar la página (buenas prácticas: limpieza)
+// Detener test al cerrar la página
 window.addEventListener('beforeunload', detenerTest);
