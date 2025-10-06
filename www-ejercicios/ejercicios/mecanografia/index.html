@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="css/style.css" />
   <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled /> 
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <script type="module" src="js/theme-toggle.js"></script>
   <script type="module" src="js/script.js"></script>
   <title>Mecanografía</title>
@@ -17,20 +18,33 @@
     <p class="main__instructions">Haz clic en "Comenzar Test" y escribe las palabras mostradas lo más rápido posible. Presiona Enter para validar cada palabra.</p>
     
     <div class="config-container">
-      <label for="numPalabras" class="config-container__label">Número de palabras (opcional):</label>
-      <input type="number" id="numPalabras" class="config-container__input" min="1" placeholder="e.g., 10" />
+      <div class="config-container__row">
+        <div class="config-container__group">
+          <label for="numPalabras" class="config-container__label">Número de palabras (opcional):</label>
+          <input type="number" id="numPalabras" class="config-container__input" min="1" placeholder="10" />
+        </div>
+        
+        <div class="config-container__group">
+          <label for="tiempoMax" class="config-container__label">Tiempo máximo (segundos, opcional):</label>
+          <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="60" />
+        </div>
+      </div>
       
-      <label for="tiempoMax" class="config-container__label">Tiempo máximo (segundos, opcional):</label>
-      <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="e.g., 60" />
-      
-      <button id="btnAyuda" class="config-container__button">Ayuda</button>
-      <button id="btnTema" class="config-container__button">Tema Oscuro</button> <!-- Toggle manual para tema -->
+      <div class="config-container__row">
+        <div class="config-container__buttons">
+          <button id="btnAyuda" class="config-container__button">Ayuda</button>
+          <button id="btnTema" class="config-container__button">Tema Oscuro</button>
+        </div>
+      </div>
     </div>
     
     <div class="test-container">
-      <button id="btnComienzo" class="test-container__button">Comenzar Test</button>
-      <button id="btnPausa" class="test-container__button" disabled>Pausar</button>
-      <button id="btnFin" class="test-container__button" disabled>Fin</button>
+      <div class="test-container__buttons">
+        <button id="btnComienzo" class="test-container__button">Comenzar Test</button>
+        <button id="btnPausa" class="test-container__button" disabled>Pausar</button>
+        <button id="btnFin" class="test-container__button" disabled>Fin</button>
+      </div>
+      
       <p class="test-container__info">Tiempo (sgs): <span id="tiempo" class="test-container__span">0</span></p>
       <p class="test-container__info">Palabras correctas: <span id="palabrasCorrectas" class="test-container__span">0</span></p>
       <p class="test-container__info">Palabra de muestra: <span id="palabraDeMuestra" class="test-container__span">Palabra</span></p>
