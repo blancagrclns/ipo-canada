@@ -28,8 +28,73 @@
   transition: background-color 0.3s, color 0.3s, border-color 0.3s;
 }
 
+/* ===== ESTILOS PARA MODALES EN TEMA OSCURO ===== */
+
+/* Ajuste del modal para tema oscuro */
 [data-theme="dark"] .modal__content {
   background-color: hsl(0, 0%, 15%);
-  color: var(--color-texto);
-  transition: background-color 0.3s;
+  color: hsl(0, 0%, 90%);
+  box-shadow: 0 5px 30px hsla(0, 0%, 0%, 0.5);
+}
+
+[data-theme="dark"] .modal__close {
+  background-color: hsl(0, 0%, 25%);
+  color: hsl(0, 0%, 90%);
+}
+
+[data-theme="dark"] .modal__close:hover {
+  background-color: hsl(0, 0%, 30%);
+}
+
+[data-theme="dark"] .modal__title {
+  border-bottom-color: hsl(211, 100%, 30%);
+}
+
+/* Corrección para el destacado */
+[data-theme="dark"] .modal__list-item--highlight {
+  background-color: hsl(50, 60%, 15%);
+  color: hsl(50, 100%, 80%);
+  border-left-color: hsl(50, 70%, 40%);
+}
+
+/* Correcciones para la tabla */
+[data-theme="dark"] .modal__table th,
+[data-theme="dark"] .modal__table td {
+  border-color: hsl(0, 0%, 30%);
+}
+
+[data-theme="dark"] .modal__table th {
+  background-color: hsl(211, 50%, 20%);
+}
+
+[data-theme="dark"] .modal__table tr:nth-child(even) {
+  background-color: hsl(0, 0%, 18%);
+}
+
+[data-theme="dark"] .modal__table td:first-child {
+  background-color: hsl(211, 20%, 25%);
+}
+
+[data-theme="dark"] .modal__section-title {
+  color: hsl(211, 70%, 70%);
+}
+
+[data-theme="dark"] .modal__section-title::before {
+  background-color: hsl(211, 100%, 60%);
+}
+
+/* Para asegurar que los enlaces dentro del modal sean visibles */
+[data-theme="dark"] .modal__content a {
+  color: hsl(211, 100%, 70%);
+}
+
+[data-theme="dark"] .modal__content strong {
+  color: hsl(0, 0%, 100%);
+}
+
+/* Para la sección del modo bilingüe específicamente */
+[data-theme="dark"] .modal__list-item--highlight {
+  background-color: hsl(50, 30%, 20%);
+  border-left-color: hsl(50, 70%, 40%);
+  color: hsl(50, 70%, 70%);
 }
