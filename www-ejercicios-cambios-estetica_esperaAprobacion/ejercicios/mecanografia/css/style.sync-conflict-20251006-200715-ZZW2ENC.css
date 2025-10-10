@@ -1,0 +1,256 @@
+/**********************************************************************/
+/*  PROYECTO mecanografía      */
+/* ====== Reseteo básico ====== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ====== Variables CSS  ====== */
+/* Variables CSS globales */
+:root {
+  /* Colores principales */
+  --color-fondo: hsl(0, 0%, 96%);
+  --color-texto: hsl(0, 0%, 20%);
+  --color-acento: hsl(211, 100%, 50%);
+  --color-error: hsl(0, 75%, 60%);
+  --color-borde: hsl(0, 0%, 85%);
+  
+  /* Colores neutros */
+  --color-blanco: hsl(0, 0%, 100%);
+  --color-gris-10: hsl(0, 0%, 98%);
+  --color-gris-20: hsl(0, 0%, 95%);
+  --color-gris-30: hsl(0, 0%, 90%);
+  --color-gris-40: hsl(0, 0%, 85%);
+  --color-gris-50: hsl(0, 0%, 80%);
+  --color-gris-60: hsl(0, 0%, 70%);
+  --color-gris-70: hsl(0, 0%, 60%);
+  --color-gris-80: hsl(0, 0%, 40%);
+  --color-gris-90: hsl(0, 0%, 20%);
+  --color-negro: hsl(0, 0%, 10%);
+  
+  /* Colores de acento secundarios */
+  --color-alerta: hsl(50, 100%, 50%);
+  --color-alerta-claro: hsl(50, 100%, 95%);
+  --color-alerta-oscuro: hsl(50, 100%, 40%);
+
+  /* Fuente */
+  --fuente-principal: 'Arial', sans-serif;
+  
+  /* Dimensiones */
+  --tamanyo-base: 1.1rem;
+  --espaciado-pequeno: 0.5rem;
+  --espaciado-normal: 1rem;
+  --espaciado-grande: 2rem;
+  --borde-radius: 4px;
+}
+
+/* ====== Layout general  ====== */
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: var(--espaciado);
+}
+
+.main {
+  max-width: 600px;
+  width: 100%;
+  background: hsl(0, 0%, 100%);
+  border: 1px solid var(--color-borde);
+  border-radius: 8px;
+  padding: 2rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado);
+}
+
+.main__title {
+  font-size: 2rem;
+  text-align: center;
+  color: var(--color-acento);
+}
+
+.main__instructions {
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: var(--espaciado);
+}
+
+/* ====== Contenedor de configuración ====== */
+.config-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado);
+  border-bottom: 1px solid var(--color-borde);
+  padding-bottom: var(--espaciado);
+}
+
+.config-container__label {
+  font-weight: bold;
+  width: 60%;
+  /* Ancho fijo para todas las etiquetas */
+  text-align: right;
+  padding-right: 1rem;
+}
+
+.config-container__input {
+  padding: 0.5rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: var(--tamanyo-base);
+}
+
+.config-container__button {
+  padding: 0.5rem;
+  background-color: var(--color-acento);
+  color: hsl(0, 0%, 100%);
+  border: none;
+  border-radius: 4px;
+  font-size: var(--tamanyo-base);
+  cursor: pointer;
+  align-self: flex-start;
+}
+
+/* Modificar la estructura de los grupos de configuración */
+.config-container__row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-bottom: 1rem;
+}
+
+/* Centrar los inputs numéricos */
+input[type="number"].config-container__input {
+  width: 80px;
+  padding: 0.4rem;
+  text-align: center;
+  margin-left: 0;
+  /* Eliminar el auto margin */
+}
+
+/* Alineación de los grupos de configuración */
+.config-container__row {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 1rem;
+}
+
+/* Organización de elementos en filas */
+.config-container__row {
+  margin-bottom: 1rem;
+}
+
+/* Grupo de entrada y etiqueta */
+.config-container__group {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  gap: 1rem;
+}
+
+/* Botones agrupados horizontalmente */
+.config-container__buttons,
+.test-container__buttons {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+/* ====== Contenedor del test  ====== */
+.test-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado);
+}
+
+.test-container__button {
+  padding: 0.75rem;
+  background-color: var(--color-acento);
+  color: hsl(0, 0%, 100%);
+  border: none;
+  border-radius: 4px;
+  font-size: var(--tamanyo-base);
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.test-container__button:hover {
+  background-color: hsl(211, 100%, 40%);
+}
+
+.test-container__button:disabled {
+  background-color: var(--color-borde);
+  cursor: not-allowed;
+}
+
+.test-container__info {
+  font-size: var(--tamanyo-base);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.test-container__span {
+  font-weight: bold;
+  color: var(--color-acento);
+}
+
+.test-container__input {
+  padding: 0.75rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 4px;
+  font-size: var(--tamanyo-base);
+  width: 100%;
+}
+
+.test-container__input:focus {
+  outline: 2px solid var(--color-acento);
+}
+
+.test-container__input:disabled {
+  background-color: var(--color-borde);
+}
+
+/* ====== Responsividad básica  ====== */
+@media (max-width: 768px) {
+  .main {
+    padding: 1rem;
+  }
+
+  .main__title {
+    font-size: 1.5rem;
+  }
+
+  .config-container {
+    flex-direction: column;
+  }
+
+  .config-container__group {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .config-container__label {
+    margin-bottom: 0.25rem;
+  }
+
+  .config-container__buttons,
+  .test-container__buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

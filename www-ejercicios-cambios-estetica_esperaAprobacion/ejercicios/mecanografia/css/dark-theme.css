@@ -1,0 +1,209 @@
+/**********************************************************************/
+/*    TEMA OSCURO COMPLETO - página + modal                         */
+/**********************************************************************/
+
+/* ===== Variables de color base (modo oscuro) ===== */
+[data-theme="dark"] {
+  --color-fondo: hsl(210, 10%, 10%);
+  --color-panel: hsl(210, 10%, 15%);
+  --color-texto: hsl(0, 0%, 100%);
+  --color-acento: hsl(210, 100%, 65%);
+  --color-acento-hover: hsl(210, 100%, 60%);
+  --color-borde: hsl(210, 10%, 35%);
+  --color-error: hsl(0, 70%, 60%);
+  --color-exito: hsl(140, 50%, 45%);
+}
+
+/**********************************************************************/
+/*  ESTRUCTURA GENERAL                                                */
+/**********************************************************************/
+
+[data-theme="dark"] body {
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+[data-theme="dark"] .main {
+  background-color: var(--color-panel);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+}
+
+/**********************************************************************/
+/*  TEXTOS Y TÍTULOS                                                  */
+/**********************************************************************/
+
+[data-theme="dark"] .main__title {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .main__instructions {
+  color: hsl(0, 0%, 85%);
+}
+
+/**********************************************************************/
+/*  BOTONES                                                          */
+/**********************************************************************/
+
+[data-theme="dark"] .config-container__button,
+[data-theme="dark"] .test-container__button,
+[data-theme="dark"] .floating-buttons__button {
+  background-color: var(--color-acento);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  transition: background-color 0.3s ease, transform 0.15s ease;
+}
+
+[data-theme="dark"] .config-container__button:hover,
+[data-theme="dark"] .test-container__button:hover,
+[data-theme="dark"] .floating-buttons__button:hover {
+  background-color: var(--color-acento-hover);
+  transform: translateY(-2px);
+}
+
+/**********************************************************************/
+/*  INPUTS Y CAMPOS                                                   */
+/**********************************************************************/
+
+[data-theme="dark"] .config-container__input,
+[data-theme="dark"] .test-container__input {
+  background-color: hsl(210, 10%, 20%);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+}
+
+[data-theme="dark"] .config-container__input:focus,
+[data-theme="dark"] .test-container__input:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px hsla(210, 100%, 65%, 0.25);
+  outline: none;
+}
+
+[data-theme="dark"] .config-container__input::placeholder,
+[data-theme="dark"] .test-container__input::placeholder {
+  color: hsl(0, 0%, 70%);
+}
+
+/**********************************************************************/
+/*  TEXTOS Y SPAN DESTACADOS                                          */
+/**********************************************************************/
+
+[data-theme="dark"] .config-container__label,
+[data-theme="dark"] .test-container__info {
+  color: hsl(0, 0%, 90%);
+}
+
+[data-theme="dark"] .test-container__span {
+  color: var(--color-acento);
+}
+
+/**********************************************************************/
+/*  BORDES Y DIVISORES                                                */
+/**********************************************************************/
+
+[data-theme="dark"] .config-container {
+  border-bottom-color: var(--color-borde);
+}
+
+/**********************************************************************/
+/*  MODAL                                                            */
+/**********************************************************************/
+
+/* Fondo del modal */
+[data-theme="dark"] .modal {
+  background-color: hsla(210, 10%, 10%, 0.8);
+}
+
+/* Contenedor principal del modal */
+[data-theme="dark"] .modal__content {
+  background-color: var(--color-panel);
+  color: var(--color-texto);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--color-borde);
+}
+
+/* Botón de cierre */
+[data-theme="dark"] .modal__close {
+  background-color: hsl(210, 10%, 25%);
+  color: var(--color-texto);
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+[data-theme="dark"] .modal__close:hover {
+  background-color: hsl(210, 10%, 35%);
+}
+
+/* Título principal */
+[data-theme="dark"] .modal__title {
+  color: var(--color-acento);
+  border-bottom: 2px solid hsl(210, 20%, 40%);
+}
+
+/* Títulos de sección */
+[data-theme="dark"] .modal__section-title {
+  color: hsl(210, 80%, 70%);
+}
+
+[data-theme="dark"] .modal__section-title::before {
+  background-color: hsl(210, 100%, 60%);
+}
+
+/* Texto general del modal */
+[data-theme="dark"] .modal__list-item {
+  color: hsl(0, 0%, 90%);
+}
+
+/*  Resaltado amarillo  */
+[data-theme="dark"] .modal__list-item--highlight {
+  background-color: hsl(50, 30%, 20%);
+  color: hsl(50, 80%, 85%);
+  border-left: 3px solid hsl(50, 80%, 50%);
+  box-shadow: 0 1px 4px hsla(50, 50%, 30%, 0.2);
+}
+
+/**********************************************************************/
+/*  TABLAS DENTRO DEL MODAL                                           */
+/**********************************************************************/
+
+[data-theme="dark"] .modal__table th,
+[data-theme="dark"] .modal__table td {
+  border-color: var(--color-borde);
+  color: hsl(0, 0%, 90%);
+}
+
+[data-theme="dark"] .modal__table th {
+  background-color: hsl(210, 15%, 25%);
+}
+
+[data-theme="dark"] .modal__table tr:nth-child(even) {
+  background-color: hsl(210, 15%, 20%);
+}
+
+[data-theme="dark"] .modal__table td:first-child {
+  background-color: hsl(210, 20%, 22%);
+  color: hsl(0, 0%, 100%);
+}
+
+/**********************************************************************/
+/*  ENLACES Y TEXTO DESTACADO                                         */
+/**********************************************************************/
+
+[data-theme="dark"] .modal__content a {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .modal__content a:hover {
+  color: hsl(210, 100%, 80%);
+  text-decoration: underline;
+}
+
+/**********************************************************************/
+/*  TRANSICIÓN GLOBAL ENTRE TEMAS                                     */
+/**********************************************************************/
+
+html[data-theme="dark"],
+body[data-theme="dark"] {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
