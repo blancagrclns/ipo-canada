@@ -1,9 +1,339 @@
 /* style.css */
 /* Proyecto Tablero */
 
+/* RESET MÍNIMO - Consistencia entre navegadores */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* VARIABLES CSS - Diseño cromático centralizado con HSL */
+:root {
+  /* Colores principales con base HSL */
+  --tono-principal: 210;
+  --tono-complementario: calc(var(--tono-principal) + 180);
+  --saturacion-principal: 70%;
+  
+  /* Paleta de colores para fichas */
+  --color-ficha-1: hsl(0, 80%, 60%);    /* Rojo */
+  --color-ficha-2: hsl(120, 70%, 50%);  /* Verde */
+  --color-ficha-3: hsl(240, 70%, 60%);  /* Azul */
+  --color-ficha-4: hsl(60, 80%, 50%);   /* Amarillo */
+  --color-ficha-5: hsl(300, 70%, 60%);  /* Magenta */
+  --color-ficha-6: hsl(30, 80%, 50%);   /* Naranja */
+  --color-ficha-7: hsl(180, 70%, 40%);  /* Cian */
+  
+  /* Colores de la interfaz */
+  --color-fondo: hsl(var(--tono-principal), 20%, 95%);
+  --color-texto: hsl(var(--tono-principal), 30%, 20%);
+  --color-primario: hsl(var(--tono-principal), var(--saturacion-principal), 50%);
+  --color-primario-claro: hsl(var(--tono-principal), var(--saturacion-principal), 90%);
+  --color-primario-oscuro: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
+  --color-complementario: hsl(var(--tono-complementario), 60%, 45%);
+  --color-exito: hsl(120, 70%, 45%);
+  --color-borde: hsl(var(--tono-principal), 20%, 80%);
+  
+  /* Tipografía */
+  --fuente-principal: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  
+  /* Tamaños */
+  --ficha-pequeña: 3rem;
+  --ficha-mediana: 4.5rem;
+  --ficha-grande: 6rem;
+  
+  /* Espaciado */
+  --espaciado: 1rem;
+  --radio-borde: 0.5rem;
+}
+
+/* BODY - Configuración general y layout */
+body {
+  font-family: var(--fuente-principal);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding: var(--espaciado);
+}
+
+/* CABECERA */
+.cabecera {
+  text-align: center;
+  padding: var(--espaciado);
+  margin-bottom: var(--espaciado);
+  border-bottom: 1px solid var(--color-borde);
+}
+
+.cabecera__titulo {
+  color: var(--color-primario-oscuro);
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+}
+
+.cabecera__descripcion {
+  color: var(--color-texto);
+  max-width: 40rem;
+  margin: 0 auto;
+}
+
+/* CONTENEDOR PRINCIPAL */
+.contenedor-principal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaciado);
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* CONTROLES */
+.controles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--espaciado);
+  padding: var(--espaciado);
+  background-color: var(--color-primario-claro);
+  border-radius: var(--radio-borde);
+  width: 100%;
+  max-width: 800px;
+}
+
+.controles__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.controles__etiqueta {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.controles__selector,
+.controles__numero {
+  padding: 0.5rem;
+  border: 1px solid var(--color-borde);
+  border-radius: 0.25rem;
+  background-color: white;
+  min-width: 8rem;
+}
+
+.controles__boton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.1s;
+  align-self: flex-end;
+}
+
+.controles__boton:hover {
+  background-color: var(--color-primario-oscuro);
+}
+
+.controles__boton:active {
+  transform: scale(0.98);
+}
+
+/* ESTADO DEL JUEGO */
+.estado-juego {
+  display: flex;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  background-color: white;
+  border-radius: var(--radio-borde);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.estado-juego__item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.estado-juego__etiqueta {
+  font-weight: 600;
+}
+
+.estado-juego__valor {
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums;
+  min-width: 3rem;
+  text-align: right;
+}
+
+/* TABLERO */
+.tablero-contenedor {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: var(--espaciado);
+}
+
+.tablero {
+  display: grid;
+  gap: 0.5rem;
+  padding: 1rem;
+  background-color: white;
+  border-radius: var(--radio-borde);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+/* FICHAS */
 .ficha {
-    width: 50px;
-    height: 50px;
-    background-color: lightgray;
-    border: 1px solid black;
+  position: relative;
+  border-radius: 0.25rem;
+  cursor: grab;
+  transition: transform 0.3s, box-shadow 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  user-select: none;
+}
+
+.ficha:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  z-index: 2;
+}
+
+.ficha:active {
+  cursor: grabbing;
+}
+
+/* Formas de fichas */
+.ficha--cuadrado {
+  border-radius: 0.25rem;
+}
+
+.ficha--circulo {
+  border-radius: 50%;
+}
+
+.ficha--triangulo {
+  clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+}
+
+/* Estados de arrastre */
+.ficha--arrastrando {
+  opacity: 0.6;
+  transform: scale(0.95);
+}
+
+.ficha--destino {
+  box-shadow: 0 0 0 3px white, 0 0 0 6px var(--color-primario);
+}
+
+/* MODAL DE VICTORIA */
+.modal {
+  border: none;
+  border-radius: var(--radio-borde);
+  padding: 0;
+  max-width: 90%;
+  width: 400px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+}
+
+.modal__contenido {
+  padding: 2rem;
+  text-align: center;
+}
+
+.modal__titulo {
+  color: var(--color-exito);
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.modal__mensaje {
+  margin-bottom: 1.5rem;
+}
+
+.modal__estadisticas {
+  background-color: var(--color-primario-claro);
+  padding: 1rem;
+  border-radius: var(--radio-borde);
+  margin-bottom: 1.5rem;
+}
+
+.modal__boton {
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+/* BOTÓN FLOTANTE DE AYUDA */
+.boton-flotante {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background-color: var(--color-complementario);
+  color: white;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s, background-color 0.3s;
+}
+
+.boton-flotante:hover {
+  transform: translateY(-3px);
+  background-color: hsl(var(--tono-complementario), 70%, 40%);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .controles {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .controles__grupo {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .estado-juego {
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .cabecera__titulo {
+    font-size: 1.5rem;
+  }
+
+  .ficha {
+    /* Reducir tamaño en móviles */
+    transform: scale(0.9);
+  }
 }

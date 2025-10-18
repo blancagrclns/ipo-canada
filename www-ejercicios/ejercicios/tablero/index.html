@@ -1,28 +1,79 @@
 <!DOCTYPE html>
 <html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="style.css">
-    <title>Tablero</title>
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="style.css">
+  <script defer src="script.js"></script>
+  <title>Tablero - Juego de Fichas</title>
+</head>
 
-  <body>
+<body>
+  <header class="cabecera">
+    <h1 class="cabecera__titulo">Proyecto Tablero</h1>
+    <p class="cabecera__descripcion">
+      Intercambia fichas para conseguir filas del mismo color. Arrastra y suelta para intercambiar.
+    </p>
+  </header>
 
-    <p>Proyecto Tablero</p>
-    <div class="ficha" data-ficha></div>
-    <div class="ficha" data-ficha></div>
-    <div class="ficha" data-ficha></div>
-    <div class="ficha" data-ficha></div>
-    <button id="inicio">Inicio</button>
-    <label for="tamañoFicha">Tamaño de la ficha:</label>
-    <select id="tamañoFicha">
-      <option value="pequeña">Pequeña</option>
-      <option value="mediana">Mediana</option>
-      <option value="grande">Grande</option>
-    </select>
-    <label for="tamañoTablero">Tamaño del tablero:</label>
-    <input type="number" id="tamañoTablero" min="1" max="7" value="2">
+  <main class="contenedor-principal">
+    <section class="controles">
+      <div class="controles__grupo">
+        <label for="tamañoFicha" class="controles__etiqueta">Tamaño de la ficha:</label>
+        <select id="tamañoFicha" class="controles__selector">
+          <option value="pequeña">Pequeña</option>
+          <option value="mediana" selected>Mediana</option>
+          <option value="grande">Grande</option>
+        </select>
+      </div>
 
-  </body>
+      <div class="controles__grupo">
+        <label for="tamañoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
+        <input type="number" id="tamañoTablero" class="controles__numero" min="2" max="7" value="3" aria-label="Tamaño del tablero">
+      </div>
+
+      <div class="controles__grupo">
+        <label for="formaFicha" class="controles__etiqueta">Forma de fichas:</label>
+        <select id="formaFicha" class="controles__selector">
+          <option value="cuadrado" selected>Cuadrado</option>
+          <option value="circulo">Círculo</option>
+          <option value="triangulo">Triángulo</option>
+        </select>
+      </div>
+
+      <button id="inicio" class="controles__boton">Comenzar Juego</button>
+    </section>
+
+    <section class="estado-juego">
+      <div class="estado-juego__item">
+        <span class="estado-juego__etiqueta">Movimientos:</span>
+        <span id="contadorMovimientos" class="estado-juego__valor" aria-live="polite">0</span>
+      </div>
+      <div class="estado-juego__item">
+        <span class="estado-juego__etiqueta">Tiempo:</span>
+        <span id="temporizador" class="estado-juego__valor" aria-live="polite">00:00</span>
+      </div>
+    </section>
+
+    <section class="tablero-contenedor">
+      <div id="tablero" class="tablero" aria-label="Tablero de juego">
+        <!-- Las fichas se generarán dinámicamente desde JavaScript -->
+      </div>
+    </section>
+
+    <dialog id="modal-victoria" class="modal">
+      <div class="modal__contenido">
+        <h2 class="modal__titulo">¡Felicidades!</h2>
+        <p class="modal__mensaje">Has completado el tablero correctamente.</p>
+        <div class="modal__estadisticas">
+          <p>Movimientos: <span id="modal-movimientos"></span></p>
+          <p>Tiempo: <span id="modal-tiempo"></span></p>
+        </div>
+        <button id="cerrar-modal" class="modal__boton">Jugar de nuevo</button>
+      </div>
+    </dialog>
+
+    <button id="ayuda" class="boton-flotante" aria-label="Mostrar ayuda">?</button>
+  </main>
+</body>
 </html>
