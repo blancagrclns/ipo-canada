@@ -1,0 +1,140 @@
+/* ==========================================================================
+   ESTILOS PARA MODOS DE JUEGO ADICIONALES
+   ==========================================================================
+   - Modo dos tableros
+   - Modo rompecabezas
+*/
+
+/* ==========================================================================
+   MODO DOS TABLEROS
+   ========================================================================== */
+
+/* Contenedor para dos tableros */
+.tablero-contenedor--doble {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-xl);
+  justify-content: center;
+}
+
+/* Wrapper para tablero y etiqueta */
+.tablero-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--espaciado-s);
+}
+
+/* Etiqueta para identificar cada tablero */
+.tablero__etiqueta {
+  font-weight: 600;
+  color: var(--color-primario);
+  margin-bottom: var(--espaciado-s);
+}
+
+/* Estilos específicos para tablero origen y destino */
+.tablero--origen,
+.tablero--destino {
+  min-width: 15rem;
+  min-height: 15rem;
+}
+
+/* Celda vacía en tablero destino */
+.celda-vacia {
+  border: 0.125rem dashed var(--color-borde);
+  border-radius: var(--radio-borde);
+  transition: border-color 0.3s, background-color 0.3s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Estado hover/destino para celda vacía */
+.celda-vacia--destino {
+  border-color: var(--color-primario);
+  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.1);
+}
+
+/* ==========================================================================
+   MODO ROMPECABEZAS
+   ========================================================================== */
+
+/* Ficha con fragmento de imagen */
+.ficha--rompecabezas {
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative;
+}
+
+/* Número de posición en cada pieza del rompecabezas (opcional) */
+.ficha--rompecabezas::after {
+  content: attr(data-posicion-correcta);
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
+  font-size: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.7);
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  opacity: 0.8;
+}
+
+/* Mensaje de carga durante la carga de la imagen */
+.cargando-mensaje {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--espaciado-xl);
+  color: var(--color-primario);
+  font-weight: bold;
+  text-align: center;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio-borde);
+  background-color: var(--color-primario-claro);
+  min-height: 10rem;
+}
+
+[data-theme="dark"] .cargando-mensaje {
+  background-color: var(--color-primario-claro);
+  color: var(--color-texto);
+}
+
+/* ==========================================================================
+   ADAPTACIONES RESPONSIVE PARA MODOS ESPECIALES
+   ========================================================================== */
+
+@media (max-width: 48rem) { /* 768px */
+  .tablero-contenedor--doble {
+    flex-direction: column;
+  }
+
+  .tablero--origen,
+  .tablero--destino {
+    width: 100%;
+    min-width: auto;
+  }
+}
+
+/* ==========================================================================
+   TEMA OSCURO - Adaptaciones específicas para modos
+   ========================================================================== */
+
+[data-theme="dark"] .celda-vacia {
+  border-color: var(--color-borde);
+}
+
+[data-theme="dark"] .celda-vacia--destino {
+  border-color: var(--color-primario);
+  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.2);
+}
+
+[data-theme="dark"] .tablero__etiqueta {
+  color: var(--color-primario);
+}
+
+[data-theme="dark"] .ficha--rompecabezas::after {
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+}

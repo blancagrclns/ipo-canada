@@ -25,12 +25,37 @@ TABLERO.MODALES = {
  * Muestra el modal de victoria/estadísticas con los resultados del juego
  */
 function mostrarModalVictoria() {
-  // Actualizar información del modal
-  TABLERO.elementos.modalMovimientos.textContent = TABLERO.estado.movimientos;
-  TABLERO.elementos.modalTiempo.textContent = formatearTiempo(TABLERO.estado.tiempo);
+  const modalVictoria = document.getElementById('modal-victoria');
+  
+  if (!modalVictoria) {
+    console.error('Modal de victoria no encontrado');
+    return;
+  }
+  
+  // Preparar el contenido del modal
+  modalVictoria.innerHTML = `
+    <div class="modal__contenido">
+      <h2 class="modal__titulo">¡Tablero Completado!</h2>
+      <p class="modal__mensaje">¡Enhorabuena! Has completado el tablero correctamente.</p>
+      
+      <div class="modal__estadisticas">
+        <p>Has completado el tablero en <span id="modal-movimientos">${TABLERO.estado.movimientos}</span> movimientos.</p>
+        <p>Tiempo: <span id="modal-tiempo">${formatearTiempo(TABLERO.estado.tiempo)}</span></p>
+      </div>
+      
+      <div class="modal__botones">
+        <button id="cerrar-modal" class="modal__boton">Jugar de nuevo</button>
+        <button id="solo-cerrar-modal" class="modal__boton modal__boton--secundario">Volver al menú</button>
+      </div>
+    </div>
+  `;
+  
+  // Asignar event listeners a los botones
+  document.getElementById('cerrar-modal').addEventListener('click', reiniciarJuego);
+  document.getElementById('solo-cerrar-modal').addEventListener('click', soloCerrarModal);
   
   // Mostrar modal
-  TABLERO.elementos.modalVictoria.showModal();
+  modalVictoria.showModal();
 }
 
 /**
@@ -47,7 +72,33 @@ function reiniciarJuego() {
  */
 function soloCerrarModal() {
   TABLERO.elementos.modalVictoria.close();
-  // No reiniciar el juego, solo cerrar el modal
+  // Limpiar tablero
+  limpiarTablero();
+}
+
+/**
+ * Limpia el tablero eliminando todos los rastros visuales del juego anterior
+ */
+function limpiarTablero() {
+  // Restaurar el contenedor de tablero al estado original
+  document.querySelector('.tablero-contenedor').classList.remove('tablero-contenedor--doble');
+  document.querySelector('.tablero-contenedor').innerHTML = '<div id="tablero" class="tablero" aria-label="Tablero de juego"></div>';
+  
+  // Actualizar referencia al tablero (ya que fue recreado)
+  TABLERO.elementos.tablero = document.getElementById('tablero');
+  
+  // Resetear estado del juego
+  TABLERO.estado.juegoIniciado = false;
+  TABLERO.estado.juegoPausado = false;
+  TABLERO.estado.movimientos = 0;
+  TABLERO.estado.tiempo = 0;
+  
+  // Actualizar UI para reflejar el estado limpio
+  actualizarContador();
+  TABLERO.elementos.temporizador.textContent = '00:00';
+  
+  // Habilitar todos los controles
+  actualizarUI();
 }
 
 /* ==========================================================================
@@ -184,6 +235,8 @@ function cerrarModalDetenido() {
   const modalDetenido = document.getElementById('modal-detenido');
   if (modalDetenido) {
     modalDetenido.close();
+    // Limpiar tablero cuando se cierra el modal
+    limpiarTablero();
   }
 }
 
@@ -196,3 +249,4 @@ TABLERO.mostrarAyuda = mostrarAyuda;
 TABLERO.cerrarModalAyuda = cerrarModalAyuda;
 TABLERO.mostrarModalDetenido = mostrarModalDetenido;
 TABLERO.cerrarModalDetenido = cerrarModalDetenido;
+TABLERO.limpiarTablero = limpiarTablero;

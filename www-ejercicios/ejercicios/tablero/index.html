@@ -7,12 +7,14 @@
   <!-- CSS -->
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/modal.css">
+  <link rel="stylesheet" href="css/modos-juego.css">
   <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled>
   <!-- Favicon -->
-  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
   <!-- JS -->
   <script defer src="js/script.js"></script>
   <script defer src="js/modales.js"></script>
+  <script defer src="js/modos-juego.js"></script>
   <script defer src="js/theme-toggle.js"></script>
   <title>Tablero - Juego de Fichas</title>
 </head>
@@ -33,6 +35,15 @@
 
   <main class="contenedor-principal">
     <section class="controles">
+      <div class="controles__grupo">
+        <label for="modoJuego" class="controles__etiqueta">Modo de juego:</label>
+        <select id="modoJuego" class="controles__selector">
+          <option value="normal" selected>Normal</option>
+          <option value="dosTableros">Dos tableros</option>
+          <option value="rompecabezas">Rompecabezas</option>
+        </select>
+      </div>
+
       <div class="controles__grupo">
         <label for="tamañoFicha" class="controles__etiqueta">Tamaño de la ficha:</label>
         <select id="tamañoFicha" class="controles__selector">

@@ -10,6 +10,7 @@ const TABLERO = {
     tamañoTablero: 3,
     tamañoFicha: 'mediana',
     formaFicha: 'cuadrado',
+    modoJuego: 'normal'  // Añadido: Modo de juego (normal, dosTableros, rompecabezas)
   },
   estado: {
     movimientos: 0,
@@ -46,16 +47,13 @@ function inicializar() {
     tamañoTablero: document.getElementById('tamañoTablero'),
     tamañoFicha: document.getElementById('tamañoFicha'),
     formaFicha: document.getElementById('formaFicha'),
+    modoJuego: document.getElementById('modoJuego'),
     btnInicio: document.getElementById('inicio'),
     btnPausa: document.getElementById('btnPausa'),
     btnDetener: document.getElementById('btnDetener'),
     contadorMovimientos: document.getElementById('contadorMovimientos'),
     temporizador: document.getElementById('temporizador'),
     modalVictoria: document.getElementById('modal-victoria'),
-    modalMovimientos: document.getElementById('modal-movimientos'),
-    modalTiempo: document.getElementById('modal-tiempo'),
-    btnCerrarModal: document.getElementById('cerrar-modal'),
-    btnSoloCerrarModal: document.getElementById('solo-cerrar-modal'),
     btnAyuda: document.getElementById('btnAyuda')
   };
 
@@ -63,9 +61,17 @@ function inicializar() {
   TABLERO.elementos.btnInicio.addEventListener('click', iniciarJuego);
   TABLERO.elementos.btnPausa.addEventListener('click', togglePausaJuego);
   TABLERO.elementos.btnDetener.addEventListener('click', detenerJuego);
-  TABLERO.elementos.btnCerrarModal.addEventListener('click', TABLERO.reiniciarJuego); // Usa función del módulo modales.js
-  TABLERO.elementos.btnSoloCerrarModal.addEventListener('click', TABLERO.soloCerrarModal); // Usa función del módulo modales.js
-  TABLERO.elementos.btnAyuda.addEventListener('click', TABLERO.mostrarAyuda); // Usa función del módulo modales.js
+  TABLERO.elementos.btnAyuda.addEventListener('click', TABLERO.mostrarAyuda);
+  
+  // Event listener para prevenir cierre de página durante juego
+  window.addEventListener('beforeunload', (e) => {
+    if (TABLERO.estado.juegoIniciado) {
+      // Mensaje que se mostrará al usuario
+      const mensaje = '¿Estás seguro de que quieres salir? El progreso del juego se perderá.';
+      e.returnValue = mensaje;
+      return mensaje;
+    }
+  });
   
   // Inicialización inicial
   actualizarUI();
@@ -98,6 +104,7 @@ function iniciarJuego() {
   TABLERO.config.tamañoTablero = parseInt(TABLERO.elementos.tamañoTablero.value, 10);
   TABLERO.config.tamañoFicha = TABLERO.elementos.tamañoFicha.value;
   TABLERO.config.formaFicha = TABLERO.elementos.formaFicha.value;
+  TABLERO.config.modoJuego = TABLERO.elementos.modoJuego.value; // Añadido: Leer modo de juego
   
   // Validar tamaño de tablero
   if (TABLERO.config.tamañoTablero < 2 || TABLERO.config.tamañoTablero > 7) {
@@ -113,8 +120,18 @@ function iniciarJuego() {
   TABLERO.elementos.btnPausa.textContent = 'Pausar';
   TABLERO.elementos.btnDetener.disabled = false;
   
-  // Generar tablero
-  generarTablero();
+  // Generar tablero según el modo de juego seleccionado
+  switch(TABLERO.config.modoJuego) {
+    case 'dosTableros':
+      TABLERO.MODOS.generarDosTableros();
+      break;
+    case 'rompecabezas':
+      TABLERO.MODOS.generarTableroRompecabezas();
+      break;
+    default:
+      // Modo normal (original)
+      generarTablero();
+  }
   
   // Iniciar temporizador
   iniciarTemporizador();
@@ -157,19 +174,46 @@ function togglePausaJuego() {
  * Diferente al modal de victoria que se muestra al completar el tablero
  */
 function detenerJuego() {
-  if (!TABLERO.estado.juegoIniciado) return;
+  // Detener temporizador si existe
+  if (TABLERO.estado.timerInterval) {
+    clearInterval(TABLERO.estado.timerInterval);
+    TABLERO.estado.timerInterval = null;
+  }
   
-  // Detener temporizador
-  clearInterval(TABLERO.estado.timerInterval);
-  TABLERO.estado.timerInterval = null;
+  // Actualizar estado del juego
   TABLERO.estado.juegoIniciado = false;
   
-  // Deshabilitar botones de control
-  TABLERO.elementos.btnPausa.disabled = true;
-  TABLERO.elementos.btnDetener.disabled = true;
+  // Actualizar UI para reflejar fin de juego
+  actualizarUI();
   
-  // Mostrar modal de juego detenido (no el de victoria)
+  // Mostrar modal de juego detenido
   TABLERO.mostrarModalDetenido();
+  
+  // Limpiar tablero después de mostrar modal
+  TABLERO.limpiarTablero();
+}
+
+/**
+ * Actualiza la interfaz según el estado del juego
+ * - Actualiza contador de movimientos
+ * - Habilita/deshabilita controles según estado
+ */
+function actualizarUI() {
+  // Actualizar contador de movimientos
+  TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
+  
+  // Deshabilitar/habilitar controles según el estado del juego
+  const estaJugando = TABLERO.estado.juegoIniciado;
+  
+  // Deshabilitar configuración mientras se juega
+  TABLERO.elementos.tamañoTablero.disabled = estaJugando;
+  TABLERO.elementos.tamañoFicha.disabled = estaJugando;
+  TABLERO.elementos.formaFicha.disabled = estaJugando;
+  TABLERO.elementos.modoJuego.disabled = estaJugando;
+  
+  // Gestionar visibilidad de botones de control
+  TABLERO.elementos.btnPausa.disabled = !estaJugando;
+  TABLERO.elementos.btnDetener.disabled = !estaJugando;
 }
 
 /**
@@ -178,16 +222,41 @@ function detenerJuego() {
  */
 function finalizarJuego() {
   // Detener temporizador
-  clearInterval(TABLERO.estado.timerInterval);
-  TABLERO.estado.timerInterval = null;
+  if (TABLERO.estado.timerInterval) {
+    clearInterval(TABLERO.estado.timerInterval);
+    TABLERO.estado.timerInterval = null;
+  }
+  
+  // Actualizar estado del juego
   TABLERO.estado.juegoIniciado = false;
   
-  // Deshabilitar botones de control
-  TABLERO.elementos.btnPausa.disabled = true;
-  TABLERO.elementos.btnDetener.disabled = true;
+  // Actualizar UI para reflejar fin de juego
+  actualizarUI();
   
-  // Mostrar modal de victoria (no el de juego detenido)
+  // Mostrar modal de victoria con estadísticas
   TABLERO.mostrarModalVictoria();
+  
+  // Preparar contenedor del modal para estadísticas
+  const estadisticasContainer = document.querySelector('.modal__estadisticas');
+  const botonesContainer = document.querySelector('.modal__botones');
+  
+  if (estadisticasContainer) {
+    estadisticasContainer.innerHTML = `
+      <p>Has completado el tablero en <span id="modal-movimientos">${TABLERO.estado.movimientos}</span> movimientos.</p>
+      <p>Tiempo: <span id="modal-tiempo">${formatearTiempo(TABLERO.estado.tiempo)}</span></p>
+    `;
+  }
+  
+  if (botonesContainer) {
+    botonesContainer.innerHTML = `
+      <button id="cerrar-modal" class="modal__boton">Jugar de nuevo</button>
+      <button id="solo-cerrar-modal" class="modal__boton modal__boton--secundario">Volver al menú</button>
+    `;
+    
+    // Asignar event listeners a los botones
+    document.getElementById('cerrar-modal').addEventListener('click', TABLERO.reiniciarJuego);
+    document.getElementById('solo-cerrar-modal').addEventListener('click', TABLERO.soloCerrarModal);
+  }
 }
 
 /* ==========================================================================
@@ -384,6 +453,14 @@ function intercambiarFichas(ficha1, ficha2) {
  * @returns {boolean} true si todas las filas tienen fichas del mismo color
  */
 function verificarVictoria() {
+  // Para modos especiales, usar sus propias funciones de verificación
+  if (TABLERO.config.modoJuego === 'dosTableros' && TABLERO.MODOS.verificarVictoriaDosTableros) {
+    return TABLERO.MODOS.verificarVictoriaDosTableros();
+  } else if (TABLERO.config.modoJuego === 'rompecabezas' && TABLERO.MODOS.verificarVictoriaRompecabezas) {
+    return TABLERO.MODOS.verificarVictoriaRompecabezas();
+  }
+  
+  // Modo normal (original)
   const n = TABLERO.config.tamañoTablero;
   const fichas = TABLERO.elementos.tablero.querySelectorAll('.ficha');
   
@@ -452,8 +529,21 @@ function formatearTiempo(segundos) {
  * Actualiza todos los elementos de la interfaz de usuario
  */
 function actualizarUI() {
-  actualizarContador();
-  actualizarTemporizador();
+  // Actualizar contador de movimientos
+  TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
+  
+  // Deshabilitar/habilitar controles según el estado del juego
+  const estaJugando = TABLERO.estado.juegoIniciado;
+  
+  // Deshabilitar configuración mientras se juega
+  TABLERO.elementos.tamañoTablero.disabled = estaJugando;
+  TABLERO.elementos.tamañoFicha.disabled = estaJugando;
+  TABLERO.elementos.formaFicha.disabled = estaJugando;
+  TABLERO.elementos.modoJuego.disabled = estaJugando;
+  
+  // Gestionar visibilidad de botones de control
+  TABLERO.elementos.btnPausa.disabled = !estaJugando;
+  TABLERO.elementos.btnDetener.disabled = !estaJugando;
 }
 
 /**
