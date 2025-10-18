@@ -138,7 +138,6 @@ function iniciarTest() {
   
   if (estamosEnModoBilingue) {
     try {
-      // Usar nuestra función importada en lugar de window.iniciarTestBilingue
       iniciarTestBilingue();
     } catch (error) {
       console.error("Error al iniciar el test bilingüe:", error);
@@ -157,7 +156,7 @@ function iniciarTest() {
   btnFin.disabled = false;
   btnPausa.textContent = 'Pausar';
 
-  // Iniciar temporizador con setInterval (inspirado en intervalos)
+  // Iniciar temporizador con setInterval 
   intervaloTemporizador = setInterval(() => {
     if (!pausado) {
       tiempoTranscurrido++;
@@ -192,7 +191,6 @@ function verificarEntrada(event) {
     
     if (modoBilingueCheckbox && modoBilingueCheckbox.checked) {
       try {
-        // Usar nuestra función importada en lugar de window.verificarEntradaBilingue
         verificarEntradaBilingue(event);
       } catch (error) {
         console.error("Error al verificar entrada bilingüe:", error);
@@ -313,26 +311,31 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     getNumPalabrasObjetivo: () => numPalabrasObjetivo
   });
-  /*
-  // Implementación básica del cambio de tema
-  const btnTema = document.getElementById('btnTema');
-  const darkThemeCSS = document.getElementById('dark-theme');
-  
-  if (btnTema) {
-    btnTema.addEventListener('click', () => {
-      darkThemeCSS.disabled = !darkThemeCSS.disabled;
-      btnTema.textContent = darkThemeCSS.disabled ? 'Tema Oscuro' : 'Tema Claro';
-    });
-  }
-    */
 });
 
-// Listener para teclas numéricas (dificultad dinámica) - Evita entrada en input
+// Listener para teclas numéricas (dificultad dinámica) - Permite en "entrada" y fuera de inputs
 document.addEventListener('keydown', (event) => {
   const key = parseInt(event.key);
+  // Verificar si la tecla es un número entre 0 y 4
   if (key >= 0 && key <= 4) {
-    event.preventDefault(); // Evita que entre en input
-    cambiarDificultad(key);
+    // Verificar el elemento activo
+    const activeElement = document.activeElement;
+    const isEntradaInput = activeElement.id === 'entrada';
+    const isOtherInput = (activeElement.tagName === 'INPUT' || 
+                          activeElement.tagName === 'SELECT' || 
+                          activeElement.tagName === 'TEXTAREA') && !isEntradaInput;
+    
+    // Permitir cambio de dificultad si:
+    // 1. Estamos en el input "entrada" O
+    // 2. No estamos en ningún input
+    if (isEntradaInput || !isOtherInput) {
+      if (isEntradaInput) {
+        // Prevenir que el número se escriba en el input "entrada"
+        event.preventDefault();
+      }
+      cambiarDificultad(key);
+    }
+    // Si estamos en otros inputs (numPalabras, tiempoMax), permite escribir normalmente
   }
 });
 

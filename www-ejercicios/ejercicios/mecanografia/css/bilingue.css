@@ -1,4 +1,4 @@
-/* Toggle switch para modo bilingüe */
+/* TOGGLE MODO BILINGÜE - Interruptores y controles específicos */
 .config-container__toggle {
   display: flex;
   align-items: center;
@@ -12,55 +12,72 @@
   width: 0;
 }
 
+/* Etiqueta visual del interruptor */
 .config-container__toggle-label {
   position: relative;
   display: inline-block;
-  width: 60px;
-  height: 26px;
-  background-color: hsl(0, 0%, 85%);
-  border-radius: 34px;
-  transition: background-color 0.3s;
+  width: 58px;
+  height: 28px;
+  background-color: hsl(var(--tono), 10%, 80%);
+  border-radius: 14px;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
 }
 
+/* Indicador textual de estado */
 .config-container__toggle-label::before {
   content: "OFF";
   position: absolute;
   right: 8px;
   top: 5px;
-  font-size: 12px;
-  color: hsl(0, 0%, 30%);
-  font-weight: bold;
+  font-size: 0.7rem;
+  color: hsl(var(--tono), 10%, 30%);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: color 0.3s ease, left 0.3s ease, right 0.3s ease;
 }
 
+/* Círculo móvil del toggle */
+.config-container__toggle-label::after {
+  content: "";
+  position: absolute;
+  left: 4px;
+  top: 4px;
+  width: 20px;
+  height: 20px;
+  background-color: hsl(0, 0%, 100%);
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Estado activado */
 .config-container__checkbox:checked + .config-container__toggle-label {
-  background-color: hsl(211, 100%, 50%);
+  background-color: var(--color-acento);
+  box-shadow: 0 0 6px hsla(var(--tono), 80%, 40%, 0.4);
 }
 
 .config-container__checkbox:checked + .config-container__toggle-label::before {
   content: "ON";
   left: 8px;
   right: auto;
-  color: white;
-}
-
-.config-container__toggle-label::after {
-  content: "";
-  position: absolute;
-  left: 4px;
-  top: 3px;
-  width: 20px;
-  height: 20px;
-  background-color: hsl(0, 0%, 100%);
-  border-radius: 50%;
-  transition: transform 0.3s;
+  color: hsl(0, 0%, 100%);
 }
 
 .config-container__checkbox:checked + .config-container__toggle-label::after {
-  transform: translateX(34px);
+  transform: translateX(30px);
+  background-color: hsl(0, 0%, 98%);
 }
 
-/* Grupo de selectores de idioma */
+/* Estado deshabilitado */
+.config-container__checkbox:disabled + .config-container__toggle-label {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: hsl(var(--tono), 10%, 85%);
+}
+
+/* SELECTORES DE IDIOMA */
 .config-container__select-group {
   display: flex;
   align-items: center;
@@ -68,35 +85,38 @@
 }
 
 .config-container__select {
-  padding: 0.4rem;
+  padding: 0.45rem 0.75rem;
   border: 1px solid var(--color-borde);
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: var(--tamanyo-base);
-  background-color: hsl(0, 0%, 100%);
+  background-color: hsl(0, 0%, 99%);
+  color: var(--color-texto);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.config-container__select:hover,
+.config-container__select:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px hsla(var(--tono), 80%, 50%, 0.2);
+  outline: none;
 }
 
 .config-container__arrow {
   font-weight: bold;
   color: var(--color-acento);
+  font-size: 1.1rem;
 }
 
-/* Clase para elementos ocultos */
+/* ESTADOS AUXILIARES */
 .config-container__group--hidden,
 .test-container__info--hidden {
   display: none;
 }
 
-/* Estilo para elementos deshabilitados */
-.config-container__checkbox:disabled + .config-container__toggle-label {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background-color: hsl(0, 0%, 75%);
-}
-
 .config-container__select:disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background-color: hsl(0, 0%, 95%);
+  background-color: hsl(0, 0%, 94%);
 }
 
 .config-container__group--disabled {
@@ -108,19 +128,13 @@
   pointer-events: none;
 }
 
-/* Estilos para indicador de traducción */
+/* INDICADOR DE TRADUCCIÓN */
 .test-container__span {
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
-/* Estilo para el signo de interrogación */
-#traduccionCorrecta:contains("?") {
-  font-size: 1.2em;
-  color: var(--color-borde);
-}
-
-/* Añadir un tooltip explicativo */
+/* Tooltip de ayuda */
 #palabraTraduccion {
   position: relative;
 }
@@ -130,14 +144,37 @@
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  bottom: -20px;
+  bottom: -22px;
   font-size: 0.8em;
   color: var(--color-acento);
+  background-color: hsla(0, 0%, 100%, 0.9);
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
   white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity 0.3s ease;
 }
 
 #palabraTraduccion:hover::after {
   opacity: 1;
+}
+
+/* TEMA OSCURO - Selectores y toggles específicos */
+[data-theme="dark"] .config-container__select {
+  background-color: hsl(var(--tono), 10%, 20%);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+[data-theme="dark"] .config-container__select:hover,
+[data-theme="dark"] .config-container__select:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px hsla(var(--tono), 100%, 65%, 0.25);
+}
+
+[data-theme="dark"] #palabraTraduccion::after {
+  background-color: hsla(var(--tono), 10%, 15%, 0.9);
+  color: var(--color-acento);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
 }

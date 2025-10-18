@@ -1,29 +1,37 @@
 /**********************************************************************/
 /*  PROYECTO mecanografía      */
 /* ====== Reseteo básico ====== */
-* {
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 }
 
 /* ====== Variables CSS  ====== */
 /* Variables CSS globales */
 :root {
   /* Colores principales */
-  --color-fondo: hsl(0, 0%, 96%);
-  --color-texto: hsl(0, 0%, 20%);
-  --color-acento: hsl(211, 100%, 50%);
-  --color-error: hsl(0, 75%, 60%);
-  --color-borde: hsl(0, 0%, 85%);
-
-  /* Fuente */
-  --fuente-principal: 'Arial', sans-serif;
+  --tono: 210;                             /* Tono base azul grisáceo */
+  --tono-complementario: calc(var(--tono) + 180); /* Cálculo automático del complementario */
   
-  /* Dimensiones */
+  --color-fondo: hsl(var(--tono), 10%, 88%);      /* Fondo principal */
+  --color-panel: hsl(var(--tono), 8%, 95%);       /* Contenedor principal */
+  --color-texto: hsl(var(--tono), 10%, 20%);      /* Texto principal */
+  --color-texto-secundario: hsl(var(--tono), 10%, 35%); /* Texto menos importante */
+  --color-acento: hsl(220, 30%, 45%);             /* Color principal de acción */
+  --color-acento-hover: hsl(220, 30%, 35%);       /* Estado hover de botones */
+  --color-borde: hsl(var(--tono), 10%, 75%);      /* Bordes y separadores */
+  --color-error: hsl(0, 65%, 55%);                /* Feedback negativo */
+  
+  /* Tipografía */
+  --fuente-principal: 'Inter', 'Segoe UI', sans-serif;
+  
+  /* Dimensiones y espaciado */
   --tamanyo-base: 1.1rem;
   --espaciado: 1rem;
-
+  --radio-borde: 0.625rem;
 }
 
 /* ====== Layout general  ====== */
@@ -40,13 +48,13 @@ body {
 }
 
 .main {
-  max-width: 600px;
+  max-width: 640px;
   width: 100%;
-  background: hsl(0, 0%, 100%);
+  background: var(--color-panel);
   border: 1px solid var(--color-borde);
-  border-radius: 8px;
+  border-radius: 10px;
   padding: 2rem;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
   gap: var(--espaciado);
@@ -56,12 +64,54 @@ body {
   font-size: 2rem;
   text-align: center;
   color: var(--color-acento);
+  font-weight: 600;
 }
 
 .main__instructions {
   font-size: 1rem;
   text-align: center;
+  color: var(--color-texto-secundario);
   margin-bottom: var(--espaciado);
+}
+
+/* BOTONES FLOTANTES */
+.floating-buttons {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+  z-index: 1000;
+}
+
+.floating-buttons__button {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--color-borde);
+  background-color: var(--color-acento);
+  color: white;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s;
+}
+
+.floating-buttons__button:hover {
+  background-color: var(--color-acento-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.floating-buttons__button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.floating-buttons__button:focus-visible {
+  outline: 2px solid hsl(220, 40%, 65%);
+  outline-offset: 2px;
 }
 
 /* ====== Contenedor de configuración ====== */
@@ -73,81 +123,72 @@ body {
   padding-bottom: var(--espaciado);
 }
 
+.config-container__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.config-container__group {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 48%; /* Ajusta el ancho para que quepan dos grupos por fila */
+}
+
 .config-container__label {
-  font-weight: bold;
-  width: 60%;
-  /* Ancho fijo para todas las etiquetas */
-  text-align: right;
-  padding-right: 1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  width: 100%; /* Ocupa toda la línea */
+  text-align: left; /* Alineado a la izquierda en lugar de a la derecha */
+  padding-right: 0;
+  color: var(--color-texto-secundario);
 }
 
 .config-container__input {
   padding: 0.5rem;
   border: 1px solid var(--color-borde);
-  border-radius: 4px;
+  border-radius: 6px;
+  background-color: hsl(var(--tono), 10%, 98%);
   font-size: var(--tamanyo-base);
+  transition: border-color 0.3s, box-shadow 0.3s;
+  width: 100%; /* Ocupa todo el ancho del grupo */
+  max-width: 8rem; /* Limita el ancho máximo del input */
 }
 
-.config-container__button {
-  padding: 0.5rem;
+.config-container__input:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px hsla(220, 30%, 50%, 0.2);
+  outline: none;
+}
+
+/* BOTONES - Base común para todos los botones */
+.config-container__button,
+.test-container__button {
+  padding: 0.6rem 1.2rem;
   background-color: var(--color-acento);
-  color: hsl(0, 0%, 100%);
+  color: white;
   border: none;
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: var(--tamanyo-base);
+  font-weight: 500;
   cursor: pointer;
-  align-self: flex-start;
+  transition: background-color 0.3s, transform 0.15s;
 }
 
-/* Modificar la estructura de los grupos de configuración */
-.config-container__row {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-  margin-bottom: 1rem;
+.config-container__button:hover,
+.test-container__button:hover {
+  background-color: var(--color-acento-hover);
+  transform: translateY(-2px);
 }
 
-/* Centrar los inputs numéricos */
-input[type="number"].config-container__input {
-  width: 80px;
-  padding: 0.4rem;
-  text-align: center;
-  margin-left: 0;
-  /* Eliminar el auto margin */
-}
-
-/* Alineación de los grupos de configuración */
-.config-container__row {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin-bottom: 1rem;
-}
-
-/* Organización de elementos en filas */
-.config-container__row {
-  margin-bottom: 1rem;
-}
-
-/* Grupo de entrada y etiqueta */
-.config-container__group {
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  gap: 1rem;
-}
-
-/* Botones agrupados horizontalmente */
-.config-container__buttons,
-.test-container__buttons {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+.config-container__button:disabled,
+.test-container__button:disabled {
+  background-color: var(--color-borde);
+  color: hsl(0, 0%, 45%);
+  cursor: not-allowed;
 }
 
 /* ====== Contenedor del test  ====== */
@@ -157,62 +198,40 @@ input[type="number"].config-container__input {
   gap: var(--espaciado);
 }
 
-.test-container__button {
-  padding: 0.75rem;
-  background-color: var(--color-acento);
-  color: hsl(0, 0%, 100%);
-  border: none;
-  border-radius: 4px;
-  font-size: var(--tamanyo-base);
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.test-container__button:hover {
-  background-color: hsl(211, 100%, 40%);
-}
-
-.test-container__button:disabled {
-  background-color: var(--color-borde);
-  cursor: not-allowed;
-}
-
 .test-container__info {
   font-size: var(--tamanyo-base);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: var(--color-texto-secundario);
 }
 
 .test-container__span {
-  font-weight: bold;
+  font-weight: 600;
   color: var(--color-acento);
 }
 
 .test-container__input {
   padding: 0.75rem;
   border: 1px solid var(--color-borde);
-  border-radius: 4px;
+  border-radius: 6px;
   font-size: var(--tamanyo-base);
   width: 100%;
+  background-color: hsl(var(--tono), 10%, 97%);
 }
 
 .test-container__input:focus {
   outline: 2px solid var(--color-acento);
 }
 
-.test-container__input:disabled {
-  background-color: var(--color-borde);
-}
-
 /* ====== Responsividad básica  ====== */
-@media (max-width: 768px) {
+@media (max-width: 37.5rem) {
   .main {
     padding: 1rem;
   }
 
   .main__title {
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
 
   .config-container {
@@ -222,15 +241,12 @@ input[type="number"].config-container__input {
   .config-container__group {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .config-container__label {
-    margin-bottom: 0.25rem;
+    width: 100%; /* En móvil, cada grupo ocupa toda la fila */
   }
 
   .config-container__buttons,
   .test-container__buttons {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
   }
 }

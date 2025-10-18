@@ -1,168 +1,188 @@
-
-/* Variables cromáticas para el modal */
+/* VARIABLES PARA MODAL - Coherentes con las variables globales */
 :root {
-    --modal-bg: hsl(0, 0%, 100%);
-    --modal-shadow: hsla(0, 0%, 0%, 0.3);
-    --modal-close-bg: hsl(0, 0%, 96%);
-    --modal-close-bg-hover: hsl(0, 0%, 90%);
-    --modal-title-accent: hsl(211, 100%, 50%);
-    --modal-title-border: hsl(211, 100%, 90%);
-    --modal-section-title: hsl(211, 70%, 40%);
-    --modal-section-dot: hsl(211, 100%, 50%);
-    --modal-list-highlight-bg: hsl(50, 100%, 95%);
-    --modal-list-highlight-border: hsl(50, 100%, 50%);
-    --modal-table-border: hsl(0, 0%, 90%);
-    --modal-table-th-bg: hsl(211, 50%, 95%);
-    --modal-table-even-bg: hsl(0, 0%, 98%);
-    --modal-table-td-bg: hsl(211, 20%, 95%);
+  /* Usar colores derivados del tema principal */
+  --modal-bg: hsl(var(--tono), 15%, 98%);              
+  --modal-shadow: hsla(var(--tono), 20%, 10%, 0.25);   
+  --modal-close-bg: hsl(var(--tono), 15%, 90%);
+  --modal-close-bg-hover: hsl(var(--tono), 15%, 85%);
+  --modal-title-accent: hsl(220, 40%, 45%);    
+  --modal-title-border: hsl(220, 30%, 85%);
+  --modal-section-title: hsl(220, 35%, 35%);
+  --modal-section-dot: hsl(220, 40%, 45%);
+  /* Resaltado amarillo para elementos importantes */
+  --modal-list-highlight-bg: hsl(50, 100%, 95%);
+  --modal-list-highlight-border: hsl(50, 100%, 50%);
+  --modal-table-border: hsl(var(--tono), 20%, 85%);
+  --modal-table-th-bg: hsl(var(--tono), 25%, 93%);
+  --modal-table-even-bg: hsl(var(--tono), 20%, 97%);
+  --modal-table-td-bg: hsl(var(--tono), 15%, 92%);
 }
 
-/* Contenedor principal del modal */
+/* CONTENEDOR DEL MODAL */
 .modal {
-    display: none;
-    position: fixed;
-    z-index: 10;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: hsla(0, 0%, 0%, 0.75);
-    justify-content: center;
-    align-items: center;
-    overflow-y: auto;
-    padding: 2rem 1rem;
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: hsla(var(--tono), 10%, 10%, 0.7); 
+  justify-content: center;
+  align-items: center;
+  overflow-y: auto;
+  padding: 2rem 1rem;
 }
 
-/* Contenido del modal con tamaño mejorado */
+/* CONTENIDO DEL MODAL */
 .modal__content {
-        background-color: var(--modal-bg);
-    padding: 2.5rem;
-    border-radius: 12px;
-    max-width: 800px;
-    width: 100%;
-    position: relative;
-        box-shadow: 0 5px 30px var(--modal-shadow);
-    margin: auto;
+  background-color: var(--modal-bg);
+  padding: 2.5rem;
+  border-radius: 12px;
+  max-width: 800px;
+  width: 100%;
+  position: relative;
+  box-shadow: 0 6px 25px var(--modal-shadow);
+  margin: auto;
+  transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+/* Animación de entrada */
+.modal.active .modal__content {
+  transform: scale(1);
+  opacity: 1;
+}
 
-/* Botón de cierre */
+/* BOTÓN DE CIERRE */
 .modal__close {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 2rem;
-    cursor: pointer;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-        background-color: var(--modal-close-bg);
-    border: none;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: background-color 0.2s, transform 0.2s;
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.8rem;
+  cursor: pointer;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background-color: var(--modal-close-bg);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: hsl(var(--tono), 20%, 30%);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .modal__close:hover {
-        background-color: var(--modal-close-bg-hover);
-    transform: scale(1.1);
+  background-color: var(--modal-close-bg-hover);
+  transform: scale(1.1);
 }
 
-/* Título del modal */
+/* TÍTULOS Y SECCIONES */
 .modal__title {
-    font-size: 1.75rem;
-        color: var(--modal-title-accent);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.75rem;
-        border-bottom: 2px solid var(--modal-title-border);
+  font-size: 1.75rem;
+  color: var(--modal-title-accent);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--modal-title-border);
+  font-weight: 600;
+  text-align: left;
 }
 
-/* Secciones en el modal */
 .modal__section {
-    margin-bottom: 2rem;
+  margin-bottom: 2rem;
 }
 
 .modal__section-title {
-    font-size: 1.25rem;
-        color: var(--modal-section-title);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
+  font-size: 1.25rem;
+  color: var(--modal-section-title);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  font-weight: 600;
 }
 
 .modal__section-title::before {
-    content: "";
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-        background-color: var(--modal-section-dot);
-    margin-right: 8px;
-    border-radius: 50%;
+  content: "";
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background-color: var(--modal-section-dot);
+  margin-right: 8px;
+  border-radius: 50%;
 }
 
-/* Listas en el modal */
+/* LISTAS */
 .modal__list {
-    padding-left: 1.5rem;
-    margin-bottom: 1rem;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
 }
 
 .modal__list-item {
-    margin-bottom: 0.75rem;
-    line-height: 1.5;
+  margin-bottom: 0.75rem;
+  line-height: 1.5;
+  color: hsl(var(--tono), 15%, 25%);
 }
 
+/* Resaltado para elementos importantes */
 .modal__list-item--highlight {
-        background-color: var(--modal-list-highlight-bg);
-    padding: 0.5rem;
-    border-radius: 4px;
-        border-left: 3px solid var(--modal-list-highlight-border);
+  background-color: var(--modal-list-highlight-bg);
+  padding: 0.5rem 0.75rem;
+  border-radius: 6px;
+  border-left: 4px solid var(--modal-list-highlight-border);
+  color: hsl(var(--tono), 20%, 20%);
+  font-weight: 500;
+  box-shadow: 0 1px 3px hsla(50, 60%, 30%, 0.15);
 }
 
-/* Tabla de atajos de teclado */
+/* TABLAS */
 .modal__table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-}
-
-.modal__table th{
-    padding: 0.75rem 1rem;
-    text-align: left;
-    border: 1px solid var(--modal-table-border);
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+  font-size: 0.95rem;
 }
 
 .modal__table th {
-        background-color: var(--modal-table-th-bg);
-    font-weight: bold;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  border: 1px solid var(--modal-table-border);
+  background-color: var(--modal-table-th-bg);
+  font-weight: 600;
+  color: hsl(var(--tono), 15%, 25%);
 }
 
 .modal__table tr:nth-child(even) {
-        background-color: var(--modal-table-even-bg);
+  background-color: var(--modal-table-even-bg);
+}
+
+.modal__table td {
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--modal-table-border);
 }
 
 .modal__table td:first-child {
-    font-family: monospace;
-    font-weight: bold;
-        background-color: var(--modal-table-td-bg);
+  font-family: monospace;
+  font-weight: bold;
+  background-color: var(--modal-table-td-bg);
+  color: hsl(var(--tono), 15%, 25%);
 }
 
-/* Estilos responsivos */
-@media (max-width: 768px) {
-    .modal__content {
-        padding: 1.5rem;
-        max-width: 95%;
-    }
+/* RESPONSIVE */
+@media (max-width: 37.5rem) {
+  .modal__content {
+    padding: 1.5rem;
+    max-width: 95%;
+  }
 
-    .modal__title {
-        font-size: 1.5rem;
-    }
+  .modal__title {
+    font-size: 1.5rem;
+  }
 
-    .modal__section-title {
-        font-size: 1.1rem;
-    }
+  .modal__section-title {
+    font-size: 1.1rem;
+  }
 
-    .modal__table {
-        font-size: 0.9rem;
-    }
+  .modal__table {
+    font-size: 0.9rem;
+  }
 }

@@ -19,6 +19,12 @@
 </head>
 
 <body>
+  <!-- Botones flotantes ajenos al test -->
+  <div class="floating-buttons">
+    <button id="btnAyuda" class="floating-buttons__button">Ayuda</button>
+    <button id="btnTema" class="floating-buttons__button">Tema Oscuro</button>
+  </div>
+
   <main class="main">
     <h1 class="main__title">Test de Mecanografía</h1>
     <p class="main__instructions">Haz clic en "Comenzar Test" y escribe las palabras mostradas lo más rápido posible.
@@ -34,13 +40,6 @@
         <div class="config-container__group">
           <label for="tiempoMax" class="config-container__label">Tiempo máximo (segundos, opcional):</label>
           <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="60" />
-        </div>
-      </div>
-
-      <div class="config-container__row">
-        <div class="config-container__buttons">
-          <button id="btnAyuda" class="config-container__button">Ayuda</button>
-          <button id="btnTema" class="config-container__button">Tema Oscuro</button>
         </div>
       </div>
 
@@ -85,12 +84,12 @@
       <input type="text" id="entrada" class="test-container__input" autocomplete="off" placeholder="Escriba la palabra"
         disabled />
 
-      <!-- Añadir debajo de "Palabra de muestra" -->
+      <!-- En modo bilingüe: Añadir debajo de "Palabra de muestra" -->
       <p id="palabraTraduccion" class="test-container__info test-container__info--hidden">Traducción: <span
           id="traduccionCorrecta" class="test-container__span">-</span></p>
     </div>
 
-    <!-- Modal explicativo - reemplazar el contenido existente -->
+    <!-- Modal explicativo de "Ayuda" -->
     <div id="modalAyuda" class="modal">
       <div class="modal__content">
         <button id="cerrarModal" class="modal__close">&times;</button>

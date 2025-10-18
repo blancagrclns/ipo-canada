@@ -1,118 +1,170 @@
-/* Tema oscuro: se activa cuando se habilita este CSS y se agrega data-theme="dark" a <html> */
+/* VARIABLES TEMA OSCURO - Sobreescribe variables del tema claro */
 [data-theme="dark"] {
-  --color-fondo: hsl(0, 0%, 10%);
-  --color-texto: hsl(0, 0%, 90%);
-  --color-acento: hsl(211, 100%, 70%);
-  --color-acento-claro: hsl(211, 100%, 30%);
-  --color-borde: hsl(0, 0%, 30%);
-  --color-error: hsl(0, 75%, 70%);
-  --color-exito: hsl(120, 60%, 40%);
+  /* Ajuste de variables principales */
+  --tono: 210; /* Mantenemos el mismo tono base */
+  --color-fondo: hsl(var(--tono), 10%, 10%);
+  --color-panel: hsl(var(--tono), 10%, 15%);
+  --color-texto: hsl(0, 0%, 100%);
+  --color-texto-secundario: hsl(0, 0%, 85%);
+  --color-acento: hsl(var(--tono), 100%, 65%);
+  --color-acento-hover: hsl(var(--tono), 100%, 60%);
+  --color-borde: hsl(var(--tono), 10%, 35%);
+  --color-error: hsl(0, 70%, 60%);
+  --color-exito: hsl(140, 50%, 45%);
   
-  /* Colores neutros invertidos */
-  --color-gris-10: hsl(0, 0%, 18%);
-  --color-gris-20: hsl(0, 0%, 20%);
-  --color-gris-30: hsl(0, 0%, 25%);
-  --color-gris-40: hsl(0, 0%, 30%);
-  --color-gris-50: hsl(0, 0%, 40%);
-  --color-gris-60: hsl(0, 0%, 50%);
-  --color-gris-70: hsl(0, 0%, 60%);
-  --color-gris-80: hsl(0, 0%, 70%);
-  --color-gris-90: hsl(0, 0%, 80%);
-  
-  /* Colores de acento secundarios */
-  --color-alerta: hsl(50, 70%, 50%);
-  --color-alerta-claro: hsl(50, 30%, 20%);
-  --color-alerta-oscuro: hsl(50, 70%, 40%);
+  /* Variables específicas del tema oscuro */
+  --modal-bg: hsl(var(--tono), 10%, 15%);
+  --modal-shadow: hsla(0, 0%, 0%, 0.6);
+  --modal-close-bg: hsl(var(--tono), 10%, 25%);
+  --modal-close-bg-hover: hsl(var(--tono), 10%, 35%);
+  --modal-title-accent: hsl(var(--tono), 100%, 70%);
+  --modal-title-border: hsl(var(--tono), 20%, 40%);
+  --modal-section-title: hsl(var(--tono), 80%, 70%);
+  --modal-section-dot: hsl(var(--tono), 100%, 60%);
+  --modal-list-highlight-bg: hsl(50, 30%, 20%);
+  --modal-list-highlight-border: hsl(50, 80%, 50%);
+  --modal-table-th-bg: hsl(var(--tono), 15%, 25%);
+  --modal-table-even-bg: hsl(var(--tono), 15%, 20%);
+  --modal-table-td-bg: hsl(var(--tono), 20%, 22%);
 }
 
+/* ESTRUCTURA GENERAL - Transiciones suaves entre temas */
 [data-theme="dark"] body {
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  transition: background-color 0.3s, color 0.3s;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 [data-theme="dark"] .main {
-  background: hsl(0, 0%, 15%);
-  border-color: var(--color-borde);
-  box-shadow: 0 2px 10px rgba(255, 255, 255, 0.1);
-  transition: background-color 0.3s, border-color 0.3s;
+  background-color: var(--color-panel);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
 }
 
+/* TEXTOS Y TÍTULOS */
+[data-theme="dark"] .main__title {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .main__instructions {
+  color: var(--color-texto-secundario);
+}
+
+/* BOTONES */
+[data-theme="dark"] .config-container__button,
+[data-theme="dark"] .test-container__button,
+[data-theme="dark"] .floating-buttons__button {
+  background-color: var(--color-acento);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+}
+
+[data-theme="dark"] .config-container__button:hover,
+[data-theme="dark"] .test-container__button:hover,
+[data-theme="dark"] .floating-buttons__button:hover {
+  background-color: var(--color-acento-hover);
+}
+
+/* INPUTS Y CAMPOS */
 [data-theme="dark"] .config-container__input,
 [data-theme="dark"] .test-container__input {
-  background-color: var(--color-fondo);
+  background-color: hsl(var(--tono), 10%, 20%);
   color: var(--color-texto);
-  border-color: var(--color-borde);
-  transition: background-color 0.3s, color 0.3s, border-color 0.3s;
+  border: 1px solid var(--color-borde);
 }
 
-/* ===== ESTILOS PARA MODALES EN TEMA OSCURO ===== */
+[data-theme="dark"] .config-container__input:focus,
+[data-theme="dark"] .test-container__input:focus {
+  border-color: var(--color-acento);
+  box-shadow: 0 0 0 3px hsla(var(--tono), 100%, 65%, 0.25);
+}
 
-/* Ajuste del modal para tema oscuro */
+/* TEXTOS Y ELEMENTOS DESTACADOS */
+[data-theme="dark"] .config-container__label,
+[data-theme="dark"] .test-container__info {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .test-container__span {
+  color: var(--color-acento);
+}
+
+/* MODAL EN MODO OSCURO */
 [data-theme="dark"] .modal__content {
-  background-color: hsl(0, 0%, 15%);
-  color: hsl(0, 0%, 90%);
-  box-shadow: 0 5px 30px hsla(0, 0%, 0%, 0.5);
+  background-color: var(--modal-bg);
+  color: var(--color-texto);
+  box-shadow: 0 6px 25px var(--modal-shadow);
+  border: 1px solid var(--color-borde);
 }
 
 [data-theme="dark"] .modal__close {
-  background-color: hsl(0, 0%, 25%);
-  color: hsl(0, 0%, 90%);
+  background-color: var(--modal-close-bg);
+  color: var(--color-texto);
 }
 
 [data-theme="dark"] .modal__close:hover {
-  background-color: hsl(0, 0%, 30%);
+  background-color: var(--modal-close-bg-hover);
 }
 
 [data-theme="dark"] .modal__title {
-  border-bottom-color: hsl(211, 100%, 30%);
-}
-
-/* Corrección para el destacado */
-[data-theme="dark"] .modal__list-item--highlight {
-  background-color: hsl(50, 60%, 15%);
-  color: hsl(50, 100%, 80%);
-  border-left-color: hsl(50, 70%, 40%);
-}
-
-/* Correcciones para la tabla */
-[data-theme="dark"] .modal__table th,
-[data-theme="dark"] .modal__table td {
-  border-color: hsl(0, 0%, 30%);
-}
-
-[data-theme="dark"] .modal__table th {
-  background-color: hsl(211, 50%, 20%);
-}
-
-[data-theme="dark"] .modal__table tr:nth-child(even) {
-  background-color: hsl(0, 0%, 18%);
-}
-
-[data-theme="dark"] .modal__table td:first-child {
-  background-color: hsl(211, 20%, 25%);
+  color: var(--modal-title-accent);
+  border-bottom-color: var(--modal-title-border);
 }
 
 [data-theme="dark"] .modal__section-title {
-  color: hsl(211, 70%, 70%);
+  color: var(--modal-section-title);
 }
 
 [data-theme="dark"] .modal__section-title::before {
-  background-color: hsl(211, 100%, 60%);
+  background-color: var(--modal-section-dot);
 }
 
-/* Para asegurar que los enlaces dentro del modal sean visibles */
-[data-theme="dark"] .modal__content a {
-  color: hsl(211, 100%, 70%);
+[data-theme="dark"] .modal__list-item {
+  color: var(--color-texto-secundario);
 }
 
-[data-theme="dark"] .modal__content strong {
-  color: hsl(0, 0%, 100%);
-}
-
-/* Para la sección del modo bilingüe específicamente */
 [data-theme="dark"] .modal__list-item--highlight {
-  background-color: hsl(50, 30%, 20%);
-  border-left-color: hsl(50, 70%, 40%);
-  color: hsl(50, 70%, 70%);
+  background-color: var(--modal-list-highlight-bg);
+  color: hsl(50, 80%, 85%);
+  border-left-color: var(--modal-list-highlight-border);
+}
+
+/* TABLAS EN MODO OSCURO */
+[data-theme="dark"] .modal__table th,
+[data-theme="dark"] .modal__table td {
+  border-color: var(--color-borde);
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .modal__table th {
+  background-color: var(--modal-table-th-bg);
+}
+
+[data-theme="dark"] .modal__table tr:nth-child(even) {
+  background-color: var(--modal-table-even-bg);
+}
+
+[data-theme="dark"] .modal__table td:first-child {
+  background-color: var(--modal-table-td-bg);
+  color: var(--color-texto);
+}
+
+/* TRANSICIÓN GLOBAL */
+html[data-theme="dark"],
+body[data-theme="dark"] {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* BOTONES DESHABILITADOS */
+[data-theme="dark"] button:disabled,
+[data-theme="dark"] .test-container__button:disabled,
+[data-theme="dark"] .config-container__button:disabled {
+  background-color: hsl(var(--tono), 10%, 30%) !important;
+  color: hsl(0, 0%, 70%) !important;
+  border: 1px solid hsl(var(--tono), 10%, 35%);
+  cursor: not-allowed;
+  opacity: 1;
+  transform: none !important;
+  box-shadow: none !important;
 }
