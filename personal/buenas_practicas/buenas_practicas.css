@@ -1,0 +1,216 @@
+/* ==========================================================================
+   1. RESET MÍNIMO → CONSISTENCIA ENTRE NAVEGADORES (Introducción.pdf)
+   ==========================================================================
+   - box-sizing: border-box → el padding y border se incluyen en width/height.
+   - margin/padding a 0 → elimina estilos por defecto que varían entre navegadores.
+   - Aplica a todos los elementos y pseudo-elementos (con before y after).
+*/
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   2. VARIABLES CSS EN :root → DISEÑO CROMÁTICO CENTRALIZADO (Color&Fuentes&Espacio.pdf)
+   ==========================================================================
+   - Sistema HSL: más intuitivo que RGB para diseñar paletas.
+   - --tono: base (azul). --tono-complementario: H + 180° (naranja/ocre).
+   - Nombres semánticos: --color-primario, --color-fondo, etc.
+   - Estas variables son accesibles desde JavaScript mediante:
+        getComputedStyle(document.documentElement).getPropertyValue('--color-primario')
+*/
+:root {
+  --tono: 210;
+  --tono-complementario: calc(var(--tono) + 180);
+
+  --color-fondo: hsl(var(--tono), 20%, 97%);
+  --color-primario: hsl(var(--tono), 80%, 50%);
+  --color-primario-claro: hsl(var(--tono), 80%, 95%);
+  --color-secundario: hsl(var(--tono-complementario), 70%, 45%);
+  --color-texto: hsl(var(--tono), 25%, 20%);
+  --color-borde: hsl(var(--tono), 20%, 80%);
+
+  /* 
+    Tipografía escalable con rem (Color&Fuentes&Espacio.pdf):
+    - 1rem = 16px por defecto, pero respeta las preferencias del usuario.
+    - --fuente-mono para datos numéricos (mejor alineación visual).
+  */
+  --fuente-principal: "Helvetica Neue", Arial, sans-serif;
+  --fuente-mono: "Courier New", monospace;
+}
+
+/* ==========================================================================
+   3. ESTILOS BASE DEL BODY → HERENCIA Y COMPOSICIÓN (Introducción.pdf)
+   ==========================================================================
+   - min-height: 100vh → asegura que el body ocupe toda la altura de la ventana.
+   - display: flex + flex-direction: column → layout vertical controlado.
+   - gap: 2rem → espaciado coherente entre header, main y footer (Gestalt: proximidad).
+   - flex: 1 en .contenedor → empuja el footer al fondo incluso si el contenido es corto.
+*/
+body {
+  font-family: var(--fuente-principal);
+  font-size: 1rem;
+  line-height: 1.6; /* mejora legibilidad (Color&Fuentes&Espacio.pdf) */
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  padding: 2rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+/* ==========================================================================
+   4. CONTENEDOR PRINCIPAL → FLEXBOX EN NODOS INTERMEDIOS (Introducción.pdf)
+   ==========================================================================
+   - Se evita el flujo normal (block/inline) en contenedores estructurales.
+   - Solo se usa flujo normal en "hojas" del árbol DOM (texto, imágenes, etc.).
+   - max-width + margin: 0 auto → centrado horizontal en pantallas anchas.
+*/
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  flex: 1;
+  max-width: 650px;
+  margin: 0 auto;
+}
+
+.cabecera__titulo {
+  text-align: center;
+  font-size: 1.8rem;
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   5. COMPONENTE: TARJETA (BEM + PRINCIPIOS DE COMPOSICIÓN) (Introducción.pdf)
+   ==========================================================================
+   - Bloque: .tarjeta
+   - Elementos: .tarjeta__titulo, .tarjeta__dato, .tarjeta__acciones
+   - Modificadores: .tarjeta--tempo, .tarjeta--contador, .tarjeta--drag
+   - font-variant-numeric: tabular-nums → números de ancho fijo (alineación visual en contadores).
+*/
+.tarjeta {
+  background-color: var(--color-primario-claro);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.tarjeta__titulo {
+  font-size: 1.35rem;
+  color: var(--color-primario);
+  margin: 0;
+}
+
+.tarjeta__dato {
+  font-family: var(--fuente-mono);
+  font-size: 1.1rem;
+  font-variant-numeric: tabular-nums; /* números alineados verticalmente */
+}
+
+/* ==========================================================================
+   6. BOTONES → ACCESIBILIDAD Y ESTADOS VISUALES (Introducción.pdf)
+   ==========================================================================
+   - Tamaño mínimo táctil: padding asegura ≥ 44×44 px.
+   - Modificadores BEM: --primario / --secundario.
+   - Transiciones suaves en hover/focus.
+   - No se usan !important ni estilos inline.
+*/
+.btn {
+  padding: 0.65rem 1.3rem;
+  border: 2px solid var(--color-primario);
+  background-color: transparent;
+  color: var(--color-primario);
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+.btn:hover,
+.btn:focus {
+  background-color: var(--color-primario);
+  color: white;
+  outline: none;
+}
+
+.btn--secundario {
+  border-color: var(--color-secundario);
+  color: var(--color-secundario);
+}
+
+.btn--secundario:hover,
+.btn--secundario:focus {
+  background-color: var(--color-secundario);
+  color: white;
+}
+
+/* ==========================================================================
+   7. DRAG & DROP → ESTADOS VISUALES Y ACCESIBILIDAD (Introducción.pdf)
+   ==========================================================================
+   - .drop-zone--active → feedback visual al arrastrar sobre la zona.
+   - .drag-item--active → indica que el elemento está siendo arrastrado.
+   - user-select: none → evita selección de texto durante el arrastre.
+   - cursor: grab/grabbing → feedback táctil intuitivo.
+*/
+.drop-zone {
+  min-height: 5.5rem;
+  border: 2px dashed var(--color-borde);
+  border-radius: 0.6rem;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  transition: border-color 0.25s, background-color 0.25s;
+}
+
+.drop-zone--active {
+  border-color: var(--color-secundario);
+  background-color: hsl(var(--tono-complementario), 20%, 96%);
+}
+
+.drag-item {
+  width: 72px;
+  height: 72px;
+  background-color: var(--color-secundario);
+  color: white;
+  border-radius: 0.6rem;
+  display: grid;
+  place-content: center;
+  cursor: grab;
+  user-select: none;
+  margin-top: 1rem;
+  transition: opacity 0.2s;
+}
+
+.drag-item--active {
+  opacity: 0.6;
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   8. FOOTER → FLUJO NORMAL EN HOJA DEL ÁRBOL DOM (Introducción.pdf)
+   ========================================================================== */
+.pie {
+  text-align: center;
+  padding: 1.2rem 0;
+  border-top: 1px solid var(--color-borde);
+  font-size: 0.9rem;
+  color: hsl(var(--tono), 20%, 45%);
+}
+
+/* ==========================================================================
+   9. RESPONSIVE → DISEÑO FLEXIBLE SIN MEDIA QUERIES (Color&Fuentes&Espacio.pdf)
+   ==========================================================================
+   - Flexbox + gap + unidades relativas → adaptación automática.
+   - Si se necesitan breakpoints, se usaría clamp(), min(), max().
+   - No se usan px para layout (solo para detalles como border-width).
+*/

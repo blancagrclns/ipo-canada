@@ -1,164 +1,178 @@
-/* Reset y box-sizing */
+/* RESET MÍNIMO - Consistencia entre navegadores */
 *,
 *::before,
 *::after {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-/* Variables CSS */
+/* VARIABLES CSS - Diseño cromático y valores reutilizables */
 :root {
-    --color-fondo: #eaf6f0;
-    --color-principal-cabecerapie: #3a5d3cd4;
-    --color-principal-ejercicios: #3a5d3c;
-    --color-principal-texto: #fff;
-    --fuente-principal: 'Arial', sans-serif;
-    --radio-borde: 10px;
-    --transicion: 0.2s;
+  --tono: 120; /* Verde base */
+  --tono-complementario: calc(var(--tono) + 180);
+
+  --color-fondo: hsl(var(--tono), 40%, 96%);
+  --color-principal-cabecerapie: hsla(123, 23%, 30%, 0.83); 
+  --color-principal-ejercicios: hsl(var(--tono), 30%, 25%);
+  --color-principal-texto: hsl(0, 0%, 100%);
+  --color-secundario: hsl(var(--tono), 40%, 85%);
+  --color-hover: hsl(var(--tono), 20%, 20%);
+  --color-borde: hsl(var(--tono), 20%, 80%);
+
+  --fuente-principal: 'Arial', sans-serif;
+  --radio-borde: 0.625rem;
+  --transicion: 0.2s;
+  --espaciado: 1rem;
 }
 
-/* Estructura principal */
+/* BODY - Configuración general y layout base */
 body {
-    font-family: var(--fuente-principal);
-    background: var(--color-fondo);
-    min-height: 100vh;
-    color: #2e4630;
+  font-family: var(--fuente-principal);
+  background: var(--color-fondo);
+  height: 100vh;
+  color: hsl(var(--tono), 30%, 20%);
+  display: flex;
+  flex-direction: column;
 }
 
-.contenedor-ipo {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-}
-
-/* Cabecera */
+/* CABECERA - Estilo y estructura del header */
 .cabecera-ipo {
-    background-color: var(--color-principal-cabecerapie);
-    color: var(--color-principal-texto);
-    padding: 0.3rem;
+  background-color: var(--color-principal-cabecerapie);
+  color: var(--color-principal-texto);
+  padding: 0.1875rem;
 }
 
-.titulo {
-    text-align: center;
-    text-transform: uppercase;
-    font-weight: bold;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
+.cabecera-ipo__titulo {
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: bold;
+  font-size: 0.9rem;
+  letter-spacing: 0.0625rem;
 }
-.titulo__link {
+
+.cabecera-ipo__link {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.25rem;
   color: inherit;
   text-decoration: none;
 }
 
-.titulo__link:hover,
-.titulo__link:focus {
+.cabecera-ipo__link:hover,
+.cabecera-ipo__link:focus {
   text-decoration: underline;
 }
 
-
-/* Área principal con fondo natural */
-.ejercicios-ipo {
-    flex: 1;
-    padding: 2rem;
-    display: flex;
-    align-items: stretch;
-    justify-content: center;
-    position: relative;
-
-    background: linear-gradient(rgba(189, 220, 193, 0.35), rgba(104, 171, 103, 0.18)),
-        url('canada.jpeg') center center/cover no-repeat;
+.cabecera-ipo__imagen {
+  height: 1.5em;
+  vertical-align: middle;
 }
 
-/* Lista de ejercicios */
+/* CONTENEDOR PRINCIPAL - Estructura flexible central */
+.contenedor-ipo {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+/* EJERCICIOS - Contenedor con imagen de fondo */
+.ejercicios-ipo {
+  flex: 1;
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(hsl(var(--tono), 40%, 85%, 0.35), hsl(var(--tono), 50%, 60%, 0.18)),
+      url('images/canada.jpeg') center center / cover no-repeat;
+}
+
+/* LISTA DE EJERCICIOS - Elementos navegables */
 .lista-ejercicios {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 1.2rem;
-    width: 100%;
-    max-width: 400px;
-    margin: auto;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 25rem;
+  margin: auto;
 }
 
 .lista-ejercicios__item a {
-    display: block;
-    text-align: center;
-    text-decoration: none;
-    text-transform: uppercase;
-    color: var(--color-principal-ejercicios);
-    font-weight: bold;
-    background: rgba(255, 255, 255, 0.85);
-    padding: 0.6rem 1rem;
-    border-radius: var(--radio-borde);
-    transition: background var(--transicion), color var(--transicion);
-    font-size: 1rem;
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: var(--color-principal-ejercicios);
+  font-weight: bold;
+  background: hsl(0, 0%, 100%, 0.85);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radio-borde);
+  transition: background var(--transicion), color var(--transicion);
+  font-size: 1rem;
 }
 
 .lista-ejercicios__item a:hover,
 .lista-ejercicios__item a:focus {
-    text-decoration: underline;
-    background: #d6eadd;
-    color: #1b3b2a;
-    outline: none;
+  text-decoration: underline;
+  background: var(--color-secundario);
+  color: var(--color-hover);
+  outline: none;
 }
 
+/* PIE - Footer con logos y enlaces */
 .pie-ipo {
-    background-color: var(--color-principal-cabecerapie);
-    color: var(--color-principal-texto);
-    padding: 0.5rem 1rem;
-    position: relative; /* para posicionar el GitHub */
-    text-align: center; /* centra el logo de la ETSII */
-    font-size: 0.95rem;
+  background-color: var(--color-principal-cabecerapie);
+  color: var(--color-principal-texto);
+  padding: 0.5rem 1rem;
+  position: relative;
+  text-align: center;
+  font-size: 0.95rem;
 }
 
 .pie-ipo__centro {
-    display: inline-block;
+  display: inline-block;
 }
 
 .pie-ipo__logo {
-    height: 2em;
-    max-width: 100%;
-    vertical-align: middle;
+  height: 2em;
+  max-width: 100%;
+  vertical-align: middle;
 }
 
-/* Posiciona el logo de GitHub en la esquina derecha */
 .pie-ipo__github {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: inline-flex;
-    align-items: center;
-    text-decoration: none;
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
 }
 
 .pie-ipo__logo--github {
-    height: 1.8em; /* puedes ajustar el tamaño si quieres */
-    width: auto;
+  height: 1.8em;
+  width: auto;
 }
 
 .pie-ipo__github:hover img,
 .pie-ipo__github:focus img {
-    opacity: 0.8; /* pequeño efecto al pasar el ratón */
-    transition: opacity 0.2s;
+  opacity: 0.8;
+  transition: opacity var(--transicion);
 }
 
+/* RESPONSIVE - Ajustes para pantallas pequeñas */
+@media (max-width: 37.5rem) {
+  .ejercicios-ipo {
+    padding: 1rem;
+  }
 
-/* Responsive */
-@media (max-width: 600px) {
-    .ejercicios-ipo {
-        padding: 1rem;
-    }
+  .lista-ejercicios {
+    max-width: 100%;
+  }
 
-    .lista-ejercicios {
-        max-width: 100%;
-    }
-
-    .titulo {
-        font-size: 1rem;
-    }
+  .cabecera-ipo__titulo {
+    font-size: 1rem;
+  }
 }

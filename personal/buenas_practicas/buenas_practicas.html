@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!-- 
+  Buena práctica fundamental (Introducción.pdf):
+  - Declarar el idioma con lang="es" mejora la accesibilidad (lectores de pantalla),
+    el SEO (motores de búsqueda) y el comportamiento de ciertas APIs (como speechSynthesis).
+-->
+<html lang="es">
+<head>
+  <!-- 
+    Codificación de caracteres UTF-8 (Introducción.pdf):
+    - Debe ir lo más arriba posible, antes de cualquier texto renderizable.
+    - Evita errores como "Ã±" en lugar de "ñ" o "Â¿" en lugar de "¿".
+  -->
+  <meta charset="UTF-8">
+
+  <!-- 
+    Meta viewport para diseño responsivo (Introducción.pdf, Color&Fuentes&Espacio.pdf):
+    - width=device-width → el ancho del layout coincide con el ancho lógico del dispositivo.
+    - initial-scale=1.0 → evita el zoom automático en móviles.
+  -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Temporizador, Contador y Drag & Drop — Buenas Prácticas</title>
+
+  <!-- 
+    Carga de CSS antes que JS (Introducción.pdf):
+    - Evita el "flash of unstyled content" (FOUC).
+    - El navegador puede aplicar estilos mientras parsea el HTML.
+  -->
+  <link rel="stylesheet" href="styles.css">
+
+  <!-- 
+    Uso de 'defer' en scripts (Introducción.pdf):
+    - El script se descarga en paralelo al parseo del HTML.
+    - Se ejecuta SOLO después de que el DOM esté completamente construido.
+    - Permite colocar <script> en <head> sin bloquear el renderizado.
+    - Alternativa moderna a poner <script> al final de <body>.
+  -->
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <!-- 
+    Estructura semántica completa (Introducción.pdf):
+    - <header>: contenido introductorio o de navegación.
+    - <main>: contenido principal único de la página.
+    - <footer>: información complementaria (autoría, enlaces, etc.).
+    - Esto mejora la accesibilidad y la legibilidad del código.
+  -->
+  <header class="cabecera">
+    <h1 class="cabecera__titulo">Demo de Buenas Prácticas Web</h1>
+  </header>
+
+  <main class="contenedor">
+    <!-- 
+      Componente 1: Temporizador con intervalos (Intervalos.pdf)
+      - Usa data-* para comunicación con JS (README.md sobre data-*).
+      - Estructura BEM: .tarjeta (bloque), .tarjeta__titulo (elemento), .tarjeta--tempo (modificador).
+    -->
+    <section class="tarjeta tarjeta--tempo">
+      <h2 class="tarjeta__titulo">Temporizador Automático</h2>
+      <!-- 
+        data-tiempo → puente limpio HTML ↔ JS.
+        El valor se actualiza desde JavaScript sin tocar clases ni estilos inline.
+      -->
+      <p class="tarjeta__dato">Tiempo transcurrido: <span data-tiempo>0</span> segundos</p>
+      <div class="tarjeta__acciones">
+        <!-- 
+          data-accion → identifica la intención del botón sin depender de su texto o clase.
+          Permite reutilizar lógica si se añaden más controles en el futuro.
+        -->
+        <button class="btn btn--primario" data-accion="iniciar">Iniciar</button>
+        <button class="btn btn--secundario" data-accion="detener">Detener</button>
+      </div>
+    </section>
+
+    <!-- 
+      Componente 2: Contador manual
+      - Similar al temporizador, pero sin intervalos.
+      - Muestra separación clara entre estado y presentación.
+    -->
+    <section class="tarjeta tarjeta--contador">
+      <h2 class="tarjeta__titulo">Contador Manual</h2>
+      <p class="tarjeta__dato">Valor actual: <span data-cuenta>0</span></p>
+      <button class="btn btn--primario" data-accion="incrementar">Incrementar</button>
+    </section>
+
+    <!-- 
+      Componente 3: Drag & Drop nativo (Introducción.pdf, Web APIs)
+      - draggable="true" es obligatorio en el elemento fuente.
+      - aria-label mejora accesibilidad para usuarios de lectores de pantalla.
+      - data-drop y data-drag permiten selección robusta en JS.
+    -->
+    <section class="tarjeta tarjeta--drag">
+      <h2 class="tarjeta__titulo">Ejemplo de Arrastrar y Soltar</h2>
+      <div 
+        class="drop-zone" 
+        data-drop 
+        aria-label="Zona para soltar elementos"
+      >
+        Suelta aquí el cuadrado
+      </div>
+      <div 
+        class="drag-item" 
+        data-drag 
+        draggable="true"
+        aria-grabbed="false"
+      >
+        Arrástrame
+      </div>
+    </section>
+  </main>
+
+  <!-- 
+    Footer semántico (Introducción.pdf):
+    - Contenido secundario pero útil.
+    - Uso de <small> para información legal o de autoría.
+  -->
+  <footer class="pie">
+    <small class="pie__texto">
+      Creado con <span aria-label="corazón">❤</span> siguiendo las buenas prácticas de
+      <cite>Introducción.pdf</cite>, <cite>Intervalos.pdf</cite> y <cite>Color&Fuentes&Espacio.pdf</cite>
+    </small>
+  </footer>
+</body>
+</html>
