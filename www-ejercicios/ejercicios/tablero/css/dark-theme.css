@@ -1,0 +1,123 @@
+/* ==========================================================================
+   TEMA OSCURO - Variante cromática completa de la interfaz
+   ==========================================================================
+   - Sobreescribe selectivamente variables y propiedades del tema claro
+   - Mantiene coherencia visual y buena legibilidad
+   - Reduce fatiga visual en condiciones de baja iluminación
+*/
+
+/* ==========================================================================
+   VARIABLES TEMA OSCURO
+   - Redefine colores base manteniendo tonalidades armónicas
+   - Ajusta contraste para asegurar legibilidad
+   ========================================================================== */
+[data-theme="dark"] {
+  /* Paleta principal ajustada para modo oscuro */
+  --color-fondo: hsl(var(--tono-principal), 15%, 10%);
+  --color-texto: hsl(var(--tono-principal), 10%, 90%);
+  --color-primario: hsl(var(--tono-principal), var(--saturacion-principal), 55%);
+  --color-primario-claro: hsl(var(--tono-principal), 30%, 25%);
+  --color-primario-oscuro: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
+  --color-complementario: hsl(var(--tono-complementario), 70%, 55%);
+  --color-exito: hsl(120, 70%, 45%);
+  --color-borde: hsl(var(--tono-principal), 15%, 30%);
+  
+  /* Variables específicas para componentes en tema oscuro */
+  --tablero-bg: hsl(var(--tono-principal), 15%, 15%);
+  --ficha-sombra: rgba(0, 0, 0, 0.5);
+  --modal-bg: hsl(var(--tono-principal), 15%, 12%);
+  --modal-sombra: rgba(0, 0, 0, 0.6);
+  --modal-title-color: var(--color-primario);
+  
+  /* Variables para sombras adaptadas a fondo oscuro */
+  --sombra-suave: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
+  --sombra-media: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
+  --sombra-fuerte: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+}
+
+/* ==========================================================================
+   ESTRUCTURA GENERAL
+   - Ajusta fondo y colores base para toda la interfaz
+   ========================================================================== */
+[data-theme="dark"] body {
+  background: linear-gradient(
+    135deg,
+    hsl(var(--tono-principal), 20%, 8%) 0%,
+    hsl(var(--tono-principal), 15%, 12%) 100%
+  );
+  background-size: 100% 100%;
+  color: var(--color-texto);
+}
+
+/* ==========================================================================
+   CABECERA
+   - Acentúa título y delimita secciones con bordes sutiles
+   ========================================================================== */
+[data-theme="dark"] .cabecera {
+  border-bottom-color: var(--color-borde);
+}
+
+[data-theme="dark"] .cabecera__titulo {
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   CONTROLES
+   - Ajusta apariencia del panel de configuración y sus elementos
+   ========================================================================== */
+[data-theme="dark"] .controles {
+  background-color: var(--color-primario-claro);
+  border: 0.0625rem solid var(--color-borde);
+}
+
+[data-theme="dark"] .controles__selector,
+[data-theme="dark"] .controles__numero {
+  background-color: hsl(var(--tono-principal), 15%, 20%);
+  border-color: var(--color-borde);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .controles__boton {
+  background-color: var(--color-primario);
+}
+
+[data-theme="dark"] .controles__boton:hover {
+  background-color: var(--color-primario-oscuro);
+}
+
+/* ==========================================================================
+   ESTADO DEL JUEGO
+   - Panel de información con fondo adaptado al tema oscuro
+   ========================================================================== */
+[data-theme="dark"] .estado-juego {
+  background-color: var(--color-primario-claro);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   TABLERO
+   - Área principal de juego con sombras adaptadas a fondo oscuro
+   ========================================================================== */
+[data-theme="dark"] .tablero {
+  background-color: var(--tablero-bg);
+  box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .ficha:hover {
+  box-shadow: 0 0.375rem 0.75rem var(--ficha-sombra);
+}
+
+/* ==========================================================================
+   BOTONES FLOTANTES Y DE CONTROL
+   - Ajusta colores y efectos visuales para mejor visibilidad
+   ========================================================================== */
+[data-theme="dark"] .botones-control__boton,
+[data-theme="dark"] .botones-flotantes__boton {
+  background-color: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
+  color: white;
+}
+
+[data-theme="dark"] .botones-control__boton:hover,
+[data-theme="dark"] .botones-flotantes__boton:hover {
+  background-color: hsl(var(--tono-principal), var(--saturacion-principal), 50%);
+}

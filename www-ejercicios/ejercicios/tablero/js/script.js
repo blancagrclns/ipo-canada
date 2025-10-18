@@ -1,3 +1,8 @@
+/* ==========================================================================
+   PROYECTO TABLERO - Script principal
+   ==========================================================================
+*/
+
 // Espacio de nombres global para la aplicación
 const TABLERO = {
   // Estado del juego
@@ -11,6 +16,7 @@ const TABLERO = {
     tiempo: 0,
     timerInterval: null,
     juegoIniciado: false,
+    juegoPausado: false,
     fichaArrastrada: null,
     fichaDestino: null,
     colores: []
@@ -20,9 +26,19 @@ const TABLERO = {
   elementos: {}
 };
 
+/* ==========================================================================
+   INICIALIZACIÓN - Punto de entrada de la aplicación
+   ========================================================================== */
+
 // Inicialización cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', inicializar);
 
+/**
+ * Inicializa la aplicación
+ * - Cachea elementos DOM
+ * - Configura event listeners
+ * - Prepara la interfaz inicial
+ */
 function inicializar() {
   // Cachear elementos del DOM
   TABLERO.elementos = {
@@ -31,24 +47,41 @@ function inicializar() {
     tamañoFicha: document.getElementById('tamañoFicha'),
     formaFicha: document.getElementById('formaFicha'),
     btnInicio: document.getElementById('inicio'),
+    btnPausa: document.getElementById('btnPausa'),
+    btnDetener: document.getElementById('btnDetener'),
     contadorMovimientos: document.getElementById('contadorMovimientos'),
     temporizador: document.getElementById('temporizador'),
     modalVictoria: document.getElementById('modal-victoria'),
     modalMovimientos: document.getElementById('modal-movimientos'),
     modalTiempo: document.getElementById('modal-tiempo'),
     btnCerrarModal: document.getElementById('cerrar-modal'),
-    btnAyuda: document.getElementById('ayuda')
+    btnSoloCerrarModal: document.getElementById('solo-cerrar-modal'),
+    btnAyuda: document.getElementById('btnAyuda')
   };
 
   // Configurar event listeners
   TABLERO.elementos.btnInicio.addEventListener('click', iniciarJuego);
-  TABLERO.elementos.btnCerrarModal.addEventListener('click', cerrarModal);
-  TABLERO.elementos.btnAyuda.addEventListener('click', mostrarAyuda);
+  TABLERO.elementos.btnPausa.addEventListener('click', togglePausaJuego);
+  TABLERO.elementos.btnDetener.addEventListener('click', detenerJuego);
+  TABLERO.elementos.btnCerrarModal.addEventListener('click', TABLERO.reiniciarJuego); // Usa función del módulo modales.js
+  TABLERO.elementos.btnSoloCerrarModal.addEventListener('click', TABLERO.soloCerrarModal); // Usa función del módulo modales.js
+  TABLERO.elementos.btnAyuda.addEventListener('click', TABLERO.mostrarAyuda); // Usa función del módulo modales.js
   
   // Inicialización inicial
   actualizarUI();
 }
 
+/* ==========================================================================
+   GESTIÓN DEL JUEGO - Control del ciclo de vida del juego
+   ========================================================================== */
+
+/**
+ * Inicia un nuevo juego
+ * - Resetea el estado
+ * - Lee la configuración seleccionada
+ * - Genera el tablero
+ * - Inicia el temporizador
+ */
 function iniciarJuego() {
   // Detener temporizador si existe
   if (TABLERO.estado.timerInterval) {
@@ -59,6 +92,7 @@ function iniciarJuego() {
   TABLERO.estado.movimientos = 0;
   TABLERO.estado.tiempo = 0;
   TABLERO.estado.juegoIniciado = true;
+  TABLERO.estado.juegoPausado = false;
   
   // Leer configuración actual
   TABLERO.config.tamañoTablero = parseInt(TABLERO.elementos.tamañoTablero.value, 10);
@@ -74,6 +108,11 @@ function iniciarJuego() {
   // Actualizar UI
   actualizarUI();
   
+  // Activar botones de control
+  TABLERO.elementos.btnPausa.disabled = false;
+  TABLERO.elementos.btnPausa.textContent = 'Pausar';
+  TABLERO.elementos.btnDetener.disabled = false;
+  
   // Generar tablero
   generarTablero();
   
@@ -81,6 +120,83 @@ function iniciarJuego() {
   iniciarTemporizador();
 }
 
+/**
+ * Alterna entre pausar y reanudar el juego
+ */
+function togglePausaJuego() {
+  if (!TABLERO.estado.juegoIniciado) return;
+  
+  if (TABLERO.estado.juegoPausado) {
+    // Reanudar juego
+    TABLERO.estado.juegoPausado = false;
+    TABLERO.elementos.btnPausa.textContent = 'Pausar';
+    iniciarTemporizador();
+    
+    // Habilitar arrastre de fichas
+    const fichas = document.querySelectorAll('[data-ficha]');
+    fichas.forEach(ficha => {
+      ficha.draggable = true;
+    });
+  } else {
+    // Pausar juego
+    TABLERO.estado.juegoPausado = true;
+    TABLERO.elementos.btnPausa.textContent = 'Reanudar';
+    clearInterval(TABLERO.estado.timerInterval);
+    TABLERO.estado.timerInterval = null;
+    
+    // Deshabilitar arrastre de fichas
+    const fichas = document.querySelectorAll('[data-ficha]');
+    fichas.forEach(ficha => {
+      ficha.draggable = false;
+    });
+  }
+}
+
+/**
+ * Detiene el juego actual y muestra el modal de juego detenido
+ * Diferente al modal de victoria que se muestra al completar el tablero
+ */
+function detenerJuego() {
+  if (!TABLERO.estado.juegoIniciado) return;
+  
+  // Detener temporizador
+  clearInterval(TABLERO.estado.timerInterval);
+  TABLERO.estado.timerInterval = null;
+  TABLERO.estado.juegoIniciado = false;
+  
+  // Deshabilitar botones de control
+  TABLERO.elementos.btnPausa.disabled = true;
+  TABLERO.elementos.btnDetener.disabled = true;
+  
+  // Mostrar modal de juego detenido (no el de victoria)
+  TABLERO.mostrarModalDetenido();
+}
+
+/**
+ * Finaliza el juego cuando se completa el tablero
+ * Este es el modal de victoria, diferente al de detener juego
+ */
+function finalizarJuego() {
+  // Detener temporizador
+  clearInterval(TABLERO.estado.timerInterval);
+  TABLERO.estado.timerInterval = null;
+  TABLERO.estado.juegoIniciado = false;
+  
+  // Deshabilitar botones de control
+  TABLERO.elementos.btnPausa.disabled = true;
+  TABLERO.elementos.btnDetener.disabled = true;
+  
+  // Mostrar modal de victoria (no el de juego detenido)
+  TABLERO.mostrarModalVictoria();
+}
+
+/* ==========================================================================
+   GENERACIÓN DEL TABLERO - Creación dinámica de fichas y colores
+   ========================================================================== */
+
+/**
+ * Genera el tablero de juego con fichas aleatorias
+ */
 function generarTablero() {
   // Limpiar tablero existente
   TABLERO.elementos.tablero.innerHTML = '';
@@ -145,6 +261,9 @@ function generarTablero() {
   });
 }
 
+/**
+ * Genera los colores para cada fila del tablero
+ */
 function generarColores() {
   const n = TABLERO.config.tamañoTablero;
   TABLERO.estado.colores = [];
@@ -161,9 +280,16 @@ function generarColores() {
   }
 }
 
-// Funciones para el Drag & Drop
+/* ==========================================================================
+   DRAG & DROP - Interacción para mover fichas con API nativa
+   ========================================================================== */
+
+/**
+ * Inicia el arrastre de una ficha
+ * @param {DragEvent} e - Evento de arrastre
+ */
 function iniciarArrastre(e) {
-  if (!TABLERO.estado.juegoIniciado) return;
+  if (!TABLERO.estado.juegoIniciado || TABLERO.estado.juegoPausado) return;
   
   TABLERO.estado.fichaArrastrada = this;
   this.classList.add('ficha--arrastrando');
@@ -173,8 +299,11 @@ function iniciarArrastre(e) {
   e.dataTransfer.effectAllowed = 'move';
 }
 
+/**
+ * Finaliza el arrastre de una ficha
+ */
 function finalizarArrastre() {
-  if (!TABLERO.estado.juegoIniciado) return;
+  if (!TABLERO.estado.juegoIniciado || TABLERO.estado.juegoPausado) return;
   
   this.classList.remove('ficha--arrastrando');
   TABLERO.estado.fichaArrastrada = null;
@@ -184,16 +313,23 @@ function finalizarArrastre() {
   fichasDestino.forEach(f => f.classList.remove('ficha--destino'));
 }
 
+/**
+ * Permite soltar una ficha en este elemento
+ * @param {DragEvent} e - Evento de arrastre
+ */
 function permitirSoltar(e) {
-  if (!TABLERO.estado.juegoIniciado || this === TABLERO.estado.fichaArrastrada) return;
+  if (!TABLERO.estado.juegoIniciado || TABLERO.estado.juegoPausado || this === TABLERO.estado.fichaArrastrada) return;
   
   e.preventDefault(); // Necesario para permitir el drop
   this.classList.add('ficha--destino');
   TABLERO.estado.fichaDestino = this;
 }
 
+/**
+ * Cancela el efecto visual de "ficha destino" cuando sale del área
+ */
 function cancelarSoltar() {
-  if (!TABLERO.estado.juegoIniciado) return;
+  if (!TABLERO.estado.juegoIniciado || TABLERO.estado.juegoPausado) return;
   
   this.classList.remove('ficha--destino');
   if (TABLERO.estado.fichaDestino === this) {
@@ -201,8 +337,12 @@ function cancelarSoltar() {
   }
 }
 
+/**
+ * Gestiona el evento de soltar una ficha arrastrada
+ * @param {DragEvent} e - Evento de soltar
+ */
 function soltarFicha(e) {
-  if (!TABLERO.estado.juegoIniciado || !TABLERO.estado.fichaArrastrada) return;
+  if (!TABLERO.estado.juegoIniciado || TABLERO.estado.juegoPausado || !TABLERO.estado.fichaArrastrada) return;
   
   e.preventDefault();
   this.classList.remove('ficha--destino');
@@ -220,6 +360,11 @@ function soltarFicha(e) {
   }
 }
 
+/**
+ * Intercambia las propiedades entre dos fichas
+ * @param {HTMLElement} ficha1 - Primera ficha
+ * @param {HTMLElement} ficha2 - Segunda ficha
+ */
 function intercambiarFichas(ficha1, ficha2) {
   // Guardar valores originales
   const color1 = ficha1.dataset.color;
@@ -234,6 +379,10 @@ function intercambiarFichas(ficha1, ficha2) {
   ficha2.style.backgroundColor = bg1;
 }
 
+/**
+ * Verifica si se ha completado el tablero
+ * @returns {boolean} true si todas las filas tienen fichas del mismo color
+ */
 function verificarVictoria() {
   const n = TABLERO.config.tamañoTablero;
   const fichas = TABLERO.elementos.tablero.querySelectorAll('.ficha');
@@ -258,38 +407,18 @@ function verificarVictoria() {
   return true;
 }
 
-function finalizarJuego() {
-  // Detener temporizador
-  clearInterval(TABLERO.estado.timerInterval);
-  TABLERO.estado.timerInterval = null;
-  TABLERO.estado.juegoIniciado = false;
-  
-  // Actualizar información del modal
-  TABLERO.elementos.modalMovimientos.textContent = TABLERO.estado.movimientos;
-  TABLERO.elementos.modalTiempo.textContent = formatearTiempo(TABLERO.estado.tiempo);
-  
-  // Mostrar modal de victoria
-  TABLERO.elementos.modalVictoria.showModal();
-}
+/* ==========================================================================
+   TEMPORIZADOR - Gestión del tiempo de juego
+   ========================================================================== */
 
-function cerrarModal() {
-  TABLERO.elementos.modalVictoria.close();
-  // Reiniciar juego automáticamente
-  iniciarJuego();
-}
-
-function mostrarAyuda() {
-  alert("Objetivo: Intercambia las fichas mediante arrastre para conseguir que cada fila contenga fichas del mismo color.\n\n" +
-        "1. Configura el tamaño del tablero y las fichas\n" +
-        "2. Pulsa 'Comenzar Juego' para iniciar\n" +
-        "3. Arrastra y suelta para intercambiar fichas\n" +
-        "4. Completa el tablero con el menor número de movimientos posible");
-}
-
-// Funciones del temporizador
+/**
+ * Inicia el temporizador del juego
+ */
 function iniciarTemporizador() {
-  TABLERO.estado.tiempo = 0;
-  actualizarTemporizador();
+  // Limpiar temporizador existente
+  if (TABLERO.estado.timerInterval) {
+    clearInterval(TABLERO.estado.timerInterval);
+  }
   
   TABLERO.estado.timerInterval = setInterval(() => {
     TABLERO.estado.tiempo++;
@@ -297,22 +426,39 @@ function iniciarTemporizador() {
   }, 1000);
 }
 
+/**
+ * Actualiza la visualización del temporizador
+ */
 function actualizarTemporizador() {
   TABLERO.elementos.temporizador.textContent = formatearTiempo(TABLERO.estado.tiempo);
 }
 
+/**
+ * Convierte segundos a formato mm:ss
+ * @param {number} segundos - Tiempo en segundos
+ * @returns {string} Tiempo formateado como "mm:ss"
+ */
 function formatearTiempo(segundos) {
   const mins = Math.floor(segundos / 60).toString().padStart(2, '0');
   const segs = (segundos % 60).toString().padStart(2, '0');
   return `${mins}:${segs}`;
 }
 
-// Funciones de actualización de UI
+/* ==========================================================================
+   INTERFAZ DE USUARIO - Funciones auxiliares para actualizar la UI
+   ========================================================================== */
+
+/**
+ * Actualiza todos los elementos de la interfaz de usuario
+ */
 function actualizarUI() {
   actualizarContador();
   actualizarTemporizador();
 }
 
+/**
+ * Actualiza el contador de movimientos
+ */
 function actualizarContador() {
   TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
 }

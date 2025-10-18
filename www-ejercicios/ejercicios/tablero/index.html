@@ -1,14 +1,29 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/modal.css">
+  <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled>
+  <!-- Favicon -->
+  <link rel="icon" href="favicon.png" type="image/x-icon">
+  <!-- JS -->
+  <script defer src="js/script.js"></script>
+  <script defer src="js/modales.js"></script>
+  <script defer src="js/theme-toggle.js"></script>
   <title>Tablero - Juego de Fichas</title>
 </head>
 
 <body>
+  <!-- Botones flotantes (ayuda y cambio de tema) -->
+  <div class="botones-flotantes">
+    <button id="btnAyuda" class="botones-flotantes__boton" aria-label="Información y ayuda" title="Información y ayuda">?</button>
+    <button id="btnTema" class="botones-flotantes__boton" aria-label="Cambiar al modo oscuro" title="Cambiar al modo oscuro">🌙</button>
+  </div>
+
   <header class="cabecera">
     <h1 class="cabecera__titulo">Proyecto Tablero</h1>
     <p class="cabecera__descripcion">
@@ -29,7 +44,8 @@
 
       <div class="controles__grupo">
         <label for="tamañoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
-        <input type="number" id="tamañoTablero" class="controles__numero" min="2" max="7" value="3" aria-label="Tamaño del tablero">
+        <input type="number" id="tamañoTablero" class="controles__numero" min="2" max="7" value="3"
+          aria-label="Tamaño del tablero">
       </div>
 
       <div class="controles__grupo">
@@ -55,12 +71,19 @@
       </div>
     </section>
 
+    <!-- Botones de control de juego -->
+    <section class="botones-control">
+      <button id="btnPausa" class="botones-control__boton" disabled>Pausar</button>
+      <button id="btnDetener" class="botones-control__boton" disabled>Detener Juego</button>
+    </section>
+
     <section class="tablero-contenedor">
       <div id="tablero" class="tablero" aria-label="Tablero de juego">
         <!-- Las fichas se generarán dinámicamente desde JavaScript -->
       </div>
     </section>
 
+    <!-- Reemplazar el modal de victoria con este: -->
     <dialog id="modal-victoria" class="modal">
       <div class="modal__contenido">
         <h2 class="modal__titulo">¡Felicidades!</h2>
@@ -69,11 +92,13 @@
           <p>Movimientos: <span id="modal-movimientos"></span></p>
           <p>Tiempo: <span id="modal-tiempo"></span></p>
         </div>
-        <button id="cerrar-modal" class="modal__boton">Jugar de nuevo</button>
+        <div class="modal__botones">
+          <button id="cerrar-modal" class="modal__boton">Jugar de nuevo</button>
+          <button id="solo-cerrar-modal" class="modal__boton modal__boton--secundario">Cerrar</button>
+        </div>
       </div>
     </dialog>
-
-    <button id="ayuda" class="boton-flotante" aria-label="Mostrar ayuda">?</button>
   </main>
 </body>
+
 </html>

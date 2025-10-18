@@ -1,0 +1,266 @@
+/* ==========================================================================
+   MODALES - Ventanas de diálogo y notificaciones
+   ==========================================================================
+   - Implementa el elemento <dialog> nativo para accesibilidad y rendimiento
+   - Distintos estilos según propósito (ayuda vs estadísticas)
+   - Compatibilidad completa con sistema de temas claro/oscuro
+*/
+
+/* ==========================================================================
+   ESTRUCTURA BASE DE MODALES
+   - Propiedades compartidas por todos los tipos de modal
+   - Establecen apariencia básica y comportamientos de interacción
+   ========================================================================== */
+.modal {
+  border: none;
+  border-radius: var(--radio-borde);
+  padding: 0;
+  box-shadow: var(--sombra-fuerte);
+  margin: auto;
+}
+
+/* Fondo semi-transparente con desenfoque para profundidad */
+.modal::backdrop {
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(0.1875rem);
+}
+
+.modal__contenido {
+  padding: var(--espaciado-xl);
+}
+
+.modal__titulo {
+  color: var(--color-primario);
+  margin-bottom: var(--espaciado-l);
+  padding-bottom: var(--espaciado-s);
+  border-bottom: 0.125rem solid var(--color-borde);
+  font-size: 1.8rem;
+}
+
+/* Agrupación de botones con espaciado consistente */
+.modal__botones {
+  display: flex;
+  justify-content: center;
+  gap: var(--espaciado);
+  margin-top: var(--espaciado-l);
+}
+
+/* Estilo base para botones de acción en modales */
+.modal__boton {
+  padding: var(--espaciado-s) var(--espaciado-l);
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s, transform 0.2s;
+  min-width: 8.75rem; /* 140px */
+}
+
+.modal__boton:hover {
+  background-color: var(--color-primario-oscuro);
+  transform: translateY(-0.125rem);
+}
+
+/* Variante secundaria para botones menos prominentes */
+.modal__boton--secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto);
+}
+
+.modal__boton--secundario:hover {
+  background-color: #ccc;
+}
+
+/* ==========================================================================
+   MODAL DE ESTADÍSTICAS/VICTORIA - Compacto y centrado en datos
+   - Diseño conciso para mostrar resultados del juego
+   - Énfasis visual en estadísticas importantes
+   ========================================================================== */
+#modal-victoria {
+  max-width: 90%;
+  width: 25rem; /* 400px */
+}
+
+#modal-victoria .modal__contenido {
+  text-align: center;
+}
+
+#modal-victoria .modal__mensaje {
+  margin-bottom: var(--espaciado-l);
+}
+
+/* Panel destacado para estadísticas importantes */
+#modal-victoria .modal__estadisticas {
+  background-color: var(--color-primario-claro);
+  padding: var(--espaciado);
+  border-radius: var(--radio-borde);
+  margin-bottom: var(--espaciado-l);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   MODAL DE AYUDA - Informativo y estructurado
+   - Layout amplio para contenido educacional/instructivo
+   - Secciones claras con jerarquía visual
+   ========================================================================== */
+#modal-ayuda {
+  max-width: 95%;
+  width: 90%; 
+}
+
+#modal-ayuda .modal__contenido {
+  text-align: left;
+}
+
+#modal-ayuda .modal__titulo {
+  text-align: center;
+}
+
+/* Layout de múltiples columnas para mejor organización */
+.modal-ayuda__secciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--espaciado-l);
+  justify-content: space-between;
+  margin-bottom: var(--espaciado-xl);
+}
+
+/* Tarjetas individuales para cada sección temática */
+.modal-ayuda__seccion {
+  flex: 1;
+  min-width: 15.625rem; /* 250px */
+  margin-bottom: var(--espaciado);
+  padding: var(--espaciado);
+  border-radius: var(--radio-borde);
+  background-color: rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+}
+
+/* Títulos de sección con indicador visual */
+.modal-ayuda__subtitulo {
+  font-size: 1.25rem;
+  color: var(--color-primario-oscuro);
+  margin-bottom: var(--espaciado-s);
+  display: flex;
+  align-items: center;
+  border-bottom: 0.0625rem solid var(--color-borde);
+  padding-bottom: var(--espaciado-s);
+}
+
+.modal-ayuda__subtitulo::before {
+  content: "•";
+  margin-right: var(--espaciado-s);
+  color: var(--color-primario);
+}
+
+/* Listas con buen espaciado para legibilidad */
+.modal-ayuda__lista {
+  padding-left: var(--espaciado-l);
+  margin-bottom: var(--espaciado);
+  line-height: 1.7;
+}
+
+.modal-ayuda__lista li {
+  margin-bottom: var(--espaciado-s);
+}
+
+/* ==========================================================================
+   TEMA OSCURO - Adaptaciones específicas para modales
+   - Mantiene legibilidad y estética en modo oscuro
+   - Contraste adecuado para todos los elementos
+   ========================================================================== */
+[data-theme="dark"] .modal {
+  background-color: var(--modal-bg, hsl(var(--tono-principal), 15%, 12%));
+  color: var(--color-texto);
+  border: 0.0625rem solid var(--color-borde);
+}
+
+[data-theme="dark"] .modal__titulo {
+  color: var(--color-primario);
+  border-bottom-color: var(--color-borde);
+}
+
+[data-theme="dark"] .modal__boton--secundario {
+  background-color: var(--color-borde);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .modal__boton--secundario:hover {
+  background-color: #444;
+}
+
+[data-theme="dark"] #modal-victoria .modal__estadisticas {
+  background-color: var(--color-primario-claro);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .modal-ayuda__seccion {
+  background-color: rgba(30, 30, 30, 0.3);
+  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .modal-ayuda__subtitulo {
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   MODAL DE JUEGO DETENIDO - Variante visual del modal de estadísticas
+   - Versión menos celebratoria que el modal de victoria
+   - Interfaz simplificada con un solo botón de acción
+   ========================================================================== */
+#modal-detenido {
+  max-width: 90%;
+  width: 25rem; /* 400px */
+}
+
+#modal-detenido .modal__contenido {
+  text-align: center;
+}
+
+#modal-detenido .modal__mensaje {
+  margin-bottom: var(--espaciado-l);
+  color: var(--color-texto);
+}
+
+/* Versión más discreta del panel de estadísticas */
+#modal-detenido .modal__estadisticas {
+  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.1);
+  padding: var(--espaciado);
+  border-radius: var(--radio-borde);
+  margin-bottom: var(--espaciado-l);
+  font-weight: 600;
+  border: 0.0625rem solid var(--color-borde);
+}
+
+/* Botón único centrado */
+#modal-detenido .modal__botones {
+  justify-content: center;
+}
+
+#modal-detenido .modal__boton {
+  min-width: 10rem; /* Ligeramente más ancho para mejor equilibrio visual */
+}
+
+/* Versión para tema oscuro */
+[data-theme="dark"] #modal-detenido .modal__estadisticas {
+  background-color: rgba(30, 30, 30, 0.3);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+/* ==========================================================================
+   RESPONSIVE - Adaptaciones para pantallas pequeñas
+   - Reorganiza secciones de ayuda en dispositivos móviles
+   - Mantiene usabilidad independientemente del dispositivo
+   ========================================================================== */
+@media (max-width: 48rem) { /* 768px */
+  .modal-ayuda__secciones {
+    flex-direction: column;
+  }
+  
+  .modal-ayuda__seccion {
+    width: 100%;
+  }
+}
