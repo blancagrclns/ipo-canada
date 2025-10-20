@@ -113,13 +113,20 @@
 
 /* LISTAS */
 .modal__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem; /* Reemplazamos margin-bottom en items */
   padding-left: 1.5rem;
-  margin-bottom: 1rem;
 }
 
 .modal__list-item {
-  margin-bottom: 0.75rem;
-  line-height: 1.5;
+  /* Eliminamos margin-bottom: 0.75rem; */
+  /* Eliminamos line-height: 1.5; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.25em; /* Espaciado entre líneas dentro del item */
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
   color: hsl(var(--tono), 15%, 25%);
 }
 

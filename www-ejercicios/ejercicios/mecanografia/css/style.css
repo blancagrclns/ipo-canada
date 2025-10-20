@@ -13,21 +13,31 @@
 /* Variables CSS globales */
 :root {
   /* Colores principales */
-  --tono: 210;                             /* Tono base azul grisáceo */
-  --tono-complementario: calc(var(--tono) + 180); /* Cálculo automático del complementario */
-  
-  --color-fondo: hsl(var(--tono), 10%, 88%);      /* Fondo principal */
-  --color-panel: hsl(var(--tono), 8%, 95%);       /* Contenedor principal */
-  --color-texto: hsl(var(--tono), 10%, 20%);      /* Texto principal */
-  --color-texto-secundario: hsl(var(--tono), 10%, 35%); /* Texto menos importante */
-  --color-acento: hsl(220, 30%, 45%);             /* Color principal de acción */
-  --color-acento-hover: hsl(220, 30%, 35%);       /* Estado hover de botones */
-  --color-borde: hsl(var(--tono), 10%, 75%);      /* Bordes y separadores */
-  --color-error: hsl(0, 65%, 55%);                /* Feedback negativo */
-  
+  --tono: 210;
+  /* Tono base azul grisáceo */
+  --tono-complementario: calc(var(--tono) + 180);
+  /* Cálculo automático del complementario */
+
+  --color-fondo: hsl(var(--tono), 10%, 88%);
+  /* Fondo principal */
+  --color-panel: hsl(var(--tono), 8%, 95%);
+  /* Contenedor principal */
+  --color-texto: hsl(var(--tono), 10%, 20%);
+  /* Texto principal */
+  --color-texto-secundario: hsl(var(--tono), 10%, 35%);
+  /* Texto menos importante */
+  --color-acento: hsl(220, 30%, 45%);
+  /* Color principal de acción */
+  --color-acento-hover: hsl(220, 30%, 35%);
+  /* Estado hover de botones */
+  --color-borde: hsl(var(--tono), 10%, 75%);
+  /* Bordes y separadores */
+  --color-error: hsl(0, 65%, 55%);
+  /* Feedback negativo */
+
   /* Tipografía */
   --fuente-principal: 'Inter', 'Segoe UI', sans-serif;
-  
+
   /* Dimensiones y espaciado */
   --tamanyo-base: 1.1rem;
   --espaciado: 1rem;
@@ -39,7 +49,8 @@ body {
   font-family: var(--fuente-principal);
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  line-height: 1.6;
+  /* line-height: 1.6; */
+  /* Mejora legibilidad */
   min-height: 100vh;
   display: flex;
   justify-content: center;
@@ -60,6 +71,23 @@ body {
   gap: var(--espaciado);
 }
 
+/* ====== Tipografía y elementos de texto ====== */
+/* Para párrafos y otros elementos de texto, usar este patrón */
+p,
+.texto {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+  /* Espaciado entre líneas de texto cuando hay saltos */
+}
+
+/* Para elementos inline con múltiples líneas */
+.contenido-texto {
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+}
+
+
 .main__title {
   font-size: 2rem;
   text-align: center;
@@ -71,9 +99,9 @@ body {
   font-size: 1rem;
   text-align: center;
   color: var(--color-texto-secundario);
-  margin-bottom: var(--espaciado);
 }
 
+/* ====== Resto de secciones ====== */
 /* BOTONES FLOTANTES */
 .floating-buttons {
   position: fixed;
@@ -128,21 +156,24 @@ body {
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .config-container__group {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  width: 48%; /* Ajusta el ancho para que quepan dos grupos por fila */
+  width: 48%;
+  /* Ajusta el ancho para que quepan dos grupos por fila */
+  gap: 0.5rem;
+  /* Añadir gap para el espaciado entre elementos */
 }
 
 .config-container__label {
   font-weight: 600;
-  margin-bottom: 0.5rem;
-  width: 100%; /* Ocupa toda la línea */
-  text-align: left; /* Alineado a la izquierda en lugar de a la derecha */
+  width: 100%;
+  /* Ocupa toda la línea */
+  text-align: left;
+  /* Alineado a la izquierda en lugar de a la derecha */
   padding-right: 0;
   color: var(--color-texto-secundario);
 }
@@ -154,8 +185,10 @@ body {
   background-color: hsl(var(--tono), 10%, 98%);
   font-size: var(--tamanyo-base);
   transition: border-color 0.3s, box-shadow 0.3s;
-  width: 100%; /* Ocupa todo el ancho del grupo */
-  max-width: 8rem; /* Limita el ancho máximo del input */
+  width: 100%;
+  /* Ocupa todo el ancho del grupo */
+  max-width: 8rem;
+  /* Limita el ancho máximo del input */
 }
 
 .config-container__input:focus {
@@ -241,7 +274,8 @@ body {
   .config-container__group {
     flex-direction: column;
     align-items: flex-start;
-    width: 100%; /* En móvil, cada grupo ocupa toda la fila */
+    width: 100%;
+    /* En móvil, cada grupo ocupa toda la fila */
   }
 
   .config-container__buttons,
