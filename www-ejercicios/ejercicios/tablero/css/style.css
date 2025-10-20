@@ -71,7 +71,8 @@ body {
   );
   background-size: 100% 100%;
   color: var(--color-texto);
-  line-height: 1.6;
+  /* Eliminamos line-height: 1.6; */
+  /* Reemplazamos con padding y usamos flex para el texto */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -83,20 +84,28 @@ body {
 .cabecera {
   text-align: center;
   padding: var(--espaciado);
-  margin-bottom: var(--espaciado);
+  /* Eliminamos margin-bottom: var(--espaciado); */
   border-bottom: 0.0625rem solid var(--color-borde);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-s);
 }
 
 .cabecera__titulo {
   color: var(--color-primario-oscuro);
   font-size: 2rem;
-  margin-bottom: var(--espaciado-s);
+  /* Eliminamos margin-bottom: var(--espaciado-s); */
+  /* El gap en .cabecera ya maneja este espaciado */
 }
 
 .cabecera__descripcion {
   color: var(--color-texto);
   max-width: 40rem;
   margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
 }
 
 /* CONTENEDOR PRINCIPAL - Layout general de la aplicación */
@@ -105,6 +114,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  /* Añadir gap para incluir espaciado entre cabecera y contenedor */
   gap: var(--espaciado);
   max-width: 75rem; /* 1200px */
   margin: 0 auto;
@@ -182,6 +192,10 @@ body {
 
 .estado-juego__etiqueta {
   font-weight: 600;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
 }
 
 .estado-juego__valor {
@@ -189,6 +203,10 @@ body {
   font-variant-numeric: tabular-nums; /* Sirve para alinear correctamente los números */
   min-width: 3rem;
   text-align: right;
+  display: flex;
+  flex-direction: column;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
 }
 
 /* ==========================================================================
@@ -198,7 +216,8 @@ body {
   display: flex;
   justify-content: center;
   gap: var(--espaciado);
-  margin-top: var(--espaciado);
+  /* Eliminamos margin-top: var(--espaciado); */
+  /* El gap en .contenedor-principal ya maneja este espaciado */
 }
 
 .botones-control__boton {

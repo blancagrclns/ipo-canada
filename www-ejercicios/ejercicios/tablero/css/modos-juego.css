@@ -29,7 +29,6 @@
 .tablero__etiqueta {
   font-weight: 600;
   color: var(--color-primario);
-  margin-bottom: var(--espaciado-s);
 }
 
 /* Estilos específicos para tablero origen y destino */
@@ -118,7 +117,7 @@
 }
 
 /* ==========================================================================
-   TEMA OSCURO - Adaptaciones específicas para modos
+   TEMA OSCURO 
    ========================================================================== */
 
 [data-theme="dark"] .celda-vacia {

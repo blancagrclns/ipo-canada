@@ -1,12 +1,6 @@
 /* ==========================================================================
    MODALES - Ventanas de diálogo y notificaciones
    ==========================================================================
-   - Implementa el elemento <dialog> nativo para accesibilidad y rendimiento
-   - Distintos estilos según propósito (ayuda vs estadísticas)
-   - Compatibilidad completa con sistema de temas claro/oscuro
-*/
-
-/* ==========================================================================
    ESTRUCTURA BASE DE MODALES
    - Propiedades compartidas por todos los tipos de modal
    - Establecen apariencia básica y comportamientos de interacción
@@ -27,11 +21,14 @@
 
 .modal__contenido {
   padding: var(--espaciado-xl);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-l);
 }
 
 .modal__titulo {
   color: var(--color-primario);
-  margin-bottom: var(--espaciado-l);
+  /* Eliminamos margin-bottom: var(--espaciado-l); */
   padding-bottom: var(--espaciado-s);
   border-bottom: 0.125rem solid var(--color-borde);
   font-size: 1.8rem;
@@ -42,7 +39,8 @@
   display: flex;
   justify-content: center;
   gap: var(--espaciado);
-  margin-top: var(--espaciado-l);
+  /* Eliminamos margin-top: var(--espaciado-l); */
+  /* El gap en .modal__contenido ya maneja este espaciado */
 }
 
 /* Estilo base para botones de acción en modales */
@@ -74,7 +72,7 @@
 }
 
 /* ==========================================================================
-   MODAL DE ESTADÍSTICAS/VICTORIA - Compacto y centrado en datos
+   MODAL DE ESTADÍSTICAS/VICTORIA:
    - Diseño conciso para mostrar resultados del juego
    - Énfasis visual en estadísticas importantes
    ========================================================================== */
@@ -85,23 +83,22 @@
 
 #modal-victoria .modal__contenido {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-l);
 }
 
-#modal-victoria .modal__mensaje {
-  margin-bottom: var(--espaciado-l);
-}
 
-/* Panel destacado para estadísticas importantes */
 #modal-victoria .modal__estadisticas {
   background-color: var(--color-primario-claro);
   padding: var(--espaciado);
   border-radius: var(--radio-borde);
-  margin-bottom: var(--espaciado-l);
+  /* Eliminamos margin-bottom: var(--espaciado-l); */
   font-weight: 600;
 }
 
 /* ==========================================================================
-   MODAL DE AYUDA - Informativo y estructurado
+   MODAL DE AYUDA:
    - Layout amplio para contenido educacional/instructivo
    - Secciones claras con jerarquía visual
    ========================================================================== */
@@ -124,52 +121,55 @@
   flex-wrap: wrap;
   gap: var(--espaciado-l);
   justify-content: space-between;
-  margin-bottom: var(--espaciado-xl);
+  /* Eliminamos margin-bottom: var(--espaciado-xl); */
 }
 
-/* Tarjetas individuales para cada sección temática */
 .modal-ayuda__seccion {
   flex: 1;
   min-width: 15.625rem; /* 250px */
-  margin-bottom: var(--espaciado);
+  /* Eliminamos margin-bottom: var(--espaciado); */
   padding: var(--espaciado);
   border-radius: var(--radio-borde);
   background-color: rgba(255, 255, 255, 0.4);
   box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+  
+  /* Añadimos estructura flex para gestionar espaciado interno */
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado);
 }
 
-/* Títulos de sección con indicador visual */
 .modal-ayuda__subtitulo {
   font-size: 1.25rem;
   color: var(--color-primario-oscuro);
-  margin-bottom: var(--espaciado-s);
+  /* Eliminamos margin-bottom: var(--espaciado-s); */
   display: flex;
   align-items: center;
   border-bottom: 0.0625rem solid var(--color-borde);
   padding-bottom: var(--espaciado-s);
 }
 
-.modal-ayuda__subtitulo::before {
-  content: "•";
-  margin-right: var(--espaciado-s);
-  color: var(--color-primario);
-}
-
 /* Listas con buen espaciado para legibilidad */
 .modal-ayuda__lista {
   padding-left: var(--espaciado-l);
-  margin-bottom: var(--espaciado);
-  line-height: 1.7;
+  /* Eliminamos margin-bottom: var(--espaciado); */
+  /* El gap en .modal-ayuda__seccion ya maneja este espaciado */
+  
+  /* Reemplazamos line-height con estructura flex */
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-s); /* Para el espaciado entre elementos de la lista */
 }
 
 .modal-ayuda__lista li {
-  margin-bottom: var(--espaciado-s);
+  /* Eliminamos margin-bottom: var(--espaciado-s); */
+  /* El gap en .modal-ayuda__lista ya maneja este espaciado */
+  padding-top: 0.25em;
+  padding-bottom: 0.25em;
 }
 
 /* ==========================================================================
-   TEMA OSCURO - Adaptaciones específicas para modales
-   - Mantiene legibilidad y estética en modo oscuro
-   - Contraste adecuado para todos los elementos
+   TEMA OSCURO (para los modales)
    ========================================================================== */
 [data-theme="dark"] .modal {
   background-color: var(--modal-bg, hsl(var(--tono-principal), 15%, 12%));
@@ -207,8 +207,6 @@
 
 /* ==========================================================================
    MODAL DE JUEGO DETENIDO - Variante visual del modal de estadísticas
-   - Versión menos celebratoria que el modal de victoria
-   - Interfaz simplificada con un solo botón de acción
    ========================================================================== */
 #modal-detenido {
   max-width: 90%;
@@ -217,30 +215,24 @@
 
 #modal-detenido .modal__contenido {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-l);
 }
 
 #modal-detenido .modal__mensaje {
-  margin-bottom: var(--espaciado-l);
+  /* Eliminamos margin-bottom: var(--espaciado-l); */
+  /* El gap en el contenedor ya maneja este espaciado */
   color: var(--color-texto);
 }
 
-/* Versión más discreta del panel de estadísticas */
 #modal-detenido .modal__estadisticas {
   background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.1);
   padding: var(--espaciado);
   border-radius: var(--radio-borde);
-  margin-bottom: var(--espaciado-l);
+  /* Eliminamos margin-bottom: var(--espaciado-l); */
   font-weight: 600;
   border: 0.0625rem solid var(--color-borde);
-}
-
-/* Botón único centrado */
-#modal-detenido .modal__botones {
-  justify-content: center;
-}
-
-#modal-detenido .modal__boton {
-  min-width: 10rem; /* Ligeramente más ancho para mejor equilibrio visual */
 }
 
 /* Versión para tema oscuro */
@@ -251,9 +243,7 @@
 }
 
 /* ==========================================================================
-   RESPONSIVE - Adaptaciones para pantallas pequeñas
-   - Reorganiza secciones de ayuda en dispositivos móviles
-   - Mantiene usabilidad independientemente del dispositivo
+   RESPONSIVE
    ========================================================================== */
 @media (max-width: 48rem) { /* 768px */
   .modal-ayuda__secciones {
