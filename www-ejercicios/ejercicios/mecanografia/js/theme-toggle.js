@@ -9,11 +9,13 @@ function toggleTema() {
   if (isDark) {
     html.removeAttribute('data-theme');
     darkThemeLink.disabled = true;
-    btnTema.textContent = 'Tema Oscuro';
+    btnTema.textContent = '🌙'; // Luna para activar modo oscuro
+    localStorage.setItem('tema', 'light');
   } else {
     html.setAttribute('data-theme', 'dark');
     darkThemeLink.disabled = false;
-    btnTema.textContent = 'Tema Claro';
+    btnTema.textContent = '☀️'; // Sol para activar modo claro
+    localStorage.setItem('tema', 'dark');
   }
 }
 
@@ -35,13 +37,13 @@ document.addEventListener('DOMContentLoaded', () => {
 function activarModoOscuro() {
   html.setAttribute('data-theme', 'dark');
   if (darkThemeLink) darkThemeLink.disabled = false;
-  btnTema.textContent = 'Tema Claro';
+  btnTema.textContent = '☀️'; // Sol cuando está en modo oscuro
   localStorage.setItem('tema', 'dark');
 }
 
 function activarModoClaro() {
   html.removeAttribute('data-theme');
   if (darkThemeLink) darkThemeLink.disabled = true;
-  btnTema.textContent = 'Tema Oscuro';
+  btnTema.textContent = '🌙'; // Luna cuando está en modo claro
   localStorage.setItem('tema', 'light');
 }

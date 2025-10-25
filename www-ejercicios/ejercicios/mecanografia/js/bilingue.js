@@ -108,12 +108,12 @@ const diccionarioBilingue = {
     'lend it to me': 'préstamelo',
     'confirm it to me': 'confírmamelo',
     'remind him of it': 'recuérdaselo',
-    'take it to him': 'llévaselo',
-    'send it to him': 'envíaselo',
+    'take it to him': 'lléváselo',
+    'send it to him': 'envíáselo',
     'understand it for me': 'compréndemelo',
     'translate it for me': 'tradúcemelo',
     'clarify it for me': 'acláramelo',
-    'organize it for me': 'organízamelo',
+    'organize it for me': 'organízámelo',
     'solve it for me': 'resuélvemelo'
   }
 };
@@ -143,9 +143,20 @@ export function verificarEntradaBilingue(event) {
       
       // Mostrar brevemente la respuesta correcta como refuerzo positivo
       traduccionCorrecta.textContent = palabraTraducida + " ✓";
-      traduccionCorrecta.style.color = "var(--color-acento)";
+      traduccionCorrecta.style.color = "var(--color-exito)";
+      traduccionCorrecta.style.fontWeight = "bold";
+      
+      // Feedback visual positivo en el input
+      entrada.style.borderColor = "var(--color-exito)";
+      entrada.style.backgroundColor = "hsla(140, 50%, 45%, 0.1)";
       
       setTimeout(() => {
+        // Restaurar estilos
+        traduccionCorrecta.style.color = "";
+        traduccionCorrecta.style.fontWeight = "";
+        entrada.style.borderColor = "";
+        entrada.style.backgroundColor = "";
+        
         // Pasar a la siguiente palabra después de un breve momento
         const numPalabrasObjetivo = gameAPI.getNumPalabrasObjetivo();
         const palabrasCorrectas = parseInt(document.getElementById('palabrasCorrectas').textContent);
@@ -162,13 +173,25 @@ export function verificarEntradaBilingue(event) {
       // Incorrecta
       gameAPI.incrementarFalladas();
       
-      // Mostrar la traducción correcta brevemente como pista
+      // Mostrar la traducción correcta brevemente como retroalimentación
       traduccionCorrecta.textContent = palabraTraducida + " ✗";
       traduccionCorrecta.style.color = "var(--color-error)";
+      traduccionCorrecta.style.fontWeight = "bold";
+      
+      // Feedback visual adicional en el input
+      entrada.style.borderColor = "var(--color-error)";
+      entrada.style.backgroundColor = "hsla(0, 70%, 50%, 0.1)";
+      
+      // Efecto de vibración
+      entrada.style.animation = "shake 0.3s";
       
       setTimeout(() => {
         traduccionCorrecta.textContent = "?";
         traduccionCorrecta.style.color = "";
+        traduccionCorrecta.style.fontWeight = "";
+        entrada.style.borderColor = "";
+        entrada.style.backgroundColor = "";
+        entrada.style.animation = "";
       }, 1500);
       
       entrada.value = '';
@@ -191,10 +214,12 @@ export function inicializarModoBilingue(api) {
   palabraTraduccion = document.getElementById('palabraTraduccion');
   traduccionCorrecta = document.getElementById('traduccionCorrecta');
   
-  // Mostrar/ocultar opciones de idioma
+  // Habilitar/deshabilitar opciones de idioma
   if (modoBilingueCheckbox) {
     modoBilingueCheckbox.addEventListener('change', () => {
-      opcionesBilingue.classList.toggle('config-container__group--hidden', !modoBilingueCheckbox.checked);
+      const isEnabled = modoBilingueCheckbox.checked;
+      if (idiomaOrigen) idiomaOrigen.disabled = !isEnabled;
+      if (idiomaDestino) idiomaDestino.disabled = !isEnabled;
     });
   }
   
@@ -216,7 +241,7 @@ export function inicializarModoBilingue(api) {
   // Exponer funciones globalmente
   window.iniciarTestBilingue = iniciarTestBilingue;
   window.verificarEntradaBilingue = verificarEntradaBilingue;
-  window.cambiarPalabraBilingue = cambiarPalabraBilingue; // Exponer esta función también
+  window.cambiarPalabraBilingue = cambiarPalabraBilingue;
 }
 
 // Crear elementos necesarios si no existen en el HTML

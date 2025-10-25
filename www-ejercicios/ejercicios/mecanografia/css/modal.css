@@ -1,21 +1,21 @@
 /* VARIABLES PARA MODAL - Coherentes con las variables globales */
 :root {
   /* Usar colores derivados del tema principal */
-  --modal-bg: hsl(var(--tono), 15%, 98%);              
-  --modal-shadow: hsla(var(--tono), 20%, 10%, 0.25);   
-  --modal-close-bg: hsl(var(--tono), 15%, 90%);
-  --modal-close-bg-hover: hsl(var(--tono), 15%, 85%);
-  --modal-title-accent: hsl(220, 40%, 45%);    
-  --modal-title-border: hsl(220, 30%, 85%);
-  --modal-section-title: hsl(220, 35%, 35%);
-  --modal-section-dot: hsl(220, 40%, 45%);
+  --modal-bg: hsl(35, 25%, 88%);
+  --modal-shadow: hsla(30, 20%, 10%, 0.25);
+  --modal-close-bg: hsl(30, 15%, 85%);
+  --modal-close-bg-hover: hsl(30, 15%, 80%);
+  --modal-title-accent: hsl(200, 30%, 40%);
+  --modal-title-border: hsl(30, 10%, 75%);
+  --modal-section-title: hsl(200, 30%, 40%);
+  --modal-section-dot: hsl(200, 30%, 40%);
   /* Resaltado amarillo para elementos importantes */
   --modal-list-highlight-bg: hsl(50, 100%, 95%);
   --modal-list-highlight-border: hsl(50, 100%, 50%);
-  --modal-table-border: hsl(var(--tono), 20%, 85%);
-  --modal-table-th-bg: hsl(var(--tono), 25%, 93%);
-  --modal-table-even-bg: hsl(var(--tono), 20%, 97%);
-  --modal-table-td-bg: hsl(var(--tono), 15%, 92%);
+  --modal-table-border: hsl(30, 10%, 75%);
+  --modal-table-th-bg: hsl(40, 20%, 95%);
+  --modal-table-even-bg: hsl(40, 20%, 97%);
+  --modal-table-td-bg: hsl(40, 20%, 92%);
 }
 
 /* CONTENEDOR DEL MODAL */
@@ -27,7 +27,7 @@
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: hsla(var(--tono), 10%, 10%, 0.7); 
+  background-color: hsla(30, 10%, 10%, 0.7);
   justify-content: center;
   align-items: center;
   overflow-y: auto;
@@ -68,7 +68,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: hsl(var(--tono), 20%, 30%);
+  color: hsl(0, 0%, 20%);
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
@@ -115,19 +115,17 @@
 .modal__list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem; /* Reemplazamos margin-bottom en items */
+  gap: 0.75rem;
   padding-left: 1.5rem;
 }
 
 .modal__list-item {
-  /* Eliminamos margin-bottom: 0.75rem; */
-  /* Eliminamos line-height: 1.5; */
   display: flex;
   flex-direction: column;
-  gap: 0.25em; /* Espaciado entre líneas dentro del item */
+  gap: 0.25em;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
-  color: hsl(var(--tono), 15%, 25%);
+  color: hsl(0, 0%, 20%);
 }
 
 /* Resaltado para elementos importantes */
@@ -136,7 +134,7 @@
   padding: 0.5rem 0.75rem;
   border-radius: 6px;
   border-left: 4px solid var(--modal-list-highlight-border);
-  color: hsl(var(--tono), 20%, 20%);
+  color: hsl(0, 0%, 20%);
   font-weight: 500;
   box-shadow: 0 1px 3px hsla(50, 60%, 30%, 0.15);
 }
@@ -155,7 +153,7 @@
   border: 1px solid var(--modal-table-border);
   background-color: var(--modal-table-th-bg);
   font-weight: 600;
-  color: hsl(var(--tono), 15%, 25%);
+  color: hsl(0, 0%, 20%);
 }
 
 .modal__table tr:nth-child(even) {
@@ -165,13 +163,14 @@
 .modal__table td {
   padding: 0.75rem 1rem;
   border: 1px solid var(--modal-table-border);
+  color: hsl(0, 0%, 20%);
 }
 
 .modal__table td:first-child {
   font-family: monospace;
   font-weight: bold;
   background-color: var(--modal-table-td-bg);
-  color: hsl(var(--tono), 15%, 25%);
+  color: hsl(0, 0%, 20%);
 }
 
 /* RESPONSIVE */

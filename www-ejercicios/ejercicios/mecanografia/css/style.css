@@ -1,286 +1,602 @@
-/**********************************************************************/
-/*  PROYECTO mecanografía      */
-/* ====== Reseteo básico ====== */
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* ====== Variables CSS  ====== */
-/* Variables CSS globales */
-:root {
-  /* Colores principales */
-  --tono: 210;
-  /* Tono base azul grisáceo */
-  --tono-complementario: calc(var(--tono) + 180);
-  /* Cálculo automático del complementario */
-
-  --color-fondo: hsl(var(--tono), 10%, 88%);
-  /* Fondo principal */
-  --color-panel: hsl(var(--tono), 8%, 95%);
-  /* Contenedor principal */
-  --color-texto: hsl(var(--tono), 10%, 20%);
-  /* Texto principal */
-  --color-texto-secundario: hsl(var(--tono), 10%, 35%);
-  /* Texto menos importante */
-  --color-acento: hsl(220, 30%, 45%);
-  /* Color principal de acción */
-  --color-acento-hover: hsl(220, 30%, 35%);
-  /* Estado hover de botones */
-  --color-borde: hsl(var(--tono), 10%, 75%);
-  /* Bordes y separadores */
-  --color-error: hsl(0, 65%, 55%);
-  /* Feedback negativo */
-
-  /* Tipografía */
-  --fuente-principal: 'Inter', 'Segoe UI', sans-serif;
-
-  /* Dimensiones y espaciado */
-  --tamanyo-base: 1.1rem;
-  --espaciado: 1rem;
-  --radio-borde: 0.625rem;
-}
-
-/* ====== Layout general  ====== */
-body {
-  font-family: var(--fuente-principal);
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
-  /* line-height: 1.6; */
-  /* Mejora legibilidad */
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: var(--espaciado);
-}
-
-.main {
-  max-width: 640px;
-  width: 100%;
-  background: var(--color-panel);
-  border: 1px solid var(--color-borde);
-  border-radius: 10px;
-  padding: 2rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado);
-}
-
-/* ====== Tipografía y elementos de texto ====== */
-/* Para párrafos y otros elementos de texto, usar este patrón */
-p,
-.texto {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5em;
-  /* Espaciado entre líneas de texto cuando hay saltos */
-}
-
-/* Para elementos inline con múltiples líneas */
-.contenido-texto {
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-}
-
-
-.main__title {
-  font-size: 2rem;
-  text-align: center;
-  color: var(--color-acento);
-  font-weight: 600;
-}
-
-.main__instructions {
-  font-size: 1rem;
-  text-align: center;
-  color: var(--color-texto-secundario);
-}
-
-/* ====== Resto de secciones ====== */
-/* BOTONES FLOTANTES */
-.floating-buttons {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  flex-direction: row;
-  gap: 0.75rem;
-  z-index: 1000;
-}
-
-.floating-buttons__button {
-  padding: 0.5rem 1rem;
-  border-radius: 6px;
-  border: 1px solid var(--color-borde);
-  background-color: var(--color-acento);
-  color: white;
-  font-size: 1rem;
-  font-weight: 500;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-  transition: background-color 0.3s ease, transform 0.15s ease, box-shadow 0.3s;
-}
-
-.floating-buttons__button:hover {
-  background-color: var(--color-acento-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
-}
-
-.floating-buttons__button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.floating-buttons__button:focus-visible {
-  outline: 2px solid hsl(220, 40%, 65%);
-  outline-offset: 2px;
-}
-
-/* ====== Contenedor de configuración ====== */
-.config-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado);
-  border-bottom: 1px solid var(--color-borde);
-  padding-bottom: var(--espaciado);
-}
-
-.config-container__row {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  gap: 1rem;
-}
-
-.config-container__group {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 48%;
-  /* Ajusta el ancho para que quepan dos grupos por fila */
-  gap: 0.5rem;
-  /* Añadir gap para el espaciado entre elementos */
-}
-
-.config-container__label {
-  font-weight: 600;
-  width: 100%;
-  /* Ocupa toda la línea */
-  text-align: left;
-  /* Alineado a la izquierda en lugar de a la derecha */
-  padding-right: 0;
-  color: var(--color-texto-secundario);
-}
-
-.config-container__input {
-  padding: 0.5rem;
-  border: 1px solid var(--color-borde);
-  border-radius: 6px;
-  background-color: hsl(var(--tono), 10%, 98%);
-  font-size: var(--tamanyo-base);
-  transition: border-color 0.3s, box-shadow 0.3s;
-  width: 100%;
-  /* Ocupa todo el ancho del grupo */
-  max-width: 8rem;
-  /* Limita el ancho máximo del input */
-}
-
-.config-container__input:focus {
-  border-color: var(--color-acento);
-  box-shadow: 0 0 0 3px hsla(220, 30%, 50%, 0.2);
-  outline: none;
-}
-
-/* BOTONES - Base común para todos los botones */
-.config-container__button,
-.test-container__button {
-  padding: 0.6rem 1.2rem;
-  background-color: var(--color-acento);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-size: var(--tamanyo-base);
-  font-weight: 500;
-  cursor: pointer;
-  transition: background-color 0.3s, transform 0.15s;
-}
-
-.config-container__button:hover,
-.test-container__button:hover {
-  background-color: var(--color-acento-hover);
-  transform: translateY(-2px);
-}
-
-.config-container__button:disabled,
-.test-container__button:disabled {
-  background-color: var(--color-borde);
-  color: hsl(0, 0%, 45%);
-  cursor: not-allowed;
-}
-
-/* ====== Contenedor del test  ====== */
-.test-container {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado);
-}
-
-.test-container__info {
-  font-size: var(--tamanyo-base);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: var(--color-texto-secundario);
-}
-
-.test-container__span {
-  font-weight: 600;
-  color: var(--color-acento);
-}
-
-.test-container__input {
-  padding: 0.75rem;
-  border: 1px solid var(--color-borde);
-  border-radius: 6px;
-  font-size: var(--tamanyo-base);
-  width: 100%;
-  background-color: hsl(var(--tono), 10%, 97%);
-}
-
-.test-container__input:focus {
-  outline: 2px solid var(--color-acento);
-}
-
-/* ====== Responsividad básica  ====== */
+/* ==========================================================================
+   1. RESET MÍNIMO → CONSISTENCIA ENTRE NAVEGADORES (Introducción.pdf)
+   ========================================================================== */
+   *,
+   *::before,
+   *::after {
+     box-sizing: border-box;
+     margin: 0;
+     padding: 0;
+   }
+   
+   /* ==========================================================================
+      2. VARIABLES CSS EN :root → DISEÑO CROMÁTICO CENTRALIZADO
+      ========================================================================== */
+   :root {
+     --tono: 210;
+     --tono-complementario: calc(var(--tono) + 180);
+   
+     --color-fondo: hsl(30, 15%, 92%);
+     --color-primario: hsl(200, 30%, 40%);
+     --color-primario-claro: hsl(35, 25%, 88%);
+     --color-secundario: hsl(var(--tono-complementario), 70%, 45%);
+     --color-texto: hsl(0, 0%, 20%);
+     --color-texto-secundario: hsl(0, 0%, 35%);
+     --color-borde: hsl(30, 10%, 75%);
+   
+     /* Colores específicos para botones */
+     --color-iniciar: hsl(120, 60%, 45%);
+     --color-iniciar-hover: hsl(120, 60%, 35%);
+     --color-pausar: hsl(30, 80%, 50%);
+     --color-pausar-hover: hsl(30, 80%, 40%);
+     --color-pausar-disabled: hsl(30, 30%, 70%);
+     --color-finalizar: hsl(0, 70%, 50%);
+     --color-finalizar-hover: hsl(0, 70%, 40%);
+     --color-finalizar-disabled: hsl(0, 30%, 70%);
+     --color-exito: hsl(140, 50%, 45%);
+     --color-error: hsl(0, 70%, 50%);
+   
+     --fuente-principal: 'Inter', 'Segoe UI', sans-serif;
+   }
+   
+   /* ==========================================================================
+      3. ESTILOS BASE DEL BODY
+      ========================================================================== */
+   body {
+     font-family: var(--fuente-principal);
+     font-size: 1rem;
+     line-height: 1.6;
+     background-color: var(--color-fondo);
+     color: var(--color-texto);
+     padding: 2rem;
+     min-height: 100vh;
+     display: flex;
+     flex-direction: column;
+     gap: 2rem;
+   }
+   
+   /* ==========================================================================
+      4. CONTENEDOR PRINCIPAL
+      ========================================================================== */
+   .contenedor {
+     display: flex;
+     flex-direction: column;
+     gap: 2.5rem;
+     flex: 1;
+     max-width: 650px;
+     margin: 0 auto;
+   }
+   
+   /* ==========================================================================
+      5. CABECERA
+      ========================================================================== */
+   .cabecera {
+     text-align: center;
+   }
+   
+   .cabecera__titulo {
+     font-size: 2rem;
+     color: var(--color-primario);
+     margin-bottom: 0.5rem;
+   }
+   
+   .cabecera__instrucciones {
+     font-size: 1rem;
+     color: var(--color-texto-secundario);
+     max-width: 500px;
+     margin: 0 auto;
+   }
+   
+   /* ==========================================================================
+      6. COMPONENTE: TARJETA
+      ========================================================================== */
+   .tarjeta {
+     background-color: var(--color-primario-claro);
+     border: 1px solid var(--color-borde);
+     border-radius: 0.75rem;
+     padding: 1.5rem;
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+   }
+   
+   .tarjeta__titulo {
+     font-size: 1.35rem;
+     color: var(--color-primario);
+     margin: 0;
+   }
+   
+   .tarjeta__contenido {
+     display: flex;
+     flex-direction: column;
+     gap: 1.5rem;
+   }
+   
+   .tarjeta__dato {
+     font-family: var(--fuente-principal);
+     font-size: 1.1rem;
+     color: var(--color-texto);
+   }
+   
+   .tarjeta__dato--hidden {
+     display: none;
+   }
+   
+   .tarjeta__acciones {
+     display: flex;
+     gap: 1rem;
+     flex-wrap: wrap;
+     align-items: center;
+   }
+   
+   .tarjeta__estadisticas {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+   }
+   
+   /* Fila de estadísticas con dos cajas lado a lado */
+   .tarjeta__estadisticas-row {
+     display: flex;
+     gap: 1rem;
+     flex-wrap: wrap;
+   }
+   
+   .tarjeta__subcontenedor {
+     background-color: hsl(40, 20%, 95%);
+     border: 1px solid var(--color-borde);
+     border-radius: 0.5rem;
+     padding: 1rem;
+     display: flex;
+     flex-direction: column;
+     gap: 0.5rem;
+   }
+   
+   /* Modificador para caja de correctas - borde verde */
+   .tarjeta__subcontenedor--correctas {
+     flex: 1;
+     min-width: 200px;
+     border-left: 4px solid var(--color-iniciar);
+   }
+   
+   /* Modificador para caja de incorrectas - borde rojo */
+   .tarjeta__subcontenedor--incorrectas {
+     flex: 1;
+     min-width: 200px;
+     border-left: 4px solid var(--color-finalizar);
+   }
+   
+   .tarjeta__tiempo {
+     display: flex;
+     align-items: center;
+   }
+   
+   .tarjeta__reloj {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     background-color: hsl(40, 20%, 95%);
+     border: 1px solid var(--color-borde);
+     border-radius: 0.5rem;
+     padding: 0.5rem 0.75rem;
+     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+   }
+   
+   .tarjeta__icono {
+     font-size: 1.2rem;
+     line-height: 1;
+   }
+   
+   .tarjeta__contador {
+     font-size: var(--tamanyo-base);
+     font-weight: 600;
+     color: var(--color-texto);
+     font-family: var(--fuente-principal);
+     min-width: 2rem;
+     text-align: center;
+   }
+   
+   .tarjeta__entrada {
+     width: 100%;
+   }
+   
+   .tarjeta__input {
+     width: 100%;
+     padding: 0.75rem;
+     border: 2px solid var(--color-borde);
+     border-radius: 0.5rem;
+     font-size: 1.1rem;
+     font-family: var(--fuente-principal);
+     background-color: hsl(40, 25%, 97%);
+     transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
+   }
+   
+   .tarjeta__input:focus {
+     outline: none;
+     border-color: var(--color-primario);
+     box-shadow: 0 0 0 3px hsla(var(--tono), 80%, 50%, 0.2);
+   }
+   
+   .tarjeta__input:disabled {
+     background-color: hsl(30, 15%, 90%);
+     color: var(--color-texto-secundario);
+     cursor: not-allowed;
+   }
+   
+   /* ==========================================================================
+      7. BOTONES
+      ========================================================================== */
+   .btn {
+     padding: 0.65rem 1.3rem;
+     border: 2px solid transparent;
+     background-color: transparent;
+     color: white;
+     border-radius: 0.35rem;
+     font-size: 1rem;
+     font-weight: 600;
+     cursor: pointer;
+     transition: background-color 0.25s ease, color 0.25s ease, transform 0.15s ease;
+     min-height: 44px;
+   }
+   
+   .btn:hover,
+   .btn:focus {
+     transform: translateY(-2px);
+     outline: none;
+   }
+   
+   .btn:disabled {
+     opacity: 0.6;
+     cursor: not-allowed;
+     transform: none;
+   }
+   
+   .btn--pausar:disabled {
+     background-color: var(--color-pausar-disabled);
+     border-color: var(--color-pausar-disabled);
+   }
+   
+   .btn--finalizar:disabled {
+     background-color: var(--color-finalizar-disabled);
+     border-color: var(--color-finalizar-disabled);
+   }
+   
+   .btn--iniciar {
+     background-color: var(--color-iniciar);
+     border-color: var(--color-iniciar);
+   }
+   
+   .btn--iniciar:hover:not(:disabled),
+   .btn--iniciar:focus:not(:disabled) {
+     background-color: var(--color-iniciar-hover);
+     border-color: var(--color-iniciar-hover);
+   }
+   
+   .btn--pausar {
+     background-color: var(--color-pausar);
+     border-color: var(--color-pausar);
+   }
+   
+   .btn--pausar:hover:not(:disabled),
+   .btn--pausar:focus:not(:disabled) {
+     background-color: var(--color-pausar-hover);
+     border-color: var(--color-pausar-hover);
+   }
+   
+   .btn--finalizar {
+     background-color: var(--color-finalizar);
+     border-color: var(--color-finalizar);
+   }
+   
+   .btn--finalizar:hover:not(:disabled),
+   .btn--finalizar:focus:not(:disabled) {
+     background-color: var(--color-finalizar-hover);
+     border-color: var(--color-finalizar-hover);
+   }
+   
+   /* ==========================================================================
+      8. CONFIGURACIÓN
+      ========================================================================== */
+   .config-container__row {
+     display: flex;
+     gap: 1rem;
+     margin-bottom: 1rem;
+   }
+   
+   .config-container__row--superior {
+     flex-wrap: wrap;
+   }
+   
+   .config-container__row--inferior {
+     flex-direction: column;
+   }
+   
+   .config-container__subcontenedor {
+     background-color: hsl(40, 20%, 95%);
+     border: 1px solid var(--color-borde);
+     border-radius: 0.5rem;
+     padding: 1rem;
+     display: flex;
+     flex-direction: column;
+     gap: 0.5rem;
+     flex: 1;
+     min-width: 200px;
+     align-items: center;
+     text-align: center;
+   }
+   
+   .config-container__subcontenedor--completo {
+     width: 100%;
+     min-width: auto;
+   }
+   
+   .config-container__label {
+     font-weight: 600;
+     color: var(--color-texto);
+     font-size: 0.9rem;
+   }
+   
+   .config-container__input {
+     padding: 0.5rem;
+     border: 1px solid var(--color-borde);
+     border-radius: 0.4rem;
+     background-color: hsl(40, 25%, 97%);
+     font-size: 1rem;
+     transition: border-color 0.25s ease, box-shadow 0.25s ease;
+     text-align: center;
+     max-width: 8rem;
+     margin: 0 auto;
+   }
+   
+   .config-container__input:focus {
+     outline: none;
+     border-color: var(--color-primario);
+     box-shadow: 0 0 0 3px hsla(var(--tono), 80%, 50%, 0.2);
+   }
+   
+   .config-container__toggle {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+   }
+   
+   /* Checkbox Toggle Model */
+   .checkbox-wrapper-6 .tgl {
+     display: none;
+   }
+   .checkbox-wrapper-6 .tgl,
+   .checkbox-wrapper-6 .tgl:after,
+   .checkbox-wrapper-6 .tgl:before,
+   .checkbox-wrapper-6 .tgl *,
+   .checkbox-wrapper-6 .tgl *:after,
+   .checkbox-wrapper-6 .tgl *:before,
+   .checkbox-wrapper-6 .tgl + .tgl-btn {
+     box-sizing: border-box;
+   }
+   .checkbox-wrapper-6 .tgl::-moz-selection,
+   .checkbox-wrapper-6 .tgl:after::-moz-selection,
+   .checkbox-wrapper-6 .tgl:before::-moz-selection,
+   .checkbox-wrapper-6 .tgl *::-moz-selection,
+   .checkbox-wrapper-6 .tgl *:after::-moz-selection,
+   .checkbox-wrapper-6 .tgl *:before::-moz-selection,
+   .checkbox-wrapper-6 .tgl + .tgl-btn::-moz-selection,
+   .checkbox-wrapper-6 .tgl::selection,
+   .checkbox-wrapper-6 .tgl:after::selection,
+   .checkbox-wrapper-6 .tgl:before::selection,
+   .checkbox-wrapper-6 .tgl *::selection,
+   .checkbox-wrapper-6 .tgl *:after::selection,
+   .checkbox-wrapper-6 .tgl *:before::selection,
+   .checkbox-wrapper-6 .tgl + .tgl-btn::selection {
+     background: none;
+   }
+   .checkbox-wrapper-6 .tgl + .tgl-btn {
+     outline: 0;
+     display: block;
+     width: 4em;
+     height: 2em;
+     position: relative;
+     cursor: pointer;
+     -webkit-user-select: none;
+        -moz-user-select: none;
+         -ms-user-select: none;
+             user-select: none;
+   }
+   .checkbox-wrapper-6 .tgl + .tgl-btn:after,
+   .checkbox-wrapper-6 .tgl + .tgl-btn:before {
+     position: relative;
+     display: block;
+     content: "";
+     width: 50%;
+     height: 100%;
+   }
+   .checkbox-wrapper-6 .tgl + .tgl-btn:after {
+     left: 0;
+   }
+   .checkbox-wrapper-6 .tgl + .tgl-btn:before {
+     display: none;
+   }
+   .checkbox-wrapper-6 .tgl:checked + .tgl-btn:after {
+     left: 50%;
+   }
+   
+   .checkbox-wrapper-6 .tgl-light + .tgl-btn {
+     background: #f0f0f0;
+     border-radius: 2em;
+     padding: 2px;
+     transition: all 0.4s ease;
+   }
+   .checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
+     border-radius: 50%;
+     background: #fff;
+     transition: all 0.2s ease;
+   }
+   .checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
+     background: #9FD6AE;
+   }
+   
+   .config-container__select-group {
+     display: flex;
+     align-items: center;
+     gap: 0.5rem;
+     justify-content: center;
+   }
+   
+   .config-container__select {
+     padding: 0.4rem;
+     border: 1px solid var(--color-borde);
+     border-radius: 0.4rem;
+     background-color: hsl(40, 25%, 97%);
+     font-size: 0.9rem;
+     transition: background-color 0.25s ease, border-color 0.25s ease;
+   }
+   
+   .config-container__select:disabled {
+     background-color: hsl(30, 15%, 90%);
+     border-color: hsl(30, 10%, 80%);
+     color: var(--color-texto-secundario);
+     cursor: not-allowed;
+   }
+   
+   .config-container__arrow {
+     font-weight: bold;
+     color: var(--color-primario);
+   }
+   
+   .config-container__bilingue {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;
+     align-items: center;
+     text-align: center;
+   }
+   
+   .config-container__toggle-group {
+     display: flex;
+     align-items: center;
+     gap: 1rem;
+   }
+   
+   .config-container__opciones {
+     display: flex;
+     flex-direction: column;
+     gap: 0.5rem;
+   }
+   
+   /* ==========================================================================
+      9. BOTONES FLOTANTES
+      ========================================================================== */
+   .floating-buttons {
+     position: fixed;
+     top: 1rem;
+     right: 1rem;
+     display: flex;
+     gap: 0.75rem;
+     z-index: 1000;
+   }
+   
+   .floating-buttons__button {
+     width: 50px;
+     height: 50px;
+     padding: 0;
+     border: none;
+     background-color: hsl(30, 50%, 45%);
+     color: white;
+     border-radius: 50%;
+     font-size: 1.2rem;
+     font-weight: 600;
+     cursor: pointer;
+     transition: background-color 0.25s ease, transform 0.15s ease, box-shadow 0.25s ease;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+   }
+   
+   .floating-buttons__button:hover,
+   .floating-buttons__button:focus {
+     background-color: hsl(30, 50%, 35%);
+     transform: translateY(-2px);
+     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+     outline: none;
+   }
+   
+   /* ==========================================================================
+      10. FOOTER
+      ========================================================================== */
+   .pie {
+     text-align: center;
+     padding: 1.2rem 0;
+     border-top: 1px solid var(--color-borde);
+     font-size: 0.9rem;
+     color: var(--color-texto-secundario);
+   }
+   
+   .pie__texto {
+     margin: 0;
+   }
+   
+   /* ==========================================================================
+      11. ANIMACIÓN DE SHAKE PARA ERRORES
+      ========================================================================== */
+   @keyframes shake {
+     0%, 100% { transform: translateX(0); }
+     25% { transform: translateX(-5px); }
+     75% { transform: translateX(5px); }
+   }
+   
+  /* ==========================================================================
+   12. RESPONSIVE
+   ========================================================================== */
 @media (max-width: 37.5rem) {
-  .main {
+  body {
     padding: 1rem;
   }
 
-  .main__title {
+  .cabecera__titulo {
     font-size: 1.6rem;
   }
 
-  .config-container {
+  .tarjeta {
+    padding: 1rem;
+  }
+
+  .config-container__row--superior {
     flex-direction: column;
   }
 
-  .config-container__group {
-    flex-direction: column;
-    align-items: flex-start;
-    width: 100%;
-    /* En móvil, cada grupo ocupa toda la fila */
+  .config-container__subcontenedor {
+    min-width: auto;
   }
 
-  .config-container__buttons,
-  .test-container__buttons {
+  .config-container__toggle-group {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tarjeta__acciones {
     flex-direction: column;
     align-items: stretch;
+  }
+
+  .tarjeta__reloj {
+    justify-content: center;
+    margin-top: 0.5rem;
+  }
+
+  .floating-buttons {
+    position: static;
+    justify-content: center;
+    margin-bottom: 1rem;
+  }
+
+  /* Responsive para las cajas de estadísticas */
+  .tarjeta__estadisticas-row {
+    flex-direction: column;
+  }
+
+  .tarjeta__subcontenedor--correctas,
+  .tarjeta__subcontenedor--incorrectas {
+    min-width: auto;
   }
 }

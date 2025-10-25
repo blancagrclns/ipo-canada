@@ -51,33 +51,112 @@
   color: var(--color-texto-secundario);
 }
 
-/* BOTONES */
+/* CABECERA */
+[data-theme="dark"] .cabecera__titulo {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .cabecera__instrucciones {
+  color: var(--color-texto-secundario);
+}
+
+/* TARJETAS Y CONTENEDORES */
+[data-theme="dark"] .tarjeta {
+  background-color: var(--color-panel);
+  border-color: var(--color-borde);
+}
+
+[data-theme="dark"] .tarjeta__titulo {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .tarjeta__dato {
+  color: var(--color-texto);
+}
+
+/* SUBCONTENEDORES - Forzar colores oscuros */
+[data-theme="dark"] .tarjeta__subcontenedor,
+[data-theme="dark"] .tarjeta__reloj,
+[data-theme="dark"] .config-container__subcontenedor {
+  background-color: hsl(var(--tono), 10%, 20%) !important;
+  border-color: var(--color-borde) !important;
+}
+
+/* BOTONES (sin floating-buttons) */
 [data-theme="dark"] .config-container__button,
-[data-theme="dark"] .test-container__button,
-[data-theme="dark"] .floating-buttons__button {
+[data-theme="dark"] .test-container__button {
   background-color: var(--color-acento);
   color: var(--color-texto);
   border: 1px solid var(--color-borde);
 }
 
 [data-theme="dark"] .config-container__button:hover,
-[data-theme="dark"] .test-container__button:hover,
-[data-theme="dark"] .floating-buttons__button:hover {
+[data-theme="dark"] .test-container__button:hover {
   background-color: var(--color-acento-hover);
 }
 
-/* INPUTS Y CAMPOS */
+/* BOTONES DE ACCIÓN - Azul sobrio */
+[data-theme="dark"] .btn--iniciar,
+[data-theme="dark"] .btn--pausar,
+[data-theme="dark"] .btn--finalizar {
+  background-color: hsl(210, 70%, 50%);
+  border-color: hsl(210, 70%, 50%);
+  color: white;
+}
+
+[data-theme="dark"] .btn--iniciar:hover:not(:disabled),
+[data-theme="dark"] .btn--pausar:hover:not(:disabled),
+[data-theme="dark"] .btn--finalizar:hover:not(:disabled) {
+  background-color: hsl(210, 70%, 40%);
+  border-color: hsl(210, 70%, 40%);
+}
+
+[data-theme="dark"] .btn--iniciar:disabled,
+[data-theme="dark"] .btn--pausar:disabled,
+[data-theme="dark"] .btn--finalizar:disabled {
+  background-color: hsl(210, 20%, 40%) !important;
+  border-color: hsl(210, 20%, 40%) !important;
+  color: hsl(0, 0%, 80%) !important;
+}
+
+/* BOTONES FLOTANTES - Mantener estilo marrón/dorado en modo oscuro */
+[data-theme="dark"] .floating-buttons__button {
+  background-color: hsl(30, 50%, 45%) !important;
+  color: white !important;
+  border: none !important;
+}
+
+[data-theme="dark"] .floating-buttons__button:hover,
+[data-theme="dark"] .floating-buttons__button:focus {
+  background-color: hsl(30, 50%, 35%) !important;
+}
+
+/* INPUTS Y CAMPOS - Forzar colores oscuros */
 [data-theme="dark"] .config-container__input,
-[data-theme="dark"] .test-container__input {
-  background-color: hsl(var(--tono), 10%, 20%);
-  color: var(--color-texto);
-  border: 1px solid var(--color-borde);
+[data-theme="dark"] .test-container__input,
+[data-theme="dark"] .tarjeta__input,
+[data-theme="dark"] .config-container__select {
+  background-color: hsl(var(--tono), 10%, 18%) !important;
+  color: var(--color-texto) !important;
+  border: 1px solid var(--color-borde) !important;
 }
 
 [data-theme="dark"] .config-container__input:focus,
-[data-theme="dark"] .test-container__input:focus {
+[data-theme="dark"] .test-container__input:focus,
+[data-theme="dark"] .tarjeta__input:focus {
   border-color: var(--color-acento);
   box-shadow: 0 0 0 3px hsla(var(--tono), 100%, 65%, 0.25);
+}
+
+[data-theme="dark"] .tarjeta__input:disabled {
+  background-color: hsl(var(--tono), 10%, 25%) !important;
+  color: var(--color-texto-secundario) !important;
+}
+
+[data-theme="dark"] .config-container__select:disabled {
+  background-color: hsl(var(--tono), 10%, 25%) !important;
+  color: var(--color-texto-secundario) !important;
+  border-color: var(--color-borde) !important;
 }
 
 /* TEXTOS Y ELEMENTOS DESTACADOS */
@@ -88,6 +167,14 @@
 
 [data-theme="dark"] .test-container__span {
   color: var(--color-acento);
+}
+
+[data-theme="dark"] .config-container__arrow {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .tarjeta__contador {
+  color: var(--color-texto);
 }
 
 /* MODAL EN MODO OSCURO */
@@ -167,4 +254,17 @@ body[data-theme="dark"] {
   opacity: 1;
   transform: none !important;
   box-shadow: none !important;
+}
+
+/* TOGGLE CHECKBOX EN MODO OSCURO */
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn {
+  background: hsl(var(--tono), 10%, 30%);
+}
+
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
+  background: hsl(var(--tono), 10%, 50%);
+}
+
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
+  background: hsl(140, 50%, 35%);
 }
