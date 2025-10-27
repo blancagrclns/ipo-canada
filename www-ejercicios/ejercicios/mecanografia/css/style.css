@@ -260,6 +260,7 @@ body {
 
 .tarjeta__estadisticas-row {
   display: flex;
+  justify-content: flex-start;
   gap: 1rem;
   flex-wrap: wrap;
 }
@@ -275,14 +276,12 @@ body {
 }
 
 .tarjeta__subcontenedor--correctas {
-  flex: 1;
-  min-width: 200px;
+  min-width: 100px;
   border-left: 4px solid var(--color-iniciar);
 }
 
 .tarjeta__subcontenedor--incorrectas {
-  flex: 1;
-  min-width: 200px;
+  min-width: 100px;
   border-left: 4px solid var(--color-finalizar);
 }
 
