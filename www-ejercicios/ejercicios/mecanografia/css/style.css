@@ -118,6 +118,12 @@ body {
   color: var(--color-texto);
 }
 
+#palabraDeMuestra,
+#traduccionCorrecta {
+  font-weight: 700;
+}
+
+
 .tarjeta__dato--hidden {
   display: none;
 }
