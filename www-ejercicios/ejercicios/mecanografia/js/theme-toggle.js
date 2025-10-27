@@ -19,20 +19,6 @@ function toggleTema() {
   }
 }
 
-// Event listener para el botón de tema
-btnTema.addEventListener('click', toggleTema);
-
-// Aplicar el tema guardado al cargar la página
-document.addEventListener('DOMContentLoaded', () => {
-  const temaGuardado = localStorage.getItem('tema');
-
-  if (temaGuardado === 'dark') {
-    activarModoOscuro();
-  } else {
-    activarModoClaro();
-  }
-});
-
 // Funciones para gestionar el modo oscuro/claro
 function activarModoOscuro() {
   html.setAttribute('data-theme', 'dark');
@@ -46,4 +32,16 @@ function activarModoClaro() {
   if (darkThemeLink) darkThemeLink.disabled = true;
   btnTema.textContent = '🌙'; // Luna cuando está en modo claro
   localStorage.setItem('tema', 'light');
+}
+
+// Event listener para el botón de tema
+btnTema.addEventListener('click', toggleTema);
+
+// Aplicar el tema guardado al cargar la página
+const temaGuardado = localStorage.getItem('tema');
+
+if (temaGuardado === 'dark') {
+  activarModoOscuro();
+} else {
+  activarModoClaro();
 }

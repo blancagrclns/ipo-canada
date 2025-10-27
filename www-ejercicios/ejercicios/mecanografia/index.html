@@ -20,10 +20,13 @@
 
 <body>
   <!-- Botones flotantes ajenos al test -->
-  <div class="floating-buttons">
+  <div class="floating-buttons floating-buttons--left">
+    <button id="btnConfiguracion" class="floating-buttons__button" data-accion="configuracion">⚙</button>
+  </div>
+  
+  <div class="floating-buttons floating-buttons--right">
     <button id="btnAyuda" class="floating-buttons__button" data-accion="ayuda">?</button>
     <button id="btnTema" class="floating-buttons__button" data-accion="tema">🌙</button>
-
   </div>
 
   <header class="cabecera">
@@ -34,62 +37,7 @@
   </header>
 
   <main class="contenedor">
-    <!-- Envolver estas dos secciones en un contenedor grid -->
-    <div class="contenedor__grid-paralelo">
-
-      <!-- Configuración del test -->
-      <section class="tarjeta tarjeta--configuracion">
-        <h2 class="tarjeta__titulo">Configuración del Test</h2>
-
-        <div class="tarjeta__contenido">
-          <!-- Fila superior: 2 bloques en paralelo -->
-          <div class="config-container__row config-container__row--superior">
-            <div class="config-container__subcontenedor">
-              <label for="numPalabras" class="config-container__label">Número de palabras:</label>
-              <input type="number" id="numPalabras" class="config-container__input" min="1" placeholder="10"
-                data-config="palabras" />
-            </div>
-
-            <div class="config-container__subcontenedor">
-              <label for="tiempoMax" class="config-container__label">Tiempo máximo (opcional):</label>
-              <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="60"
-                data-config="tiempo" />
-            </div>
-          </div>
-
-          <!-- Fila inferior: 1 bloque que ocupa todo el ancho -->
-          <div class="config-container__row config-container__row--inferior">
-            <div class="config-container__subcontenedor config-container__subcontenedor--completo">
-              <div class="config-container__bilingue">
-                <div class="config-container__toggle-group">
-                  <span class="config-container__label">Modo bilingüe:</span>
-                  <div class="checkbox-wrapper-6">
-                    <input class="tgl tgl-light" id="modoBilingue" type="checkbox" data-config="bilingue" />
-                    <label class="tgl-btn" for="modoBilingue"></label>
-                  </div>
-                </div>
-
-                <div id="opcionesBilingue" class="config-container__opciones">
-                  <label class="config-container__label">Dirección:</label>
-                  <div class="config-container__select-group">
-                    <select id="idiomaOrigen" class="config-container__select" data-config="idioma-origen" disabled>
-                      <option value="es">Español</option>
-                      <option value="en" selected>Inglés</option>
-                    </select>
-                    <span class="config-container__arrow">→</span>
-                    <select id="idiomaDestino" class="config-container__select" data-config="idioma-destino" disabled>
-                      <option value="es" selected>Español</option>
-                      <option value="en">Inglés</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <!-- Área del test -->
+    <!-- Área del test -->
       <section class="tarjeta tarjeta--test">
         <h2 class="tarjeta__titulo">Test de Mecanografía</h2>
 
@@ -117,11 +65,11 @@
             </div>
 
             <div class="tarjeta__subcontenedor">
-              <p class="tarjeta__dato">Palabra de muestra: <span id="palabraDeMuestra" data-palabra>Palabra</span></p>
+              <p class="tarjeta__dato">Palabra de muestra: <span id="palabraDeMuestra" class="tarjeta__palabra" data-palabra>Palabra</span></p>
 
               <!-- En modo bilingüe: Añadir debajo de "Palabra de muestra" -->
-              <p id="palabraTraduccion" class="tarjeta__dato tarjeta__dato--hidden">Traducción: <span
-                  id="traduccionCorrecta" data-traduccion>-</span></p>
+              <p id="palabraTraduccion" class="tarjeta__dato tarjeta__dato--hidden tarjeta__traduccion-container">Traducción: <span
+                  id="traduccionCorrecta" class="tarjeta__traduccion" data-traduccion>-</span></p>
             </div>
           </div>
 
@@ -131,7 +79,66 @@
           </div>
         </div>
       </section>
-    </div>
+
+      <!-- Modal de configuración -->
+      <div id="modalConfiguracion" class="modal modal--configuracion">
+        <div class="modal__content">
+          <button id="cerrarConfiguracion" class="modal__close">&times;</button>
+          <h2 class="modal__title">Configuración del Test</h2>
+
+          <div class="tarjeta__contenido">
+            <!-- Fila superior: 2 bloques en paralelo -->
+            <div class="config-container__row config-container__row--superior">
+              <div class="config-container__subcontenedor">
+                <label for="numPalabras" class="config-container__label">Número de palabras:</label>
+                <input type="number" id="numPalabras" class="config-container__input" min="1" placeholder="10"
+                  data-config="palabras" />
+              </div>
+
+              <div class="config-container__subcontenedor">
+                <label for="tiempoMax" class="config-container__label">Tiempo máximo (opcional):</label>
+                <input type="number" id="tiempoMax" class="config-container__input" min="1" placeholder="60"
+                  data-config="tiempo" />
+              </div>
+            </div>
+
+            <!-- Fila inferior: 1 bloque que ocupa todo el ancho -->
+            <div class="config-container__row config-container__row--inferior">
+              <div class="config-container__subcontenedor config-container__subcontenedor--completo">
+                <div class="config-container__bilingue">
+                  <div class="config-container__toggle-group">
+                    <span class="config-container__label">Modo bilingüe:</span>
+                    <div class="checkbox-wrapper-6">
+                      <input class="tgl tgl-light" id="modoBilingue" type="checkbox" data-config="bilingue" />
+                      <label class="tgl-btn" for="modoBilingue"></label>
+                    </div>
+                  </div>
+
+                  <div id="opcionesBilingue" class="config-container__opciones">
+                    <label class="config-container__label">Dirección:</label>
+                    <div class="config-container__select-group">
+                      <select id="idiomaOrigen" class="config-container__select" data-config="idioma-origen" disabled>
+                        <option value="es">Español</option>
+                        <option value="en" selected>Inglés</option>
+                      </select>
+                      <span class="config-container__arrow">→</span>
+                      <select id="idiomaDestino" class="config-container__select" data-config="idioma-destino" disabled>
+                        <option value="es" selected>Español</option>
+                        <option value="en">Inglés</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botón para aceptar y cerrar -->
+          <div class="modal__acciones">
+            <button id="btnAceptarConfiguracion" class="btn btn--iniciar">Aceptar</button>
+          </div>
+        </div>
+      </div>
 
       <!-- Modal explicativo de "Ayuda" -->
       <div id="modalAyuda" class="modal">

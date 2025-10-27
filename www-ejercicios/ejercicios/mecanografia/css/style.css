@@ -1,5 +1,5 @@
 /* ==========================================================================
-   1. RESET MÍNIMO → CONSISTENCIA ENTRE NAVEGADORES (Introducción.pdf)
+   1. RESET MÍNIMO → CONSISTENCIA ENTRE NAVEGADORES
    ========================================================================== */
 *,
 *::before,
@@ -10,21 +10,28 @@
 }
 
 /* ==========================================================================
-      2. VARIABLES CSS EN :root → DISEÑO CROMÁTICO CENTRALIZADO
-      ========================================================================== */
+   2. VARIABLES CSS EN :root → DISEÑO CROMÁTICO CENTRALIZADO
+   ========================================================================== */
 :root {
+  /* ===== TONOS BASE ===== */
   --tono: 210;
   --tono-complementario: calc(var(--tono) + 180);
 
+  /* ===== COLORES PRINCIPALES ===== */
   --color-fondo: hsl(30, 15%, 92%);
   --color-primario: hsl(200, 30%, 40%);
   --color-primario-claro: hsl(35, 25%, 88%);
   --color-secundario: hsl(var(--tono-complementario), 70%, 45%);
+  --color-accento: hsl(var(--tono), 80%, 50%);
+  --color-accento-hover: hsl(var(--tono), 80%, 40%);
+  --color-panel: hsl(var(--tono), 10%, 15%);
+  
+  /* ===== COLORES DE TEXTO ===== */
   --color-texto: hsl(0, 0%, 20%);
   --color-texto-secundario: hsl(0, 0%, 35%);
   --color-borde: hsl(30, 10%, 75%);
-
-  /* Colores específicos para botones */
+  
+  /* ===== COLORES PARA BOTONES ===== */
   --color-iniciar: hsl(120, 60%, 45%);
   --color-iniciar-hover: hsl(120, 60%, 35%);
   --color-pausar: hsl(30, 80%, 50%);
@@ -33,15 +40,125 @@
   --color-finalizar: hsl(0, 70%, 50%);
   --color-finalizar-hover: hsl(0, 70%, 40%);
   --color-finalizar-disabled: hsl(0, 30%, 70%);
+  
+  /* ===== COLORES DE ESTADO ===== */
   --color-exito: hsl(140, 50%, 45%);
   --color-error: hsl(0, 70%, 50%);
-
+  
+  /* ===== COLORES PARA MODAL ===== */
+  --modal-bg: hsl(35, 25%, 88%);
+  --modal-shadow: hsla(30, 20%, 10%, 0.25);
+  --modal-close-bg: hsl(30, 15%, 85%);
+  --modal-close-bg-hover: hsl(30, 15%, 80%);
+  --modal-title-accent: hsl(200, 30%, 40%);
+  --modal-title-border: hsl(30, 10%, 75%);
+  --modal-section-title: hsl(200, 30%, 40%);
+  --modal-section-dot: hsl(200, 30%, 40%);
+  --modal-list-highlight-bg: hsl(50, 100%, 95%);
+  --modal-list-highlight-border: hsl(50, 100%, 50%);
+  --modal-table-border: hsl(30, 10%, 75%);
+  --modal-table-th-bg: hsl(40, 20%, 95%);
+  --modal-table-even-bg: hsl(40, 20%, 97%);
+  --modal-table-td-bg: hsl(40, 20%, 92%);
+  
+  /* ===== COLORES COMPLEMENTARIOS ===== */
+  --color-subcontenedor: hsl(40, 20%, 95%);
+  --color-subcontenedor-claro: hsl(40, 25%, 97%);
+  --color-input-disabled: hsl(30, 15%, 90%);
+  --color-borde-disabled: hsl(30, 10%, 80%);
+  --color-boton-flotante: hsl(30, 50%, 45%);
+  --color-boton-flotante-hover: hsl(30, 50%, 35%);
+  
+  /* ===== SOMBRAS ===== */
+  --shadow-reloj: rgba(0, 0, 0, 0.05);
+  --shadow-focus: hsla(var(--tono), 80%, 50%, 0.2);
+  --shadow-boton: rgba(0, 0, 0, 0.2);
+  --shadow-boton-hover: rgba(0, 0, 0, 0.3);
+  
+  /* ===== FONDOS ESPECIALES ===== */
+  --color-toggle-off: #f0f0f0;
+  --color-toggle-ball-bg: #fff;
+  --color-toggle-on: #9FD6AE;
+  
+  /* ===== ESTADOS DE INPUT ===== */
+  --color-input-ok-bg: hsla(140, 50%, 45%, 0.1);
+  --color-input-error-bg: hsla(0, 70%, 50%, 0.1);
+  
+  /* ===== TEXTOS MODAL ===== */
+  --modal-text: hsl(0, 0%, 20%);
+  --shadow-highlight: hsla(50, 60%, 30%, 0.15);
+  
+  /* ===== MODAL OVERLAY ===== */
+  --modal-overlay: hsla(30, 10%, 10%, 0.7);
+  
+  /* ===== TOOLTIP ===== */
+  --tooltip-bg: hsla(0, 0%, 100%, 0.9);
+  --tooltip-shadow: rgba(0, 0, 0, 0.1);
+  
+  /* ===== TIPOGRAFÍA ===== */
   --fuente-principal: 'Inter', 'Segoe UI', sans-serif;
 }
 
 /* ==========================================================================
-      3. ESTILOS BASE DEL BODY
-      ========================================================================== */
+   VARIABLES PARA TEMA OSCURO
+   ========================================================================== */
+[data-theme="dark"] {
+  /* ===== COLORS PARA TEMA OSCURO ===== */
+  --tono: 210;
+  --color-fondo: hsl(var(--tono), 10%, 10%);
+  --color-panel: hsl(var(--tono), 10%, 15%);
+  --color-texto: hsl(0, 0%, 100%);
+  --color-texto-secundario: hsl(0, 0%, 85%);
+  --color-accento: hsl(var(--tono), 100%, 65%);
+  --color-accento-hover: hsl(var(--tono), 100%, 60%);
+  --color-borde: hsl(var(--tono), 10%, 35%);
+  --color-error: hsl(0, 70%, 60%);
+  --color-exito: hsl(140, 50%, 45%);
+  
+  /* ===== BOTONES EN TEMA OSCURO ===== */
+  --color-boton-accion: hsl(210, 70%, 50%);
+  --color-boton-accion-hover: hsl(210, 70%, 40%);
+  --color-boton-disabled: hsl(210, 20%, 40%);
+  
+  /* ===== COMPLEMENTARIOS PARA TEMA OSCURO ===== */
+  --color-subcontenedor: hsl(var(--tono), 10%, 20%);
+  --color-subcontenedor-claro: hsl(var(--tono), 10%, 18%);
+  --color-input-disabled: hsl(var(--tono), 10%, 25%);
+  --color-borde-disabled: hsl(var(--tono), 10%, 35%);
+  --color-boton-flotante: hsl(30, 50%, 45%);
+  --color-boton-flotante-hover: hsl(30, 50%, 35%);
+  --color-texto-disabled: hsl(0, 0%, 80%);
+  --color-highlight-text: hsl(50, 80%, 85%);
+  --color-toggle-bg: hsl(var(--tono), 10%, 30%);
+  --color-toggle-ball: hsl(var(--tono), 10%, 50%);
+  --color-toggle-active: hsl(140, 50%, 35%);
+  
+  /* ===== SOMBRAS PARA TEMA OSCURO ===== */
+  --shadow-focus: hsla(var(--tono), 100%, 65%, 0.25);
+  --shadow-tooltip-bg: hsla(var(--tono), 10%, 15%, 0.9);
+  --shadow-tooltip: rgba(0, 0, 0, 0.3);
+  --tooltip-bg: hsla(var(--tono), 10%, 15%, 0.9);
+  --tooltip-shadow: rgba(0, 0, 0, 0.3);
+  
+  /* ===== MODAL EN TEMA OSCURO ===== */
+  --modal-bg: hsl(var(--tono), 10%, 15%);
+  --modal-shadow: hsla(0, 0%, 0%, 0.6);
+  --modal-close-bg: hsl(var(--tono), 10%, 25%);
+  --modal-close-bg-hover: hsl(var(--tono), 10%, 35%);
+  --modal-title-accent: hsl(var(--tono), 100%, 70%);
+  --modal-title-border: hsl(var(--tono), 20%, 40%);
+  --modal-section-title: hsl(var(--tono), 80%, 70%);
+  --modal-section-dot: hsl(var(--tono), 100%, 60%);
+  --modal-list-highlight-bg: hsl(50, 30%, 20%);
+  --modal-list-highlight-border: hsl(50, 80%, 50%);
+  --modal-table-th-bg: hsl(var(--tono), 15%, 25%);
+  --modal-table-even-bg: hsl(var(--tono), 15%, 20%);
+  --modal-table-td-bg: hsl(var(--tono), 20%, 22%);
+}
+
+/* ==========================================================================
+   3. ESTILOS BASE DEL BODY
+   ========================================================================== */
 body {
   font-family: var(--fuente-principal);
   font-size: 1rem;
@@ -56,20 +173,21 @@ body {
 }
 
 /* ==========================================================================
-      4. CONTENEDOR PRINCIPAL
-      ========================================================================== */
+   4. CONTENEDOR PRINCIPAL
+   ========================================================================== */
 .contenedor {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
   flex: 1;
-  max-width: 650px;
+  max-width: 700px;
   margin: 0 auto;
+  width: 100%;
 }
 
 /* ==========================================================================
-      5. CABECERA
-      ========================================================================== */
+   5. CABECERA
+   ========================================================================== */
 .cabecera {
   text-align: center;
 }
@@ -88,8 +206,8 @@ body {
 }
 
 /* ==========================================================================
-      6. COMPONENTE: TARJETA
-      ========================================================================== */
+   6. COMPONENTE: TARJETA
+   ========================================================================== */
 .tarjeta {
   background-color: var(--color-primario-claro);
   border: 1px solid var(--color-borde);
@@ -118,11 +236,10 @@ body {
   color: var(--color-texto);
 }
 
-#palabraDeMuestra,
-#traduccionCorrecta {
+.tarjeta__palabra,
+.tarjeta__traduccion {
   font-weight: 700;
 }
-
 
 .tarjeta__dato--hidden {
   display: none;
@@ -141,7 +258,6 @@ body {
   gap: 1rem;
 }
 
-/* Fila de estadísticas con dos cajas lado a lado */
 .tarjeta__estadisticas-row {
   display: flex;
   gap: 1rem;
@@ -149,7 +265,7 @@ body {
 }
 
 .tarjeta__subcontenedor {
-  background-color: hsl(40, 20%, 95%);
+  background-color: var(--color-subcontenedor);
   border: 1px solid var(--color-borde);
   border-radius: 0.5rem;
   padding: 1rem;
@@ -158,34 +274,27 @@ body {
   gap: 0.5rem;
 }
 
-/* Modificador para caja de correctas - borde verde */
 .tarjeta__subcontenedor--correctas {
   flex: 1;
   min-width: 200px;
   border-left: 4px solid var(--color-iniciar);
 }
 
-/* Modificador para caja de incorrectas - borde rojo */
 .tarjeta__subcontenedor--incorrectas {
   flex: 1;
   min-width: 200px;
   border-left: 4px solid var(--color-finalizar);
 }
 
-.tarjeta__tiempo {
-  display: flex;
-  align-items: center;
-}
-
 .tarjeta__reloj {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background-color: hsl(40, 20%, 95%);
+  background-color: var(--color-subcontenedor);
   border: 1px solid var(--color-borde);
   border-radius: 0.5rem;
   padding: 0.5rem 0.75rem;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 2px 4px var(--shadow-reloj);
 }
 
 .tarjeta__icono {
@@ -194,7 +303,6 @@ body {
 }
 
 .tarjeta__contador {
-  font-size: var(--tamanyo-base);
   font-weight: 600;
   color: var(--color-texto);
   font-family: var(--fuente-principal);
@@ -213,25 +321,25 @@ body {
   border-radius: 0.5rem;
   font-size: 1.1rem;
   font-family: var(--fuente-principal);
-  background-color: hsl(40, 25%, 97%);
+  background-color: var(--color-subcontenedor-claro);
   transition: border-color 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
 .tarjeta__input:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px hsla(var(--tono), 80%, 50%, 0.2);
+  box-shadow: 0 0 0 3px var(--shadow-focus);
 }
 
 .tarjeta__input:disabled {
-  background-color: hsl(30, 15%, 90%);
+  background-color: var(--color-input-disabled);
   color: var(--color-texto-secundario);
   cursor: not-allowed;
 }
 
 /* ==========================================================================
-      7. BOTONES
-      ========================================================================== */
+   7. BOTONES
+   ========================================================================== */
 .btn {
   padding: 0.65rem 1.3rem;
   border: 2px solid transparent;
@@ -255,16 +363,6 @@ body {
   opacity: 0.6;
   cursor: not-allowed;
   transform: none;
-}
-
-.btn--pausar:disabled {
-  background-color: var(--color-pausar-disabled);
-  border-color: var(--color-pausar-disabled);
-}
-
-.btn--finalizar:disabled {
-  background-color: var(--color-finalizar-disabled);
-  border-color: var(--color-finalizar-disabled);
 }
 
 .btn--iniciar {
@@ -291,6 +389,11 @@ body {
   border-color: var(--color-pausar-hover);
 }
 
+.btn--pausar:disabled {
+  background-color: var(--color-pausar-disabled);
+  border-color: var(--color-pausar-disabled);
+}
+
 .btn--finalizar {
   background-color: var(--color-finalizar);
   border-color: var(--color-finalizar);
@@ -302,9 +405,14 @@ body {
   border-color: var(--color-finalizar-hover);
 }
 
+.btn--finalizar:disabled {
+  background-color: var(--color-finalizar-disabled);
+  border-color: var(--color-finalizar-disabled);
+}
+
 /* ==========================================================================
-      8. CONFIGURACIÓN
-      ========================================================================== */
+   8. CONFIGURACIÓN
+   ========================================================================== */
 .config-container__row {
   display: flex;
   gap: 1rem;
@@ -320,7 +428,7 @@ body {
 }
 
 .config-container__subcontenedor {
-  background-color: hsl(40, 20%, 95%);
+  background-color: var(--color-subcontenedor);
   border: 1px solid var(--color-borde);
   border-radius: 0.5rem;
   padding: 1rem;
@@ -348,7 +456,7 @@ body {
   padding: 0.5rem;
   border: 1px solid var(--color-borde);
   border-radius: 0.4rem;
-  background-color: hsl(40, 25%, 97%);
+  background-color: var(--color-subcontenedor-claro);
   font-size: 1rem;
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
   text-align: center;
@@ -359,7 +467,7 @@ body {
 .config-container__input:focus {
   outline: none;
   border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px hsla(var(--tono), 80%, 50%, 0.2);
+  box-shadow: 0 0 0 3px var(--shadow-focus);
 }
 
 .config-container__toggle {
@@ -368,7 +476,6 @@ body {
   gap: 0.5rem;
 }
 
-/* Checkbox Toggle Model */
 .checkbox-wrapper-6 .tgl {
   display: none;
 }
@@ -435,7 +542,7 @@ body {
 }
 
 .checkbox-wrapper-6 .tgl-light+.tgl-btn {
-  background: #f0f0f0;
+  background: var(--color-toggle-off);
   border-radius: 2em;
   padding: 2px;
   transition: all 0.4s ease;
@@ -443,12 +550,12 @@ body {
 
 .checkbox-wrapper-6 .tgl-light+.tgl-btn:after {
   border-radius: 50%;
-  background: #fff;
+  background: var(--color-toggle-ball-bg);
   transition: all 0.2s ease;
 }
 
 .checkbox-wrapper-6 .tgl-light:checked+.tgl-btn {
-  background: #9FD6AE;
+  background: var(--color-toggle-on);
 }
 
 .config-container__select-group {
@@ -462,14 +569,14 @@ body {
   padding: 0.4rem;
   border: 1px solid var(--color-borde);
   border-radius: 0.4rem;
-  background-color: hsl(40, 25%, 97%);
+  background-color: var(--color-subcontenedor-claro);
   font-size: 0.9rem;
   transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
 .config-container__select:disabled {
-  background-color: hsl(30, 15%, 90%);
-  border-color: hsl(30, 10%, 80%);
+  background-color: var(--color-input-disabled);
+  border-color: var(--color-borde-disabled);
   color: var(--color-texto-secundario);
   cursor: not-allowed;
 }
@@ -500,15 +607,24 @@ body {
 }
 
 /* ==========================================================================
-      9. BOTONES FLOTANTES
-      ========================================================================== */
+   9. BOTONES FLOTANTES
+   ========================================================================== */
 .floating-buttons {
   position: fixed;
   top: 1rem;
-  right: 1rem;
   display: flex;
+  flex-direction: column;
   gap: 0.75rem;
   z-index: 1000;
+}
+
+.floating-buttons--left {
+  left: 1rem;
+}
+
+.floating-buttons--right {
+  right: 1rem;
+  flex-direction: row;
 }
 
 .floating-buttons__button {
@@ -516,7 +632,7 @@ body {
   height: 50px;
   padding: 0;
   border: none;
-  background-color: hsl(30, 50%, 45%);
+  background-color: var(--color-boton-flotante);
   color: white;
   border-radius: 50%;
   font-size: 1.2rem;
@@ -526,46 +642,63 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 8px var(--shadow-boton);
 }
 
 .floating-buttons__button:hover,
 .floating-buttons__button:focus {
-  background-color: hsl(30, 50%, 35%);
+  background-color: var(--color-boton-flotante-hover);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 4px 12px var(--shadow-boton-hover);
   outline: none;
 }
 
 /* ==========================================================================
-      10. FOOTER
-      ========================================================================== */
-.pie {
-  text-align: center;
-  padding: 1.2rem 0;
-  border-top: 1px solid var(--color-borde);
-  font-size: 0.9rem;
-  color: var(--color-texto-secundario);
+   10. UTILIDADES DE ESTADO
+   ========================================================================== */
+.input--ok {
+  border-color: var(--color-exito);
+  background-color: var(--color-input-ok-bg);
 }
 
-.pie__texto {
-  margin: 0;
+.input--error {
+  border-color: var(--color-error);
+  background-color: var(--color-input-error-bg);
+}
+
+.tarjeta__palabra--ok {
+  color: var(--color-exito);
+}
+
+.tarjeta__palabra--error {
+  color: var(--color-error);
+}
+
+.is-shaking {
+  animation: shake 0.3s;
+}
+
+.respuesta--correcta {
+  color: var(--color-exito);
+  font-weight: bold;
+}
+
+.respuesta--incorrecta {
+  color: var(--color-error);
+  font-weight: bold;
 }
 
 /* ==========================================================================
-      11. ANIMACIÓN DE SHAKE PARA ERRORES
-      ========================================================================== */
+   11. ANIMACIONES
+   ========================================================================== */
 @keyframes shake {
-
   0%,
   100% {
     transform: translateX(0);
   }
-
   25% {
     transform: translateX(-5px);
   }
-
   75% {
     transform: translateX(5px);
   }
@@ -611,13 +744,18 @@ body {
     margin-top: 0.5rem;
   }
 
-  .floating-buttons {
-    position: static;
-    justify-content: center;
-    margin-bottom: 1rem;
+  .floating-buttons--left {
+    position: fixed;
+    left: 0.5rem;
+    top: 1rem;
   }
 
-  /* Responsive para las cajas de estadísticas */
+  .floating-buttons--right {
+    position: fixed;
+    right: 0.5rem;
+    top: 1rem;
+  }
+
   .tarjeta__estadisticas-row {
     flex-direction: column;
   }
@@ -626,30 +764,14 @@ body {
   .tarjeta__subcontenedor--incorrectas {
     min-width: auto;
   }
-
 }
 
-/* Layout en paralelo para pantallas grandes */
 @media (min-width: 50rem) {
   .contenedor {
     max-width: 1400px;
   }
-
-  /* Contenedor grid para las dos tarjetas principales */
-  .contenedor__grid-paralelo {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-    align-items: stretch;
-  }
-
-  /* Asegurar que las tarjetas tengan la misma altura */
-  .contenedor__grid-paralelo > .tarjeta {
-    height: 100%;
-  }
 }
 
-/* Para pantallas medianas y pequeÃ±as, mantener diseÃ±o vertical */
 @media (max-width: 49.9375rem) {
   .contenedor__grid-paralelo {
     display: flex;

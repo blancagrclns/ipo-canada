@@ -1,183 +1,122 @@
-/* VARIABLES TEMA OSCURO - Sobreescribe variables del tema claro */
-[data-theme="dark"] {
-  /* Ajuste de variables principales */
-  --tono: 210; /* Mantenemos el mismo tono base */
-  --color-fondo: hsl(var(--tono), 10%, 10%);
-  --color-panel: hsl(var(--tono), 10%, 15%);
-  --color-texto: hsl(0, 0%, 100%);
-  --color-texto-secundario: hsl(0, 0%, 85%);
-  --color-acento: hsl(var(--tono), 100%, 65%);
-  --color-acento-hover: hsl(var(--tono), 100%, 60%);
-  --color-borde: hsl(var(--tono), 10%, 35%);
-  --color-error: hsl(0, 70%, 60%);
-  --color-exito: hsl(140, 50%, 45%);
-  
-  /* Variables específicas del tema oscuro */
-  --modal-bg: hsl(var(--tono), 10%, 15%);
-  --modal-shadow: hsla(0, 0%, 0%, 0.6);
-  --modal-close-bg: hsl(var(--tono), 10%, 25%);
-  --modal-close-bg-hover: hsl(var(--tono), 10%, 35%);
-  --modal-title-accent: hsl(var(--tono), 100%, 70%);
-  --modal-title-border: hsl(var(--tono), 20%, 40%);
-  --modal-section-title: hsl(var(--tono), 80%, 70%);
-  --modal-section-dot: hsl(var(--tono), 100%, 60%);
-  --modal-list-highlight-bg: hsl(50, 30%, 20%);
-  --modal-list-highlight-border: hsl(50, 80%, 50%);
-  --modal-table-th-bg: hsl(var(--tono), 15%, 25%);
-  --modal-table-even-bg: hsl(var(--tono), 15%, 20%);
-  --modal-table-td-bg: hsl(var(--tono), 20%, 22%);
-}
+/* ==========================================================================
+   TEMA OSCURO - Sobreescribe estilos del tema claro
+   NOTA: Las variables de color están en style.css [data-theme="dark"]
+   ========================================================================== */
 
-/* ESTRUCTURA GENERAL - Transiciones suaves entre temas */
+/* Estructura general */
 [data-theme="dark"] body {
   background-color: var(--color-fondo);
   color: var(--color-texto);
   transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-[data-theme="dark"] .main {
-  background-color: var(--color-panel);
-  color: var(--color-texto);
-  border: 1px solid var(--color-borde);
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
-}
-
-/* TEXTOS Y TÍTULOS */
-[data-theme="dark"] .main__title {
-  color: var(--color-acento);
-}
-
-[data-theme="dark"] .main__instructions {
-  color: var(--color-texto-secundario);
-}
-
-/* CABECERA */
+/* Cabecera */
 [data-theme="dark"] .cabecera__titulo {
-  color: var(--color-acento);
+  color: var(--color-accento);
 }
 
 [data-theme="dark"] .cabecera__instrucciones {
   color: var(--color-texto-secundario);
 }
 
-/* TARJETAS Y CONTENEDORES */
+/* Tarjetas y contenedores */
 [data-theme="dark"] .tarjeta {
   background-color: var(--color-panel);
   border-color: var(--color-borde);
 }
 
 [data-theme="dark"] .tarjeta__titulo {
-  color: var(--color-acento);
+  color: var(--color-accento);
 }
 
 [data-theme="dark"] .tarjeta__dato {
   color: var(--color-texto);
 }
 
-/* SUBCONTENEDORES - Forzar colores oscuros */
+/* Subcontenedores */
 [data-theme="dark"] .tarjeta__subcontenedor,
 [data-theme="dark"] .tarjeta__reloj,
 [data-theme="dark"] .config-container__subcontenedor {
-  background-color: hsl(var(--tono), 10%, 20%) !important;
+  background-color: var(--color-subcontenedor) !important;
   border-color: var(--color-borde) !important;
 }
 
-/* BOTONES (sin floating-buttons) */
-[data-theme="dark"] .config-container__button,
-[data-theme="dark"] .test-container__button {
-  background-color: var(--color-acento);
-  color: var(--color-texto);
-  border: 1px solid var(--color-borde);
-}
-
-[data-theme="dark"] .config-container__button:hover,
-[data-theme="dark"] .test-container__button:hover {
-  background-color: var(--color-acento-hover);
-}
-
-/* BOTONES DE ACCIÓN - Azul sobrio */
+/* Botones de acción */
 [data-theme="dark"] .btn--iniciar,
 [data-theme="dark"] .btn--pausar,
 [data-theme="dark"] .btn--finalizar {
-  background-color: hsl(210, 70%, 50%);
-  border-color: hsl(210, 70%, 50%);
+  background-color: var(--color-boton-accion);
+  border-color: var(--color-boton-accion);
   color: white;
 }
 
 [data-theme="dark"] .btn--iniciar:hover:not(:disabled),
 [data-theme="dark"] .btn--pausar:hover:not(:disabled),
 [data-theme="dark"] .btn--finalizar:hover:not(:disabled) {
-  background-color: hsl(210, 70%, 40%);
-  border-color: hsl(210, 70%, 40%);
+  background-color: var(--color-boton-accion-hover);
+  border-color: var(--color-boton-accion-hover);
 }
 
 [data-theme="dark"] .btn--iniciar:disabled,
 [data-theme="dark"] .btn--pausar:disabled,
 [data-theme="dark"] .btn--finalizar:disabled {
-  background-color: hsl(210, 20%, 40%) !important;
-  border-color: hsl(210, 20%, 40%) !important;
-  color: hsl(0, 0%, 80%) !important;
+  background-color: var(--color-boton-disabled) !important;
+  border-color: var(--color-boton-disabled) !important;
+  color: var(--color-texto-disabled) !important;
 }
 
-/* BOTONES FLOTANTES - Mantener estilo marrón/dorado en modo oscuro */
+/* Botones flotantes */
 [data-theme="dark"] .floating-buttons__button {
-  background-color: hsl(30, 50%, 45%) !important;
+  background-color: var(--color-boton-flotante) !important;
   color: white !important;
   border: none !important;
 }
 
 [data-theme="dark"] .floating-buttons__button:hover,
 [data-theme="dark"] .floating-buttons__button:focus {
-  background-color: hsl(30, 50%, 35%) !important;
+  background-color: var(--color-boton-flotante-hover) !important;
 }
 
-/* INPUTS Y CAMPOS - Forzar colores oscuros */
+/* Inputs y campos */
 [data-theme="dark"] .config-container__input,
-[data-theme="dark"] .test-container__input,
 [data-theme="dark"] .tarjeta__input,
 [data-theme="dark"] .config-container__select {
-  background-color: hsl(var(--tono), 10%, 18%) !important;
+  background-color: var(--color-subcontenedor-claro) !important;
   color: var(--color-texto) !important;
   border: 1px solid var(--color-borde) !important;
 }
 
 [data-theme="dark"] .config-container__input:focus,
-[data-theme="dark"] .test-container__input:focus,
 [data-theme="dark"] .tarjeta__input:focus {
-  border-color: var(--color-acento);
-  box-shadow: 0 0 0 3px hsla(var(--tono), 100%, 65%, 0.25);
+  border-color: var(--color-accento);
+  box-shadow: 0 0 0 3px var(--shadow-focus);
 }
 
 [data-theme="dark"] .tarjeta__input:disabled {
-  background-color: hsl(var(--tono), 10%, 25%) !important;
+  background-color: var(--color-input-disabled) !important;
   color: var(--color-texto-secundario) !important;
 }
 
 [data-theme="dark"] .config-container__select:disabled {
-  background-color: hsl(var(--tono), 10%, 25%) !important;
+  background-color: var(--color-input-disabled) !important;
   color: var(--color-texto-secundario) !important;
-  border-color: var(--color-borde) !important;
+  border-color: var(--color-borde-disabled) !important;
 }
 
-/* TEXTOS Y ELEMENTOS DESTACADOS */
-[data-theme="dark"] .config-container__label,
-[data-theme="dark"] .test-container__info {
+/* Textos y elementos destacados */
+[data-theme="dark"] .config-container__label {
   color: var(--color-texto-secundario);
 }
 
-[data-theme="dark"] .test-container__span {
-  color: var(--color-acento);
-}
-
 [data-theme="dark"] .config-container__arrow {
-  color: var(--color-acento);
+  color: var(--color-accento);
 }
 
 [data-theme="dark"] .tarjeta__contador {
   color: var(--color-texto);
 }
 
-/* MODAL EN MODO OSCURO */
+/* Modal en modo oscuro */
 [data-theme="dark"] .modal__content {
   background-color: var(--modal-bg);
   color: var(--color-texto);
@@ -213,11 +152,11 @@
 
 [data-theme="dark"] .modal__list-item--highlight {
   background-color: var(--modal-list-highlight-bg);
-  color: hsl(50, 80%, 85%);
+  color: var(--color-highlight-text);
   border-left-color: var(--modal-list-highlight-border);
 }
 
-/* TABLAS EN MODO OSCURO */
+/* Tablas en modo oscuro */
 [data-theme="dark"] .modal__table th,
 [data-theme="dark"] .modal__table td {
   border-color: var(--color-borde);
@@ -237,34 +176,40 @@
   color: var(--color-texto);
 }
 
-/* TRANSICIÓN GLOBAL */
-html[data-theme="dark"],
-body[data-theme="dark"] {
-  transition: background-color 0.4s ease, color 0.4s ease;
-}
-
-/* BOTONES DESHABILITADOS */
-[data-theme="dark"] button:disabled,
-[data-theme="dark"] .test-container__button:disabled,
-[data-theme="dark"] .config-container__button:disabled {
-  background-color: hsl(var(--tono), 10%, 30%) !important;
-  color: hsl(0, 0%, 70%) !important;
-  border: 1px solid hsl(var(--tono), 10%, 35%);
-  cursor: not-allowed;
-  opacity: 1;
-  transform: none !important;
-  box-shadow: none !important;
-}
-
-/* TOGGLE CHECKBOX EN MODO OSCURO */
+/* Toggle checkbox en modo oscuro */
 [data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn {
-  background: hsl(var(--tono), 10%, 30%);
+  background: var(--color-toggle-bg);
 }
 
 [data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
-  background: hsl(var(--tono), 10%, 50%);
+  background: var(--color-toggle-ball);
 }
 
 [data-theme="dark"] .checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
-  background: hsl(140, 50%, 35%);
+  background: var(--color-toggle-active);
+}
+
+/* Selectores bilingües en modo oscuro */
+[data-theme="dark"] .config-container__select {
+  background-color: var(--color-subcontenedor);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+[data-theme="dark"] .config-container__select:hover,
+[data-theme="dark"] .config-container__select:focus {
+  border-color: var(--color-accento);
+  box-shadow: 0 0 0 3px var(--shadow-focus);
+}
+
+[data-theme="dark"] .tarjeta__traduccion-container::after {
+  background-color: var(--tooltip-bg);
+  color: var(--color-accento);
+  box-shadow: 0 2px 6px var(--shadow-tooltip);
+}
+
+/* Transición global */
+html[data-theme="dark"],
+body[data-theme="dark"] {
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
