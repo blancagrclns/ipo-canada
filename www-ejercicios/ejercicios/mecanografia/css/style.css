@@ -281,6 +281,8 @@ body {
 .btn--pausar {
   background-color: var(--color-pausar);
   border-color: var(--color-pausar);
+  min-width: calc(9ch + 2 * 1.3rem + 4px);
+  text-align: center;
 }
 
 .btn--pausar:hover:not(:disabled),
