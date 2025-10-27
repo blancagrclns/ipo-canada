@@ -1,9 +1,11 @@
 import { recuperaElementoAleatorio } from './utils.js';
-import { inicializarModoBilingue, iniciarTestBilingue, verificarEntradaBilingue } from './bilingue.js';
-
-// Exponer funciones globalmente de forma inmediata
-window.iniciarTestBilingue = iniciarTestBilingue;
-window.verificarEntradaBilingue = verificarEntradaBilingue;
+import { 
+  inicializarModoBilingue, 
+  iniciarTestBilingue, 
+  verificarEntradaBilingue, 
+  cambiarPalabraBilingue,
+  ocultarModoBilingue 
+} from './bilingue.js';
 
 // Arrays de palabras por dificultad 
 const palabrasDefault = [
@@ -30,9 +32,9 @@ const palabrasDificiles = ["murciélago", "teléfono", "pájaro", "brújula", "r
   "plástico", "músico", "lógico", "económico", "histórico"];
 
 const palabrasMuyDificiles = ["dígamelo", "repíteselo", "cuéntamelo", "devuélvemelo", "explícaselo",
-  "entrégaselo", "tráemelo", "díselo", "muéstramelo", "regrésamelo",
-  "préstamelo", "confírmamelo", "recuérdaselo", "llévaselo", "envíaselo",
-  "compréndemelo", "tradúcemelo", "acláramelo", "organízamelo", "resuélvemelo"];
+  "entrégaselo", "tráemelo", "díselo", "muéstramelo", "regrésámelo",
+  "préstamelo", "confírmamelo", "recuérdaselo", "lléváselo", "envíáselo",
+  "compréndémelo", "tradúcémelo", "aclárámelo", "organízámelo", "resuélvémelo"];
 
 // Elementos del DOM 
 const btnComienzo = document.getElementById('btnComienzo');
@@ -65,6 +67,7 @@ let tiempoMaximo = null;
 let pausado = false;
 let dificultadActual = 0;
 let palabrasActuales = palabrasDefault;
+let modoBilingueActivo = false; // Nueva variable para rastrear el estado del modo bilingüe
 
 // Función para cambiar dificultad
 function cambiarDificultad(nivel) {
@@ -92,11 +95,9 @@ function cambiarDificultad(nivel) {
       break;
   }
   
-  const modoBilingueCheckbox = document.getElementById('modoBilingue');
-  const estamosEnModoBilingue = modoBilingueCheckbox && modoBilingueCheckbox.checked;
-  
-  if (estamosEnModoBilingue && window.cambiarPalabraBilingue) {
-    window.cambiarPalabraBilingue(nivel);
+  // Solo cambiar palabra bilingüe si el modo está activo
+  if (modoBilingueActivo) {
+    cambiarPalabraBilingue(nivel);
   } else {
     cambiarPalabra();
   }
@@ -115,8 +116,9 @@ function iniciarTest() {
   tiempoMaximo = parseInt(tiempoMaxInput.value) || null;
   
   const modoBilingueCheckbox = document.getElementById('modoBilingue');
-  const estamosEnModoBilingue = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  modoBilingueActivo = modoBilingueCheckbox && modoBilingueCheckbox.checked;
   
+  // Deshabilitar configuración durante el test
   if (modoBilingueCheckbox) {
     modoBilingueCheckbox.disabled = true;
     
@@ -131,14 +133,11 @@ function iniciarTest() {
     }
   }
   
-  if (estamosEnModoBilingue) {
-    try {
-      iniciarTestBilingue();
-    } catch (error) {
-      console.error("Error al iniciar el test bilingüe:", error);
-      cambiarPalabra();
-    }
+  // Iniciar en el modo correspondiente
+  if (modoBilingueActivo) {
+    iniciarTestBilingue();
   } else {
+    ocultarModoBilingue(); // Asegurar que el modo bilingüe está oculto
     cambiarPalabra();
   }
   
@@ -178,31 +177,11 @@ function cambiarPalabra() {
 // Función para verificar la entrada del usuario
 function verificarEntrada(event) {
   if (event.key === 'Enter') {
-    const modoBilingueCheckbox = document.getElementById('modoBilingue');
-    
-    if (modoBilingueCheckbox && modoBilingueCheckbox.checked) {
-      try {
-        verificarEntradaBilingue(event);
-      } catch (error) {
-        console.error("Error al verificar entrada bilingüe:", error);
-        const palabraTecleada = entrada.value.trim();
-        if (palabraTecleada === palabraActual) {
-          palabrasCorrectas++;
-          palabrasCorrectasSpan.textContent = palabrasCorrectas;
-          if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
-            detenerTest();
-            mostrarStats();
-          } else {
-            cambiarPalabra();
-          }
-        } else {
-          palabrasFalladas++;
-          palabrasIncorrectasSpan.textContent = palabrasFalladas;
-          mostrarErrorVisual();
-          entrada.value = '';
-        }
-      }
+    // Verificar si el modo bilingüe está activo
+    if (modoBilingueActivo) {
+      verificarEntradaBilingue(event);
     } else {
+      // Lógica para modo normal
       const palabraTecleada = entrada.value.trim();
       if (palabraTecleada === palabraActual) {
         palabrasCorrectas++;
@@ -268,15 +247,20 @@ function detenerTest() {
   btnComienzo.disabled = false;
   btnPausa.disabled = true;
   btnFin.disabled = true;
+  modoBilingueActivo = false; // Resetear el estado
   
+  // Re-habilitar configuración
   const modoBilingueCheckbox = document.getElementById('modoBilingue');
   if (modoBilingueCheckbox) {
     modoBilingueCheckbox.disabled = false;
     
     const idiomaOrigen = document.getElementById('idiomaOrigen');
     const idiomaDestino = document.getElementById('idiomaDestino');
-    if (idiomaOrigen) idiomaOrigen.disabled = false;
-    if (idiomaDestino) idiomaDestino.disabled = false;
+    
+    // Solo habilitar selectores si el checkbox está marcado
+    const isChecked = modoBilingueCheckbox.checked;
+    if (idiomaOrigen) idiomaOrigen.disabled = !isChecked;
+    if (idiomaDestino) idiomaDestino.disabled = !isChecked;
     
     const opcionesBilingue = document.getElementById('opcionesBilingue');
     if (opcionesBilingue) {
@@ -284,10 +268,8 @@ function detenerTest() {
     }
   }
   
-  const palabraTraduccion = document.getElementById('palabraTraduccion');
-  if (palabraTraduccion) {
-    palabraTraduccion.classList.add('test-container__info--hidden');
-  }
+  // Ocultar elementos del modo bilingüe
+  ocultarModoBilingue();
 }
 
 // Función para mostrar modal de estadísticas
@@ -318,6 +300,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
   entrada.addEventListener('keydown', verificarEntrada);
   
+  // Inicializar modo bilingüe con API
   inicializarModoBilingue({
     cambiarPalabra,
     detenerTest,
@@ -333,6 +316,9 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     getNumPalabrasObjetivo: () => numPalabrasObjetivo
   });
+  
+  // Asegurar que el modo bilingüe está oculto al inicio
+  ocultarModoBilingue();
 });
 
 // Listener para teclas numéricas (dificultad dinámica)

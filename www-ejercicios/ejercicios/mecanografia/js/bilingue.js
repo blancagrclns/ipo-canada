@@ -104,17 +104,17 @@ const diccionarioBilingue = {
     'bring it to me': 'tráemelo',
     'tell it to him': 'díselo',
     'show it to me': 'muéstramelo',
-    'return it to me': 'regrésamelo',
+    'return it to me': 'regrésámelo',
     'lend it to me': 'préstamelo',
     'confirm it to me': 'confírmamelo',
     'remind him of it': 'recuérdaselo',
     'take it to him': 'lléváselo',
     'send it to him': 'envíáselo',
-    'understand it for me': 'compréndemelo',
-    'translate it for me': 'tradúcemelo',
-    'clarify it for me': 'acláramelo',
+    'understand it for me': 'compréndémelo',
+    'translate it for me': 'tradúcémelo',
+    'clarify it for me': 'aclárámelo',
     'organize it for me': 'organízámelo',
-    'solve it for me': 'resuélvemelo'
+    'solve it for me': 'resuélvémelo'
   }
 };
 
@@ -127,11 +127,29 @@ let palabraTraducida = null;
 let idiomaOrigen = null;
 let idiomaDestino = null;
 
-// Exportar funciones para uso global
+// Exportar función para iniciar test bilingüe
 export function iniciarTestBilingue() {
   cambiarPalabraBilingue();
+  
+  // Mostrar la sección de traducción
+  if (palabraTraduccion) {
+    palabraTraduccion.classList.remove('tarjeta__dato--hidden');
+  }
 }
 
+// Función para ocultar elementos del modo bilingüe
+export function ocultarModoBilingue() {
+  if (palabraTraduccion) {
+    palabraTraduccion.classList.add('tarjeta__dato--hidden');
+  }
+  if (traduccionCorrecta) {
+    traduccionCorrecta.textContent = "?";
+    traduccionCorrecta.style.color = "";
+    traduccionCorrecta.style.fontWeight = "";
+  }
+}
+
+// Función para verificar entrada en modo bilingüe
 export function verificarEntradaBilingue(event) {
   if (event.key === 'Enter') {
     const entrada = document.getElementById('entrada');
@@ -199,12 +217,9 @@ export function verificarEntradaBilingue(event) {
   }
 }
 
-// Función de inicialización que será llamada desde script.js
+// Función de inicialización
 export function inicializarModoBilingue(api) {
   gameAPI = api;
-  
-  // Crear elementos HTML necesarios inmediatamente
-  crearElementosHTML();
   
   // Referencias a los elementos del DOM
   const modoBilingueCheckbox = document.getElementById('modoBilingue');
@@ -214,7 +229,7 @@ export function inicializarModoBilingue(api) {
   palabraTraduccion = document.getElementById('palabraTraduccion');
   traduccionCorrecta = document.getElementById('traduccionCorrecta');
   
-  // Habilitar/deshabilitar opciones de idioma
+  // Habilitar/deshabilitar opciones de idioma cuando se marca el checkbox
   if (modoBilingueCheckbox) {
     modoBilingueCheckbox.addEventListener('change', () => {
       const isEnabled = modoBilingueCheckbox.checked;
@@ -223,7 +238,7 @@ export function inicializarModoBilingue(api) {
     });
   }
   
-  // Evento para cambiar idiomas
+  // Evento para evitar que ambos idiomas sean iguales
   if (idiomaOrigen && idiomaDestino) {
     idiomaOrigen.addEventListener('change', () => {
       if (idiomaOrigen.value === idiomaDestino.value) {
@@ -236,85 +251,6 @@ export function inicializarModoBilingue(api) {
         idiomaOrigen.value = idiomaDestino.value === 'es' ? 'en' : 'es';
       }
     });
-  }
-  
-  // Exponer funciones globalmente
-  window.iniciarTestBilingue = iniciarTestBilingue;
-  window.verificarEntradaBilingue = verificarEntradaBilingue;
-  window.cambiarPalabraBilingue = cambiarPalabraBilingue;
-}
-
-// Crear elementos necesarios si no existen en el HTML
-function crearElementosHTML() {
-  // Crear elemento para mostrar traducción
-  palabraTraduccion = document.createElement('p');
-  palabraTraduccion.id = 'palabraTraduccion';
-  palabraTraduccion.className = 'test-container__info test-container__info--hidden';
-  palabraTraduccion.innerHTML = 'Traducción: <span id="traduccionCorrecta" class="test-container__span">?</span>';
-  
-  // Añadir después de la palabra de muestra
-  const palabraDeMuestraContainer = document.querySelector('.test-container__info:last-of-type');
-  if (palabraDeMuestraContainer) {
-    palabraDeMuestraContainer.parentNode.insertBefore(
-      palabraTraduccion, 
-      palabraDeMuestraContainer.nextSibling
-    );
-  }
-  
-  traduccionCorrecta = document.getElementById('traduccionCorrecta');
-  
-  // Crear selectores de idioma si no existen
-  if (!document.getElementById('idiomaOrigen')) {
-    const opcionesBilingue = document.getElementById('opcionesBilingue');
-    if (opcionesBilingue) {
-      const selectGroup = document.createElement('div');
-      selectGroup.className = 'config-container__select-group';
-      
-      // Selector de idioma origen
-      idiomaOrigen = document.createElement('select');
-      idiomaOrigen.id = 'idiomaOrigen';
-      idiomaOrigen.className = 'config-container__select';
-      
-      const optionEn = document.createElement('option');
-      optionEn.value = 'en';
-      optionEn.textContent = 'Inglés';
-      optionEn.selected = true;
-      
-      const optionEs = document.createElement('option');
-      optionEs.value = 'es';
-      optionEs.textContent = 'Español';
-      
-      idiomaOrigen.appendChild(optionEn);
-      idiomaOrigen.appendChild(optionEs);
-      
-      // Flecha
-      const arrow = document.createElement('span');
-      arrow.className = 'config-container__arrow';
-      arrow.textContent = '→';
-      
-      // Selector de idioma destino
-      idiomaDestino = document.createElement('select');
-      idiomaDestino.id = 'idiomaDestino';
-      idiomaDestino.className = 'config-container__select';
-      
-      const optionEn2 = document.createElement('option');
-      optionEn2.value = 'en';
-      optionEn2.textContent = 'Inglés';
-      
-      const optionEs2 = document.createElement('option');
-      optionEs2.value = 'es';
-      optionEs2.textContent = 'Español';
-      optionEs2.selected = true;
-      
-      idiomaDestino.appendChild(optionEn2);
-      idiomaDestino.appendChild(optionEs2);
-      
-      // Añadir todo al grupo
-      selectGroup.appendChild(idiomaOrigen);
-      selectGroup.appendChild(arrow);
-      selectGroup.appendChild(idiomaDestino);
-      opcionesBilingue.appendChild(selectGroup);
-    }
   }
 }
 
@@ -348,9 +284,6 @@ export function cambiarPalabraBilingue(nivelForzado = null) {
   
   // Ocultar la traducción correcta - NO mostrarla de antemano
   traduccionCorrecta.textContent = "?";
-  
-  // Mostrar sección de traducción pero sin revelar la respuesta
-  palabraTraduccion.classList.remove('test-container__info--hidden');
   
   // Limpiar entrada
   document.getElementById('entrada').value = '';
