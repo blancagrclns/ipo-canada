@@ -10,7 +10,7 @@
 TABLERO.MODALES = {
   // Elementos DOM de modales que se cargan dinámicamente
   elementos: {},
-  
+
   // Estado de los modales
   estado: {
     modalAyudaCargado: false
@@ -26,12 +26,12 @@ TABLERO.MODALES = {
  */
 function mostrarModalVictoria() {
   const modalVictoria = document.getElementById('modal-victoria');
-  
+
   if (!modalVictoria) {
     console.error('Modal de victoria no encontrado');
     return;
   }
-  
+
   // Preparar el contenido del modal
   modalVictoria.innerHTML = `
     <div class="modal__contenido">
@@ -49,11 +49,11 @@ function mostrarModalVictoria() {
       </div>
     </div>
   `;
-  
+
   // Asignar event listeners a los botones
   document.getElementById('cerrar-modal').addEventListener('click', reiniciarJuego);
   document.getElementById('solo-cerrar-modal').addEventListener('click', soloCerrarModal);
-  
+
   // Mostrar modal
   modalVictoria.showModal();
 }
@@ -83,20 +83,20 @@ function limpiarTablero() {
   // Restaurar el contenedor de tablero al estado original
   document.querySelector('.tablero-contenedor').classList.remove('tablero-contenedor--doble');
   document.querySelector('.tablero-contenedor').innerHTML = '<div id="tablero" class="tablero" aria-label="Tablero de juego"></div>';
-  
+
   // Actualizar referencia al tablero (ya que fue recreado)
   TABLERO.elementos.tablero = document.getElementById('tablero');
-  
+
   // Resetear estado del juego
   TABLERO.estado.juegoIniciado = false;
   TABLERO.estado.juegoPausado = false;
   TABLERO.estado.movimientos = 0;
   TABLERO.estado.tiempo = 0;
-  
+
   // Actualizar UI para reflejar el estado limpio
   actualizarContador();
   TABLERO.elementos.temporizador.textContent = '00:00';
-  
+
   // Habilitar todos los controles
   actualizarUI();
 }
@@ -124,26 +124,26 @@ function mostrarAyuda() {
         // Crear un contenedor temporal para procesar el HTML
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
-        
+
         // Añadir el modal al body
         const modal = tempDiv.firstChild;
         document.body.appendChild(modal);
-        
+
         // Cachear el elemento del modal y su botón de cierre
         TABLERO.MODALES.elementos.modalAyuda = document.getElementById('modal-ayuda');
         TABLERO.MODALES.elementos.btnCerrarModalAyuda = document.getElementById('cerrar-modal-ayuda');
-        
+
         // Añadir event listener al botón de cerrar
         TABLERO.MODALES.elementos.btnCerrarModalAyuda.addEventListener('click', cerrarModalAyuda);
-        
+
         // Aplicar tema oscuro si está activo
         if (document.documentElement.getAttribute('data-theme') === 'dark') {
           TABLERO.MODALES.elementos.modalAyuda.classList.add('dark-theme');
         }
-        
+
         // Marcar como cargado
         TABLERO.MODALES.estado.modalAyudaCargado = true;
-        
+
         // Mostrar el modal
         TABLERO.MODALES.elementos.modalAyuda.showModal();
       })
@@ -190,29 +190,29 @@ function mostrarModalDetenido() {
         // Crear un contenedor temporal para procesar el HTML
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = html;
-        
+
         // Añadir el modal al body
         const modal = tempDiv.firstChild;
         document.body.appendChild(modal);
-        
+
         // Cachear el modal y sus elementos
         TABLERO.MODALES.elementos.modalDetenido = document.getElementById('modal-detenido');
         TABLERO.MODALES.elementos.modalDetenidoTiempo = document.getElementById('modal-detenido-tiempo');
         TABLERO.MODALES.elementos.modalDetenidoMovimientos = document.getElementById('modal-detenido-movimientos');
         TABLERO.MODALES.elementos.btnCerrarModalDetenido = document.getElementById('cerrar-modal-detenido');
-        
+
         // Añadir event listener al botón cerrar
         TABLERO.MODALES.elementos.btnCerrarModalDetenido.addEventListener('click', cerrarModalDetenido);
-        
+
         // Aplicar tema oscuro si está activo
         if (document.documentElement.getAttribute('data-theme') === 'dark') {
           TABLERO.MODALES.elementos.modalDetenido.classList.add('dark-theme');
         }
-        
+
         // Actualizar información del modal
         TABLERO.MODALES.elementos.modalDetenidoTiempo.textContent = formatearTiempo(TABLERO.estado.tiempo);
         TABLERO.MODALES.elementos.modalDetenidoMovimientos.textContent = TABLERO.estado.movimientos;
-        
+
         // Mostrar modal
         TABLERO.MODALES.elementos.modalDetenido.showModal();
       })
@@ -250,3 +250,25 @@ TABLERO.cerrarModalAyuda = cerrarModalAyuda;
 TABLERO.mostrarModalDetenido = mostrarModalDetenido;
 TABLERO.cerrarModalDetenido = cerrarModalDetenido;
 TABLERO.limpiarTablero = limpiarTablero;
+
+// ==========================
+// MODAL DE CONFIGURACIÓN
+// ==========================
+
+document.addEventListener('DOMContentLoaded', () => {
+  const btnConfig = document.getElementById('btnConfig');
+  const modalConfig = document.getElementById('modal-config');
+  const cerrarConfig = document.getElementById('cerrar-modal-config');
+  const btnGuardar = document.getElementById('btnGuardarConfig');
+
+  if (btnConfig && modalConfig && cerrarConfig && btnGuardar) {
+    btnConfig.addEventListener('click', () => modalConfig.showModal());
+    cerrarConfig.addEventListener('click', () => modalConfig.close());
+
+    btnGuardar.addEventListener('click', () => {
+      modalConfig.close();
+      // Solo cierra el modal, no inicia el juego
+    });
+
+  }
+});

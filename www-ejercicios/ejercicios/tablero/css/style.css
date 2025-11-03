@@ -16,16 +16,23 @@
   --tono-principal: 210;
   --tono-complementario: calc(var(--tono-principal) + 180);
   --saturacion-principal: 70%;
-  
+
   /* Paleta de colores para fichas */
-  --color-ficha-1: hsl(0, 80%, 60%);    /* Rojo */
-  --color-ficha-2: hsl(120, 70%, 50%);  /* Verde */
-  --color-ficha-3: hsl(240, 70%, 60%);  /* Azul */
-  --color-ficha-4: hsl(60, 80%, 50%);   /* Amarillo */
-  --color-ficha-5: hsl(300, 70%, 60%);  /* Magenta */
-  --color-ficha-6: hsl(30, 80%, 50%);   /* Naranja */
-  --color-ficha-7: hsl(180, 70%, 40%);  /* Cian */
-  
+  --color-ficha-1: hsl(0, 80%, 60%);
+  /* Rojo */
+  --color-ficha-2: hsl(120, 70%, 50%);
+  /* Verde */
+  --color-ficha-3: hsl(240, 70%, 60%);
+  /* Azul */
+  --color-ficha-4: hsl(60, 80%, 50%);
+  /* Amarillo */
+  --color-ficha-5: hsl(300, 70%, 60%);
+  /* Magenta */
+  --color-ficha-6: hsl(30, 80%, 50%);
+  /* Naranja */
+  --color-ficha-7: hsl(180, 70%, 40%);
+  /* Cian */
+
   /* Colores de la interfaz */
   --color-fondo: hsl(var(--tono-principal), 10%, 92%);
   --color-texto: hsl(var(--tono-principal), 30%, 20%);
@@ -35,15 +42,64 @@
   --color-complementario: hsl(var(--tono-complementario), 60%, 45%);
   --color-exito: hsl(120, 70%, 45%);
   --color-borde: hsl(var(--tono-principal), 20%, 80%);
-  
+
+  /* Botones de control personalizados */
+  .boton--verde {
+    background-color: var(--color-exito);
+  }
+
+  .boton--verde:hover {
+    background-color: hsl(120, 70%, 35%);
+  }
+
+  .boton--naranja {
+    background-color: var(--color-ficha-6);
+  }
+
+  .boton--naranja:hover {
+    background-color: hsl(30, 80%, 40%);
+  }
+
+  .boton--rojo {
+    background-color: var(--color-ficha-1);
+  }
+
+  .boton--rojo:hover {
+    background-color: hsl(0, 80%, 50%);
+  }
+
+  /* Mantener colores personalizados en botones deshabilitados */
+  .boton--verde:disabled {
+    background-color: var(--color-exito);
+    color: white;
+    opacity: 0.6;
+  }
+
+  .boton--naranja:disabled {
+    background-color: var(--color-ficha-6);
+    color: white;
+    opacity: 0.6;
+  }
+
+  .boton--rojo:disabled {
+    background-color: var(--color-ficha-1);
+    color: white;
+    opacity: 0.6;
+  }
+
+
+
   /* Tipografía */
-  --fuente-principal: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  
+  --fuente-principal: 'Segoe UI',
+  'Helvetica Neue',
+  Arial,
+  sans-serif;
+
   /* Tamaños */
   --ficha-pequeña: 3rem;
   --ficha-mediana: 4.5rem;
   --ficha-grande: 6rem;
-  
+
   /* Espaciado */
   --espaciado: 1rem;
   --espaciado-xs: 0.25rem;
@@ -52,7 +108,7 @@
   --espaciado-l: 1.5rem;
   --espaciado-xl: 2rem;
   --espaciado-xxl: 3rem;
-  
+
   /* Bordes y sombras */
   --radio-borde: 0.5rem;
   --sombra-suave: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
@@ -64,11 +120,9 @@
 body {
   font-family: var(--fuente-principal);
   /* Fondo con tema de tablero */
-  background: linear-gradient(
-    135deg,
-    hsl(var(--tono-principal), 15%, 88%) 0%,
-    hsl(var(--tono-principal), 10%, 96%) 100%
-  );
+  background: linear-gradient(135deg,
+      hsl(var(--tono-principal), 15%, 88%) 0%,
+      hsl(var(--tono-principal), 10%, 96%) 100%);
   background-size: 100% 100%;
   color: var(--color-texto);
   /* Eliminamos line-height: 1.6; */
@@ -116,7 +170,8 @@ body {
   align-items: center;
   /* Añadir gap para incluir espaciado entre cabecera y contenedor */
   gap: var(--espaciado);
-  max-width: 75rem; /* 1200px */
+  max-width: 75rem;
+  /* 1200px */
   margin: 0 auto;
   width: 100%;
 }
@@ -131,7 +186,8 @@ body {
   background-color: var(--color-primario-claro);
   border-radius: var(--radio-borde);
   width: 100%;
-  max-width: 50rem; /* 800px */
+  max-width: 50rem;
+  /* 800px */
 }
 
 .controles__grupo {
@@ -200,7 +256,8 @@ body {
 
 .estado-juego__valor {
   font-size: 1.1rem;
-  font-variant-numeric: tabular-nums; /* Sirve para alinear correctamente los números */
+  font-variant-numeric: tabular-nums;
+  /* Sirve para alinear correctamente los números */
   min-width: 3rem;
   text-align: right;
   display: flex;
@@ -344,7 +401,9 @@ body {
 }
 
 /* RESPONSIVE - Adaptación a diferentes tamaños de pantalla */
-@media (max-width: 48rem) { /* 768px */
+@media (max-width: 48rem) {
+
+  /* 768px */
   .controles {
     flex-direction: column;
     align-items: center;
@@ -352,7 +411,8 @@ body {
 
   .controles__grupo {
     width: 100%;
-    max-width: 18.75rem; /* 300px */
+    max-width: 18.75rem;
+    /* 300px */
   }
 
   .estado-juego {
@@ -362,7 +422,9 @@ body {
   }
 }
 
-@media (max-width: 30rem) { /* 480px */
+@media (max-width: 30rem) {
+
+  /* 480px */
   .cabecera__titulo {
     font-size: 1.5rem;
   }
@@ -371,11 +433,16 @@ body {
     /* Reducción sutil para acomodar en pantallas pequeñas */
     transform: scale(0.9);
   }
-  
+
   .botones-flotantes {
     top: 0.5rem;
     right: 0.5rem;
   }
 }
 
+/* Igualar tamaño mínimo para botones de control */
+.botones-control__boton {
+  min-width: 9rem; /* ajusta según lo que mide el botón más largo */
+  text-align: center;
+}
 

@@ -135,6 +135,9 @@ function iniciarJuego() {
   
   // Iniciar temporizador
   iniciarTemporizador();
+
+  TABLERO.elementos.btnInicio.disabled = true;
+
 }
 
 /**
@@ -191,6 +194,9 @@ function detenerJuego() {
   
   // Limpiar tablero después de mostrar modal
   TABLERO.limpiarTablero();
+
+  TABLERO.elementos.btnInicio.disabled = false;
+
 }
 
 /**

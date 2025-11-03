@@ -22,8 +22,11 @@
 <body>
   <!-- Botones flotantes (ayuda y cambio de tema) -->
   <div class="botones-flotantes">
-    <button id="btnAyuda" class="botones-flotantes__boton" aria-label="Información y ayuda" title="Información y ayuda">?</button>
-    <button id="btnTema" class="botones-flotantes__boton" aria-label="Cambiar al modo oscuro" title="Cambiar al modo oscuro">🌙</button>
+    <button id="btnConfig" class="botones-flotantes__boton" aria-label="Configuración" title="Configuración">⚙️</button>
+    <button id="btnAyuda" class="botones-flotantes__boton" aria-label="Información y ayuda"
+      title="Información y ayuda">?</button>
+    <button id="btnTema" class="botones-flotantes__boton" aria-label="Cambiar al modo oscuro"
+      title="Cambiar al modo oscuro">🌙</button>
   </div>
 
   <header class="cabecera">
@@ -34,42 +37,52 @@
   </header>
 
   <main class="contenedor-principal">
-    <section class="controles">
-      <div class="controles__grupo">
-        <label for="modoJuego" class="controles__etiqueta">Modo de juego:</label>
-        <select id="modoJuego" class="controles__selector">
-          <option value="normal" selected>Normal</option>
-          <option value="dosTableros">Dos tableros</option>
-          <option value="rompecabezas">Rompecabezas</option>
-        </select>
-      </div>
+    <dialog id="modal-config" class="modal">
+      <div class="modal__contenido">
+        <h2 class="modal__titulo">Configuración del Juego</h2>
+        <section class="controles">
+          <div class="controles__grupo">
+            <label for="modoJuego" class="controles__etiqueta">Modo de juego:</label>
+            <select id="modoJuego" class="controles__selector">
+              <option value="normal" selected>Normal</option>
+              <option value="dosTableros">Dos tableros</option>
+              <option value="rompecabezas">Rompecabezas</option>
+            </select>
+          </div>
 
-      <div class="controles__grupo">
-        <label for="tamañoFicha" class="controles__etiqueta">Tamaño de la ficha:</label>
-        <select id="tamañoFicha" class="controles__selector">
-          <option value="pequeña">Pequeña</option>
-          <option value="mediana" selected>Mediana</option>
-          <option value="grande">Grande</option>
-        </select>
-      </div>
+          <div class="controles__grupo">
+            <label for="tamañoFicha" class="controles__etiqueta">Tamaño de la ficha:</label>
+            <select id="tamañoFicha" class="controles__selector">
+              <option value="pequeña">Pequeña</option>
+              <option value="mediana" selected>Mediana</option>
+              <option value="grande">Grande</option>
+            </select>
+          </div>
 
-      <div class="controles__grupo">
-        <label for="tamañoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
-        <input type="number" id="tamañoTablero" class="controles__numero" min="2" max="7" value="3"
-          aria-label="Tamaño del tablero">
-      </div>
+          <div class="controles__grupo">
+            <label for="tamañoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
+            <input type="number" id="tamañoTablero" class="controles__numero" min="2" max="7" value="3"
+              aria-label="Tamaño del tablero">
+          </div>
 
-      <div class="controles__grupo">
-        <label for="formaFicha" class="controles__etiqueta">Forma de fichas:</label>
-        <select id="formaFicha" class="controles__selector">
-          <option value="cuadrado" selected>Cuadrado</option>
-          <option value="circulo">Círculo</option>
-          <option value="triangulo">Triángulo</option>
-        </select>
-      </div>
+          <div class="controles__grupo">
+            <label for="formaFicha" class="controles__etiqueta">Forma de fichas:</label>
+            <select id="formaFicha" class="controles__selector">
+              <option value="cuadrado" selected>Cuadrado</option>
+              <option value="circulo">Círculo</option>
+              <option value="triangulo">Triángulo</option>
+            </select>
+          </div>
+        </section>
 
-      <button id="inicio" class="controles__boton">Comenzar Juego</button>
-    </section>
+        <div class="modal__botones">
+          <button id="btnGuardarConfig" class="modal__boton">Aceptar</button>
+          <button id="cerrar-modal-config" class="modal__boton modal__boton--secundario">Cerrar</button>
+        </div>
+      </div>
+    </dialog>
+
+
 
     <section class="estado-juego">
       <div class="estado-juego__item">
@@ -83,16 +96,19 @@
     </section>
 
     <!-- Botones de control de juego -->
-    <section class="botones-control">
-      <button id="btnPausa" class="botones-control__boton" disabled>Pausar</button>
-      <button id="btnDetener" class="botones-control__boton" disabled>Detener Juego</button>
-    </section>
+<section class="botones-control">
+  <button id="inicio" class="botones-control__boton boton--verde">Comenzar Juego</button>
+  <button id="btnPausa" class="botones-control__boton boton--naranja" disabled>Pausar</button>
+  <button id="btnDetener" class="botones-control__boton boton--rojo" disabled>Detener Juego</button>
+</section>
+
 
     <section class="tablero-contenedor">
-      <div id="tablero" class="tablero" aria-label="Tablero de juego">
-        <!-- Las fichas se generarán dinámicamente desde JavaScript -->
-      </div>
-    </section>
+  <div id="tablero" class="tablero tablero-oculto" aria-label="Tablero de juego">
+    <!-- Las fichas se generarán dinámicamente desde JavaScript -->
+  </div>
+</section>
+
 
     <!-- Reemplazar el modal de victoria con este: -->
     <dialog id="modal-victoria" class="modal">
@@ -109,6 +125,8 @@
         </div>
       </div>
     </dialog>
+
+
   </main>
 </body>
 
