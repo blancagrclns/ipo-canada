@@ -1,11 +1,10 @@
-/* filepath: c:\Users\usuario\Documents\uni\IPO\repositorio canada\ipo-canada\www-ejercicios\ejercicios\mapa\script.js */
-
 /* ==========================================================================
    1. ESPACIO DE NOMBRES GLOBAL (evita contaminación de window)
    ========================================================================== */
 const APP = {
-  nodos: {},      // Caché de referencias DOM
-  items: []       // Almacén de puntos de interés
+  nodos: {},           // Caché de referencias DOM
+  items: [],           // Almacén de puntos de interés
+  temaOscuro: false    // Estado del tema (false = claro, true = oscuro)
 };
 
 /* ==========================================================================
@@ -60,14 +59,18 @@ const DATOS_MAPA = [
    3. CACHÉ DE NODOS DOM (se ejecuta una sola vez al iniciar)
    ========================================================================== */
 function cachearNodos() {
-  APP.nodos.mapa = document.querySelector('[data-mapa]');
+  APP.nodos = {
+    mapa: document.querySelector('[data-mapa]'),
+    btnTema: document.querySelector('[data-accion="tema"]'),
+    darkThemeLink: document.getElementById('dark-theme')
+  };
 }
 
 /* ==========================================================================
    4. CREAR ELEMENTO DE ÍTEM (genera el HTML de un punto de interés)
    ========================================================================== */
 /* 
-  Crea la estructura:
+  Crea la estructura DOM:
   <div class="mapa__item" data-item-id="X" style="left: Y%; top: Z%;">
     <div class="mapa__marcador"></div>
     <div class="mapa__leyenda">
@@ -81,18 +84,18 @@ function crearItem(item) {
   const itemElement = document.createElement('div');
   itemElement.className = 'mapa__item';
   
-  // data-item-id permite identificar el ítem desde JS si fuera necesario
+  // data-item-id permite identificar el ítem si fuera necesario
   itemElement.setAttribute('data-item-id', item.id);
   
-  // Posicionamiento con coordenadas en porcentaje (adaptable al tamaño del mapa)
+  // Posicionamiento con coordenadas en porcentaje (adaptable al tamaño)
   itemElement.style.left = `${item.x}%`;
   itemElement.style.top = `${item.y}%`;
 
-  // Marcador visual (círculo)
+  // Marcador visual (círculo pulsante)
   const marcador = document.createElement('div');
   marcador.className = 'mapa__marcador';
   
-  // Leyenda (tooltip)
+  // Leyenda (tooltip que aparece al hover)
   const leyenda = document.createElement('div');
   leyenda.className = 'mapa__leyenda';
   
@@ -104,7 +107,7 @@ function crearItem(item) {
   const descripcion = document.createElement('p');
   descripcion.textContent = item.descripcion;
   
-  // Ensamblar elementos
+  // Ensamblar elementos (composición DOM)
   leyenda.appendChild(titulo);
   leyenda.appendChild(descripcion);
   
@@ -119,9 +122,10 @@ function crearItem(item) {
    ========================================================================== */
 /* 
   Recorre el almacén de datos y añade cada ítem al DOM
+  Usa DocumentFragment para optimizar el rendimiento (una sola inserción)
 */
 function renderizarItems() {
-  // Fragment para optimizar el rendimiento (una sola inserción en el DOM)
+  // Fragment para evitar múltiples reflows
   const fragment = document.createDocumentFragment();
   
   DATOS_MAPA.forEach(item => {
@@ -129,20 +133,62 @@ function renderizarItems() {
     fragment.appendChild(itemElement);
   });
   
-  // Insertar todos los ítems de una vez
+  // Insertar todos los ítems de una vez en el DOM
   APP.nodos.mapa.appendChild(fragment);
   
   console.log(`✅ ${DATOS_MAPA.length} puntos de interés renderizados en el mapa.`);
 }
 
 /* ==========================================================================
-   6. INICIALIZACIÓN DE LA APLICACIÓN
+   6. GESTIÓN DEL TEMA OSCURO
+   ========================================================================== */
+/* 
+  Alterna entre tema claro y oscuro activando/desactivando la hoja de estilos
+  El tema se guarda en localStorage para persistencia entre sesiones
+*/
+function alternarTema() {
+  APP.temaOscuro = !APP.temaOscuro;
+  
+  // Activar o desactivar la hoja de estilos del tema oscuro
+  APP.nodos.darkThemeLink.disabled = !APP.temaOscuro;
+  
+  // Cambiar el emoji del botón
+  APP.nodos.btnTema.textContent = APP.temaOscuro ? '☀️' : '🌙';
+  
+  // Guardar preferencia en localStorage
+  localStorage.setItem('temaOscuro', APP.temaOscuro);
+  
+  console.log(`🎨 Tema ${APP.temaOscuro ? 'oscuro' : 'claro'} activado.`);
+}
+
+/* 
+  Cargar preferencia de tema desde localStorage al iniciar
+*/
+function cargarPreferenciaTema() {
+  const temaGuardado = localStorage.getItem('temaOscuro');
+  
+  if (temaGuardado === 'true') {
+    APP.temaOscuro = true;
+    APP.nodos.darkThemeLink.disabled = false;
+    APP.nodos.btnTema.textContent = '☀️';
+    console.log('🎨 Tema oscuro cargado desde localStorage.');
+  }
+}
+
+/* ==========================================================================
+   7. INICIALIZACIÓN DE LA APLICACIÓN
    ========================================================================== */
 function init() {
   console.log("🚀 Inicializando mapa interactivo...");
   
   // Cachear referencias DOM
   cachearNodos();
+  
+  // Cargar preferencia de tema guardada
+  cargarPreferenciaTema();
+  
+  // Asignar event listener al botón de tema
+  APP.nodos.btnTema.addEventListener('click', alternarTema);
   
   // Renderizar ítems en el mapa
   renderizarItems();
@@ -151,8 +197,12 @@ function init() {
 }
 
 /* ==========================================================================
-   7. EJECUCIÓN SEGURA (espera a que el DOM esté listo)
+   8. EJECUCIÓN SEGURA (espera a que el DOM esté listo)
    ========================================================================== */
+/* 
+  Comprueba si el DOM ya está cargado
+  Si no, espera al evento DOMContentLoaded
+*/
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {

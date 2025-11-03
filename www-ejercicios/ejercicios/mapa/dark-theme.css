@@ -1,0 +1,63 @@
+/* ==========================================================================
+   TEMA OSCURO - Sobrescribe variables CSS de :root
+   ========================================================================== */
+/* 
+  Este archivo solo redefine las variables de color
+  No duplica estilos, aprovecha el sistema de variables CSS
+*/
+
+:root {
+  /* Paleta cromática invertida para modo oscuro */
+  --color-fondo: hsl(var(--tono), 12%, 12%);
+  --color-primario: hsl(var(--tono), 55%, 60%);
+  --color-primario-claro: hsl(var(--tono), 25%, 20%);
+  --color-secundario: hsl(var(--tono-complementario), 60%, 55%);
+  --color-texto: hsl(var(--tono), 10%, 88%);
+  --color-borde: hsl(var(--tono), 10%, 30%);
+  --color-marcador: hsl(var(--tono-complementario), 70%, 60%);
+  --color-leyenda-fondo: hsl(var(--tono), 15%, 18%);
+  --color-leyenda-sombra: hsla(0, 0%, 0%, 0.5);
+}
+
+/* ==========================================================================
+   AJUSTES ESPECÍFICOS PARA TEMA OSCURO
+   ========================================================================== */
+
+/* Mejorar contraste de las instrucciones */
+.cabecera__instrucciones {
+  color: hsl(var(--tono), 8%, 75%);
+}
+
+/* Ajustar sombra del mapa para mejor visibilidad */
+.mapa {
+  box-shadow: 0 6px 24px hsla(0, 0%, 0%, 0.6);
+}
+
+/* Mejorar visibilidad del borde del marcador */
+.mapa__marcador {
+  border-color: var(--color-leyenda-fondo);
+  box-shadow: 0 3px 10px hsla(0, 0%, 0%, 0.6);
+}
+
+/* Efecto hover más visible en tema oscuro */
+.mapa__item:hover .mapa__marcador {
+  box-shadow: 0 4px 16px hsla(var(--tono), 60%, 60%, 0.5);
+}
+
+/* Sombra más pronunciada en la leyenda */
+.mapa__leyenda {
+  box-shadow: 0 8px 28px hsla(0, 0%, 0%, 0.7);
+  border: 1px solid var(--color-borde);
+}
+
+/* Botones flotantes con mejor contraste */
+.floating-buttons__button {
+  background-color: var(--color-leyenda-fondo);
+  border-color: var(--color-primario);
+  box-shadow: 0 3px 12px hsla(0, 0%, 0%, 0.6);
+}
+
+.floating-buttons__button:hover {
+  background-color: var(--color-primario-claro);
+  border-color: var(--color-primario);
+}
