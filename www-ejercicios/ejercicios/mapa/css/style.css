@@ -360,3 +360,389 @@ body {
     border-width: 2px;
   }
 }
+
+/* ==========================================================================
+   11. PANEL LATERAL (variante)
+   ========================================================================== */
+.panel {
+  position: fixed;
+  top: 0;
+  right: -320px;
+  width: 320px;
+  height: 100vh;
+  background-color: var(--color-leyenda-fondo);
+  box-shadow: -4px 0 16px var(--color-leyenda-sombra);
+  z-index: 900;
+  transition: right 0.3s ease, background-color 0.3s ease;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.panel--abierto {
+  right: 0;
+}
+
+.panel__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--color-borde);
+}
+
+.panel__titulo {
+  font-size: 1.5rem;
+  color: var(--color-primario);
+  margin: 0;
+}
+
+.panel__cerrar {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  color: var(--color-texto);
+  font-size: 1.5rem;
+  cursor: pointer;
+  border-radius: 0.25rem;
+  transition: background-color 0.2s ease;
+}
+
+.panel__cerrar:hover {
+  background-color: var(--color-primario-claro);
+}
+
+.panel__seccion {
+  margin-bottom: 2rem;
+}
+
+.panel__subtitulo {
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  margin-bottom: 0.75rem;
+}
+
+.panel__controles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.btn--filtro {
+  padding: 0.65rem 1rem;
+  border: 2px solid var(--color-borde);
+  background-color: var(--color-leyenda-fondo);
+  color: var(--color-texto);
+  border-radius: 0.4rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  text-align: left;
+  transition: all 0.2s ease;
+}
+
+.btn--filtro:hover {
+  background-color: var(--color-primario-claro);
+  border-color: var(--color-primario);
+}
+
+.btn--filtro.btn--activo {
+  background-color: var(--color-primario);
+  color: white;
+  border-color: var(--color-primario);
+}
+
+.panel__control-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.panel__control-grupo label {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+}
+
+.panel__control-grupo input[type="range"] {
+  width: 100%;
+  accent-color: var(--color-primario);
+}
+
+.panel__control-grupo output {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--color-primario);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   12. WRAPPER DEL MAPA
+   ========================================================================== */
+.mapa-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* ==========================================================================
+   13. CONTROLES DE VISTA EN EL MAPA (variante)
+   ========================================================================== */
+.mapa__controles {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.5rem;
+  background-color: hsla(0, 0%, 100%, 0.95);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 2px 8px var(--color-leyenda-sombra);
+  transition: background-color 0.3s ease;
+}
+
+.mapa__boton-vista {
+  padding: 0.5rem 0.75rem;
+  border: 2px solid var(--color-borde);
+  background-color: transparent;
+  color: var(--color-texto);
+  border-radius: 0.3rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.mapa__boton-vista:hover {
+  background-color: var(--color-primario-claro);
+  border-color: var(--color-primario);
+}
+
+.mapa__boton-vista--activo {
+  background-color: var(--color-primario);
+  color: white;
+  border-color: var(--color-primario);
+}
+
+/* ==========================================================================
+   14. TIPOS DE MARCADORES (variante - distintos estilos)
+   ========================================================================== */
+:root {
+  --escala-marcador: 1;
+}
+
+.mapa__marcador {
+  position: relative;
+  transform: scale(var(--escala-marcador));
+}
+
+.mapa__marcador--restaurante {
+  background-color: hsl(350, 75%, 55%);
+  border-color: hsl(350, 75%, 35%);
+}
+
+.mapa__marcador--cafe {
+  background-color: hsl(30, 70%, 55%);
+  border-color: hsl(30, 70%, 35%);
+}
+
+.mapa__marcador--bar {
+  background-color: hsl(210, 75%, 55%);
+  border-color: hsl(210, 75%, 35%);
+}
+
+.mapa__marcador-icono {
+  font-size: 12px;
+  line-height: 1;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* ==========================================================================
+   15. ARRASTRE DE ÍTEMS (variante)
+   ========================================================================== */
+.mapa__item {
+  cursor: grab;
+}
+
+.mapa__item:active {
+  cursor: grabbing;
+}
+
+.mapa__item--arrastrando {
+  opacity: 0.5;
+  cursor: grabbing;
+}
+
+/* ==========================================================================
+   16. MODO ADICIÓN DE PUNTOS (variante)
+   ========================================================================== */
+.mapa__modo-adicion {
+  position: absolute;
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  background-color: var(--color-primario);
+  color: white;
+  padding: 1rem 1.5rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px var(--color-leyenda-sombra);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.mapa__modo-adicion p {
+  margin: 0;
+  font-size: 0.95rem;
+}
+
+.btn-flotante-add {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  border: none;
+  background-color: var(--color-secundario);
+  color: white;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 12px var(--color-leyenda-sombra);
+  transition: transform 0.2s ease, background-color 0.2s ease;
+  z-index: 800;
+}
+
+.btn-flotante-add:hover {
+  transform: scale(1.1);
+  background-color: hsl(var(--tono-complementario), 75%, 50%);
+}
+
+.btn-flotante-add:active {
+  transform: scale(0.95);
+}
+
+/* ==========================================================================
+   17. DIALOG PARA NUEVO ÍTEM (variante)
+   ========================================================================== */
+.formulario-item {
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0;
+  max-width: 500px;
+  box-shadow: 0 8px 24px var(--color-leyenda-sombra);
+}
+
+.formulario-item::backdrop {
+  background-color: hsla(0, 0%, 0%, 0.5);
+}
+
+.formulario-item__form {
+  padding: 2rem;
+  background-color: var(--color-leyenda-fondo);
+  border-radius: 0.75rem;
+}
+
+.formulario-item__titulo {
+  font-size: 1.5rem;
+  color: var(--color-primario);
+  margin-bottom: 1.5rem;
+}
+
+.formulario-item__campo {
+  margin-bottom: 1.25rem;
+}
+
+.formulario-item__campo label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.formulario-item__campo input,
+.formulario-item__campo select,
+.formulario-item__campo textarea {
+  width: 100%;
+  padding: 0.65rem;
+  border: 2px solid var(--color-borde);
+  border-radius: 0.4rem;
+  font-family: var(--fuente-principal);
+  font-size: 1rem;
+  background-color: var(--color-leyenda-fondo);
+  color: var(--color-texto);
+  transition: border-color 0.2s ease;
+}
+
+.formulario-item__campo input:focus,
+.formulario-item__campo select:focus,
+.formulario-item__campo textarea:focus {
+  outline: none;
+  border-color: var(--color-primario);
+}
+
+.formulario-item__acciones {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
+
+.btn {
+  padding: 0.65rem 1.3rem;
+  border: 2px solid var(--color-primario);
+  border-radius: 0.35rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn--primario {
+  background-color: var(--color-primario);
+  color: white;
+}
+
+.btn--primario:hover {
+  background-color: hsl(var(--tono), 60%, 40%);
+}
+
+.btn--secundario {
+  background-color: transparent;
+  color: var(--color-primario);
+}
+
+.btn--secundario:hover {
+  background-color: var(--color-primario-claro);
+}
+
+/* ==========================================================================
+   18. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+  .panel {
+    width: 280px;
+    right: -280px;
+    padding: 1rem;
+  }
+  
+  .mapa__controles {
+    flex-wrap: wrap;
+    max-width: calc(100% - 2rem);
+  }
+  
+  .btn-flotante-add {
+    bottom: 1rem;
+    right: 1rem;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.3rem;
+  }
+  
+  .formulario-item {
+    max-width: calc(100vw - 2rem);
+  }
+}

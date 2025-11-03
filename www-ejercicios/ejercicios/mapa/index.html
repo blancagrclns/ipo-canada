@@ -1,51 +1,167 @@
 <!DOCTYPE html>
-<!-- Declaración de idioma para accesibilidad y SEO -->
 <html lang="es">
 
 <head>
-  <!-- Codificación UTF-8 lo más arriba posible -->
   <meta charset="UTF-8">
-  
-  <!-- Meta viewport para diseño responsivo -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <title>Mapa Interactivo de Restaurantes</title>
-  
-  <!-- CSS principal -->
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
+    <!-- Favicon -->
+  <link rel="icon" href="img/mapa-del-tesoro.png" type="image/x-icon">
   
   <!-- CSS del tema oscuro (inicialmente desactivado) -->
-  <link id="dark-theme" rel="stylesheet" href="dark-theme.css" disabled>
+  <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled>
   
   <!-- defer: se ejecuta después de que el DOM esté listo -->
-  <script defer src="script.js"></script>
+  <script defer src="js/script.js"></script>
 </head>
 
 <body>
-  <!-- Botón flotante para cambiar de tema -->
+  <!-- Botones flotantes -->
   <div class="floating-buttons">
     <button id="btnTema" class="floating-buttons__button" data-accion="tema" aria-label="Cambiar tema">
       🌙
     </button>
+    <button id="btnPanel" class="floating-buttons__button" data-accion="panel" aria-label="Abrir panel de control">
+      ⚙️
+    </button>
   </div>
 
-  <!-- Header con título e instrucciones -->
   <header class="cabecera">
     <h1 class="cabecera__titulo">Restaurantes de la Ciudad</h1>
     <p class="cabecera__instrucciones">
-      Pasa el cursor sobre los puntos del mapa para ver información detallada sobre cada restaurante.
+      Pasa el cursor sobre los puntos del mapa para ver información. Haz clic en un punto para añadirlo al mapa.
     </p>
   </header>
 
   <main class="contenedor">
-    <!-- 
-      data-mapa: identificador para JavaScript
-      Usa position: relative como contexto de posicionamiento
-    -->
-    <div class="mapa" data-mapa aria-label="Mapa interactivo de restaurantes">
-      <!-- Los puntos de interés se añadirán dinámicamente desde JavaScript -->
+    <!-- Panel lateral de controles -->
+    <aside class="panel" data-panel aria-label="Panel de control de visualización">
+      <div class="panel__header">
+        <h2 class="panel__titulo">Configuración</h2>
+        <button class="panel__cerrar" data-accion="cerrar-panel" aria-label="Cerrar panel">✕</button>
+      </div>
+      
+      <div class="panel__contenido">
+        <!-- Filtro de vistas -->
+        <section class="panel__seccion">
+          <h3 class="panel__subtitulo">Vista del Mapa</h3>
+          <div class="panel__controles">
+            <button class="btn btn--filtro" data-vista="todos" aria-pressed="true">Todos</button>
+            <button class="btn btn--filtro" data-vista="restaurante" aria-pressed="false">🍽️ Restaurantes</button>
+            <button class="btn btn--filtro" data-vista="cafe" aria-pressed="false">☕ Cafés</button>
+            <button class="btn btn--filtro" data-vista="bar" aria-pressed="false">🍺 Bares</button>
+          </div>
+        </section>
+
+        <!-- Tamaño del mapa -->
+        <section class="panel__seccion">
+          <h3 class="panel__subtitulo">Tamaño del Mapa</h3>
+          <div class="panel__control-grupo">
+            <label for="tamanoMapa">Escala:</label>
+            <input 
+              type="range" 
+              id="tamanoMapa" 
+              data-control="tamano"
+              min="80" 
+              max="120" 
+              value="100" 
+              step="5"
+              aria-valuemin="80"
+              aria-valuemax="120"
+              aria-valuenow="100">
+            <output data-output="tamano">100%</output>
+          </div>
+        </section>
+
+        <!-- Tamaño de marcadores -->
+        <section class="panel__seccion">
+          <h3 class="panel__subtitulo">Tamaño de Marcadores</h3>
+          <div class="panel__control-grupo">
+            <label for="tamanoMarcador">Escala:</label>
+            <input 
+              type="range" 
+              id="tamanoMarcador" 
+              data-control="marcador"
+              min="0.6" 
+              max="1.8" 
+              value="1" 
+              step="0.1"
+              aria-valuemin="0.6"
+              aria-valuemax="1.8"
+              aria-valuenow="1">
+            <output data-output="marcador">1.0x</output>
+          </div>
+        </section>
+      </div>
+    </aside>
+
+    <!-- Contenedor del mapa -->
+    <div class="mapa-wrapper">
+      <!-- Controles de vista dentro del mapa -->
+      <div class="mapa__controles" data-controles-mapa>
+        <button class="mapa__boton-vista mapa__boton-vista--activo" data-vista-rapida="todos" aria-label="Ver todos">
+          Todos
+        </button>
+        <button class="mapa__boton-vista" data-vista-rapida="restaurante" aria-label="Solo restaurantes">
+          🍽️
+        </button>
+        <button class="mapa__boton-vista" data-vista-rapida="cafe" aria-label="Solo cafés">
+          ☕
+        </button>
+        <button class="mapa__boton-vista" data-vista-rapida="bar" aria-label="Solo bares">
+          🍺
+        </button>
+      </div>
+
+      <!-- Mapa interactivo -->
+      <div class="mapa" data-mapa aria-label="Mapa interactivo de restaurantes">
+        <!-- Los puntos de interés se añadirán dinámicamente desde JavaScript -->
+      </div>
+
+      <!-- Modo de adición de puntos -->
+      <div class="mapa__modo-adicion" data-modo-adicion style="display: none;">
+        <p>Haz clic en el mapa para añadir un nuevo punto de interés</p>
+        <button class="btn btn--secundario" data-accion="cancelar-adicion">Cancelar</button>
+      </div>
     </div>
+
+    <!-- Formulario para añadir nuevos puntos -->
+    <dialog class="formulario-item" data-dialog-item>
+      <form class="formulario-item__form" data-form-item>
+        <h2 class="formulario-item__titulo">Nuevo Punto de Interés</h2>
+        
+        <div class="formulario-item__campo">
+          <label for="itemNombre">Nombre:</label>
+          <input type="text" id="itemNombre" name="nombre" required>
+        </div>
+
+        <div class="formulario-item__campo">
+          <label for="itemTipo">Tipo:</label>
+          <select id="itemTipo" name="tipo" required>
+            <option value="restaurante">🍽️ Restaurante</option>
+            <option value="cafe">☕ Café</option>
+            <option value="bar">🍺 Bar</option>
+          </select>
+        </div>
+
+        <div class="formulario-item__campo">
+          <label for="itemDescripcion">Descripción:</label>
+          <textarea id="itemDescripcion" name="descripcion" rows="3" required></textarea>
+        </div>
+
+        <div class="formulario-item__acciones">
+          <button type="submit" class="btn btn--primario">Añadir</button>
+          <button type="button" class="btn btn--secundario" data-accion="cancelar-form">Cancelar</button>
+        </div>
+      </form>
+    </dialog>
   </main>
+
+  <!-- Botón para añadir nuevos puntos -->
+  <button class="btn-flotante-add" data-accion="activar-adicion" aria-label="Añadir nuevo punto de interés">
+    ➕
+  </button>
 </body>
 
 </html>
