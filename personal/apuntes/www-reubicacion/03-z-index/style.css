@@ -1,0 +1,50 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-primario: red;
+  --color-secundario: green;
+  --color-terciario: blue;
+}
+
+.contenedor {
+  /* height: 100vh; */  /* Activar/Desactivar esto nos ofrece mayor espacio dentro del contenedor
+                          por eso cuando se activa, permite que los elementos hijos se muestren como
+                          realmente son: cajas grandes independientes */
+
+  display: flex;
+  flex-direction: column;
+
+  position: relative;
+}
+
+.item {
+  width: 10vw;
+  height: 10vw;
+  border: 1px solid black;
+}
+
+.item-a {
+  background-color: var(--color-primario);
+  position: absolute;
+  z-index: 10;
+}
+
+.item-b {
+  background-color: var(--color-secundario);
+  position: absolute;
+  top: 6%;
+  left: 8%;
+  z-index: 30;
+}
+
+.item-c{
+  background-color: var(--color-terciario);
+  position: absolute;
+  top: 10%;
+  left: 5%;
+  z-index: 20;
+}

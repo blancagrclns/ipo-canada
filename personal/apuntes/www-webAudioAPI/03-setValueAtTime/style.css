@@ -1,0 +1,30 @@
+/* style.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-fondo: hsl(120, 12%, 97%);
+  --color-primario: hsl(207, 72%, 78%);
+
+  --color-borde: hsl(0, 0%, 20%);
+}
+
+
+body {
+  min-height: 100vh;
+  background-color: var(--color-fondo);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btnReproducir {
+  padding: 0.4em;
+  font-size: 1.3em;
+}
+
+

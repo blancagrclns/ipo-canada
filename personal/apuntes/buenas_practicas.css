@@ -53,7 +53,8 @@
 body {
   font-family: var(--fuente-principal);
   font-size: 1rem;
-  line-height: 1.6; /* mejora legibilidad (Color&Fuentes&Espacio.pdf) */
+  line-height: 1.6;
+  /* mejora legibilidad (Color&Fuentes&Espacio.pdf) */
   background-color: var(--color-fondo);
   color: var(--color-texto);
   padding: 2rem;
@@ -113,7 +114,8 @@ body {
 .tarjeta__dato {
   font-family: var(--fuente-mono);
   font-size: 1.1rem;
-  font-variant-numeric: tabular-nums; /* números alineados verticalmente */
+  font-variant-numeric: tabular-nums;
+  /* números alineados verticalmente */
 }
 
 /* ==========================================================================
@@ -194,6 +196,205 @@ body {
 .drag-item--active {
   opacity: 0.6;
   cursor: grabbing;
+}
+
+/*  ------------------------------------------------------------------
+    ➜ Re-ubicación.pdf – nuevo
+    DEMONSTRACIÓN DE POSITION
+    ------------------------------------------------------------------ */
+.demo-position {
+  position: relative;
+  /* referencia para los absolute internos */
+  min-height: 8rem;
+  border: 2px dashed var(--color-borde);
+  margin-block: 1rem;
+  padding: .5rem;
+}
+
+.demo-position__label {
+  position: absolute;
+  top: .25rem;
+  left: .5rem;
+  font-size: .75rem;
+  color: var(--color-primario);
+  background: white;
+  padding-inline: .25rem;
+}
+
+/* ----------  relative  ---------- */
+.demo-position__box--rel {
+  position: relative;
+  top: 15px;
+  left: 15px;
+  background: var(--color-primario-claro);
+  border: 2px solid var(--color-primario);
+}
+
+/* ----------  absolute  ---------- */
+.demo-position__box--abs {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  /* centrar */
+  background: var(--color-secundario);
+  color: white;
+}
+
+/* ----------  fixed  ---------- */
+.demo-position__box--fix {
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background: var(--color-terciario);
+  color: white;
+  z-index: 1000;
+  /* por si acaso */
+}
+
+/* ----------  sticky  ---------- */
+.demo-position__box--stk {
+  position: sticky;
+  top: 0;
+  background: hsl(var(--tono), 80%, 80%);
+  border: 2px solid var(--color-primario);
+}
+
+/*  ------------------------------------------------------------------
+    Z-INDEX  (stacking context)
+    ------------------------------------------------------------------ */
+.demo-zindex {
+  position: relative;
+  height: 10rem;
+  margin-block: 1rem;
+}
+
+.demo-zindex__layer {
+  position: absolute;
+  width: 10rem;
+  height: 3rem;
+  display: grid;
+  place-content: center;
+  color: white;
+  font-weight: 600;
+  border-radius: .5rem;
+}
+
+.demo-zindex__layer--10 {
+  background: var(--color-primario);
+  z-index: 10;
+  top: 0;
+  left: 0;
+}
+
+.demo-zindex__layer--20 {
+  background: var(--color-secundario);
+  z-index: 20;
+  top: 1rem;
+  left: 3rem;
+}
+
+.demo-zindex__layer--30 {
+  background: var(--color-terciario);
+  z-index: 30;
+  top: 2rem;
+  left: 6rem;
+}
+
+/*  ------------------------------------------------------------------
+    TRANSFORMACIONES 2-D
+    ------------------------------------------------------------------ */
+.demo-transforms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  margin-block: 1rem;
+}
+
+.demo-transforms__item {
+  width: 5rem;
+  height: 5rem;
+  background: var(--color-primario);
+  color: white;
+  display: grid;
+  place-content: center;
+  font-size: .8rem;
+  border-radius: .4rem;
+  transition: transform .3s ease;
+}
+
+/* ----------  funciones individuales  ---------- */
+.demo-transforms__item--translate {
+  transform: translate(10px, 10px);
+}
+
+.demo-transforms__item--rotate {
+  transform: rotate(15deg);
+}
+
+.demo-transforms__item--scale {
+  transform: scale(1.2);
+}
+
+.demo-transforms__item--skew {
+  transform: skew(10deg, 5deg);
+}
+
+/*  ------------------------------------------------------------------
+    PSEUDOELEMENTOS  &  PSEUDOCLASES
+    ------------------------------------------------------------------ */
+.demo-pseudos__texto {
+  margin-block-end: 1rem;
+}
+
+.demo-pseudos__cita {
+  position: relative;
+  display: inline-block;
+  padding: .75rem 1.25rem;
+  background: var(--color-primario-claro);
+  border-left: 4px solid var(--color-primario);
+  font-style: italic;
+  cursor: default;
+}
+
+/* ::before  &  ::after  */
+.demo-pseudos__cita::before {
+  content: "“";
+  position: absolute;
+  left: -.6rem;
+  top: -.2rem;
+  font-size: 2rem;
+  color: var(--color-primario);
+  line-height: 1;
+}
+
+.demo-pseudos__cita::after {
+  content: "”";
+  position: absolute;
+  right: -.6rem;
+  bottom: -.4rem;
+  font-size: 2rem;
+  color: var(--color-primario);
+  line-height: 1;
+}
+
+/* Tooltip con attr() y :hover */
+.demo-pseudos__cita:hover::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: hsl(var(--tono), 20%, 20%);
+  color: white;
+  padding: .35rem .65rem;
+  border-radius: .25rem;
+  white-space: nowrap;
+  font-size: .8rem;
+  font-style: normal;
+  pointer-events: none;
+  /* evita parpadeos */
 }
 
 /* ==========================================================================

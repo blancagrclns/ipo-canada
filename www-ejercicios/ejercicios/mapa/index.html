@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <!-- Codificación UTF-8 para soporte completo de caracteres -->
+  <meta charset="UTF-8">
+  
+  <!-- Configuración responsive: ancho del viewport = ancho del dispositivo -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Mapa Interactivo de Restaurantes</title>
+  
+  <!-- CSS antes que JS para evitar FOUC (Flash of Unstyled Content) -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- defer: descarga en paralelo, ejecuta después del DOM completo -->
+  <script defer src="script.js"></script>
+</head>
+
+<body>
+  <!-- Estructura semántica con header/main/footer -->
+  <header class="cabecera">
+    <h1 class="cabecera__titulo">Restaurantes de la Ciudad</h1>
+  </header>
+
+  <main class="contenedor">
+    <!-- 
+      data-mapa: identifica el contenedor del mapa para JavaScript
+      Usa position: relative para ser contexto de posicionamiento de los ítems
+    -->
+    <div class="mapa" data-mapa aria-label="Mapa interactivo de restaurantes">
+      <!-- 
+        La imagen del mapa se carga como fondo en CSS
+        Los ítems (puntos de interés) se añadirán aquí dinámicamente desde JS
+      -->
+    </div>
+
+    <!-- 
+      Sección informativa opcional
+      Puede eliminarse si no se necesita
+    -->
+    <section class="info">
+      <h2 class="info__titulo">Cómo usar el mapa</h2>
+      <p class="info__texto">
+        Pasa el cursor sobre los puntos del mapa para ver información detallada 
+        sobre cada restaurante.
+      </p>
+    </section>
+  </main>
+
+  <footer class="pie">
+    <small class="pie__texto">
+      Proyecto de Mapa Interactivo &copy; 2025
+    </small>
+  </footer>
+</body>
+
+</html>

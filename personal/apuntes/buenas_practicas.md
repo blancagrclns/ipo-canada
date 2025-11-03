@@ -6,11 +6,7 @@ Este proyecto implementa tres funcionalidades comunes en aplicaciones web modern
 - **Contador manual** con incremento por botón.
 - **Arrastrar y soltar (Drag & Drop)** con la API nativa del navegador.
 
-Todo el código sigue rigurosamente las **buenas prácticas** descritas en los documentos:
-    - `Introducción.pdf`
-    - `Intervalos.pdf`
-    - `Color&Fuentes&Espacio.pdf`
-    - `README.md` sobre atributos `data-*` y estrategias CSS
+Todo el código sigue rigurosamente las **buenas prácticas** descritas en los documentos: - `Introducción.pdf` - `Intervalos.pdf` - `Color&Fuentes&Espacio.pdf` - `README.md` sobre atributos `data-*` y estrategias CSS
 
 ---
 
@@ -55,6 +51,7 @@ element.dataset.tiempo; // o getAttribute("data-tiempo")
 ```
 
 **Ventajas:**
+
 - Desacopla lógica (JS) de presentación (CSS).
 - Evita el uso excesivo de id (que deben ser únicos).
 - Permite selección múltiple sin depender de clases.
@@ -87,16 +84,16 @@ APP.temporizador = null;
 
 ```css
 :root {
-    --tono: 210;
-    --color-primario: hsl(var(--tono), 80%, 50%);
-    --color-secundario: hsl(calc(var(--tono) + 180), 70%, 45%);
+  --tono: 210;
+  --color-primario: hsl(var(--tono), 80%, 50%);
+  --color-secundario: hsl(calc(var(--tono) + 180), 70%, 45%);
 }
 ```
 
 Accesibles desde JavaScript:
 
 ```js
-getComputedStyle(document.documentElement).getPropertyValue('--color-primario')
+getComputedStyle(document.documentElement).getPropertyValue("--color-primario");
 ```
 
 ### 5. Tipografía Escalable y Legible
@@ -124,8 +121,8 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-primario')
 
 - Usa la API nativa de Drag and Drop (sin librerías).
 - Eventos clave:
-    - `dragstart` / `dragend` → en el elemento arrastrable.
-    - `dragover` / `dragleave` / `drop` → en la zona de destino.
+  - `dragstart` / `dragend` → en el elemento arrastrable.
+  - `dragover` / `dragleave` / `drop` → en la zona de destino.
 - `preventDefault()` es obligatorio en `dragover` y `drop`.
 - Feedback visual con clases `.drag-item--active` y `.drop-zone--active`.
 - Accesibilidad: `aria-live="polite"` anuncia cambios tras soltar.
@@ -141,13 +138,23 @@ getComputedStyle(document.documentElement).getPropertyValue('--color-primario')
 
 ---
 
+### 🔭 Novedades añadidas desde «Re-ubicación.pdf»
+
+| Tema                                            | Ubicación en la demo                    | Fichero(s) afectados              |
+| ----------------------------------------------- | --------------------------------------- | --------------------------------- |
+| `position` (relative, absolute, fixed, sticky)  | Sección «Position & Stacking context»   | `index.html` ➜ nueva sección      |
+| `z-index` y _stacking context_                  | Cajas superpuestas con valores 10-20-30 | `styles.css` ➜ `.demo-zindex`     |
+| `transform` (translate / rotate / scale / skew) | Cuatrito de cada tipo                   | `styles.css` ➜ `.demo-transforms` |
+| `::before` & `::after` + `attr()`               | Cita con comillas y tooltip             | `styles.css` ➜ `.demo-pseudos`    |
+| Reset funcional de demos                        | Botón «Resetear demos»                  | `script.js` ➜ pequeño helper      |
+
 ## 🧪 Cómo Usar
 
 1. Abre `index.html` en un navegador moderno (Chrome, Edge, Safari reciente).
 2. Interactúa con:
-     - Los botones de Iniciar/Detener para el temporizador.
-     - El botón Incrementar para el contador.
-     - Arrastra el cuadrado a la zona punteada.
+   - Los botones de Iniciar/Detener para el temporizador.
+   - El botón Incrementar para el contador.
+   - Arrastra el cuadrado a la zona punteada.
 
 💡 Consejo: abre la consola del navegador para ver los mensajes de depuración.
 

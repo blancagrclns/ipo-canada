@@ -134,10 +134,10 @@ function activarDragDrop() {
     e.preventDefault();
     dropZone.classList.remove('drop-zone--active');
     dropZone.textContent = "✅ ¡Elemento soltado correctamente!";
-    
+
     // Accesibilidad: anuncia el cambio a lectores de pantalla
     dropZone.setAttribute('aria-live', 'polite');
-    
+
     // Opcional: desactiva futuros arrastres
     dragItem.draggable = false;
     dragItem.style.opacity = '0.4';
@@ -170,6 +170,36 @@ function init() {
   activarDragDrop();
 
   console.log("✅ Aplicación lista. Esperando interacciones del usuario.");
+
+  /*  --------------------------------------------------------------
+    ➜ Re-ubicación.pdf – nuevo
+    Pequeña utilidad para resetear los contadores de las demos
+    (opcional pero útil en clase)
+    -------------------------------------------------------------- */
+  const resetBtn = document.createElement('button');
+  resetBtn.className = 'btn btn--secundario';
+  resetBtn.textContent = 'Resetear demos';
+  resetBtn.type = 'button';
+  resetBtn.addEventListener('click', () => {
+    /* temporizador */
+    if (APP.temporizador !== null) detenerTemporizador();
+    APP.nodos.tiempoSpan.textContent = '0';
+
+    /* contador */
+    APP.contador = 0;
+    APP.nodos.cuentaSpan.textContent = '0';
+
+    /* drag & drop */
+    const { dropZone, dragItem } = APP.nodos;
+    dropZone.textContent = 'Suelta aquí el cuadrado';
+    dropZone.removeAttribute('aria-live');
+    dragItem.draggable = true;
+    dragItem.style.opacity = '';
+    dragItem.style.pointerEvents = '';
+
+    console.log('♻️  Demos restauradas');
+  });
+  document.querySelector('.pie').prepend(resetBtn);
 }
 
 /* ==========================================================================

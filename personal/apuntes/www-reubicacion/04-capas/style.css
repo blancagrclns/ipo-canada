@@ -1,0 +1,49 @@
+/* style.css */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+
+    --color-primario: rgb(245, 71, 71);
+    --color-secundario: rgb(245, 245, 101);
+    --color-terciario: rgb(9, 214, 9);
+    --dimension: 20vw;
+}
+
+.item {
+  width: var(--dimension);
+  height: var(--dimension);
+}
+
+.item-A {
+    background-color: red;
+
+    position: absolute;
+    z-index: 10; 
+    top: 5%;
+    left: 5%;
+}
+
+.item-B {
+        
+    background-color: yellow;
+
+    position: absolute;
+    z-index: 100;
+    top: 20%;
+    left: 20%;
+}
+
+.item-C {
+    background-color: green;
+
+    position: absolute;
+    z-index: 2; 
+    left: 10%;
+    top: 10%;
+}
+

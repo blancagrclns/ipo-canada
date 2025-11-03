@@ -1,0 +1,298 @@
+/* ==========================================================================
+   1. RESET Y CONFIGURACIÓN BASE
+   ========================================================================== */
+/* box-sizing: border-box incluye padding y border en width/height */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* ==========================================================================
+   2. VARIABLES CSS (Sistema de diseño centralizado)
+   ========================================================================== */
+:root {
+  /* Paleta cromática con HSL (más intuitivo que RGB) */
+  --tono: 150;
+  --tono-complementario: calc(var(--tono) + 180);
+
+  --color-fondo: hsl(var(--tono), 15%, 96%);
+  --color-primario: hsl(var(--tono), 60%, 45%);
+  --color-primario-claro: hsl(var(--tono), 60%, 95%);
+  --color-secundario: hsl(var(--tono-complementario), 65%, 50%);
+  --color-texto: hsl(var(--tono), 20%, 15%);
+  --color-borde: hsl(var(--tono), 15%, 75%);
+  --color-overlay: hsla(0, 0%, 0%, 0.6);
+
+  /* Tipografía escalable con rem (respeta preferencias del usuario) */
+  --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  --fuente-titulo: Georgia, "Times New Roman", serif;
+}
+
+/* ==========================================================================
+   3. ESTILOS GLOBALES DEL BODY
+   ========================================================================== */
+/* 
+  Flexbox en body para layout vertical completo
+  min-height: 100vh asegura que ocupe toda la ventana
+*/
+body {
+  font-family: var(--fuente-principal);
+  font-size: 1rem;
+  line-height: 1.6;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  padding: 1.5rem;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* ==========================================================================
+   4. HEADER
+   ========================================================================== */
+.cabecera {
+  text-align: center;
+}
+
+.cabecera__titulo {
+  font-family: var(--fuente-titulo);
+  font-size: clamp(1.5rem, 4vw, 2.2rem);
+  color: var(--color-primario);
+}
+
+/* ==========================================================================
+   5. CONTENEDOR PRINCIPAL
+   ========================================================================== */
+/* flex: 1 empuja el footer al fondo incluso con poco contenido */
+.contenedor {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* ==========================================================================
+   6. MAPA (contenedor de la imagen y los puntos)
+   ========================================================================== */
+.mapa {
+  /* position: relative es el contexto para los ítems con position: absolute */
+  position: relative;
+  
+  /* La imagen se ajusta al contenedor manteniendo su ratio */
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  
+  /* Imagen de fondo (reemplazar con la ruta real) */
+  background-image: url('./img/mapa-ciudad.jpg');
+  background-size: cover;
+  background-position: center;
+  
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 12px hsla(var(--tono), 20%, 20%, 0.15);
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   7. ÍTEMS DEL MAPA (puntos de interés)
+   ========================================================================== */
+/* 
+  Los ítems usan position: absolute con coordenadas en porcentaje
+  para adaptarse al tamaño del mapa
+*/
+.mapa__item {
+  /* position: absolute permite colocarlos en coordenadas específicas */
+  position: absolute;
+  
+  /* transform: translate(-50%, -50%) centra el punto en las coordenadas */
+  transform: translate(-50%, -50%);
+  
+  /* Cursor pointer indica interactividad */
+  cursor: pointer;
+  
+  /* z-index: 10 asegura que esté sobre la imagen pero bajo la leyenda */
+  z-index: 10;
+}
+
+/* El marcador visual (círculo con pulso) */
+.mapa__marcador {
+  width: 20px;
+  height: 20px;
+  background-color: var(--color-secundario);
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.3);
+  
+  /* Transición suave en hover */
+  transition: transform 0.3s ease, background-color 0.3s ease;
+}
+
+/* Animación de pulso con ::before */
+.mapa__marcador::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: var(--color-secundario);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  
+  /* Animación de pulso infinita */
+  animation: pulso 2s ease-out infinite;
+  opacity: 0.6;
+}
+
+@keyframes pulso {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(2.5);
+    opacity: 0;
+  }
+}
+
+/* Hover en el marcador */
+.mapa__item:hover .mapa__marcador {
+  transform: scale(1.3);
+  background-color: var(--color-primario);
+}
+
+/* ==========================================================================
+   8. LEYENDA (tooltip que aparece al hacer hover)
+   ========================================================================== */
+.mapa__leyenda {
+  /* 
+    position: absolute + transform permite posicionar la leyenda
+    relativa al ítem padre
+  */
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Espaciado respecto al marcador */
+  margin-bottom: 0.75rem;
+  
+  /* Estilos visuales */
+  background-color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 16px hsla(0, 0%, 0%, 0.2);
+  
+  /* Ancho mínimo y máximo */
+  min-width: 200px;
+  max-width: 280px;
+  
+  /* Inicialmente oculta */
+  opacity: 0;
+  visibility: hidden;
+  
+  /* z-index: 100 asegura que esté sobre todo */
+  z-index: 100;
+  
+  /* Transiciones suaves */
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  
+  /* Evita que se corte el texto */
+  white-space: normal;
+  
+  /* pointer-events: none evita que interfiera con el hover */
+  pointer-events: none;
+}
+
+/* Flecha inferior de la leyenda usando ::after */
+.mapa__leyenda::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  
+  /* Triángulo con border */
+  border: 8px solid transparent;
+  border-top-color: white;
+}
+
+/* Mostrar leyenda al hacer hover en el ítem */
+.mapa__item:hover .mapa__leyenda {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(-5px);
+}
+
+/* Título de la leyenda */
+.mapa__leyenda h3 {
+  font-size: 1.1rem;
+  color: var(--color-primario);
+  margin-bottom: 0.5rem;
+  font-family: var(--fuente-titulo);
+}
+
+/* Descripción de la leyenda */
+.mapa__leyenda p {
+  font-size: 0.9rem;
+  color: var(--color-texto);
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   9. SECCIÓN INFORMATIVA
+   ========================================================================== */
+.info {
+  background-color: var(--color-primario-claro);
+  padding: 1.5rem;
+  border-radius: 0.5rem;
+  border-left: 4px solid var(--color-primario);
+}
+
+.info__titulo {
+  font-size: 1.3rem;
+  color: var(--color-primario);
+  margin-bottom: 0.75rem;
+}
+
+.info__texto {
+  font-size: 0.95rem;
+  color: var(--color-texto);
+}
+
+/* ==========================================================================
+   10. FOOTER
+   ========================================================================== */
+.pie {
+  text-align: center;
+  padding: 1rem 0;
+  border-top: 1px solid var(--color-borde);
+  font-size: 0.9rem;
+  color: hsl(var(--tono), 15%, 50%);
+}
+
+/* ==========================================================================
+   11. RESPONSIVE (adaptación a pantallas pequeñas)
+   ========================================================================== */
+@media (max-width: 768px) {
+  body {
+    padding: 1rem;
+  }
+  
+  .mapa {
+    aspect-ratio: 4 / 3;
+  }
+  
+  .mapa__leyenda {
+    /* En móviles, mostrar la leyenda centrada arriba */
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90vw;
+  }
+}

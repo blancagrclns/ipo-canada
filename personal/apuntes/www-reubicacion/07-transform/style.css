@@ -1,0 +1,35 @@
+/* style.css */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+  
+:root {
+    --color-fondo: hsl(120, 12%, 97%);
+    --color-primario: hsl(207, 72%, 78%);
+    --color-secundario: hsl(3, 100%, 86%);
+  
+    --color-borde: hsl(0, 0%, 20%);
+}
+  
+  
+.contenedor {
+    background-color: var(--color-fondo);
+    padding: 1rem;
+}
+  
+.item {
+    padding: 1rem;
+    border: 1px solid var(--color-borde);
+}
+
+.item-transform {
+    transform: translate(5%, 0) rotate(4deg) ;
+    background-color: red;
+}
+
+  
+
+  

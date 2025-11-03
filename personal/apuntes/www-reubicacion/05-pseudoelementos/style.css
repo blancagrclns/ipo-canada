@@ -1,0 +1,40 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-fondo: hsl(120, 12%, 97%);
+  --color-primario: hsl(207, 72%, 78%);
+  --color-secundario: hsl(3, 100%, 86%);
+  --color-borde: hsl(0, 0%, 20%);
+}
+
+
+.cita {
+  background-color: var(--color-primario);
+  padding: 1.5rem;
+  margin: 1rem;
+}
+
+.cita {
+  position: relative;
+}
+
+.cita::before {
+  content: "***";
+}
+
+.cita::after {
+  content: "";
+
+  display: block;
+  width: 8rem;
+  height: 0.6rem;
+  background-color: red;
+
+  position: absolute;
+  left: 1rem;
+}
+

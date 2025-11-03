@@ -1,0 +1,44 @@
+/* style.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-fondo: hsl(120, 27%, 94%);
+  --color-primario: hsl(207, 90%, 54%);
+  --color-secundario: hsl(4, 100%, 67%);
+  --color-borde: hsl(0, 0%, 20%);
+}
+
+body {
+  background-color: var(--color-fondo);
+  /* Para forzar la aparición de la barra de desplazamiento */
+  min-height: 150vh;
+}
+
+.item {
+  padding: 4rem;
+  border: 1px solid var(--color-borde);
+
+  position: static;
+}
+
+.fijo {
+  background-color: var(--color-primario);
+  padding: 1rem;
+
+  position: fixed;
+  top: 10%;
+  right: 10%;
+}
+
+.adherente {
+  background-color: var(--color-secundario);
+  padding: 1.5rem;
+
+  position: sticky;
+  top: 20%;
+}

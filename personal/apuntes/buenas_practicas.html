@@ -5,6 +5,7 @@
     el SEO (motores de búsqueda) y el comportamiento de ciertas APIs (como speechSynthesis).
 -->
 <html lang="es">
+
 <head>
   <!-- 
     Codificación de caracteres UTF-8 (Introducción.pdf):
@@ -93,21 +94,79 @@
     -->
     <section class="tarjeta tarjeta--drag">
       <h2 class="tarjeta__titulo">Ejemplo de Arrastrar y Soltar</h2>
-      <div 
-        class="drop-zone" 
-        data-drop 
-        aria-label="Zona para soltar elementos"
-      >
+      <div class="drop-zone" data-drop aria-label="Zona para soltar elementos">
         Suelta aquí el cuadrado
       </div>
-      <div 
-        class="drag-item" 
-        data-drag 
-        draggable="true"
-        aria-grabbed="false"
-      >
+      <div class="drag-item" data-drag draggable="true" aria-grabbed="false">
         Arrástrame
       </div>
+    </section>
+
+    <!--  ===========================================================
+      ➜ Re-ubicación.pdf – nuevo
+      Sección 4: demostración visual de POSITION / Z-INDEX
+      =========================================================== -->
+    <section class="tarjeta tarjeta--posicionamiento">
+      <h2 class="tarjeta__titulo">Position &amp; Stacking context</h2>
+
+      <div class="demo-position demo-position--relative">
+        <span class="demo-position__label">relative</span>
+        <div class="demo-position__box demo-position__box--rel">A</div>
+      </div>
+
+      <div class="demo-position demo-position--absolute">
+        <span class="demo-position__label">absolute</span>
+        <div class="demo-position__box demo-position__box--abs">B</div>
+      </div>
+
+      <div class="demo-position demo-position--fixed">
+        <span class="demo-position__label">fixed</span>
+        <div class="demo-position__box demo-position__box--fix">C</div>
+      </div>
+
+      <div class="demo-position demo-position--sticky">
+        <span class="demo-position__label">sticky</span>
+        <div class="demo-position__box demo-position__box--stk">D</div>
+      </div>
+
+      <!--  Z-INDEX  -->
+      <div class="demo-zindex">
+        <div class="demo-zindex__layer demo-zindex__layer--10">z-index&nbsp;10</div>
+        <div class="demo-zindex__layer demo-zindex__layer--20">z-index&nbsp;20</div>
+        <div class="demo-zindex__layer demo-zindex__layer--30">z-index&nbsp;30</div>
+      </div>
+    </section>
+
+    <!--  ===========================================================
+      ➜ Re-ubicación.pdf – nuevo
+      Sección 5: transformaciones 2-D
+      =========================================================== -->
+    <section class="tarjeta tarjeta--transforms">
+      <h2 class="tarjeta__titulo">Transformaciones (translate / rotate / scale / skew)</h2>
+
+      <div class="demo-transforms">
+        <div class="demo-transforms__item  demo-transforms__item--translate">translate</div>
+        <div class="demo-transforms__item  demo-transforms__item--rotate">rotate</div>
+        <div class="demo-transforms__item  demo-transforms__item--scale">scale</div>
+        <div class="demo-transforms__item  demo-transforms__item--skew">skew</div>
+      </div>
+    </section>
+
+    <!--  ===========================================================
+      ➜ Re-ubicación.pdf – nuevo
+      Sección 6: pseudoelementos & pseudoclases
+      =========================================================== -->
+    <section class="tarjeta tarjeta--pseudos">
+      <h2 class="tarjeta__titulo">::before / ::after / :hover / attr()</h2>
+
+      <p class="demo-pseudos__texto">
+        Pasa el cursor sobre la cita para ver el tooltip implementado
+        <strong>sólo con CSS</strong>.
+      </p>
+
+      <blockquote class="demo-pseudos__cita" data-tooltip="Conócete a ti mismo – Nosce te ipsum">
+        Nosce te ipsum
+      </blockquote>
     </section>
   </main>
 
@@ -123,4 +182,5 @@
     </small>
   </footer>
 </body>
+
 </html>

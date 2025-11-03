@@ -1,0 +1,55 @@
+/* style.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --color-fondo: hsl(120, 12%, 97%);
+  --color-primario: hsl(207, 72%, 78%);
+  --color-secundario: hsl(3, 100%, 86%);
+
+  --color-borde: hsl(0, 0%, 20%);
+}
+
+
+.contenedor {
+  background-color: var(--color-fondo);
+  padding: 1rem;  /* Recuerda: el padding son los bordes con el exterior*/
+
+  /* Elemento de referencia para el posicionamiento absoluto */
+  position: relative;
+
+  /* height: 90vh;
+  width: 60vw; */
+
+}
+
+.item {
+  padding: 1rem;
+  border: 1px solid var(--color-borde);
+
+
+}
+
+.absoluto {
+  background-color: var(--color-primario);
+  position: absolute;
+
+  /* Porcentajes respecto a las dimensiones de .contenedor */
+  top: 10%;
+  left: 10%;
+}
+
+.relativo {
+  background-color: var(--color-secundario);
+  position: relative;
+
+  padding: 1em;
+  
+  /* Porcentajes respecto a sus propias dimensiones */
+  top: 10%;
+  left: 10%;
+}

@@ -1,0 +1,38 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --color-fondo: hsl(120, 12%, 97%);
+  --color-primario: hsl(207, 72%, 78%);
+  --color-secundario: hsl(3, 100%, 86%);
+  --color-borde: hsl(0, 0%, 20%);
+}
+
+
+.cita {
+  /* background-color: var(--color-primario); */
+  padding: 1.5rem;
+}
+
+.cita {
+  position: relative;
+}
+
+.cita:hover::after{
+  content: attr(data-tooltip);
+
+  display: block;
+  width: 10rem;
+  padding: 0.2rem;
+
+  background-color: lightyellow;
+
+  position: absolute;
+  top: 0.5rem;
+  left: 2.5rem;
+}
+
+
