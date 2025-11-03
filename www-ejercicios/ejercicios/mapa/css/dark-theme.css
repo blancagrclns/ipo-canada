@@ -61,3 +61,56 @@
   background-color: var(--color-primario-claro);
   border-color: var(--color-primario);
 }
+
+/* Mejorar contraste de botones secundarios en tema oscuro */
+.btn--secundario {
+  background-color: hsl(var(--tono), 12%, 25%);
+  color: var(--color-primario);
+  border: 2px solid var(--color-primario);
+}
+
+.btn--secundario:hover {
+  background-color: var(--color-primario);
+  color: hsl(var(--tono), 12%, 12%);
+}
+
+/* Botón secundario en modal de adición */
+.mapa__modo-adicion .btn--secundario {
+  background-color: hsl(var(--tono), 8%, 90%);
+  color: hsl(var(--tono), 60%, 40%);
+  border: 2px solid hsl(var(--tono), 8%, 90%);
+}
+
+.mapa__modo-adicion .btn--secundario:hover {
+  background-color: white;
+  color: var(--color-primario);
+  border-color: white;
+}
+
+/* Mejorar visibilidad del botón flotante */
+.btn-flotante-add {
+  box-shadow: 0 4px 20px hsla(var(--tono), 60%, 60%, 0.4);
+}
+
+.btn-flotante-add:hover {
+  box-shadow: 0 6px 24px hsla(var(--tono), 60%, 60%, 0.6);
+}
+
+/* Mejorar contraste de botones de vista dentro del mapa */
+.mapa__boton-vista {
+  background-color: hsla(var(--tono), 15%, 20%, 0.9);
+  color: hsl(var(--tono), 40%, 85%);
+  border-color: hsl(var(--tono), 25%, 35%);
+}
+
+.mapa__boton-vista:hover {
+  background-color: hsla(var(--tono), 20%, 30%, 0.95);
+  border-color: var(--color-primario);
+  color: var(--color-primario);
+}
+
+.mapa__boton-vista--activo {
+  background-color: var(--color-primario);
+  color: white;
+  border-color: var(--color-primario);
+}

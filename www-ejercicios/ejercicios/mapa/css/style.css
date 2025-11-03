@@ -37,23 +37,18 @@
 /* ==========================================================================
    3. ESTILOS GLOBALES DEL BODY
    ========================================================================== */
-/* 
-  Flexbox para layout vertical completo
-  min-height: 100vh asegura ocupar toda la ventana
-*/
 body {
   font-family: var(--fuente-principal);
   font-size: 1rem;
   line-height: 1.6;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  padding: 1.5rem;
+  padding: 1rem; /* Reducido de 1.5rem */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  
-  /* Transición suave al cambiar de tema */
+  gap: 1rem; /* Reducido de 1.5rem */
+  overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -105,32 +100,31 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
+  padding-bottom: 0.5rem; /* Reducir espacio inferior */
 }
 
 .cabecera__titulo {
   font-family: var(--fuente-titulo);
-  font-size: clamp(1.5rem, 4vw, 2.5rem);
+  font-size: clamp(1.3rem, 3.5vw, 2rem); /* Reducido */
   color: var(--color-primario);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.5rem; /* Reducido de 0.75rem */
 }
 
-/* Párrafo de instrucciones debajo del título */
 .cabecera__instrucciones {
-  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  font-size: clamp(0.85rem, 1.8vw, 1rem); /* Reducido */
   color: var(--color-texto);
   max-width: 42rem;
   margin: 0 auto;
-  line-height: 1.5;
+  line-height: 1.4;
 }
 
 /* ==========================================================================
    6. CONTENEDOR PRINCIPAL
    ========================================================================== */
-/* flex: 1 empuja el contenido hacia abajo si es necesario */
 .contenedor {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1.25rem; /* Reducido de 2rem */
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
@@ -149,7 +143,7 @@ body {
   aspect-ratio: 16 / 10;
   
   /* Imagen de fondo (reemplazar con la ruta real) */
-  background-image: url('./img/mapa-ciudad.jpg');
+  background-image: url('../img/mapa-ciudad.jpg');
   background-size: cover;
   background-position: center;
   background-color: var(--color-primario-claro);
@@ -446,10 +440,16 @@ body {
   border-color: var(--color-primario);
 }
 
-.btn--filtro.btn--activo {
+/* Botón de filtro activo (para selección múltiple) */
+.btn--filtro-activo {
   background-color: var(--color-primario);
   color: white;
   border-color: var(--color-primario);
+}
+
+.btn--filtro-activo:hover {
+  background-color: var(--color-primario-oscuro);
+  border-color: var(--color-primario-oscuro);
 }
 
 .panel__control-grupo {
@@ -575,65 +575,59 @@ body {
 }
 
 /* ==========================================================================
-   16. MODO ADICIÓN DE PUNTOS (variante)
+   16. MODO ADICIÓN DE PUNTOS (variante) - MEJORADO
    ========================================================================== */
 .mapa__modo-adicion {
   position: absolute;
-  bottom: 1rem;
+  top: 4rem; /* Posicionado más alto pero sin cubrir controles */
   left: 50%;
   transform: translateX(-50%);
   z-index: 50;
   background-color: var(--color-primario);
   color: white;
-  padding: 1rem 1.5rem;
+  padding: 0.65rem 1rem;
   border-radius: 0.5rem;
   box-shadow: 0 4px 12px var(--color-leyenda-sombra);
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
   gap: 0.75rem;
+  max-width: 90%; /* Evita que se salga en móviles */
 }
 
 .mapa__modo-adicion p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
-.btn-flotante-add {
-  position: fixed;
-  bottom: 2rem;
-  right: 2rem;
-  width: 3.5rem;
-  height: 3.5rem;
-  border: none;
-  background-color: var(--color-secundario);
-  color: white;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 12px var(--color-leyenda-sombra);
-  transition: transform 0.2s ease, background-color 0.2s ease;
-  z-index: 800;
+/* Mejorar visibilidad del botón cancelar - CORREGIDO */
+.mapa__modo-adicion .btn--secundario {
+  background-color: white;
+  color: var(--color-primario);
+  border: 2px solid white;
+  padding: 0.4rem 0.85rem;
+  font-size: 0.85rem;
+  white-space: nowrap;
 }
 
-.btn-flotante-add:hover {
-  transform: scale(1.1);
-  background-color: hsl(var(--tono-complementario), 75%, 50%);
-}
-
-.btn-flotante-add:active {
-  transform: scale(0.95);
+.mapa__modo-adicion .btn--secundario:hover {
+  background-color: var(--color-primario-claro);
+  border-color: white;
+  color: var(--color-primario);
 }
 
 /* ==========================================================================
-   17. DIALOG PARA NUEVO ÍTEM (variante)
+   17. DIALOG PARA NUEVO ÍTEM (variante) - MEJORADO
    ========================================================================== */
 .formulario-item {
   border: none;
   border-radius: 0.75rem;
   padding: 0;
   max-width: 500px;
+  width: 90vw;
   box-shadow: 0 8px 24px var(--color-leyenda-sombra);
+  margin: auto;
 }
 
 .formulario-item::backdrop {
@@ -641,19 +635,21 @@ body {
 }
 
 .formulario-item__form {
-  padding: 2rem;
+  padding: 1.75rem; /* Reducido de 2rem */
   background-color: var(--color-leyenda-fondo);
   border-radius: 0.75rem;
+  max-height: 85vh; /* Evita que se salga de la pantalla */
+  overflow-y: auto;
 }
 
 .formulario-item__titulo {
-  font-size: 1.5rem;
+  font-size: 1.4rem; /* Reducido */
   color: var(--color-primario);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.25rem;
 }
 
 .formulario-item__campo {
-  margin-bottom: 1.25rem;
+  margin-bottom: 1rem; /* Reducido de 1.25rem */
 }
 
 .formulario-item__campo label {
@@ -690,6 +686,12 @@ body {
   justify-content: flex-end;
   margin-top: 1.5rem;
 }
+.formulario-item__acciones {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 1.5rem;
+}
 
 .btn {
   padding: 0.65rem 1.3rem;
@@ -711,12 +713,14 @@ body {
 }
 
 .btn--secundario {
-  background-color: transparent;
+  background-color: hsl(var(--tono), 10%, 90%);
   color: var(--color-primario);
+  border: 2px solid var(--color-primario);
 }
 
 .btn--secundario:hover {
-  background-color: var(--color-primario-claro);
+  background-color: var(--color-primario);
+  color: white;
 }
 
 /* ==========================================================================
@@ -745,4 +749,33 @@ body {
   .formulario-item {
     max-width: calc(100vw - 2rem);
   }
+}
+
+/* ==========================================================================
+   19. BOTÓN FLOTANTE PARA AÑADIR
+   ========================================================================== */
+.btn-flotante-add {
+  position: fixed;
+  bottom: 1.5rem;
+  right: 1.5rem;
+  width: 3.5rem;
+  height: 3.5rem;
+  background-color: var(--color-primario);
+  color: white;
+  border: none;
+  border-radius: 50%;
+  font-size: 1.5rem;
+  cursor: pointer;
+  box-shadow: 0 4px 16px var(--color-leyenda-sombra);
+  z-index: 800;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-flotante-add:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px var(--color-leyenda-sombra);
+}
+
+.btn-flotante-add:active {
+  transform: scale(0.95);
 }
