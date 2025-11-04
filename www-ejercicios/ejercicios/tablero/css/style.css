@@ -42,6 +42,7 @@
   --color-complementario: hsl(var(--tono-complementario), 60%, 45%);
   --color-exito: hsl(120, 70%, 45%);
   --color-borde: hsl(var(--tono-principal), 20%, 80%);
+  --patron-geometrico-color: hsla(var(--tono-principal), 30%, 35%, 0.12);
 
   /* Botones de control personalizados */
   .boton--verde {
@@ -120,10 +121,20 @@
 body {
   font-family: var(--fuente-principal);
   /* Fondo con tema de tablero */
-  background: linear-gradient(135deg,
+  background-color: var(--color-fondo);
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 22px,
+      var(--patron-geometrico-color) 22px 23px
+    ),
+    linear-gradient(
+      135deg,
       hsl(var(--tono-principal), 15%, 88%) 0%,
-      hsl(var(--tono-principal), 10%, 96%) 100%);
-  background-size: 100% 100%;
+      hsl(var(--tono-principal), 10%, 96%) 100%
+    );
+  background-size: 32px 32px, 100% 100%;
+  background-attachment: fixed, fixed;
   color: var(--color-texto);
   /* Eliminamos line-height: 1.6; */
   /* Reemplazamos con padding y usamos flex para el texto */
@@ -314,9 +325,12 @@ body {
   display: grid;
   gap: var(--espaciado-s);
   padding: var(--espaciado);
-  background-color: white;
-  border-radius: var(--radio-borde);
-  box-shadow: var(--sombra-media);
+  background: linear-gradient(180deg, #ffffff 0%, #eef1f8 55%, #e3e8f3 100%);
+  border-radius: 0.75rem;
+  border: 1px solid rgba(30, 45, 80, 0.1);
+  box-shadow:
+    0 1.75rem 3.25rem rgba(30, 45, 80, 0.16),
+    0 0.75rem 1.5rem rgba(30, 45, 80, 0.1);
   transition: transform 0.3s ease;
 }
 

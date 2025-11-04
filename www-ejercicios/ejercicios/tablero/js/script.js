@@ -218,6 +218,7 @@ function actualizarUI() {
   TABLERO.elementos.modoJuego.disabled = estaJugando;
   
   // Gestionar visibilidad de botones de control
+  TABLERO.elementos.btnInicio.disabled = estaJugando;
   TABLERO.elementos.btnPausa.disabled = !estaJugando;
   TABLERO.elementos.btnDetener.disabled = !estaJugando;
 }
@@ -243,8 +244,9 @@ function finalizarJuego() {
   TABLERO.mostrarModalVictoria();
   
   // Preparar contenedor del modal para estadísticas
-  const estadisticasContainer = document.querySelector('.modal__estadisticas');
-  const botonesContainer = document.querySelector('.modal__botones');
+  const modalVictoria = TABLERO.elementos.modalVictoria;
+  const estadisticasContainer = modalVictoria ? modalVictoria.querySelector('.modal__estadisticas') : null;
+  const botonesContainer = modalVictoria ? modalVictoria.querySelector('.modal__botones') : null;
   
   if (estadisticasContainer) {
     estadisticasContainer.innerHTML = `
@@ -260,8 +262,14 @@ function finalizarJuego() {
     `;
     
     // Asignar event listeners a los botones
-    document.getElementById('cerrar-modal').addEventListener('click', TABLERO.reiniciarJuego);
-    document.getElementById('solo-cerrar-modal').addEventListener('click', TABLERO.soloCerrarModal);
+    const btnReiniciar = modalVictoria ? modalVictoria.querySelector('#cerrar-modal') : null;
+    const btnSoloCerrar = modalVictoria ? modalVictoria.querySelector('#solo-cerrar-modal') : null;
+    if (btnReiniciar) {
+      btnReiniciar.addEventListener('click', TABLERO.reiniciarJuego);
+    }
+    if (btnSoloCerrar) {
+      btnSoloCerrar.addEventListener('click', TABLERO.soloCerrarModal);
+    }
   }
 }
 

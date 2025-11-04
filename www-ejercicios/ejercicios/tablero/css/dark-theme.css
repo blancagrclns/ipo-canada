@@ -21,6 +21,7 @@
   --color-complementario: hsl(var(--tono-complementario), 70%, 55%);
   --color-exito: hsl(120, 70%, 45%);
   --color-borde: hsl(var(--tono-principal), 15%, 30%);
+  --patron-geometrico-color: hsla(0, 0%, 100%, 0.07);
   
   /* Variables específicas para componentes en tema oscuro */
   --tablero-bg: hsl(var(--tono-principal), 15%, 15%);
@@ -40,12 +41,20 @@
    - Ajusta fondo y colores base para toda la interfaz
    ========================================================================== */
 [data-theme="dark"] body {
-  background: linear-gradient(
-    135deg,
-    hsl(var(--tono-principal), 20%, 8%) 0%,
-    hsl(var(--tono-principal), 15%, 12%) 100%
-  );
-  background-size: 100% 100%;
+  background-color: var(--color-fondo);
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      transparent 0 22px,
+      var(--patron-geometrico-color) 22px 23px
+    ),
+    linear-gradient(
+      135deg,
+      hsl(var(--tono-principal), 20%, 8%) 0%,
+      hsl(var(--tono-principal), 15%, 12%) 100%
+    );
+  background-size: 32px 32px, 100% 100%;
+  background-attachment: fixed, fixed;
   color: var(--color-texto);
 }
 
@@ -99,8 +108,16 @@
    - Área principal de juego con sombras adaptadas a fondo oscuro
    ========================================================================== */
 [data-theme="dark"] .tablero {
-  background-color: var(--tablero-bg);
-  box-shadow: 0 0.25rem 0.9375rem rgba(0, 0, 0, 0.3);
+  background: linear-gradient(
+    180deg,
+    hsl(var(--tono-principal), 20%, 20%) 0%,
+    hsl(var(--tono-principal), 20%, 14%) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 0.75rem;
+  box-shadow:
+    0 1.25rem 3rem rgba(0, 0, 0, 0.45),
+    0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
 }
 
 [data-theme="dark"] .ficha:hover {

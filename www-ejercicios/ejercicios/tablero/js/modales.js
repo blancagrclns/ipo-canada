@@ -74,6 +74,10 @@ function soloCerrarModal() {
   TABLERO.elementos.modalVictoria.close();
   // Limpiar tablero
   limpiarTablero();
+  // Asegurar que el botón de iniciar quede habilitado al volver al menú
+  if (TABLERO.elementos.btnInicio) {
+    TABLERO.elementos.btnInicio.disabled = false;
+  }
 }
 
 /**
