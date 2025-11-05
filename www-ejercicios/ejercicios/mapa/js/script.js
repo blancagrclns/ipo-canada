@@ -5,19 +5,20 @@ const APP = {
   nodos: {},
   items: [],
   temaOscuro: false,
-  vistaActual: 'todos', // Deprecado, usaremos categoriasActivas
-  categoriasActivas: new Set(['todos']), // Nuevo: permite múltiples categorías
+  vistaActual: 'todos',
+  categoriasActivas: new Set(['todos']),
   modoAdicion: false,
   itemArrastrando: null,
   configuracion: {
     tamanoMapa: 100,
-    escalaMarcar: 1.2 // Cambiado de 1 a 1.2
+    escalaMarcar: 1.2
   },
-  tiposPersonalizados: {} // Nuevo: almacenar tipos creados por el usuario
+  tiposPersonalizados: {},
+  coloresPersonalizados: {} 
 };
 
 /* ==========================================================================
-   2. ALMACÉN DE DATOS (con tipos de puntos de interés)
+   2. ALMACÉN DE DATOS 
    ========================================================================== */
 const DATOS_MAPA = [
   {
@@ -129,6 +130,11 @@ function crearItem(item) {
   const marcador = document.createElement('div');
   marcador.className = `mapa__marcador mapa__marcador--${item.tipo}`;
   
+  // Aplicar color personalizado
+  const color = generarColorPorTipo(item.tipo);
+  marcador.style.backgroundColor = color;
+  marcador.style.setProperty('--color-marcador', color);
+  
   // Icono según tipo
   const icono = document.createElement('span');
   icono.className = 'mapa__marcador-icono';
@@ -164,9 +170,51 @@ function obtenerIcono(tipo) {
     restaurante: '🍽️',
     cafe: '☕',
     bar: '🍺',
-    ...APP.tiposPersonalizados // Agregar tipos personalizados
+    ...APP.tiposPersonalizados
   };
   return iconos[tipo] || '📍';
+}
+
+/* ==========================================================================
+   GENERAR COLOR ÚNICO PARA CATEGORÍA
+   ========================================================================== */
+function generarColorPorTipo(tipo) {
+  // Si ya tiene color asignado, devolverlo
+  if (APP.coloresPersonalizados[tipo]) {
+    return APP.coloresPersonalizados[tipo];
+  }
+  
+  // Paleta de colores predefinidos para tipos base
+  const coloresBase = {
+    restaurante: 'hsl(10, 70%, 60%)',   // Rojo-naranja
+    cafe: 'hsl(30, 65%, 55%)',          // Marrón-naranja
+    bar: 'hsl(200, 60%, 55%)'           // Azul
+  };
+  
+  if (coloresBase[tipo]) {
+    return coloresBase[tipo];
+  }
+  
+  // Para tipos personalizados, generar color basado en hash del nombre
+  let hash = 0;
+  for (let i = 0; i < tipo.length; i++) {
+    hash = tipo.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  
+  // Generar HSL con buena saturación y luminosidad
+  const hue = Math.abs(hash % 360);
+  const saturation = 60 + (Math.abs(hash % 20)); // 60-80%
+  const lightness = 50 + (Math.abs(hash % 15));  // 50-65%
+  
+  const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+  
+  // Guardar el color para este tipo
+  APP.coloresPersonalizados[tipo] = color;
+  guardarColoresPersonalizados();
+  
+  console.log(`🎨 Color generado para "${tipo}": ${color}`);
+  
+  return color;
 }
 
 /* ==========================================================================
@@ -229,7 +277,7 @@ function cerrarPanel() {
 }
 
 /* ==========================================================================
-   9. CAMBIAR VISTA DEL MAPA - MEJORADO CON SELECCIÓN MÚLTIPLE
+   9. CAMBIAR VISTA DEL MAPA 
    ========================================================================== */
 function cambiarVista(categoria) {
   // Si se selecciona "todos", limpiar todo y activar solo "todos"
@@ -255,7 +303,7 @@ function cambiarVista(categoria) {
     }
   }
   
-  // Actualizar estilos de botones del panel (usar querySelectorAll en vivo)
+  // Actualizar estilos de botones del panel
   document.querySelectorAll('[data-vista]').forEach(btn => {
     const cat = btn.dataset.vista;
     const activo = APP.categoriasActivas.has(cat);
@@ -263,7 +311,7 @@ function cambiarVista(categoria) {
     btn.classList.toggle('btn--filtro-activo', activo);
   });
   
-  // Actualizar estilos de botones rápidos (usar querySelectorAll en vivo)
+  // Actualizar estilos de botones rápidos 
   document.querySelectorAll('[data-vista-rapida]').forEach(btn => {
     const cat = btn.dataset.vistaRapida;
     const activo = APP.categoriasActivas.has(cat);
@@ -276,7 +324,7 @@ function cambiarVista(categoria) {
 }
 
 /* ==========================================================================
-   10. AJUSTAR PARÁMETROS DE VISUALIZACIÓN
+   10. AJUSTE PARÁMETROS DE VISUALIZACIÓN
    ========================================================================== */
 function ajustarTamanoMapa(valor) {
   APP.configuracion.tamanoMapa = parseFloat(valor);
@@ -293,7 +341,7 @@ function ajustarTamanoMarcador(valor) {
 }
 
 /* ==========================================================================
-   11. MODO ADICIÓN DE PUNTOS - MEJORADO
+   11. MODO ADICIÓN DE PUNTOS 
    ========================================================================== */
 let coordenadasTemporales = null;
 
@@ -306,7 +354,7 @@ function activarModoAdicion() {
 
 function cancelarModoAdicion() {
   APP.modoAdicion = false;
-  coordenadasTemporales = null; // Solo resetear aquí
+  coordenadasTemporales = null; 
   APP.nodos.modoAdicionDiv.style.display = 'none';
   APP.nodos.mapa.style.cursor = '';
   console.log('❌ Modo adición cancelado.');
@@ -355,7 +403,7 @@ function handleSubmitNuevoItem(e) {
     const nuevoIcono = formData.get('iconoNuevo')?.trim() || '📍';
     
     if (!nuevoTipoNombre) {
-      alert('Por favor, ingresa un nombre para el nuevo tipo.');
+      alert('Por favor, ingresa un nombre para el nuevo tipo (en plural).');
       return;
     }
     
@@ -392,8 +440,11 @@ function handleSubmitNuevoItem(e) {
   // Cerrar modal y limpiar
   APP.nodos.dialogItem.close();
   e.target.reset();
+  
+  // IMPORTANTE: Ocultar campo de nuevo tipo al resetear
   APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--visible');
   APP.nodos.campoNuevoTipo.classList.add('formulario-item__campo--oculto');
+  APP.nodos.inputNuevoTipo.required = false;
   
   // Resetear coordenadas DESPUÉS de usarlas
   coordenadasTemporales = null;
@@ -401,7 +452,7 @@ function handleSubmitNuevoItem(e) {
   // Activar automáticamente la categoría del nuevo item
   if (!APP.categoriasActivas.has('todos')) {
     APP.categoriasActivas.add(tipo);
-    cambiarVista(tipo); // Esto actualizará los botones y renderizará
+    cambiarVista(tipo);
   } else {
     renderizarItems();
   }
@@ -470,7 +521,7 @@ function handleDropMapa(e) {
 }
 
 /* ==========================================================================
-   NUEVAS FUNCIONES: GESTIÓN DE TIPOS PERSONALIZADOS
+   GESTIÓN DE TIPOS PERSONALIZADOS
    ========================================================================== */
 function agregarOpcionTipo(tipo, icono) {
   // Verificar si ya existe
@@ -518,7 +569,7 @@ function agregarBotonPanel(tipo, icono) {
   nuevoBoton.className = 'btn btn--filtro';
   nuevoBoton.setAttribute('data-vista', tipo);
   nuevoBoton.setAttribute('aria-pressed', 'false');
-  nuevoBoton.textContent = `${icono} ${tipo.charAt(0).toUpperCase() + tipo.slice(1)}s`;
+  nuevoBoton.textContent = `${icono} ${tipo.charAt(0).toUpperCase() + tipo.slice(1)}`;
   
   // NO añadir event listener aquí - usar delegación de eventos
   panelControles.appendChild(nuevoBoton);
@@ -529,6 +580,10 @@ function agregarBotonPanel(tipo, icono) {
 function guardarTiposPersonalizados() {
   localStorage.setItem('tiposPersonalizados', JSON.stringify(APP.tiposPersonalizados));
   console.log(`💾 Tipos personalizados guardados: ${Object.keys(APP.tiposPersonalizados).length}`);
+}
+
+function guardarColoresPersonalizados() {
+  localStorage.setItem('coloresPersonalizados', JSON.stringify(APP.coloresPersonalizados));
 }
 
 function cargarTiposPersonalizados() {
@@ -546,6 +601,13 @@ function cargarTiposPersonalizados() {
     console.log(`🏷️ ${Object.keys(APP.tiposPersonalizados).length} tipos personalizados cargados.`);
   } else {
     console.log('📋 No hay tipos personalizados guardados.');
+  }
+  
+  // Cargar colores personalizados
+  const colores = localStorage.getItem('coloresPersonalizados');
+  if (colores) {
+    APP.coloresPersonalizados = JSON.parse(colores);
+    console.log(`🎨 ${Object.keys(APP.coloresPersonalizados).length} colores personalizados cargados.`);
   }
 }
 
@@ -589,7 +651,6 @@ function init() {
   APP.nodos.btnCerrarPanel.addEventListener('click', cerrarPanel);
   
   // Event listeners - Vistas (USANDO DELEGACIÓN DE EVENTOS)
-  // Para botones del panel
   document.querySelector('.panel__controles').addEventListener('click', (e) => {
     const boton = e.target.closest('[data-vista]');
     if (boton) {
@@ -598,7 +659,6 @@ function init() {
     }
   });
   
-  // Para botones de vista rápida
   document.querySelector('[data-controles-mapa]').addEventListener('click', (e) => {
     const boton = e.target.closest('[data-vista-rapida]');
     if (boton) {
@@ -626,22 +686,36 @@ function init() {
   APP.nodos.btnCancelarForm.addEventListener('click', () => {
     APP.nodos.dialogItem.close();
     APP.nodos.formItem.reset();
+    
+    // Asegurar que el campo se oculta al cancelar
     APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--visible');
     APP.nodos.campoNuevoTipo.classList.add('formulario-item__campo--oculto');
+    APP.nodos.inputNuevoTipo.required = false;
+    
     coordenadasTemporales = null;
     console.log('❌ Formulario cancelado.');
   });
   
-  // Event listener - Select de tipo
+  // Event listener - Select de tipo 
   APP.nodos.selectTipo.addEventListener('change', (e) => {
     if (e.target.value === 'nuevo') {
+      // Mostrar campos para nuevo tipo
       APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--oculto');
       APP.nodos.campoNuevoTipo.classList.add('formulario-item__campo--visible');
       APP.nodos.inputNuevoTipo.required = true;
+      
+      console.log('📝 Campos de nuevo tipo mostrados.');
     } else {
+      // Ocultar campos para nuevo tipo
       APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--visible');
       APP.nodos.campoNuevoTipo.classList.add('formulario-item__campo--oculto');
       APP.nodos.inputNuevoTipo.required = false;
+      
+      // Limpiar valores de los campos ocultos
+      APP.nodos.inputNuevoTipo.value = '';
+      APP.nodos.inputIcono.value = '';
+      
+      console.log('🙈 Campos de nuevo tipo ocultados.');
     }
   });
   

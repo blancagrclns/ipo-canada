@@ -1,7 +1,6 @@
 /* ==========================================================================
    1. RESET Y CONFIGURACIÓN BASE
    ========================================================================== */
-/* box-sizing: border-box incluye padding y border en width/height */
 *,
 *::before,
 *::after {
@@ -11,7 +10,7 @@
 }
 
 /* ==========================================================================
-   2. VARIABLES CSS (Sistema de diseño centralizado con HSL)
+   2. VARIABLES CSS
    ========================================================================== */
 :root {
   /* Paleta cromática base */
@@ -29,7 +28,7 @@
   --color-leyenda-fondo: hsl(0, 0%, 100%);
   --color-leyenda-sombra: hsla(0, 0%, 0%, 0.2);
 
-  /* Tipografía escalable con rem */
+  /* Tipografía */
   --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   --fuente-titulo: Georgia, "Times New Roman", serif;
 }
@@ -43,17 +42,17 @@ body {
   line-height: 1.6;
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  padding: 1rem; /* Reducido de 1.5rem */
+  padding: 1rem;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  gap: 1rem; /* Reducido de 1.5rem */
+  gap: 1rem;
   overflow-x: hidden;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 /* ==========================================================================
-   4. BOTONES FLOTANTES (control de tema)
+   4. BOTONES FLOTANTES 
    ========================================================================== */
 /* Posicionamiento fixed para mantenerlos visibles al hacer scroll */
 .floating-buttons {
@@ -100,18 +99,18 @@ body {
   max-width: 1200px;
   margin: 0 auto;
   width: 100%;
-  padding-bottom: 0.5rem; /* Reducir espacio inferior */
+  padding-bottom: 0.5rem; 
 }
 
 .cabecera__titulo {
   font-family: var(--fuente-titulo);
-  font-size: clamp(1.3rem, 3.5vw, 2rem); /* Reducido */
+  font-size: clamp(1.3rem, 3.5vw, 2rem); 
   color: var(--color-primario);
-  margin-bottom: 0.5rem; /* Reducido de 0.75rem */
+  margin-bottom: 0.5rem; 
 }
 
 .cabecera__instrucciones {
-  font-size: clamp(0.85rem, 1.8vw, 1rem); /* Reducido */
+  font-size: clamp(0.85rem, 1.8vw, 1rem); 
   color: var(--color-texto);
   max-width: 42rem;
   margin: 0 auto;
@@ -124,7 +123,7 @@ body {
 .contenedor {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem; /* Reducido de 2rem */
+  gap: 1.25rem;
   flex: 1;
   max-width: 1200px;
   margin: 0 auto;
@@ -142,8 +141,8 @@ body {
   width: 100%;
   aspect-ratio: 16 / 10;
   
-  /* Imagen de fondo (reemplazar con la ruta real) */
-  background-image: url('../img/mapa-ciudad.jpg');
+  /* Imagen de fondo  */
+  /* background-image: url('../img/mapa-ciudad.jpg'); */
   background-size: cover;
   background-position: center;
   background-color: var(--color-primario-claro);
@@ -157,54 +156,40 @@ body {
 }
 
 /* ==========================================================================
-   8. ÍTEMS DEL MAPA (puntos de interés)
+   8. MARCADORES DENTRO DEL MAPA
    ========================================================================== */
-/* 
-  position: absolute con coordenadas en porcentaje
-  permite que los puntos se adapten al tamaño del mapa
-*/
-.mapa__item {
-  position: absolute;
-  
-  /* transform: translate(-50%, -50%) centra el marcador en las coordenadas */
-  transform: translate(-50%, -50%);
-  
-  cursor: pointer;
-  
-  /* z-index: 10 asegura que esté sobre la imagen */
-  z-index: 10;
-}
 
 /* Marcador visual (círculo pulsante) */
 .mapa__marcador {
-  width: 22px;
-  height: 22px;
-  background-color: var(--color-marcador);
-  border: 3px solid var(--color-leyenda-fondo);
+  width: calc(2rem * var(--escala-marcador));
+  height: calc(2rem * var(--escala-marcador));
+  background-color: var(--color-marcador, var(--color-primario)); 
   border-radius: 50%;
-  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.35);
-  
-  /* Transición suave en hover */
-  transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  /* El tamaño del emoji se controla desde aquí */
+  font-size: calc(1.1rem * var(--escala-marcador));
 }
 
-/* Animación de pulso con ::before */
+/* Animación de pulso con ::before usando color dinámico */
 .mapa__marcador::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 50%;
   left: 50%;
   width: 100%;
   height: 100%;
-  background-color: var(--color-marcador);
   border-radius: 50%;
-  
-  /* transform: translate centra el pulso */
-  transform: translate(-50%, -50%);
-  
-  /* Animación infinita */
-  animation: pulso 2s ease-out infinite;
+  background-color: var(--color-marcador, var(--color-primario));
   opacity: 0.6;
+  animation: pulso 2s infinite;
+  /* IMPORTANTE: transform-origin para centrar la animación */
+  transform-origin: center;
 }
 
 /* Keyframes para la animación de pulso */
@@ -214,16 +199,28 @@ body {
     opacity: 0.6;
   }
   100% {
-    transform: translate(-50%, -50%) scale(2.8);
+    transform: translate(-50%, -50%) scale(2.5);
     opacity: 0;
   }
 }
 
 /* Efecto hover en el marcador */
 .mapa__item:hover .mapa__marcador {
-  transform: scale(1.4);
-  background-color: var(--color-primario);
-  box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.4);
+  transform: scale(1.15);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Icono dentro del marcador */
+.mapa__marcador-icono {
+  position: relative;
+  z-index: 1;
+  /* El tamaño se hereda del padre (.mapa__marcador) */
+  font-size: inherit;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
+  /* Asegurar que el emoji se mantenga centrado */
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 }
 
 /* ==========================================================================
@@ -313,7 +310,7 @@ body {
 }
 
 /* ==========================================================================
-   10. RESPONSIVE (adaptación a pantallas pequeñas)
+   10. RESPONSIVE 
    ========================================================================== */
 @media (max-width: 768px) {
   body {
@@ -356,7 +353,7 @@ body {
 }
 
 /* ==========================================================================
-   11. PANEL LATERAL (variante)
+   11. PANEL LATERAL (
    ========================================================================== */
 .panel {
   position: fixed;
@@ -484,7 +481,7 @@ body {
 }
 
 /* ==========================================================================
-   13. CONTROLES DE VISTA EN EL MAPA (variante)
+   13. CONTROLES DE VISTA EN EL MAPA 
    ========================================================================== */
 .mapa__controles {
   position: absolute;
@@ -523,15 +520,10 @@ body {
 }
 
 /* ==========================================================================
-   14. TIPOS DE MARCADORES (variante - distintos estilos)
+   14. TIPOS DE MARCADORES
    ========================================================================== */
 :root {
-  --escala-marcador: 1;
-}
-
-.mapa__marcador {
-  position: relative;
-  transform: scale(var(--escala-marcador));
+  --escala-marcador: 1.2;
 }
 
 .mapa__marcador--restaurante {
@@ -549,19 +541,12 @@ body {
   border-color: hsl(210, 75%, 35%);
 }
 
-.mapa__marcador-icono {
-  font-size: 12px;
-  line-height: 1;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 /* ==========================================================================
-   15. ARRASTRE DE ÍTEMS (variante)
+   15. ARRASTRE DE ÍTEMS 
    ========================================================================== */
 .mapa__item {
+  /* Asegurar que position: absolute funcione correctamente */
+  position: absolute;
   cursor: grab;
 }
 
@@ -575,7 +560,7 @@ body {
 }
 
 /* ==========================================================================
-   16. MODO ADICIÓN DE PUNTOS (variante) - MEJORADO
+   16. MODO ADICIÓN DE PUNTOS 
    ========================================================================== */
 .mapa__modo-adicion {
   position: absolute;
@@ -601,7 +586,7 @@ body {
   white-space: nowrap;
 }
 
-/* Mejorar visibilidad del botón cancelar - CORREGIDO */
+/* Mejorar visibilidad del botón cancelar */
 .mapa__modo-adicion .btn--secundario {
   background-color: white;
   color: var(--color-primario);
@@ -618,7 +603,7 @@ body {
 }
 
 /* ==========================================================================
-   17. DIALOG PARA NUEVO ÍTEM (variante) - MEJORADO
+   17. DIALOG PARA NUEVO ÍTEM 
    ========================================================================== */
 .formulario-item {
   border: none;
@@ -635,49 +620,79 @@ body {
 }
 
 .formulario-item__form {
-  padding: 1.75rem; /* Reducido de 2rem */
+  padding: 1.75rem; 
   background-color: var(--color-leyenda-fondo);
   border-radius: 0.75rem;
-  max-height: 85vh; /* Evita que se salga de la pantalla */
+  max-height: 85vh;
   overflow-y: auto;
 }
 
 .formulario-item__titulo {
-  font-size: 1.4rem; /* Reducido */
+  font-size: 1.4rem; 
   color: var(--color-primario);
   margin-bottom: 1.25rem;
 }
 
 .formulario-item__campo {
-  margin-bottom: 1rem; /* Reducido de 1.25rem */
+  margin-bottom: 1rem; 
 }
 
 .formulario-item__campo label {
   display: block;
-  margin-bottom: 0.5rem;
   font-weight: 600;
   color: var(--color-texto);
+  margin-bottom: 0.4rem;
+  font-size: 0.95rem;
 }
 
-.formulario-item__campo input,
+.formulario-item__ayuda {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--color-texto);
+  opacity: 0.7;
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+.formulario-item__campo input[type="text"],
 .formulario-item__campo select,
 .formulario-item__campo textarea {
   width: 100%;
   padding: 0.65rem;
-  border: 2px solid var(--color-borde);
-  border-radius: 0.4rem;
-  font-family: var(--fuente-principal);
-  font-size: 1rem;
-  background-color: var(--color-leyenda-fondo);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.375rem;
+  font-family: inherit;
+  font-size: 0.95rem;
+  background-color: var(--color-fondo);
   color: var(--color-texto);
-  transition: border-color 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.formulario-item__campo input:focus,
+.formulario-item__campo input[type="text"]:focus,
 .formulario-item__campo select:focus,
 .formulario-item__campo textarea:focus {
   outline: none;
   border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px hsla(var(--tono), 60%, 50%, 0.1);
+}
+
+.formulario-item__campo input::placeholder,
+.formulario-item__campo textarea::placeholder {
+  color: var(--color-texto);
+  opacity: 0.5;
+}
+
+/* Campo oculto para nuevo tipo */
+.formulario-item__campo--oculto {
+  display: none;
+}
+
+.formulario-item__campo--visible {
+  display: block;
+  animation: aparecer 0.3s ease;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--color-borde);
+  margin-top: 0.75rem;
 }
 
 .formulario-item__acciones {

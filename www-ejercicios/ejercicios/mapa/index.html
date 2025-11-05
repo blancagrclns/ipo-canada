@@ -84,11 +84,11 @@
               id="tamanoMarcador" 
               data-control="marcador"
               min="0.8" 
-              max="2.5" 
+              max="5" 
               value="1.2" 
               step="0.1"
               aria-valuemin="0.8"
-              aria-valuemax="2.5"
+              aria-valuemax="5"
               aria-valuenow="1.2">
             <output data-output="marcador">1.2x</output>
           </div>
@@ -116,7 +116,6 @@
 
       <!-- Mapa interactivo -->
       <div class="mapa" data-mapa aria-label="Mapa interactivo de restaurantes">
-        <!-- Los puntos de interés se añadirán dinámicamente desde JavaScript -->
       </div>
 
       <!-- Modo de adición de puntos -->
@@ -132,32 +131,57 @@
         <h2 class="formulario-item__titulo">Nuevo Punto de Interés</h2>
         
         <div class="formulario-item__campo">
-          <label for="itemNombre">Nombre:</label>
-          <input type="text" id="itemNombre" name="nombre" required>
+          <label for="itemNombre">Nombre del punto:</label>
+          <input 
+            type="text" 
+            id="itemNombre" 
+            name="nombre" 
+            placeholder="Ej: Universidad de Toronto"
+            required>
+          <small class="formulario-item__ayuda">El nombre específico de este lugar</small>
         </div>
 
         <div class="formulario-item__campo">
-          <label for="itemTipo">Tipo:</label>
+          <label for="itemTipo">Tipo de punto:</label>
           <select id="itemTipo" name="tipo" data-select-tipo required>
             <option value="restaurante">🍽️ Restaurante</option>
             <option value="cafe">☕ Café</option>
             <option value="bar">🍺 Bar</option>
             <option value="nuevo">➕ Crear nuevo tipo...</option>
           </select>
+          <small class="formulario-item__ayuda">Selecciona una categoría existente o crea una nueva</small>
         </div>
 
         <!-- Campo condicional para nuevo tipo -->
         <div class="formulario-item__campo formulario-item__campo--oculto" data-campo-nuevo-tipo>
-          <label for="itemNuevoTipo">Nombre del nuevo tipo:</label>
-          <input type="text" id="itemNuevoTipo" name="nuevoTipo" data-input-nuevo-tipo>
+          <label for="itemNuevoTipo">Nombre del nuevo tipo (en plural):</label>
+          <input 
+            type="text" 
+            id="itemNuevoTipo" 
+            name="nuevoTipo" 
+            data-input-nuevo-tipo
+            placeholder="Ej: universidades, cines, museos">
+          <small class="formulario-item__ayuda">Escribe el nombre de la categoría en plural</small>
           
           <label for="itemIconoNuevo">Icono (emoji):</label>
-          <input type="text" id="itemIconoNuevo" name="iconoNuevo" data-input-icono maxlength="2" placeholder="🏪">
+          <input 
+            type="text" 
+            id="itemIconoNuevo" 
+            name="iconoNuevo" 
+            data-input-icono 
+            maxlength="2" 
+            placeholder="🏛️">
+          <small class="formulario-item__ayuda">Un emoji que represente esta categoría</small>
         </div>
 
         <div class="formulario-item__campo">
           <label for="itemDescripcion">Descripción:</label>
-          <textarea id="itemDescripcion" name="descripcion" rows="3" required></textarea>
+          <textarea 
+            id="itemDescripcion" 
+            name="descripcion" 
+            rows="3" 
+            placeholder="Información adicional sobre este punto..."
+            required></textarea>
         </div>
 
         <div class="formulario-item__acciones">
