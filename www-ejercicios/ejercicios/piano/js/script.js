@@ -1,4 +1,3 @@
-
 /* ==========================================================================
    1. ESPACIO DE NOMBRES GLOBAL
    ========================================================================== */
@@ -6,23 +5,13 @@ const APP = {
   nodos: {},
   audioContext: null,
   formaOnda: 'sine',
-  notasActivas: new Map(), // Almacena osciladores activos por nota
+  notasActivas: new Map(),
   mapaTeclado: {
-    // Mapeo de teclas del PC a notas musicales
-    'a': 'C4',
-    's': 'D4',
-    'd': 'E4',
-    'f': 'F4',
-    'g': 'G4',
-    'h': 'A4',
-    'j': 'B4',
-    'k': 'C5',
-    'w': 'C#4',
-    'e': 'D#4',
-    't': 'F#4',
-    'y': 'G#4',
-    'u': 'A#4'
-  }
+    'a': 'C4', 's': 'D4', 'd': 'E4', 'f': 'F4',
+    'g': 'G4', 'h': 'A4', 'j': 'B4', 'k': 'C5',
+    'w': 'C#4', 'e': 'D#4', 't': 'F#4', 'y': 'G#4', 'u': 'A#4'
+  },
+  temaOscuro: false
 };
 
 /* ==========================================================================
@@ -33,6 +22,11 @@ function cachearNodos() {
   APP.nodos.teclas = document.querySelectorAll('.tecla');
   APP.nodos.selectFormaOnda = document.querySelector('[data-control="forma-onda"]');
   APP.nodos.infoEstado = document.querySelector('[data-info-estado]');
+  APP.nodos.btnTema = document.getElementById('btnTema');
+  APP.nodos.btnAyuda = document.getElementById('btnAyuda');
+  APP.nodos.modalAyuda = document.querySelector('[data-modal-ayuda]');
+  APP.nodos.btnCerrarAyuda = document.querySelector('[data-accion="cerrar-ayuda"]');
+  APP.nodos.darkThemeLink = document.getElementById('dark-theme');
   
   console.log('✅ Nodos del DOM cacheados correctamente.');
 }
@@ -219,18 +213,67 @@ function detenerTodasLasNotas() {
 }
 
 /* ==========================================================================
-   11. INICIALIZACIÓN DE LA APLICACIÓN
+   11. ALTERNAR TEMA OSCURO
+   ========================================================================== */
+function alternarTema() {
+  APP.temaOscuro = !APP.temaOscuro;
+  
+  if (APP.temaOscuro) {
+    APP.nodos.darkThemeLink.disabled = false;
+    APP.nodos.btnTema.textContent = '☀️';
+    APP.nodos.btnTema.setAttribute('aria-label', 'Cambiar a tema claro');
+    localStorage.setItem('tema', 'oscuro');
+    console.log('🌙 Tema oscuro activado');
+  } else {
+    APP.nodos.darkThemeLink.disabled = true;
+    APP.nodos.btnTema.textContent = '🌙';
+    APP.nodos.btnTema.setAttribute('aria-label', 'Cambiar a tema oscuro');
+    localStorage.setItem('tema', 'claro');
+    console.log('☀️ Tema claro activado');
+  }
+}
+
+/* ==========================================================================
+   12. CARGAR PREFERENCIA DE TEMA
+   ========================================================================== */
+function cargarPreferenciaTema() {
+  const temaGuardado = localStorage.getItem('tema');
+  
+  if (temaGuardado === 'oscuro') {
+    APP.temaOscuro = false; // Para que alternarTema() lo active
+    alternarTema();
+  }
+}
+
+/* ==========================================================================
+   13. ABRIR MODAL DE AYUDA
+   ========================================================================== */
+function abrirAyuda() {
+  APP.nodos.modalAyuda.showModal();
+  console.log('❓ Modal de ayuda abierta');
+}
+
+/* ==========================================================================
+   14. CERRAR MODAL DE AYUDA
+   ========================================================================== */
+function cerrarAyuda() {
+  APP.nodos.modalAyuda.close();
+  console.log('✕ Modal de ayuda cerrada');
+}
+
+/* ==========================================================================
+   15. INICIALIZACIÓN DE LA APLICACIÓN
    ========================================================================== */
 function init() {
   console.log('🚀 Inicializando piano interactivo...');
   
   cachearNodos();
+  cargarPreferenciaTema();
   
   // Event listeners - Click en teclas
   APP.nodos.teclas.forEach(tecla => {
     tecla.addEventListener('click', handleClickTecla);
     
-    // Accesibilidad: permitir Enter/Space para activar tecla
     tecla.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
@@ -245,6 +288,16 @@ function init() {
   
   // Event listeners - Cambio de forma de onda
   APP.nodos.selectFormaOnda.addEventListener('change', cambiarFormaOnda);
+  
+  // Event listeners - Tema y ayuda
+  APP.nodos.btnTema.addEventListener('click', alternarTema);
+  APP.nodos.btnAyuda.addEventListener('click', abrirAyuda);
+  APP.nodos.btnCerrarAyuda.addEventListener('click', cerrarAyuda);
+  
+  // Cerrar modal con tecla Escape (funcionalidad nativa de <dialog>)
+  APP.nodos.modalAyuda.addEventListener('cancel', () => {
+    console.log('✕ Modal cerrada con Escape');
+  });
   
   // Event listener - Detener todo al cambiar de pestaña
   document.addEventListener('visibilitychange', () => {
@@ -262,7 +315,6 @@ function init() {
 }
 
 /* ==========================================================================
-   12. EJECUTAR CUANDO EL DOM ESTÉ LISTO
+   16. EJECUTAR CUANDO EL DOM ESTÉ LISTO
    ========================================================================== */
-// defer en el <script> garantiza que el DOM está listo
 init();
