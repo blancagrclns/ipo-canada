@@ -1,0 +1,368 @@
+/* ==========================================================================
+   1. RESET Y BOX-SIZING
+   ========================================================================== */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ==========================================================================
+   2. VARIABLES CSS (Custom Properties)
+   ========================================================================== */
+:root {
+  /* Colores */
+  --color-fondo: hsl(220, 15%, 95%);
+  --color-texto: hsl(220, 20%, 20%);
+  --color-primario: hsl(220, 80%, 50%);
+  --color-primario-hover: hsl(220, 80%, 45%);
+  --color-secundario: hsl(280, 60%, 55%);
+  
+  /* Teclas del piano */
+  --tecla-blanca-fondo: hsl(0, 0%, 100%);
+  --tecla-blanca-borde: hsl(0, 0%, 20%);
+  --tecla-blanca-sombra: hsla(0, 0%, 0%, 0.2);
+  --tecla-blanca-activa: hsl(220, 80%, 95%);
+  
+  --tecla-negra-fondo: hsl(0, 0%, 10%);
+  --tecla-negra-borde: hsl(0, 0%, 0%);
+  --tecla-negra-sombra: hsla(0, 0%, 0%, 0.4);
+  --tecla-negra-activa: hsl(220, 80%, 30%);
+  
+  /* Espaciado */
+  --espaciado-base: 1rem;
+  
+  /* Dimensiones del piano */
+  --tecla-blanca-ancho: 60px;
+  --tecla-blanca-alto: 280px;
+  --tecla-negra-ancho: 38px;
+  --tecla-negra-alto: 180px;
+  
+  /* Fuentes */
+  --fuente-base: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* ==========================================================================
+   3. ESTILOS GLOBALES
+   ========================================================================== */
+body {
+  font-family: var(--fuente-base);
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   4. CABECERA
+   ========================================================================== */
+.cabecera {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  color: white;
+  padding: calc(var(--espaciado-base) * 2);
+  text-align: center;
+  box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.1);
+}
+
+.cabecera__titulo {
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.2);
+}
+
+.cabecera__descripcion {
+  font-size: 1.1rem;
+  opacity: 0.95;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ==========================================================================
+   5. CONTENEDOR PRINCIPAL
+   ========================================================================== */
+.contenedor {
+  flex: 1;
+  padding: calc(var(--espaciado-base) * 3) var(--espaciado-base);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--espaciado-base) * 2);
+}
+
+/* ==========================================================================
+   6. PANEL DE CONTROLES
+   ========================================================================== */
+.panel-controles {
+  background: white;
+  border-radius: 12px;
+  padding: calc(var(--espaciado-base) * 1.5);
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+.panel-controles__titulo {
+  font-size: 1.3rem;
+  margin-bottom: var(--espaciado-base);
+  color: var(--color-primario);
+}
+
+.panel-controles__grupo {
+  display: flex;
+  align-items: center;
+  gap: var(--espaciado-base);
+  margin-bottom: var(--espaciado-base);
+}
+
+.panel-controles__label {
+  font-weight: 600;
+  min-width: 120px;
+}
+
+.panel-controles__select {
+  flex: 1;
+  padding: 0.6rem;
+  border: 2px solid hsl(220, 15%, 85%);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.panel-controles__select:hover {
+  border-color: var(--color-primario);
+}
+
+.panel-controles__select:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px hsla(220, 80%, 50%, 0.1);
+}
+
+.panel-controles__info {
+  padding: 0.8rem;
+  background-color: hsl(120, 40%, 95%);
+  border-left: 4px solid hsl(120, 50%, 50%);
+  border-radius: 4px;
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   7. PIANO (CONTENEDOR DE TECLAS)
+   ========================================================================== */
+.piano {
+  position: relative;
+  display: flex;
+  gap: 2px;
+  background-color: hsl(0, 0%, 30%);
+  padding: calc(var(--espaciado-base) * 2);
+  border-radius: 16px;
+  box-shadow: 
+    0 10px 30px hsla(0, 0%, 0%, 0.2),
+    0 4px 10px hsla(0, 0%, 0%, 0.15);
+}
+
+/* ==========================================================================
+   8. TECLAS (BASE COMÚN)
+   ========================================================================== */
+.tecla {
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  position: relative;
+  transition: all 0.15s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  user-select: none;
+}
+
+.tecla:focus {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* Etiquetas dentro de las teclas */
+.tecla__etiqueta {
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: auto;
+  margin-bottom: 0.5rem;
+}
+
+.tecla__tecla-pc {
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 0.25rem 0.5rem;
+  background-color: hsla(0, 0%, 0%, 0.1);
+  border-radius: 4px;
+  margin-bottom: 0.5rem;
+}
+
+/* ==========================================================================
+   9. TECLAS BLANCAS
+   ========================================================================== */
+.tecla--blanca {
+  width: var(--tecla-blanca-ancho);
+  height: var(--tecla-blanca-alto);
+  background-color: var(--tecla-blanca-fondo);
+  border: 2px solid var(--tecla-blanca-borde);
+  border-radius: 0 0 8px 8px;
+  box-shadow: 
+    0 4px 8px var(--tecla-blanca-sombra),
+    inset 0 -4px 8px hsla(0, 0%, 0%, 0.05);
+  color: var(--color-texto);
+  z-index: 1;
+}
+
+.tecla--blanca:hover {
+  background-color: hsl(0, 0%, 97%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 6px 12px var(--tecla-blanca-sombra),
+    inset 0 -4px 8px hsla(0, 0%, 0%, 0.05);
+}
+
+.tecla--blanca:active,
+.tecla--blanca.tecla--activa {
+  background-color: var(--tecla-blanca-activa);
+  transform: translateY(4px);
+  box-shadow: 
+    0 2px 4px var(--tecla-blanca-sombra),
+    inset 0 4px 8px hsla(220, 80%, 50%, 0.2);
+}
+
+/* ==========================================================================
+   10. TECLAS NEGRAS
+   ========================================================================== */
+.tecla--negra {
+  width: var(--tecla-negra-ancho);
+  height: var(--tecla-negra-alto);
+  background: linear-gradient(180deg, 
+    hsl(0, 0%, 15%) 0%, 
+    var(--tecla-negra-fondo) 100%);
+  border: 2px solid var(--tecla-negra-borde);
+  border-radius: 0 0 6px 6px;
+  box-shadow: 
+    0 6px 12px var(--tecla-negra-sombra),
+    inset 0 -2px 4px hsla(0, 0%, 100%, 0.1);
+  color: white;
+  position: absolute;
+  top: calc(var(--espaciado-base) * 2);
+  z-index: 2;
+}
+
+/* Posicionamiento de teclas negras */
+.tecla--negra-1 { left: calc(var(--espaciado-base) * 2 + var(--tecla-blanca-ancho) - var(--tecla-negra-ancho) / 2); }
+.tecla--negra-2 { left: calc(var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 2 - var(--tecla-negra-ancho) / 2); }
+.tecla--negra-4 { left: calc(var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 4 - var(--tecla-negra-ancho) / 2); }
+.tecla--negra-5 { left: calc(var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 5 - var(--tecla-negra-ancho) / 2); }
+.tecla--negra-6 { left: calc(var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 6 - var(--tecla-negra-ancho) / 2); }
+
+.tecla--negra:hover {
+  background: linear-gradient(180deg, 
+    hsl(0, 0%, 20%) 0%, 
+    hsl(0, 0%, 15%) 100%);
+  transform: translateY(-2px);
+  box-shadow: 
+    0 8px 16px var(--tecla-negra-sombra),
+    inset 0 -2px 4px hsla(0, 0%, 100%, 0.15);
+}
+
+.tecla--negra:active,
+.tecla--negra.tecla--activa {
+  background: linear-gradient(180deg, 
+    var(--tecla-negra-activa) 0%, 
+    hsl(220, 80%, 20%) 100%);
+  transform: translateY(4px);
+  box-shadow: 
+    0 3px 6px var(--tecla-negra-sombra),
+    inset 0 4px 8px hsla(220, 80%, 10%, 0.5);
+}
+
+.tecla--negra .tecla__tecla-pc {
+  background-color: hsla(0, 0%, 100%, 0.15);
+  color: white;
+}
+
+/* ==========================================================================
+   11. SECCIÓN DE INFORMACIÓN
+   ========================================================================== */
+.info {
+  background: white;
+  border-radius: 12px;
+  padding: calc(var(--espaciado-base) * 1.5);
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.1);
+  max-width: 600px;
+  width: 100%;
+}
+
+.info__titulo {
+  font-size: 1.3rem;
+  margin-bottom: var(--espaciado-base);
+  color: var(--color-primario);
+}
+
+.info__lista {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.info__lista li {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+  line-height: 1.6;
+}
+
+/* ==========================================================================
+   12. PIE DE PÁGINA
+   ========================================================================== */
+.pie {
+  background-color: hsl(220, 15%, 20%);
+  color: hsl(220, 15%, 80%);
+  padding: calc(var(--espaciado-base) * 1.5);
+  text-align: center;
+}
+
+.pie__texto {
+  font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   13. RESPONSIVE
+   ========================================================================== */
+@media (max-width: 768px) {
+  :root {
+    --tecla-blanca-ancho: 45px;
+    --tecla-blanca-alto: 220px;
+    --tecla-negra-ancho: 30px;
+    --tecla-negra-alto: 140px;
+  }
+  
+  .cabecera__titulo {
+    font-size: 2rem;
+  }
+  
+  .piano {
+    padding: var(--espaciado-base);
+  }
+  
+  .panel-controles__grupo {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .panel-controles__label {
+    min-width: auto;
+  }
+}

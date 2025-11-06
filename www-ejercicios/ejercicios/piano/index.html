@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!-- 
+  Buena práctica: declarar idioma (Introducción.pdf)
+  Mejora accesibilidad, SEO y comportamiento de APIs
+-->
+<html lang="es">
+
+<head>
+    <!-- Codificación UTF-8 lo más arriba posible -->
+    <meta charset="UTF-8" />
+
+    <!-- Meta viewport para diseño responsivo -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Piano Interactivo</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Favicon-->
+    <link rel="icon" href="img/piano.png" type="image/x-icon" />
+    <!-- JS -->
+    <script defer src="js/script.js"></script>
+</head>
+
+<body>
+    <!-- Estructura semántica completa -->
+    <header class="cabecera">
+        <h1 class="cabecera__titulo">Piano Interactivo</h1>
+        <p class="cabecera__descripcion">
+            Toca las teclas con el ratón o usa el teclado del ordenador. Cambia la
+            forma de onda para experimentar con diferentes timbres.
+        </p>
+    </header>
+
+    <main class="contenedor">
+        <!-- Panel de controles -->
+        <section class="panel-controles">
+            <h2 class="panel-controles__titulo">Controles de Sonido</h2>
+
+            <div class="panel-controles__grupo">
+                <label for="formaOnda" class="panel-controles__label">
+                    Forma de onda:
+                </label>
+                <select id="formaOnda" class="panel-controles__select" data-control="forma-onda"
+                    aria-label="Seleccionar forma de onda del oscilador">
+                    <option value="sine">Sinusoidal (suave)</option>
+                    <option value="triangle">Triangular (cálida)</option>
+                    <option value="square">Cuadrada (brillante)</option>
+                    <option value="sawtooth">Diente de sierra (rica)</option>
+                </select>
+            </div>
+
+            <div class="panel-controles__info" data-info-estado aria-live="polite">
+                Estado: Listo para tocar
+            </div>
+        </section>
+
+        <!-- Piano (contenedor de teclas) -->
+        <section class="piano" data-piano aria-label="Teclado del piano">
+            <!-- 
+        Teclas blancas (naturales): do, re, mi, fa, sol, la, si, do
+        data-nota: identificador de la nota
+        data-frecuencia: frecuencia en Hz
+      -->
+            <button class="tecla tecla--blanca" data-nota="C4" data-frecuencia="261.63" aria-label="Do central (C4)">
+                <span class="tecla__etiqueta">Do</span>
+                <span class="tecla__tecla-pc">A</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="D4" data-frecuencia="293.66" aria-label="Re (D4)">
+                <span class="tecla__etiqueta">Re</span>
+                <span class="tecla__tecla-pc">S</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="E4" data-frecuencia="329.63" aria-label="Mi (E4)">
+                <span class="tecla__etiqueta">Mi</span>
+                <span class="tecla__tecla-pc">D</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="F4" data-frecuencia="349.23" aria-label="Fa (F4)">
+                <span class="tecla__etiqueta">Fa</span>
+                <span class="tecla__tecla-pc">F</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="G4" data-frecuencia="392.00" aria-label="Sol (G4)">
+                <span class="tecla__etiqueta">Sol</span>
+                <span class="tecla__tecla-pc">G</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="A4" data-frecuencia="440.00" aria-label="La (A4)">
+                <span class="tecla__etiqueta">La</span>
+                <span class="tecla__tecla-pc">H</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="B4" data-frecuencia="493.88" aria-label="Si (B4)">
+                <span class="tecla__etiqueta">Si</span>
+                <span class="tecla__tecla-pc">J</span>
+            </button>
+
+            <button class="tecla tecla--blanca" data-nota="C5" data-frecuencia="523.25" aria-label="Do alto (C5)">
+                <span class="tecla__etiqueta">Do</span>
+                <span class="tecla__tecla-pc">K</span>
+            </button>
+
+            <!-- 
+        Teclas negras (alteradas): do#, re#, fa#, sol#, la#
+        Usan position: absolute para superponerse
+      -->
+            <button class="tecla tecla--negra tecla--negra-1" data-nota="C#4" data-frecuencia="277.18"
+                aria-label="Do sostenido (C#4)">
+                <span class="tecla__etiqueta">Do#</span>
+                <span class="tecla__tecla-pc">W</span>
+            </button>
+
+            <button class="tecla tecla--negra tecla--negra-2" data-nota="D#4" data-frecuencia="311.13"
+                aria-label="Re sostenido (D#4)">
+                <span class="tecla__etiqueta">Re#</span>
+                <span class="tecla__tecla-pc">E</span>
+            </button>
+
+            <button class="tecla tecla--negra tecla--negra-4" data-nota="F#4" data-frecuencia="369.99"
+                aria-label="Fa sostenido (F#4)">
+                <span class="tecla__etiqueta">Fa#</span>
+                <span class="tecla__tecla-pc">T</span>
+            </button>
+
+            <button class="tecla tecla--negra tecla--negra-5" data-nota="G#4" data-frecuencia="415.30"
+                aria-label="Sol sostenido (G#4)">
+                <span class="tecla__etiqueta">Sol#</span>
+                <span class="tecla__tecla-pc">Y</span>
+            </button>
+
+            <button class="tecla tecla--negra tecla--negra-6" data-nota="A#4" data-frecuencia="466.16"
+                aria-label="La sostenido (A#4)">
+                <span class="tecla__etiqueta">La#</span>
+                <span class="tecla__tecla-pc">U</span>
+            </button>
+        </section>
+
+        <!-- Información adicional -->
+        <section class="info">
+            <h2 class="info__titulo">Cómo usar</h2>
+            <ul class="info__lista">
+                <li>🖱️ <strong>Ratón:</strong> Haz clic en las teclas del piano</li>
+                <li>
+                    ⌨️ <strong>Teclado:</strong> Usa las teclas indicadas (A, S, D, F,
+                    G, H, J, K para blancas; W, E, T, Y, U para negras)
+                </li>
+                <li>
+                    🎵 <strong>Forma de onda:</strong> Cambia el timbre del sonido en el
+                    selector
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="pie">
+        <small class="pie__texto">
+            Creado con <span aria-label="corazón">❤️</span> usando Web Audio API
+        </small>
+    </footer>
+</body>
+
+</html>
