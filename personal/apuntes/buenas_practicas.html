@@ -10,7 +10,7 @@
   <!-- 
     Codificación de caracteres UTF-8 (Introducción.pdf):
     - Debe ir lo más arriba posible, antes de cualquier texto renderizable.
-    - Evita errores como "Ã±" en lugar de "ñ" o "Â¿" en lugar de "¿".
+    - Evita errores como "ñ" en lugar de "ñ" o "¿" en lugar de "¿".
   -->
   <meta charset="UTF-8">
 
@@ -21,7 +21,7 @@
   -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Temporizador, Contador y Drag & Drop — Buenas Prácticas</title>
+  <title>Buenas Prácticas Web + Web Audio API</title>
 
   <!-- 
     Carga de CSS antes que JS (Introducción.pdf):
@@ -49,7 +49,7 @@
     - Esto mejora la accesibilidad y la legibilidad del código.
   -->
   <header class="cabecera">
-    <h1 class="cabecera__titulo">Demo de Buenas Prácticas Web</h1>
+    <h1 class="cabecera__titulo">Demo de Buenas Prácticas Web + Web Audio API</h1>
   </header>
 
   <main class="contenedor">
@@ -103,7 +103,7 @@
     </section>
 
     <!--  ===========================================================
-      ➜ Re-ubicación.pdf – nuevo
+      ➜ Re-ubicación.pdf — nuevo
       Sección 4: demostración visual de POSITION / Z-INDEX
       =========================================================== -->
     <section class="tarjeta tarjeta--posicionamiento">
@@ -138,7 +138,7 @@
     </section>
 
     <!--  ===========================================================
-      ➜ Re-ubicación.pdf – nuevo
+      ➜ Re-ubicación.pdf — nuevo
       Sección 5: transformaciones 2-D
       =========================================================== -->
     <section class="tarjeta tarjeta--transforms">
@@ -153,7 +153,7 @@
     </section>
 
     <!--  ===========================================================
-      ➜ Re-ubicación.pdf – nuevo
+      ➜ Re-ubicación.pdf — nuevo
       Sección 6: pseudoelementos & pseudoclases
       =========================================================== -->
     <section class="tarjeta tarjeta--pseudos">
@@ -164,9 +164,134 @@
         <strong>sólo con CSS</strong>.
       </p>
 
-      <blockquote class="demo-pseudos__cita" data-tooltip="Conócete a ti mismo – Nosce te ipsum">
+      <blockquote class="demo-pseudos__cita" data-tooltip="Conócete a ti mismo — Nosce te ipsum">
         Nosce te ipsum
       </blockquote>
+    </section>
+
+    <!--  ===========================================================
+      ➜ webAudioAPI.pdf — NUEVO
+      Sección 7: Web Audio API - Oscilador Simple
+      ===========================================================
+      Principios de la Web Audio API (webAudioAPI.pdf):
+      - AudioContext: objeto que gestiona un grafo de nodos de audio
+      - El usuario DEBE dar permiso para reproducir audio (estado suspended por defecto)
+      - Nodos fuente (F): generan sonido (ej. OscillatorNode)
+      - Nodos destino (D): envían la señal a los altavoces del sistema
+      - Nodos intermedios (I): modifican el sonido (volumen, filtros, etc.)
+      
+      Estructura del grafo: F → [I]* → D
+    -->
+    <section class="tarjeta tarjeta--audio-simple">
+      <h2 class="tarjeta__titulo">Web Audio API: Oscilador Simple</h2>
+      <p class="tarjeta__descripcion">
+        Genera una nota de 220 Hz (La3) durante 4 segundos.
+      </p>
+      <!-- 
+        data-audio-accion → identifica acciones relacionadas con audio
+        Patrón consistente con data-accion usado en otros componentes
+      -->
+      <button class="btn btn--primario" data-audio-accion="reproducir-simple">
+        Reproducir Nota Simple
+      </button>
+      <p class="tarjeta__info" data-audio-estado="simple">
+        Estado: Detenido
+      </p>
+    </section>
+
+    <!--  ===========================================================
+      Sección 8: Web Audio API - Múltiples Osciladores
+      ===========================================================
+      Demuestra cómo reproducir varios osciladores simultáneamente
+      con diferentes formas de onda y frecuencias (webAudioAPI.pdf)
+    -->
+    <section class="tarjeta tarjeta--audio-multi">
+      <h2 class="tarjeta__titulo">Web Audio API: Múltiples Osciladores</h2>
+      <p class="tarjeta__descripcion">
+        Reproduce dos osciladores con diferentes timbres y frecuencias.
+        Oscilador 1: sinusoidal (220 Hz), Oscilador 2: triangular (210 Hz).
+      </p>
+      <button class="btn btn--primario" data-audio-accion="reproducir-multi">
+        Reproducir Armonía
+      </button>
+      <p class="tarjeta__info" data-audio-estado="multi">
+        Estado: Detenido
+      </p>
+    </section>
+
+    <!--  ===========================================================
+      Sección 9: Web Audio API - AudioParam y setValueAtTime
+      ===========================================================
+      Demuestra el uso de AudioParam para cambios instantáneos de frecuencia
+      (webAudioAPI.pdf - Parámetros de audio)
+      
+      setValueAtTime(value, time) → Cambio instantáneo en un momento específico
+      Los cambios se agendan en orden cronológico, no de aparición en el código
+    -->
+    <section class="tarjeta tarjeta--audio-acordes">
+      <h2 class="tarjeta__titulo">Web Audio API: Cambios Instantáneos (setValueAtTime)</h2>
+      <p class="tarjeta__descripcion">
+        Reproduce las notas de un acorde Do Mayor de forma secuencial:
+        Do4 → Mi4 → Sol4 → Do5
+      </p>
+      <button class="btn btn--primario" data-audio-accion="reproducir-acordes">
+        Reproducir Acorde
+      </button>
+      <p class="tarjeta__info" data-audio-estado="acordes">
+        Estado: Detenido
+      </p>
+    </section>
+
+    <!--  ===========================================================
+      Sección 10: Web Audio API - Rampas (linear/exponential)
+      ===========================================================
+      Demuestra cambios progresivos de frecuencia (webAudioAPI.pdf)
+      
+      - linearRampToValueAtTime(value, endTime) → cambio lineal
+      - exponentialRampToValueAtTime(value, endTime) → cambio exponencial
+      
+      IMPORTANTE: Las rampas necesitan un punto de inicio fijado previamente
+      con setValueAtTime() para saber desde dónde comenzar el cambio
+    -->
+    <section class="tarjeta tarjeta--audio-rampas">
+      <h2 class="tarjeta__titulo">Web Audio API: Cambios Progresivos (Rampas)</h2>
+      <p class="tarjeta__descripcion">
+        Demuestra cambios graduales de frecuencia:
+        Do4 (estático) → Mi4 (exponencial) → Sol4 (lineal)
+      </p>
+      <button class="btn btn--primario" data-audio-accion="reproducir-rampas">
+        Reproducir Rampas
+      </button>
+      <p class="tarjeta__info" data-audio-estado="rampas">
+        Estado: Detenido
+      </p>
+    </section>
+
+    <!--  ===========================================================
+      Sección 11: Web Audio API - GainNode (Control de Volumen)
+      ===========================================================
+      Demuestra el uso de nodos intermedios para modificar el sonido
+      (webAudioAPI.pdf - Nodos intermedios: GainNode)
+      
+      GainNode: controla el volumen (ganancia) de la señal de audio
+      - gain = 1.0 → sin cambios (por defecto)
+      - gain > 1.0 → amplifica el sonido
+      - gain < 1.0 → atenúa el sonido
+      
+      Estructura del grafo: OscillatorNode → GainNode → AudioDestination
+    -->
+    <section class="tarjeta tarjeta--audio-gain">
+      <h2 class="tarjeta__titulo">Web Audio API: Control de Volumen (GainNode)</h2>
+      <p class="tarjeta__descripcion">
+        Reproduce una nota con fade-in progresivo (0.01 → 0.8).
+        Evita la saturación no llegando a gain = 1.0
+      </p>
+      <button class="btn btn--primario" data-audio-accion="reproducir-gain">
+        Reproducir con Fade-in
+      </button>
+      <p class="tarjeta__info" data-audio-estado="gain">
+        Estado: Detenido
+      </p>
     </section>
   </main>
 
@@ -178,7 +303,8 @@
   <footer class="pie">
     <small class="pie__texto">
       Creado con <span aria-label="corazón">❤</span> siguiendo las buenas prácticas de
-      <cite>Introducción.pdf</cite>, <cite>Intervalos.pdf</cite> y <cite>Color&Fuentes&Espacio.pdf</cite>
+      <cite>Introducción.pdf</cite>, <cite>Intervalos.pdf</cite>, <cite>Color&Fuentes&Espacio.pdf</cite>
+      y <cite>webAudioAPI.pdf</cite>
     </small>
   </footer>
 </body>
