@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/style.css" />
   <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled />
   
-  <!-- Favicon-->
+  <!-- Favicon -->
   <link rel="icon" href="img/piano.png" type="image/x-icon" />
   
   <!-- JS -->
@@ -21,6 +21,13 @@
 <body>
   <!-- Botones flotantes en la esquina superior derecha -->
   <div class="floating-buttons">
+    <button 
+      id="btnControles" 
+      class="floating-buttons__button" 
+      data-accion="controles" 
+      aria-label="Abrir controles de sonido">
+      🎛️
+    </button>
     <button 
       id="btnTema" 
       class="floating-buttons__button" 
@@ -37,169 +44,145 @@
     </button>
   </div>
 
-  <!-- Estructura semántica completa -->
   <header class="cabecera">
     <h1 class="cabecera__titulo">Piano Interactivo</h1>
     <p class="cabecera__descripcion">
-      Toca las teclas con el ratón o usa el teclado del ordenador. Cambia la
-      forma de onda para experimentar con diferentes timbres.
+      Piano de múltiples octavas con controles de sonido profesionales.
+      Personaliza tu experiencia musical.
+    </p>
+    <p class="cabecera__instrucciones">
+      🎛️ Abre los controles para personalizar el sonido | 
+      ❓ Consulta la ayuda para aprender a usar el piano
     </p>
   </header>
 
   <main class="contenedor">
-    <!-- Panel de controles -->
-    <section class="panel-controles">
-      <h2 class="panel-controles__titulo">Controles de Sonido</h2>
+    <!-- Toast de notificaciones (mensaje emergente) -->
+    <div class="toast" data-toast aria-live="polite" aria-atomic="true">
+      <span class="toast__mensaje" data-toast-mensaje></span>
+    </div>
 
-      <div class="panel-controles__grupo">
-        <label for="formaOnda" class="panel-controles__label">
-          Forma de onda:
-        </label>
-        <select
-          id="formaOnda"
-          class="panel-controles__select"
-          data-control="forma-onda"
-          aria-label="Seleccionar forma de onda del oscilador">
-          <option value="sine">Sinusoidal (suave)</option>
-          <option value="triangle">Triangular (cálida)</option>
-          <option value="square">Cuadrada (brillante)</option>
-          <option value="sawtooth">Diente de sierra (rica)</option>
-        </select>
-      </div>
-
-      <div class="panel-controles__info" data-info-estado aria-live="polite">
-        Estado: Listo para tocar
-      </div>
-    </section>
-
-    <!-- Piano (contenedor de teclas) -->
+    <!-- Piano (contenedor de teclas) - SE GENERA DINÁMICAMENTE -->
     <section class="piano" data-piano aria-label="Teclado del piano">
-      <!-- Teclas blancas (naturales): do, re, mi, fa, sol, la, si, do -->
-      <button
-        class="tecla tecla--blanca"
-        data-nota="C4"
-        data-frecuencia="261.63"
-        aria-label="Do central (C4)">
-        <span class="tecla__etiqueta">Do</span>
-        <span class="tecla__tecla-pc">A</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="D4"
-        data-frecuencia="293.66"
-        aria-label="Re (D4)">
-        <span class="tecla__etiqueta">Re</span>
-        <span class="tecla__tecla-pc">S</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="E4"
-        data-frecuencia="329.63"
-        aria-label="Mi (E4)">
-        <span class="tecla__etiqueta">Mi</span>
-        <span class="tecla__tecla-pc">D</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="F4"
-        data-frecuencia="349.23"
-        aria-label="Fa (F4)">
-        <span class="tecla__etiqueta">Fa</span>
-        <span class="tecla__tecla-pc">F</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="G4"
-        data-frecuencia="392.00"
-        aria-label="Sol (G4)">
-        <span class="tecla__etiqueta">Sol</span>
-        <span class="tecla__tecla-pc">G</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="A4"
-        data-frecuencia="440.00"
-        aria-label="La (A4)">
-        <span class="tecla__etiqueta">La</span>
-        <span class="tecla__tecla-pc">H</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="B4"
-        data-frecuencia="493.88"
-        aria-label="Si (B4)">
-        <span class="tecla__etiqueta">Si</span>
-        <span class="tecla__tecla-pc">J</span>
-      </button>
-
-      <button
-        class="tecla tecla--blanca"
-        data-nota="C5"
-        data-frecuencia="523.25"
-        aria-label="Do alto (C5)">
-        <span class="tecla__etiqueta">Do</span>
-        <span class="tecla__tecla-pc">K</span>
-      </button>
-
-      <!-- Teclas negras (alteradas): do#, re#, fa#, sol#, la# -->
-      <button
-        class="tecla tecla--negra tecla--negra-1"
-        data-nota="C#4"
-        data-frecuencia="277.18"
-        aria-label="Do sostenido (C#4)">
-        <span class="tecla__etiqueta">Do#</span>
-        <span class="tecla__tecla-pc">W</span>
-      </button>
-
-      <button
-        class="tecla tecla--negra tecla--negra-2"
-        data-nota="D#4"
-        data-frecuencia="311.13"
-        aria-label="Re sostenido (D#4)">
-        <span class="tecla__etiqueta">Re#</span>
-        <span class="tecla__tecla-pc">E</span>
-      </button>
-
-      <button
-        class="tecla tecla--negra tecla--negra-4"
-        data-nota="F#4"
-        data-frecuencia="369.99"
-        aria-label="Fa sostenido (F#4)">
-        <span class="tecla__etiqueta">Fa#</span>
-        <span class="tecla__tecla-pc">T</span>
-      </button>
-
-      <button
-        class="tecla tecla--negra tecla--negra-5"
-        data-nota="G#4"
-        data-frecuencia="415.30"
-        aria-label="Sol sostenido (G#4)">
-        <span class="tecla__etiqueta">Sol#</span>
-        <span class="tecla__tecla-pc">Y</span>
-      </button>
-
-      <button
-        class="tecla tecla--negra tecla--negra-6"
-        data-nota="A#4"
-        data-frecuencia="466.16"
-        aria-label="La sostenido (A#4)">
-        <span class="tecla__etiqueta">La#</span>
-        <span class="tecla__tecla-pc">U</span>
-      </button>
+      <!-- Las teclas se generarán dinámicamente según el número de octavas -->
     </section>
   </main>
 
-  <!-- Modal de ayuda (dialog nativo HTML5) -->
+  <!-- Modal de CONTROLES -->
+  <dialog class="modal-controles" data-modal-controles>
+    <div class="modal-controles__contenido">
+      <header class="modal-controles__header">
+        <h2 class="modal-controles__titulo">Controles de Sonido</h2>
+        <button 
+          class="modal-controles__cerrar" 
+          data-accion="cerrar-controles"
+          aria-label="Cerrar controles">
+          ✕
+        </button>
+      </header>
+      
+      <div class="modal-controles__body">
+        <!-- Número de octavas -->
+        <div class="modal-controles__grupo">
+          <label for="numOctavas" class="modal-controles__label">
+            Octavas:
+          </label>
+          <select
+            id="numOctavas"
+            class="modal-controles__select"
+            data-control="octavas"
+            aria-label="Seleccionar número de octavas del piano">
+            <option value="1">1 octava</option>
+            <option value="2" selected>2 octavas</option>
+            <option value="3">3 octavas</option>
+          </select>
+        </div>
+
+        <!-- Forma de onda -->
+        <div class="modal-controles__grupo">
+          <label for="formaOnda" class="modal-controles__label">
+            Forma de onda:
+          </label>
+          <select
+            id="formaOnda"
+            class="modal-controles__select"
+            data-control="forma-onda"
+            aria-label="Seleccionar forma de onda del oscilador">
+            <option value="sine">Sinusoidal (suave)</option>
+            <option value="triangle">Triangular (cálida)</option>
+            <option value="square">Cuadrada (brillante)</option>
+            <option value="sawtooth">Diente de sierra (rica)</option>
+          </select>
+        </div>
+
+        <!-- Control de volumen -->
+        <div class="modal-controles__grupo">
+          <label for="volumen" class="modal-controles__label">
+            Volumen:
+          </label>
+          <div class="modal-controles__slider-container">
+            <input 
+              type="range" 
+              id="volumen" 
+              class="modal-controles__slider"
+              data-control="volumen"
+              min="0" 
+              max="100" 
+              value="70"
+              step="1"
+              aria-label="Controlar volumen general">
+            <output data-output="volumen" class="modal-controles__output">70%</output>
+          </div>
+        </div>
+
+        <!-- Filtro de frecuencias -->
+        <div class="modal-controles__grupo">
+          <label for="filtro" class="modal-controles__label">
+            Filtro (Hz):
+          </label>
+          <div class="modal-controles__slider-container">
+            <input 
+              type="range" 
+              id="filtro" 
+              class="modal-controles__slider"
+              data-control="filtro"
+              min="200" 
+              max="8000" 
+              value="8000"
+              step="100"
+              aria-label="Controlar frecuencia del filtro paso-bajo">
+            <output data-output="filtro" class="modal-controles__output">8000 Hz</output>
+          </div>
+        </div>
+
+        <!-- Reverb -->
+        <div class="modal-controles__grupo">
+          <label for="reverb" class="modal-controles__label">
+            Reverb:
+          </label>
+          <div class="modal-controles__slider-container">
+            <input 
+              type="range" 
+              id="reverb" 
+              class="modal-controles__slider"
+              data-control="reverb"
+              min="0" 
+              max="100" 
+              value="0"
+              step="5"
+              aria-label="Controlar intensidad de la reverberación">
+            <output data-output="reverb" class="modal-controles__output">0%</output>
+          </div>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- Modal de ayuda MEJORADO -->
   <dialog class="modal-ayuda" data-modal-ayuda>
     <div class="modal-ayuda__contenido">
       <header class="modal-ayuda__header">
-        <h2 class="modal-ayuda__titulo">Cómo usar el Piano</h2>
+        <h2 class="modal-ayuda__titulo">Guía Completa del Piano Interactivo</h2>
         <button 
           class="modal-ayuda__cerrar" 
           data-accion="cerrar-ayuda"
@@ -209,30 +192,106 @@
       </header>
       
       <div class="modal-ayuda__body">
-        <ul class="modal-ayuda__lista">
-          <li class="modal-ayuda__item">
-            <strong>🖱️ Ratón:</strong> Haz clic en las teclas del piano para reproducir las notas
-          </li>
-          <li class="modal-ayuda__item">
-            <strong>⌨️ Teclado:</strong> Usa las teclas indicadas en cada nota
-            <ul class="modal-ayuda__sublista">
-              <li>Teclas blancas: A, S, D, F, G, H, J, K</li>
-              <li>Teclas negras: W, E, T, Y, U</li>
-            </ul>
-          </li>
-          <li class="modal-ayuda__item">
-            <strong>🎵 Forma de onda:</strong> Cambia el timbre del sonido en el selector superior
-            <ul class="modal-ayuda__sublista">
-              <li><em>Sinusoidal:</em> Sonido suave y puro</li>
-              <li><em>Triangular:</em> Timbre cálido</li>
-              <li><em>Cuadrada:</em> Sonido brillante y digital</li>
-              <li><em>Diente de sierra:</em> Timbre rico y complejo</li>
-            </ul>
-          </li>
-          <li class="modal-ayuda__item">
-            <strong>🌙 Tema:</strong> Usa el botón superior derecho para cambiar entre tema claro y oscuro
-          </li>
-        </ul>
+        <div class="modal-ayuda__columnas">
+          <!-- COLUMNA IZQUIERDA: Conceptos Musicales -->
+          <div class="modal-ayuda__columna">
+            <h3 class="modal-ayuda__subtitulo">🎵 Conceptos Musicales</h3>
+            
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">¿Qué son las octavas?</h4>
+              <p class="modal-ayuda__texto">
+                Una <strong>octava</strong> es un conjunto de 8 notas consecutivas: 
+                <em>Do, Re, Mi, Fa, Sol, La, Si, Do</em>. El primer y último Do 
+                tienen el mismo nombre, pero el segundo suena más agudo (frecuencia más alta).
+              </p>
+              <p class="modal-ayuda__texto">
+                En este piano:
+              </p>
+              <ul class="modal-ayuda__lista-simple">
+                <li><strong>1 octava:</strong> 12 teclas (7 blancas + 5 negras)</li>
+                <li><strong>2 octavas:</strong> 24 teclas - Piano estándar para principiantes</li>
+                <li><strong>3 octavas:</strong> 36 teclas - Mayor rango para composiciones</li>
+              </ul>
+            </div>
+
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">¿Qué es la forma de onda?</h4>
+              <p class="modal-ayuda__texto">
+                La <strong>forma de onda</strong> determina el timbre (color del sonido):
+              </p>
+              <ul class="modal-ayuda__lista-simple">
+                <li><strong>Sinusoidal:</strong> Sonido puro y suave, como una flauta</li>
+                <li><strong>Triangular:</strong> Sonido cálido, similar a un clarinete</li>
+                <li><strong>Cuadrada:</strong> Sonido brillante y metálico, tipo órgano</li>
+                <li><strong>Diente de sierra:</strong> Sonido rico y complejo, como un violín</li>
+              </ul>
+            </div>
+
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">Controles de audio</h4>
+              <ul class="modal-ayuda__lista-simple">
+                <li><strong>Volumen:</strong> Controla la intensidad del sonido (0-100%)</li>
+                <li><strong>Filtro:</strong> Elimina frecuencias agudas (hace el sonido más suave)</li>
+                <li><strong>Reverb:</strong> Añade eco espacial (simula tocar en una sala grande)</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- COLUMNA DERECHA: Instrucciones de Uso -->
+          <div class="modal-ayuda__columna">
+            <h3 class="modal-ayuda__subtitulo">🎹 Cómo Tocar el Piano</h3>
+            
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">Con el ratón</h4>
+              <p class="modal-ayuda__texto">
+                Haz clic sobre cualquier tecla (blanca o negra) para reproducir la nota.
+                Mantén pulsado para sostener el sonido.
+              </p>
+            </div>
+
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">Con el teclado del ordenador</h4>
+              <p class="modal-ayuda__texto">
+                Cada tecla física corresponde a una nota musical:
+              </p>
+              <div class="modal-ayuda__teclado">
+                <strong>Primera octava (Do4 - Si4):</strong>
+                <ul class="modal-ayuda__lista-simple">
+                  <li>Blancas: <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> <kbd>F</kbd> <kbd>G</kbd> <kbd>H</kbd> <kbd>J</kbd></li>
+                  <li>Negras: <kbd>W</kbd> <kbd>E</kbd> <kbd>T</kbd> <kbd>Y</kbd> <kbd>U</kbd></li>
+                </ul>
+                
+                <strong>Segunda octava (Do5 - Si5):</strong>
+                <ul class="modal-ayuda__lista-simple">
+                  <li>Blancas: <kbd>Z</kbd> <kbd>X</kbd> <kbd>C</kbd> <kbd>V</kbd> <kbd>B</kbd> <kbd>N</kbd> <kbd>M</kbd></li>
+                  <li>Negras: <kbd>Q</kbd> <kbd>R</kbd> <kbd>I</kbd> <kbd>O</kbd> <kbd>P</kbd></li>
+                </ul>
+
+                <strong>Tercera octava (Do6 - Si6):</strong>
+                <ul class="modal-ayuda__lista-simple">
+                  <li>Blancas: <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> <kbd>4</kbd> <kbd>5</kbd> <kbd>6</kbd> <kbd>7</kbd></li>
+                </ul>
+              </div>
+            </div>
+
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">Atajos útiles</h4>
+              <ul class="modal-ayuda__lista-simple">
+                <li><kbd>🎛️</kbd> Abre el panel de controles de sonido</li>
+                <li><kbd>🌙</kbd> / <kbd>☀️</kbd> Alterna entre tema claro y oscuro</li>
+                <li><kbd>Esc</kbd> Cierra cualquier modal abierto</li>
+              </ul>
+            </div>
+
+            <div class="modal-ayuda__seccion">
+              <h4 class="modal-ayuda__seccion-titulo">💡 Consejo</h4>
+              <p class="modal-ayuda__texto">
+                Experimenta con diferentes combinaciones de octavas, formas de onda 
+                y efectos para descubrir nuevos sonidos. ¡La música es exploración!
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </dialog>
