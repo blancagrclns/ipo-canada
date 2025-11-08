@@ -77,8 +77,8 @@ const DATOS_MAPA = [
 function cachearNodos() {
   APP.nodos = {
     mapa: document.querySelector('[data-mapa]'),
-    btnTema: document.querySelector('[data-accion="tema"]'),
-    btnPanel: document.querySelector('[data-accion="panel"]'),
+    btnTema: document.querySelector('[data-accion="cambiar-tema"]'),
+    btnPanel: document.querySelector('[data-accion="abrir-panel"]'),
     darkThemeLink: document.getElementById('dark-theme'),
     
     // Panel lateral
@@ -247,7 +247,9 @@ function renderizarItems() {
 function alternarTema() {
   APP.temaOscuro = !APP.temaOscuro;
   APP.nodos.darkThemeLink.disabled = !APP.temaOscuro;
-  APP.nodos.btnTema.textContent = APP.temaOscuro ? '☀️' : '🌙';
+  if (APP.nodos.btnTema) {
+    APP.nodos.btnTema.textContent = APP.temaOscuro ? '\u2600' : '\u263D';
+  }
   localStorage.setItem('temaOscuro', APP.temaOscuro);
   console.log(`🎨 Tema ${APP.temaOscuro ? 'oscuro' : 'claro'} activado.`);
 }
@@ -257,7 +259,9 @@ function cargarPreferenciaTema() {
   if (temaGuardado === 'true') {
     APP.temaOscuro = true;
     APP.nodos.darkThemeLink.disabled = false;
-    APP.nodos.btnTema.textContent = '☀️';
+    if (APP.nodos.btnTema) {
+      APP.nodos.btnTema.textContent = '\u2600';
+    }
   }
 }
 
@@ -267,13 +271,17 @@ function cargarPreferenciaTema() {
 function alternarPanel() {
   APP.nodos.panel.classList.toggle('panel--abierto');
   const estaAbierto = APP.nodos.panel.classList.contains('panel--abierto');
-  APP.nodos.btnPanel.setAttribute('aria-expanded', estaAbierto);
+  if (APP.nodos.btnPanel) {
+    APP.nodos.btnPanel.setAttribute('aria-expanded', estaAbierto);
+  }
   console.log(`📋 Panel ${estaAbierto ? 'abierto' : 'cerrado'}.`);
 }
 
 function cerrarPanel() {
   APP.nodos.panel.classList.remove('panel--abierto');
-  APP.nodos.btnPanel.setAttribute('aria-expanded', 'false');
+  if (APP.nodos.btnPanel) {
+    APP.nodos.btnPanel.setAttribute('aria-expanded', 'false');
+  }
 }
 
 /* ==========================================================================
@@ -646,8 +654,12 @@ function init() {
   document.documentElement.style.setProperty('--escala-marcador', APP.configuracion.escalaMarcar);
   
   // Event listeners - Tema y panel
-  APP.nodos.btnTema.addEventListener('click', alternarTema);
-  APP.nodos.btnPanel.addEventListener('click', alternarPanel);
+  if (APP.nodos.btnTema) {
+    APP.nodos.btnTema.addEventListener('click', alternarTema);
+  }
+  if (APP.nodos.btnPanel) {
+    APP.nodos.btnPanel.addEventListener('click', alternarPanel);
+  }
   APP.nodos.btnCerrarPanel.addEventListener('click', cerrarPanel);
   
   // Event listeners - Vistas (USANDO DELEGACIÓN DE EVENTOS)

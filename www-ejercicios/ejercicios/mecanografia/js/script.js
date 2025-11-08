@@ -1,19 +1,19 @@
 import { recuperaElementoAleatorio } from './utils.js';
 import {
-inicializarModoBilingue,
-iniciarTestBilingue,
-verificarEntradaBilingue,
-cambiarPalabraBilingue,
-ocultarModoBilingue
+  inicializarModoBilingue,
+  iniciarTestBilingue,
+  verificarEntradaBilingue,
+  cambiarPalabraBilingue,
+  ocultarModoBilingue
 } from './bilingue.js';
 
 
 // Arrays de palabras por dificultad
-const palabrasDefault = [ 'casa','perro','gato','sol','luna','agua','fuego','tierra','viento','mar', 'cielo','montaña','río','bosque','flor','árbol','piedra','estrella','nube','lluvia' ];
-const palabrasFaciles = ["sol","pan","mar","voz","sal","flor","pez","tren","luz","rey","mil","mes","club","cruz","sed","gas","fin","dos","tres","bien"];
-const palabrasMedias = ["reloj","pared","salud","hotel","canal","animal","doctor","papel","cantar","comer","azul","feliz","actor","legal","control","motor","señal","natural","final","ideal","mesa","carro","lunes","plaza","libro","fuerte","verde","nube","cielo","calle","puerta","fruta","piedra","silla","camisa","ratón","zapato","ventana","cama","sólido"];
-const palabrasDificiles = ["murciélago","teléfono","pájaro","brújula","rápido","próximo","esdrújula","químico","físico","político","artístico","matemático","gramático","técnico","médico","plástico","músico","lógico","económico","histórico"];
-const palabrasMuyDificiles = ["dígamelo","repíteselo","cuéntamelo","devuélvemelo","explícaselo","entrégaselo","tráemelo","díselo","muéstramelo","regrésámelo","préstamelo","confírmamelo","recuérdaselo","lléváselo","envíáselo","compréndémelo","tradúcémelo","aclárámelo","organízámelo","resuélvémelo"];
+const palabrasDefault = ['casa', 'perro', 'gato', 'sol', 'luna', 'agua', 'fuego', 'tierra', 'viento', 'mar', 'cielo', 'montaña', 'río', 'bosque', 'flor', 'árbol', 'piedra', 'estrella', 'nube', 'lluvia'];
+const palabrasFaciles = ["sol", "pan", "mar", "voz", "sal", "flor", "pez", "tren", "luz", "rey", "mil", "mes", "club", "cruz", "sed", "gas", "fin", "dos", "tres", "bien"];
+const palabrasMedias = ["reloj", "pared", "salud", "hotel", "canal", "animal", "doctor", "papel", "cantar", "comer", "azul", "feliz", "actor", "legal", "control", "motor", "señal", "natural", "final", "ideal", "mesa", "carro", "lunes", "plaza", "libro", "fuerte", "verde", "nube", "cielo", "calle", "puerta", "fruta", "piedra", "silla", "camisa", "ratón", "zapato", "ventana", "cama", "sólido"];
+const palabrasDificiles = ["murciélago", "teléfono", "pájaro", "brújula", "rápido", "próximo", "esdrújula", "químico", "físico", "político", "artístico", "matemático", "gramático", "técnico", "médico", "plástico", "músico", "lógico", "económico", "histórico"];
+const palabrasMuyDificiles = ["dígamelo", "repíteselo", "cuéntamelo", "devuélvemelo", "explícaselo", "entrégaselo", "tráemelo", "díselo", "muéstramelo", "regrésámelo", "préstamelo", "confírmamelo", "recuérdaselo", "lléváselo", "envíáselo", "compréndémelo", "tradúcémelo", "aclárámelo", "organízámelo", "resuélvémelo"];
 
 
 // Elementos del DOM
@@ -56,223 +56,223 @@ let modoBilingueActivo = false;
 
 // Función para cambiar dificultad
 function cambiarDificultad(nivel) {
-dificultadActual = nivel;
-switch (nivel) {
-case 0: palabrasActuales = palabrasDefault; alert('Dificultad: Default'); break;
-case 1: palabrasActuales = palabrasFaciles; alert('Dificultad: Fácil (monosílabos)'); break;
-case 2: palabrasActuales = palabrasMedias; alert('Dificultad: Media (agudas/llanas)'); break;
-case 3: palabrasActuales = palabrasDificiles; alert('Dificultad: Difícil (esdrújulas)'); break;
-case 4: palabrasActuales = palabrasMuyDificiles; alert('Dificultad: Muy difícil (sobresdrújulas/acentos)'); break;
-}
-if (modoBilingueActivo) {
-cambiarPalabraBilingue(nivel);
-} else {
-cambiarPalabra();
-}
+  dificultadActual = nivel;
+  switch (nivel) {
+    case 0: palabrasActuales = palabrasDefault; alert('Dificultad: Default'); break;
+    case 1: palabrasActuales = palabrasFaciles; alert('Dificultad: Fácil (monosílabos)'); break;
+    case 2: palabrasActuales = palabrasMedias; alert('Dificultad: Media (agudas/llanas)'); break;
+    case 3: palabrasActuales = palabrasDificiles; alert('Dificultad: Difícil (esdrújulas)'); break;
+    case 4: palabrasActuales = palabrasMuyDificiles; alert('Dificultad: Muy difícil (sobresdrújulas/acentos)'); break;
+  }
+  if (modoBilingueActivo) {
+    cambiarPalabraBilingue(nivel);
+  } else {
+    cambiarPalabra();
+  }
 }
 
 // Función para iniciar el test
 function iniciarTest() {
-tiempoTranscurrido = 0;
-palabrasCorrectas = 0;
-palabrasFalladas = 0;
-pausado = false;
-tiempoSpan.textContent = tiempoTranscurrido;
-palabrasCorrectasSpan.textContent = palabrasCorrectas;
-palabrasIncorrectasSpan.textContent = palabrasFalladas;
-numPalabrasObjetivo = parseInt(numPalabrasInput.value) || null;
-tiempoMaximo = parseInt(tiempoMaxInput.value) || null;
+  tiempoTranscurrido = 0;
+  palabrasCorrectas = 0;
+  palabrasFalladas = 0;
+  pausado = false;
+  tiempoSpan.textContent = tiempoTranscurrido;
+  palabrasCorrectasSpan.textContent = palabrasCorrectas;
+  palabrasIncorrectasSpan.textContent = palabrasFalladas;
+  numPalabrasObjetivo = parseInt(numPalabrasInput.value) || null;
+  tiempoMaximo = parseInt(tiempoMaxInput.value) || null;
 
 
-const modoBilingueCheckbox = document.getElementById('modoBilingue');
-modoBilingueActivo = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  modoBilingueActivo = modoBilingueCheckbox && modoBilingueCheckbox.checked;
 
 
-if (modoBilingueCheckbox) {
-modoBilingueCheckbox.disabled = true;
-const idiomaOrigen = document.getElementById('idiomaOrigen');
-const idiomaDestino = document.getElementById('idiomaDestino');
-if (idiomaOrigen) idiomaOrigen.disabled = true;
-if (idiomaDestino) idiomaDestino.disabled = true;
-const opcionesBilingue = document.getElementById('opcionesBilingue');
-if (opcionesBilingue) opcionesBilingue.classList.add('config-container__group--disabled');
-}
+  if (modoBilingueCheckbox) {
+    modoBilingueCheckbox.disabled = true;
+    const idiomaOrigen = document.getElementById('idiomaOrigen');
+    const idiomaDestino = document.getElementById('idiomaDestino');
+    if (idiomaOrigen) idiomaOrigen.disabled = true;
+    if (idiomaDestino) idiomaDestino.disabled = true;
+    const opcionesBilingue = document.getElementById('opcionesBilingue');
+    if (opcionesBilingue) opcionesBilingue.classList.add('config-container__group--disabled');
+  }
 
 
-if (modoBilingueActivo) {
-iniciarTestBilingue();
-} else {
-ocultarModoBilingue();
-cambiarPalabra();
-}
+  if (modoBilingueActivo) {
+    iniciarTestBilingue();
+  } else {
+    ocultarModoBilingue();
+    cambiarPalabra();
+  }
 
 
-entrada.disabled = false;
-entrada.focus();
-btnComienzo.disabled = true;
-btnPausa.disabled = false;
-btnFin.disabled = false;
-btnPausa.textContent = 'Pausar';
+  entrada.disabled = false;
+  entrada.focus();
+  btnComienzo.disabled = true;
+  btnPausa.disabled = false;
+  btnFin.disabled = false;
+  btnPausa.textContent = 'Pausar';
 
 
-intervaloTemporizador = setInterval(() => {
-if (!pausado) {
-tiempoTranscurrido++;
-tiempoSpan.textContent = tiempoTranscurrido;
-if (tiempoMaximo && tiempoTranscurrido >= tiempoMaximo) {
-detenerTest();
-mostrarStats();
-}
-}
-}, 1000);
+  intervaloTemporizador = setInterval(() => {
+    if (!pausado) {
+      tiempoTranscurrido++;
+      tiempoSpan.textContent = tiempoTranscurrido;
+      if (tiempoMaximo && tiempoTranscurrido >= tiempoMaximo) {
+        detenerTest();
+        mostrarStats();
+      }
+    }
+  }, 1000);
 }
 
 function togglePausa() {
-pausado = !pausado;
-btnPausa.textContent = pausado ? 'Reanudar' : 'Pausar';
-entrada.disabled = pausado;
+  pausado = !pausado;
+  btnPausa.textContent = pausado ? 'Reanudar' : 'Pausar';
+  entrada.disabled = pausado;
 }
 
 
 function cambiarPalabra() {
-palabraActual = recuperaElementoAleatorio(palabrasActuales);
-palabraDeMuestraSpan.textContent = palabraActual;
-entrada.value = '';
+  palabraActual = recuperaElementoAleatorio(palabrasActuales);
+  palabraDeMuestraSpan.textContent = palabraActual;
+  entrada.value = '';
 }
 
 
 function verificarEntrada(event) {
-if (event.key === 'Enter') {
-if (modoBilingueActivo) {
-verificarEntradaBilingue(event);
-} else {
-const palabraTecleada = entrada.value.trim();
-// Limpieza de clases de estado
-  entrada.classList.remove('input--ok', 'input--error', 'is-shaking');
-palabraDeMuestraSpan.classList.remove('palabra--ok', 'palabra--error', 'tarjeta__palabra--ok', 'tarjeta__palabra--error');
+  if (event.key === 'Enter') {
+    if (modoBilingueActivo) {
+      verificarEntradaBilingue(event);
+    } else {
+      const palabraTecleada = entrada.value.trim();
+      // Limpieza de clases de estado
+      entrada.classList.remove('input--ok', 'input--error', 'is-shaking');
+      palabraDeMuestraSpan.classList.remove('palabra--ok', 'palabra--error', 'tarjeta__palabra--ok', 'tarjeta__palabra--error');
 
 
-if (palabraTecleada === palabraActual) {
-palabrasCorrectas++;
-palabrasCorrectasSpan.textContent = palabrasCorrectas;
-mostrarAciertoVisual();
-setTimeout(() => {
-if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
-detenerTest();
-mostrarStats();
-} else {
-cambiarPalabra();
-}
-}, 500);
-} else {
-palabrasFalladas++;
-palabrasIncorrectasSpan.textContent = palabrasFalladas;
-mostrarErrorVisual();
-entrada.value = '';
-}
-}
-}
+      if (palabraTecleada === palabraActual) {
+        palabrasCorrectas++;
+        palabrasCorrectasSpan.textContent = palabrasCorrectas;
+        mostrarAciertoVisual();
+        setTimeout(() => {
+          if (numPalabrasObjetivo && palabrasCorrectas >= numPalabrasObjetivo) {
+            detenerTest();
+            mostrarStats();
+          } else {
+            cambiarPalabra();
+          }
+        }, 500);
+      } else {
+        palabrasFalladas++;
+        palabrasIncorrectasSpan.textContent = palabrasFalladas;
+        mostrarErrorVisual();
+        entrada.value = '';
+      }
+    }
+  }
 }
 
 // Función para mostrar feedback visual de acierto
 function mostrarAciertoVisual() {
-entrada.classList.add('input--ok');
-palabraDeMuestraSpan.classList.add('tarjeta__palabra--ok');
-setTimeout(() => {
-entrada.classList.remove('input--ok');
-palabraDeMuestraSpan.classList.remove('tarjeta__palabra--ok');
-}, 500);
+  entrada.classList.add('input--ok');
+  palabraDeMuestraSpan.classList.add('tarjeta__palabra--ok');
+  setTimeout(() => {
+    entrada.classList.remove('input--ok');
+    palabraDeMuestraSpan.classList.remove('tarjeta__palabra--ok');
+  }, 500);
 }
 
 
 function mostrarErrorVisual() {
-entrada.classList.add('input--error', 'is-shaking');
-palabraDeMuestraSpan.classList.add('tarjeta__palabra--error');
-setTimeout(() => {
-entrada.classList.remove('input--error', 'is-shaking');
-palabraDeMuestraSpan.classList.remove('tarjeta__palabra--error');
-}, 800);
+  entrada.classList.add('input--error', 'is-shaking');
+  palabraDeMuestraSpan.classList.add('tarjeta__palabra--error');
+  setTimeout(() => {
+    entrada.classList.remove('input--error', 'is-shaking');
+    palabraDeMuestraSpan.classList.remove('tarjeta__palabra--error');
+  }, 800);
 }
 
 // Función para resetear todo el estado del test
 function resetearTest() {
-tiempoTranscurrido = 0;
-palabrasCorrectas = 0;
-palabrasFalladas = 0;
-pausado = false;
-palabraActual = '';
-entrada.value = '';
+  tiempoTranscurrido = 0;
+  palabrasCorrectas = 0;
+  palabrasFalladas = 0;
+  pausado = false;
+  palabraActual = '';
+  entrada.value = '';
 
-// Actualizar los elementos visuales
-tiempoSpan.textContent = tiempoTranscurrido;
-palabrasCorrectasSpan.textContent = palabrasCorrectas;
-palabrasIncorrectasSpan.textContent = palabrasFalladas;
-palabraDeMuestraSpan.textContent = 'Palabra';
+  // Actualizar los elementos visuales
+  tiempoSpan.textContent = tiempoTranscurrido;
+  palabrasCorrectasSpan.textContent = palabrasCorrectas;
+  palabrasIncorrectasSpan.textContent = palabrasFalladas;
+  palabraDeMuestraSpan.textContent = 'Palabra';
 
-// Limpiar clases de estado del input y palabra
-entrada.classList.remove('input--ok', 'input--error', 'is-shaking');
-palabraDeMuestraSpan.classList.remove('tarjeta__palabra--ok', 'tarjeta__palabra--error');
+  // Limpiar clases de estado del input y palabra
+  entrada.classList.remove('input--ok', 'input--error', 'is-shaking');
+  palabraDeMuestraSpan.classList.remove('tarjeta__palabra--ok', 'tarjeta__palabra--error');
 
-// Resetear el checkbox de modo bilingüe y sus controles
-const modoBilingueCheckbox = document.getElementById('modoBilingue');
-if (modoBilingueCheckbox) {
-  modoBilingueCheckbox.checked = false;
-  modoBilingueCheckbox.disabled = false;
-  
-  const idiomaOrigen = document.getElementById('idiomaOrigen');
-  const idiomaDestino = document.getElementById('idiomaDestino');
-  if (idiomaOrigen) idiomaOrigen.disabled = true;
-  if (idiomaDestino) idiomaDestino.disabled = true;
-  
-  const opcionesBilingue = document.getElementById('opcionesBilingue');
-  if (opcionesBilingue) opcionesBilingue.classList.remove('config-container__group--disabled');
-}
+  // Resetear el checkbox de modo bilingüe y sus controles
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  if (modoBilingueCheckbox) {
+    modoBilingueCheckbox.checked = false;
+    modoBilingueCheckbox.disabled = false;
 
-// Limpiar la traducción
-ocultarModoBilingue();
+    const idiomaOrigen = document.getElementById('idiomaOrigen');
+    const idiomaDestino = document.getElementById('idiomaDestino');
+    if (idiomaOrigen) idiomaOrigen.disabled = true;
+    if (idiomaDestino) idiomaDestino.disabled = true;
+
+    const opcionesBilingue = document.getElementById('opcionesBilingue');
+    if (opcionesBilingue) opcionesBilingue.classList.remove('config-container__group--disabled');
+  }
+
+  // Limpiar la traducción
+  ocultarModoBilingue();
 }
 
 // Función para detener el test
 function detenerTest() {
-if (intervaloTemporizador) {
-clearInterval(intervaloTemporizador);
-intervaloTemporizador = null;
-}
-entrada.disabled = true;
-btnComienzo.disabled = false;
-btnPausa.disabled = true;
-btnFin.disabled = true;
-modoBilingueActivo = false;
+  if (intervaloTemporizador) {
+    clearInterval(intervaloTemporizador);
+    intervaloTemporizador = null;
+  }
+  entrada.disabled = true;
+  btnComienzo.disabled = false;
+  btnPausa.disabled = true;
+  btnFin.disabled = true;
+  modoBilingueActivo = false;
 
-const modoBilingueCheckbox = document.getElementById('modoBilingue');
-if (modoBilingueCheckbox) {
-modoBilingueCheckbox.disabled = false;
-const idiomaOrigen = document.getElementById('idiomaOrigen');
-const idiomaDestino = document.getElementById('idiomaDestino');
-const isChecked = modoBilingueCheckbox.checked;
-if (idiomaOrigen) idiomaOrigen.disabled = !isChecked;
-if (idiomaDestino) idiomaDestino.disabled = !isChecked;
-const opcionesBilingue = document.getElementById('opcionesBilingue');
-if (opcionesBilingue) opcionesBilingue.classList.remove('config-container__group--disabled');
-}
-ocultarModoBilingue();
+  const modoBilingueCheckbox = document.getElementById('modoBilingue');
+  if (modoBilingueCheckbox) {
+    modoBilingueCheckbox.disabled = false;
+    const idiomaOrigen = document.getElementById('idiomaOrigen');
+    const idiomaDestino = document.getElementById('idiomaDestino');
+    const isChecked = modoBilingueCheckbox.checked;
+    if (idiomaOrigen) idiomaOrigen.disabled = !isChecked;
+    if (idiomaDestino) idiomaDestino.disabled = !isChecked;
+    const opcionesBilingue = document.getElementById('opcionesBilingue');
+    if (opcionesBilingue) opcionesBilingue.classList.remove('config-container__group--disabled');
+  }
+  ocultarModoBilingue();
 }
 
 // Función para mostrar modal de estadísticas
 function mostrarStats() {
-statsTiempo.textContent = tiempoTranscurrido;
-statsCorrectas.textContent = palabrasCorrectas;
-statsFalladas.textContent = palabrasFalladas;
-modalStats.classList.add('active');
+  statsTiempo.textContent = tiempoTranscurrido;
+  statsCorrectas.textContent = palabrasCorrectas;
+  statsFalladas.textContent = palabrasFalladas;
+  modalStats.classList.add('active');
 }
 
 
 function toggleModal() {
-modalAyuda.classList.toggle('active');
+  modalAyuda.classList.toggle('active');
 }
 
 function toggleModalConfiguracion() {
-modalConfiguracion.classList.toggle('active');
+  modalConfiguracion.classList.toggle('active');
 }
 
 // Event listeners
@@ -321,10 +321,10 @@ document.addEventListener('keydown', (event) => {
   if (key >= 0 && key <= 4) {
     const activeElement = document.activeElement;
     const isEntradaInput = activeElement.id === 'entrada';
-    const isOtherInput = (activeElement.tagName === 'INPUT' || 
-                          activeElement.tagName === 'SELECT' || 
-                          activeElement.tagName === 'TEXTAREA') && !isEntradaInput;
-    
+    const isOtherInput = (activeElement.tagName === 'INPUT' ||
+      activeElement.tagName === 'SELECT' ||
+      activeElement.tagName === 'TEXTAREA') && !isEntradaInput;
+
     if (isEntradaInput || !isOtherInput) {
       if (isEntradaInput) {
         event.preventDefault();

@@ -15,7 +15,7 @@
 
 /* Fondo semi-transparente con desenfoque para profundidad */
 .modal::backdrop {
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: var(--color-modal-backdrop);
   backdrop-filter: blur(0.1875rem);
 }
 
@@ -47,7 +47,7 @@
 .modal__boton {
   padding: var(--espaciado-s) var(--espaciado-l);
   background-color: var(--color-primario);
-  color: white;
+  color: var(--color-texto-invertido);
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -68,7 +68,7 @@
 }
 
 .modal__boton--secundario:hover {
-  background-color: #ccc;
+  background-color: var(--color-boton-secundario-hover);
 }
 
 /* ==========================================================================
@@ -130,8 +130,8 @@
   /* Eliminamos margin-bottom: var(--espaciado); */
   padding: var(--espaciado);
   border-radius: var(--radio-borde);
-  background-color: rgba(255, 255, 255, 0.4);
-  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+  background-color: var(--color-modal-panel-claro);
+  box-shadow: var(--sombra-modal-panel-claro);
   
   /* Añadimos estructura flex para gestionar espaciado interno */
   display: flex;
@@ -188,7 +188,7 @@
 }
 
 [data-theme="dark"] .modal__boton--secundario:hover {
-  background-color: #444;
+  background-color: var(--color-boton-secundario-hover-dark);
 }
 
 [data-theme="dark"] #modal-victoria .modal__estadisticas {
@@ -197,8 +197,8 @@
 }
 
 [data-theme="dark"] .modal-ayuda__seccion {
-  background-color: rgba(30, 30, 30, 0.3);
-  box-shadow: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+  background-color: var(--color-modal-panel-oscuro);
+  box-shadow: var(--sombra-modal-panel-oscuro);
 }
 
 [data-theme="dark"] .modal-ayuda__subtitulo {
@@ -227,7 +227,7 @@
 }
 
 #modal-detenido .modal__estadisticas {
-  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.1);
+  background-color: var(--color-celda-destino);
   padding: var(--espaciado);
   border-radius: var(--radio-borde);
   /* Eliminamos margin-bottom: var(--espaciado-l); */
@@ -237,7 +237,7 @@
 
 /* Versión para tema oscuro */
 [data-theme="dark"] #modal-detenido .modal__estadisticas {
-  background-color: rgba(30, 30, 30, 0.3);
+  background-color: var(--color-modal-panel-oscuro);
   color: var(--color-texto);
   border-color: var(--color-borde);
 }

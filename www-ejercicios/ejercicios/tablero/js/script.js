@@ -7,10 +7,10 @@
 const TABLERO = {
   // Estado del juego
   config: {
-    tamañoTablero: 3,
-    tamañoFicha: 'mediana',
+    ladoTablero: 3,
+    tamanoFicha: 'mediana',
     formaFicha: 'cuadrado',
-    modoJuego: 'normal'  // Añadido: Modo de juego (normal, dosTableros, rompecabezas)
+    modoJuego: 'normal'
   },
   estado: {
     movimientos: 0,
@@ -22,9 +22,12 @@ const TABLERO = {
     fichaDestino: null,
     colores: []
   },
-  
-  // Cache de elementos DOM
-  elementos: {}
+
+  // Cache de nodos del DOM
+  nodos: {},
+
+  // Contenedor para modos de juego (lo rellena modos-juego.js)
+  MODOS: {}
 };
 
 /* ==========================================================================
@@ -42,26 +45,34 @@ document.addEventListener('DOMContentLoaded', inicializar);
  */
 function inicializar() {
   // Cachear elementos del DOM
-  TABLERO.elementos = {
-    tablero: document.getElementById('tablero'),
-    tamañoTablero: document.getElementById('tamañoTablero'),
-    tamañoFicha: document.getElementById('tamañoFicha'),
-    formaFicha: document.getElementById('formaFicha'),
-    modoJuego: document.getElementById('modoJuego'),
-    btnInicio: document.getElementById('inicio'),
-    btnPausa: document.getElementById('btnPausa'),
-    btnDetener: document.getElementById('btnDetener'),
-    contadorMovimientos: document.getElementById('contadorMovimientos'),
-    temporizador: document.getElementById('temporizador'),
-    modalVictoria: document.getElementById('modal-victoria'),
-    btnAyuda: document.getElementById('btnAyuda')
+  TABLERO.nodos = {
+    tablero: document.querySelector('[data-tablero]'),
+    controlTamanoTablero: document.querySelector('[data-configuracion="tamano-tablero"]'),
+    controlTamanoFicha: document.querySelector('[data-configuracion="tamano-ficha"]'),
+    controlFormaFicha: document.querySelector('[data-configuracion="forma-ficha"]'),
+    controlModoJuego: document.querySelector('[data-configuracion="modo-juego"]'),
+    btnInicio: document.querySelector('[data-control="iniciar"]'),
+    btnPausa: document.querySelector('[data-control="pausar"]'),
+    btnDetener: document.querySelector('[data-control="detener"]'),
+    contadorMovimientos: document.querySelector('[data-estado="movimientos"]'),
+    temporizador: document.querySelector('[data-estado="tiempo"]'),
+    modalVictoria: document.querySelector('[data-modal="victoria"]'),
+    btnAyuda: document.querySelector('[data-accion="mostrar-ayuda"]')
   };
 
   // Configurar event listeners
-  TABLERO.elementos.btnInicio.addEventListener('click', iniciarJuego);
-  TABLERO.elementos.btnPausa.addEventListener('click', togglePausaJuego);
-  TABLERO.elementos.btnDetener.addEventListener('click', detenerJuego);
-  TABLERO.elementos.btnAyuda.addEventListener('click', TABLERO.mostrarAyuda);
+  if (TABLERO.nodos.btnInicio) {
+    TABLERO.nodos.btnInicio.addEventListener('click', iniciarJuego);
+  }
+  if (TABLERO.nodos.btnPausa) {
+    TABLERO.nodos.btnPausa.addEventListener('click', togglePausaJuego);
+  }
+  if (TABLERO.nodos.btnDetener) {
+    TABLERO.nodos.btnDetener.addEventListener('click', detenerJuego);
+  }
+  if (TABLERO.nodos.btnAyuda) {
+    TABLERO.nodos.btnAyuda.addEventListener('click', TABLERO.mostrarAyuda);
+  }
   
   // Event listener para prevenir cierre de página durante juego
   window.addEventListener('beforeunload', (e) => {
@@ -101,24 +112,24 @@ function iniciarJuego() {
   TABLERO.estado.juegoPausado = false;
   
   // Leer configuración actual
-  TABLERO.config.tamañoTablero = parseInt(TABLERO.elementos.tamañoTablero.value, 10);
-  TABLERO.config.tamañoFicha = TABLERO.elementos.tamañoFicha.value;
-  TABLERO.config.formaFicha = TABLERO.elementos.formaFicha.value;
-  TABLERO.config.modoJuego = TABLERO.elementos.modoJuego.value; // Añadido: Leer modo de juego
+  TABLERO.config.ladoTablero = parseInt(TABLERO.nodos.controlTamanoTablero.value, 10);
+  TABLERO.config.tamanoFicha = TABLERO.nodos.controlTamanoFicha.value;
+  TABLERO.config.formaFicha = TABLERO.nodos.controlFormaFicha.value;
+  TABLERO.config.modoJuego = TABLERO.nodos.controlModoJuego.value; // Leer modo de juego seleccionado
   
-  // Validar tamaño de tablero
-  if (TABLERO.config.tamañoTablero < 2 || TABLERO.config.tamañoTablero > 7) {
-    TABLERO.config.tamañoTablero = 3;
-    TABLERO.elementos.tamañoTablero.value = 3;
+  // Validar tamano de tablero
+  if (TABLERO.config.ladoTablero < 2 || TABLERO.config.ladoTablero > 7) {
+    TABLERO.config.ladoTablero = 3;
+    TABLERO.nodos.controlTamanoTablero.value = 3;
   }
   
   // Actualizar UI
   actualizarUI();
   
   // Activar botones de control
-  TABLERO.elementos.btnPausa.disabled = false;
-  TABLERO.elementos.btnPausa.textContent = 'Pausar';
-  TABLERO.elementos.btnDetener.disabled = false;
+  TABLERO.nodos.btnPausa.disabled = false;
+  TABLERO.nodos.btnPausa.textContent = 'Pausar';
+  TABLERO.nodos.btnDetener.disabled = false;
   
   // Generar tablero según el modo de juego seleccionado
   switch(TABLERO.config.modoJuego) {
@@ -136,7 +147,7 @@ function iniciarJuego() {
   // Iniciar temporizador
   iniciarTemporizador();
 
-  TABLERO.elementos.btnInicio.disabled = true;
+  TABLERO.nodos.btnInicio.disabled = true;
 
 }
 
@@ -149,7 +160,7 @@ function togglePausaJuego() {
   if (TABLERO.estado.juegoPausado) {
     // Reanudar juego
     TABLERO.estado.juegoPausado = false;
-    TABLERO.elementos.btnPausa.textContent = 'Pausar';
+    TABLERO.nodos.btnPausa.textContent = 'Pausar';
     iniciarTemporizador();
     
     // Habilitar arrastre de fichas
@@ -160,7 +171,7 @@ function togglePausaJuego() {
   } else {
     // Pausar juego
     TABLERO.estado.juegoPausado = true;
-    TABLERO.elementos.btnPausa.textContent = 'Reanudar';
+    TABLERO.nodos.btnPausa.textContent = 'Reanudar';
     clearInterval(TABLERO.estado.timerInterval);
     TABLERO.estado.timerInterval = null;
     
@@ -195,7 +206,7 @@ function detenerJuego() {
   // Limpiar tablero después de mostrar modal
   TABLERO.limpiarTablero();
 
-  TABLERO.elementos.btnInicio.disabled = false;
+  TABLERO.nodos.btnInicio.disabled = false;
 
 }
 
@@ -206,21 +217,21 @@ function detenerJuego() {
  */
 function actualizarUI() {
   // Actualizar contador de movimientos
-  TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
+  TABLERO.nodos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
   
   // Deshabilitar/habilitar controles según el estado del juego
   const estaJugando = TABLERO.estado.juegoIniciado;
   
   // Deshabilitar configuración mientras se juega
-  TABLERO.elementos.tamañoTablero.disabled = estaJugando;
-  TABLERO.elementos.tamañoFicha.disabled = estaJugando;
-  TABLERO.elementos.formaFicha.disabled = estaJugando;
-  TABLERO.elementos.modoJuego.disabled = estaJugando;
+  TABLERO.nodos.controlTamanoTablero.disabled = estaJugando;
+  TABLERO.nodos.controlTamanoFicha.disabled = estaJugando;
+  TABLERO.nodos.controlFormaFicha.disabled = estaJugando;
+  TABLERO.nodos.controlModoJuego.disabled = estaJugando;
   
   // Gestionar visibilidad de botones de control
-  TABLERO.elementos.btnInicio.disabled = estaJugando;
-  TABLERO.elementos.btnPausa.disabled = !estaJugando;
-  TABLERO.elementos.btnDetener.disabled = !estaJugando;
+  TABLERO.nodos.btnInicio.disabled = estaJugando;
+  TABLERO.nodos.btnPausa.disabled = !estaJugando;
+  TABLERO.nodos.btnDetener.disabled = !estaJugando;
 }
 
 /**
@@ -244,7 +255,7 @@ function finalizarJuego() {
   TABLERO.mostrarModalVictoria();
   
   // Preparar contenedor del modal para estadísticas
-  const modalVictoria = TABLERO.elementos.modalVictoria;
+  const modalVictoria = TABLERO.nodos.modalVictoria;
   const estadisticasContainer = modalVictoria ? modalVictoria.querySelector('.modal__estadisticas') : null;
   const botonesContainer = modalVictoria ? modalVictoria.querySelector('.modal__botones') : null;
   
@@ -282,26 +293,26 @@ function finalizarJuego() {
  */
 function generarTablero() {
   // Limpiar tablero existente
-  TABLERO.elementos.tablero.innerHTML = '';
+  TABLERO.nodos.tablero.innerHTML = '';
   
   // Generar colores para las filas (cada fila tiene un color específico)
   generarColores();
   
   // Configurar CSS Grid para el tablero
-  const n = TABLERO.config.tamañoTablero;
-  TABLERO.elementos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+  const n = TABLERO.config.ladoTablero;
+  TABLERO.nodos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
   
-  // Determinar tamaño de fichas en CSS
-  let tamañoFichaCss;
-  switch (TABLERO.config.tamañoFicha) {
-    case 'pequeña':
-      tamañoFichaCss = 'var(--ficha-pequeña)';
+  // Determinar tamano de fichas en CSS
+  let tamanoFichaCss;
+  switch (TABLERO.config.tamanoFicha) {
+    case 'pequena':
+      tamanoFichaCss = 'var(--ficha-pequena)';
       break;
     case 'grande':
-      tamañoFichaCss = 'var(--ficha-grande)';
+      tamanoFichaCss = 'var(--ficha-grande)';
       break;
     default:
-      tamañoFichaCss = 'var(--ficha-mediana)';
+      tamanoFichaCss = 'var(--ficha-mediana)';
   }
   
   // Generar fichas en orden aleatorio pero manteniendo coherencia
@@ -319,8 +330,8 @@ function generarTablero() {
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-color', i); // Asignamos el color correspondiente a la fila
-      ficha.style.width = tamañoFichaCss;
-      ficha.style.height = tamañoFichaCss;
+      ficha.style.width = tamanoFichaCss;
+      ficha.style.height = tamanoFichaCss;
       ficha.style.backgroundColor = TABLERO.estado.colores[i];
       ficha.draggable = true;
       
@@ -340,7 +351,7 @@ function generarTablero() {
   
   // Agregar fichas al tablero
   fichas.forEach(ficha => {
-    TABLERO.elementos.tablero.appendChild(ficha);
+    TABLERO.nodos.tablero.appendChild(ficha);
   });
 }
 
@@ -348,7 +359,7 @@ function generarTablero() {
  * Genera los colores para cada fila del tablero
  */
 function generarColores() {
-  const n = TABLERO.config.tamañoTablero;
+  const n = TABLERO.config.ladoTablero;
   TABLERO.estado.colores = [];
   
   // Usar variables CSS predefinidas para los colores
@@ -475,8 +486,8 @@ function verificarVictoria() {
   }
   
   // Modo normal (original)
-  const n = TABLERO.config.tamañoTablero;
-  const fichas = TABLERO.elementos.tablero.querySelectorAll('.ficha');
+  const n = TABLERO.config.ladoTablero;
+  const fichas = TABLERO.nodos.tablero.querySelectorAll('.ficha');
   
   // Para cada fila, verificar que todas sus fichas tengan el mismo color
   for (let i = 0; i < n; i++) {
@@ -521,7 +532,7 @@ function iniciarTemporizador() {
  * Actualiza la visualización del temporizador
  */
 function actualizarTemporizador() {
-  TABLERO.elementos.temporizador.textContent = formatearTiempo(TABLERO.estado.tiempo);
+  TABLERO.nodos.temporizador.textContent = formatearTiempo(TABLERO.estado.tiempo);
 }
 
 /**
@@ -544,25 +555,25 @@ function formatearTiempo(segundos) {
  */
 function actualizarUI() {
   // Actualizar contador de movimientos
-  TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
+  TABLERO.nodos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
   
   // Deshabilitar/habilitar controles según el estado del juego
   const estaJugando = TABLERO.estado.juegoIniciado;
   
   // Deshabilitar configuración mientras se juega
-  TABLERO.elementos.tamañoTablero.disabled = estaJugando;
-  TABLERO.elementos.tamañoFicha.disabled = estaJugando;
-  TABLERO.elementos.formaFicha.disabled = estaJugando;
-  TABLERO.elementos.modoJuego.disabled = estaJugando;
+  TABLERO.nodos.controlTamanoTablero.disabled = estaJugando;
+  TABLERO.nodos.controlTamanoFicha.disabled = estaJugando;
+  TABLERO.nodos.controlFormaFicha.disabled = estaJugando;
+  TABLERO.nodos.controlModoJuego.disabled = estaJugando;
   
   // Gestionar visibilidad de botones de control
-  TABLERO.elementos.btnPausa.disabled = !estaJugando;
-  TABLERO.elementos.btnDetener.disabled = !estaJugando;
+  TABLERO.nodos.btnPausa.disabled = !estaJugando;
+  TABLERO.nodos.btnDetener.disabled = !estaJugando;
 }
 
 /**
  * Actualiza el contador de movimientos
  */
 function actualizarContador() {
-  TABLERO.elementos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
+  TABLERO.nodos.contadorMovimientos.textContent = TABLERO.estado.movimientos;
 }

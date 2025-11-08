@@ -51,7 +51,7 @@
 /* Estado hover/destino para celda vacía */
 .celda-vacia--destino {
   border-color: var(--color-primario);
-  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.1);
+  background-color: var(--color-celda-destino);
 }
 
 /* ==========================================================================
@@ -72,7 +72,7 @@
   bottom: 0.25rem;
   right: 0.25rem;
   font-size: 0.75rem;
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: var(--color-overlay-claro);
   padding: 0.125rem 0.25rem;
   border-radius: 0.25rem;
   opacity: 0.8;
@@ -126,7 +126,7 @@
 
 [data-theme="dark"] .celda-vacia--destino {
   border-color: var(--color-primario);
-  background-color: rgba(var(--color-primario-rgb, 70, 131, 180), 0.2);
+  background-color: var(--color-celda-destino-oscura);
 }
 
 [data-theme="dark"] .tablero__etiqueta {
@@ -134,6 +134,6 @@
 }
 
 [data-theme="dark"] .ficha--rompecabezas::after {
-  background-color: rgba(0, 0, 0, 0.6);
-  color: white;
+  background-color: var(--color-overlay-oscuro);
+  color: var(--color-texto-invertido);
 }

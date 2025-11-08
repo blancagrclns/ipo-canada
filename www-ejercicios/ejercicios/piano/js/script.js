@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    1. ESPACIO DE NOMBRES GLOBAL
    ========================================================================== */
 const APP = {
@@ -122,11 +122,11 @@ function cachearNodos() {
   APP.nodos.outputReverb = document.querySelector('[data-output="reverb"]');
   APP.nodos.toast = document.querySelector("[data-toast]");
   APP.nodos.toastMensaje = document.querySelector("[data-toast-mensaje]");
-  APP.nodos.btnControles = document.getElementById("btnControles");
-  APP.nodos.btnTema = document.getElementById("btnTema");
-  APP.nodos.btnAyuda = document.getElementById("btnAyuda");
-  APP.nodos.modalControles = document.querySelector("[data-modal-controles]");
-  APP.nodos.modalAyuda = document.querySelector("[data-modal-ayuda]");
+  APP.nodos.btnControles = document.querySelector('[data-accion="abrir-controles"]');
+  APP.nodos.btnTema = document.querySelector('[data-accion="cambiar-tema"]');
+  APP.nodos.btnAyuda = document.querySelector('[data-accion="mostrar-ayuda"]');
+  APP.nodos.modalControles = document.querySelector('[data-modal="controles"]');
+  APP.nodos.modalAyuda = document.querySelector('[data-modal="ayuda"]');
   APP.nodos.btnCerrarControles = document.querySelector(
     '[data-accion="cerrar-controles"]'
   );
@@ -136,6 +136,81 @@ function cachearNodos() {
   APP.nodos.darkThemeLink = document.getElementById("dark-theme");
 
   console.log("✅ Nodos del DOM cacheados correctamente.");
+}
+
+function obtenerNumeroDeCSS(nombreVariable, fallback = 0) {
+  const valor = getComputedStyle(document.documentElement).getPropertyValue(
+    nombreVariable
+  );
+  const numero = parseFloat(valor);
+  return Number.isNaN(numero) ? fallback : numero;
+}
+
+function recalcularDimensionesTeclas() {
+  if (!APP.nodos.piano) {
+    return;
+  }
+
+  const totalTeclasBlancas = obtenerNumeroDeCSS("--total-teclas-blancas", 0);
+  if (!totalTeclasBlancas) {
+    return;
+  }
+
+  const piano = APP.nodos.piano;
+  const rect = piano.getBoundingClientRect();
+  if (!rect.width) {
+    return;
+  }
+
+  const estilos = getComputedStyle(piano);
+  const paddingLeft = parseFloat(estilos.paddingLeft) || 0;
+  const paddingRight = parseFloat(estilos.paddingRight) || 0;
+  const gap = parseFloat(estilos.gap || estilos.columnGap || 0);
+
+  const anchoDisponible = rect.width - paddingLeft - paddingRight;
+  const espacioGaps = gap * Math.max(0, totalTeclasBlancas - 1);
+  const anchoUtil = anchoDisponible - espacioGaps;
+
+  if (anchoUtil <= 0) {
+    return;
+  }
+
+  const anchoMin = obtenerNumeroDeCSS("--tecla-blanca-ancho-min", 24);
+  const anchoMax = obtenerNumeroDeCSS("--tecla-blanca-ancho-max", 60);
+  const relacionBlanca = obtenerNumeroDeCSS("--relacion-tecla-blanca", 4.4);
+  const relacionNegraAncho = obtenerNumeroDeCSS(
+    "--relacion-tecla-negra-ancho",
+    0.62
+  );
+  const relacionNegraAlto = obtenerNumeroDeCSS(
+    "--relacion-tecla-negra-alto",
+    0.65
+  );
+
+  const anchoCalculado = Math.max(
+    anchoMin,
+    Math.min(anchoMax, anchoUtil / totalTeclasBlancas)
+  );
+  const altoBlanca = anchoCalculado * relacionBlanca;
+  const anchoNegra = anchoCalculado * relacionNegraAncho;
+  const altoNegra = altoBlanca * relacionNegraAlto;
+
+  const root = document.documentElement;
+  root.style.setProperty("--tecla-blanca-ancho", `${anchoCalculado}px`);
+  root.style.setProperty("--tecla-blanca-alto", `${altoBlanca}px`);
+  root.style.setProperty("--tecla-negra-ancho", `${anchoNegra}px`);
+  root.style.setProperty("--tecla-negra-alto", `${altoNegra}px`);
+}
+
+function actualizarVariablesDeTeclas(totalBlancas) {
+  if (!totalBlancas) {
+    return;
+  }
+  document.documentElement.style.setProperty(
+    "--total-teclas-blancas",
+    totalBlancas
+  );
+  recalcularDimensionesTeclas();
 }
 
 /* ==========================================================================
@@ -275,6 +350,8 @@ function generarPiano(numOctavas) {
       APP.nodos.piano.appendChild(boton);
     });
   }
+
+  actualizarVariablesDeTeclas(contadorBlancas);
 
   // Re-cachear teclas y añadir event listeners
   APP.nodos.teclas = document.querySelectorAll(".tecla");
@@ -514,21 +591,24 @@ function alternarTema() {
 
   if (APP.temaOscuro) {
     APP.nodos.darkThemeLink.disabled = false;
-    APP.nodos.btnTema.textContent = "☀️";
-    APP.nodos.btnTema.setAttribute("aria-label", "Cambiar a tema claro");
+    if (APP.nodos.btnTema) {
+      APP.nodos.btnTema.textContent = "\u2600";
+      APP.nodos.btnTema.setAttribute("aria-label", "Cambiar a tema claro");
+    }
     localStorage.setItem("tema", "oscuro");
     mostrarToast("Tema oscuro activado");
-    console.log("🌙 Tema oscuro activado");
+    console.log("🎨 Tema oscuro activado");
   } else {
     APP.nodos.darkThemeLink.disabled = true;
-    APP.nodos.btnTema.textContent = "🌙";
-    APP.nodos.btnTema.setAttribute("aria-label", "Cambiar a tema oscuro");
+    if (APP.nodos.btnTema) {
+      APP.nodos.btnTema.textContent = "\u263D";
+      APP.nodos.btnTema.setAttribute("aria-label", "Cambiar a tema oscuro");
+    }
     localStorage.setItem("tema", "claro");
     mostrarToast("Tema claro activado");
-    console.log("☀️ Tema claro activado");
+    console.log("🎨 Tema claro activado");
   }
 }
-
 function cargarPreferenciaTema() {
   const temaGuardado = localStorage.getItem("tema");
   if (temaGuardado === "oscuro") {
@@ -568,6 +648,7 @@ function init() {
   cachearNodos();
   cargarPreferenciaTema();
   generarPiano(APP.configuracion.numOctavas);
+  window.addEventListener("resize", recalcularDimensionesTeclas);
 
   // Event listeners - Controles
   APP.nodos.selectFormaOnda.addEventListener("change", cambiarFormaOnda);
@@ -581,9 +662,15 @@ function init() {
   document.addEventListener("keyup", handleKeyUp);
 
   // Event listeners - Modales y tema
-  APP.nodos.btnControles.addEventListener("click", abrirControles);
-  APP.nodos.btnTema.addEventListener("click", alternarTema);
-  APP.nodos.btnAyuda.addEventListener("click", abrirAyuda);
+  if (APP.nodos.btnControles) {
+    APP.nodos.btnControles.addEventListener("click", abrirControles);
+  }
+  if (APP.nodos.btnTema) {
+    APP.nodos.btnTema.addEventListener("click", alternarTema);
+  }
+  if (APP.nodos.btnAyuda) {
+    APP.nodos.btnAyuda.addEventListener("click", abrirAyuda);
+  }
   APP.nodos.btnCerrarControles.addEventListener("click", cerrarControles);
   APP.nodos.btnCerrarAyuda.addEventListener("click", cerrarAyuda);
 
@@ -615,3 +702,4 @@ function init() {
    17. EJECUTAR CUANDO EL DOM ESTÉ LISTO
    ========================================================================== */
 init();
+

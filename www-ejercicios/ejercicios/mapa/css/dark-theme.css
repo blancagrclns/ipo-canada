@@ -17,6 +17,9 @@
   --color-marcador: hsl(var(--tono-complementario), 70%, 60%);
   --color-leyenda-fondo: hsl(var(--tono), 15%, 18%);
   --color-leyenda-sombra: hsla(0, 0%, 0%, 0.5);
+  --color-boton-flotante-bg: var(--color-leyenda-fondo);
+  --color-boton-flotante-text: var(--color-texto);
+  --shadow-boton-flotante: 0 0.5rem 1rem hsla(0, 0%, 0%, 0.6);
 }
 
 /* ==========================================================================
@@ -51,17 +54,6 @@
 }
 
 /* Botones flotantes con mejor contraste */
-.floating-buttons__button {
-  background-color: var(--color-leyenda-fondo);
-  border-color: var(--color-primario);
-  box-shadow: 0 3px 12px hsla(0, 0%, 0%, 0.6);
-}
-
-.floating-buttons__button:hover {
-  background-color: var(--color-primario-claro);
-  border-color: var(--color-primario);
-}
-
 /* Mejorar contraste de botones secundarios en tema oscuro */
 .btn--secundario {
   background-color: hsl(var(--tono), 12%, 25%);

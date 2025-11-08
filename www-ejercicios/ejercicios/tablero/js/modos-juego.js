@@ -70,30 +70,30 @@ function generarDosTableros() {
   TABLERO.MODOS.estado.tableroDestino = tableroDestino;
   
   // Configurar CSS Grid para ambos tableros
-  const n = TABLERO.config.tamañoTablero;
+  const n = TABLERO.config.ladoTablero;
   tableroOrigen.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
   tableroDestino.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
   
   // Generar colores para las filas
   generarColores();
   
-  // Determinar tamaño de fichas
-  let tamañoFichaCss = obtenerTamañoFichaCss();
+  // Determinar tamano de fichas
+  let tamanoFichaCss = obtenerTamanoFichaCss();
   
   // Generar fichas para tablero origen
-  generarFichasTableroOrigen(tableroOrigen, tamañoFichaCss);
+  generarFichasTableroOrigen(tableroOrigen, tamanoFichaCss);
   
   // Inicialmente el tablero destino está vacío
-  generarCeldasVaciasDestino(tableroDestino, tamañoFichaCss);
+  generarCeldasVaciasDestino(tableroDestino, tamanoFichaCss);
 }
 
 /**
  * Genera fichas para el tablero origen en el modo de dos tableros
  * @param {HTMLElement} tablero - Elemento DOM del tablero origen
- * @param {string} tamañoFichaCss - Tamaño CSS para las fichas
+ * @param {string} tamanoFichaCss - Tamano CSS para las fichas
  */
-function generarFichasTableroOrigen(tablero, tamañoFichaCss) {
-  const n = TABLERO.config.tamañoTablero;
+function generarFichasTableroOrigen(tablero, tamanoFichaCss) {
+  const n = TABLERO.config.ladoTablero;
   
   // Para cada fila y columna
   for (let i = 0; i < n; i++) {
@@ -105,8 +105,8 @@ function generarFichasTableroOrigen(tablero, tamañoFichaCss) {
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-color', i);
-      ficha.style.width = tamañoFichaCss;
-      ficha.style.height = tamañoFichaCss;
+      ficha.style.width = tamanoFichaCss;
+      ficha.style.height = tamanoFichaCss;
       ficha.style.backgroundColor = TABLERO.estado.colores[i];
       ficha.draggable = true;
       
@@ -123,10 +123,10 @@ function generarFichasTableroOrigen(tablero, tamañoFichaCss) {
 /**
  * Genera celdas vacías en el tablero destino
  * @param {HTMLElement} tablero - Elemento DOM del tablero destino
- * @param {string} tamañoFichaCss - Tamaño CSS para las celdas
+ * @param {string} tamanoFichaCss - Tamano CSS para las celdas
  */
-function generarCeldasVaciasDestino(tablero, tamañoFichaCss) {
-  const n = TABLERO.config.tamañoTablero;
+function generarCeldasVaciasDestino(tablero, tamanoFichaCss) {
+  const n = TABLERO.config.ladoTablero;
   
   // Para cada fila y columna
   for (let i = 0; i < n; i++) {
@@ -136,8 +136,8 @@ function generarCeldasVaciasDestino(tablero, tamañoFichaCss) {
       celda.className = 'celda-vacia';
       celda.setAttribute('data-fila', i);
       celda.setAttribute('data-columna', j);
-      celda.style.width = tamañoFichaCss;
-      celda.style.height = tamañoFichaCss;
+      celda.style.width = tamanoFichaCss;
+      celda.style.height = tamanoFichaCss;
       
       // Event listeners para soltar fichas
       celda.addEventListener('dragover', permitirSoltarEnDestino);
@@ -236,7 +236,7 @@ function iniciarArrastreDesdeTableroDestino(e) {
  * @returns {boolean} true si el tablero destino tiene las fichas ordenadas por filas del mismo color
  */
 function verificarVictoriaDosTableros() {
-  const n = TABLERO.config.tamañoTablero;
+  const n = TABLERO.config.ladoTablero;
   const tableroDestino = TABLERO.MODOS.estado.tableroDestino;
   
   // Comprobar que todas las celdas tienen fichas
@@ -305,45 +305,45 @@ function cargarImagenRompecabezas() {
  */
 function generarTableroRompecabezas() {
   // Limpiar tablero existente
-  TABLERO.elementos.tablero.innerHTML = '';
+  TABLERO.nodos.tablero.innerHTML = '';
   
   // Eliminar clases de modo dos tableros si existieran
   document.querySelector('.tablero-contenedor').classList.remove('tablero-contenedor--doble');
   
   // Configurar CSS Grid para el tablero
-  const n = TABLERO.config.tamañoTablero;
-  TABLERO.elementos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+  const n = TABLERO.config.ladoTablero;
+  TABLERO.nodos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
   
-  // Determinar tamaño de fichas
-  let tamañoFichaCss = obtenerTamañoFichaCss();
+  // Determinar tamano de fichas
+  let tamanoFichaCss = obtenerTamanoFichaCss();
   
   // Mostrar mensaje de carga
-  TABLERO.elementos.tablero.innerHTML = '<div class="cargando-mensaje">Cargando imagen del rompecabezas...</div>';
+  TABLERO.nodos.tablero.innerHTML = '<div class="cargando-mensaje">Cargando imagen del rompecabezas...</div>';
   
   // Si la imagen no está cargada, cargarla
   if (!TABLERO.MODOS.estado.imagenCargada) {
     cargarImagenRompecabezas()
       .then(() => {
         // Limpiar mensaje de carga
-        TABLERO.elementos.tablero.innerHTML = '';
-        crearFichasRompecabezas(n, tamañoFichaCss);
+        TABLERO.nodos.tablero.innerHTML = '';
+        crearFichasRompecabezas(n, tamanoFichaCss);
       })
       .catch(() => {
         // El error ya está manejado en la función cargarImagenRompecabezas
       });
   } else {
     // Limpiar mensaje de carga
-    TABLERO.elementos.tablero.innerHTML = '';
-    crearFichasRompecabezas(n, tamañoFichaCss);
+    TABLERO.nodos.tablero.innerHTML = '';
+    crearFichasRompecabezas(n, tamanoFichaCss);
   }
 }
 
 /**
  * Crea las fichas para el modo rompecabezas con segmentos de la imagen
- * @param {number} n - Tamaño del tablero
- * @param {string} tamañoFichaCss - Tamaño CSS para las fichas
+ * @param {number} n - Tamano del tablero
+ * @param {string} tamanoFichaCss - Tamano CSS para las fichas
  */
-function crearFichasRompecabezas(n, tamañoFichaCss) {
+function crearFichasRompecabezas(n, tamanoFichaCss) {
   const fichas = [];
   const imagen = TABLERO.MODOS.estado.imagenRompecabezas;
   const anchoPieza = imagen.width / n;
@@ -358,8 +358,8 @@ function crearFichasRompecabezas(n, tamañoFichaCss) {
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-posicion-correcta', `${i}-${j}`);
-      ficha.style.width = tamañoFichaCss;
-      ficha.style.height = tamañoFichaCss;
+      ficha.style.width = tamanoFichaCss;
+      ficha.style.height = tamanoFichaCss;
       
       // Configurar fondo con la sección correspondiente de la imagen
       ficha.style.backgroundImage = `url('images/paisaje1.jpg')`;
@@ -394,7 +394,7 @@ function crearFichasRompecabezas(n, tamañoFichaCss) {
   
   // Agregar fichas al tablero
   fichas.forEach(ficha => {
-    TABLERO.elementos.tablero.appendChild(ficha);
+    TABLERO.nodos.tablero.appendChild(ficha);
   });
 }
 
@@ -459,7 +459,7 @@ function intercambiarFichasRompecabezas(ficha1, ficha2) {
  * @returns {boolean} true si todas las fichas están en su posición correcta
  */
 function verificarVictoriaRompecabezas() {
-  const fichas = TABLERO.elementos.tablero.querySelectorAll('.ficha');
+  const fichas = TABLERO.nodos.tablero.querySelectorAll('.ficha');
   
   for (const ficha of fichas) {
     const filaActual = ficha.getAttribute('data-fila-actual');
@@ -479,13 +479,13 @@ function verificarVictoriaRompecabezas() {
    ========================================================================== */
 
 /**
- * Obtiene el tamaño CSS para las fichas según la configuración actual
- * @returns {string} Tamaño CSS de la ficha
+ * Obtiene el tamano CSS para las fichas según la configuración actual
+ * @returns {string} Tamano CSS de la ficha
  */
-function obtenerTamañoFichaCss() {
-  switch (TABLERO.config.tamañoFicha) {
-    case 'pequeña':
-      return 'var(--ficha-pequeña)';
+function obtenerTamanoFichaCss() {
+  switch (TABLERO.config.tamanoFicha) {
+    case 'pequena':
+      return 'var(--ficha-pequena)';
     case 'grande':
       return 'var(--ficha-grande)';
     default:

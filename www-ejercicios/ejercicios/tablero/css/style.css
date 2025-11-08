@@ -18,20 +18,13 @@
   --saturacion-principal: 70%;
 
   /* Paleta de colores para fichas */
-  --color-ficha-1: hsl(0, 80%, 60%);
-  /* Rojo */
-  --color-ficha-2: hsl(120, 70%, 50%);
-  /* Verde */
-  --color-ficha-3: hsl(240, 70%, 60%);
-  /* Azul */
-  --color-ficha-4: hsl(60, 80%, 50%);
-  /* Amarillo */
-  --color-ficha-5: hsl(300, 70%, 60%);
-  /* Magenta */
-  --color-ficha-6: hsl(30, 80%, 50%);
-  /* Naranja */
-  --color-ficha-7: hsl(180, 70%, 40%);
-  /* Cian */
+  --color-ficha-1: hsl(0, 80%, 60%); /* Rojo */
+  --color-ficha-2: hsl(120, 70%, 50%); /* Verde */
+  --color-ficha-3: hsl(240, 70%, 60%); /* Azul */
+  --color-ficha-4: hsl(60, 80%, 50%); /* Amarillo */
+  --color-ficha-5: hsl(300, 70%, 60%); /* Magenta */
+  --color-ficha-6: hsl(30, 80%, 50%); /* Naranja */
+  --color-ficha-7: hsl(180, 70%, 40%); /* Cian */
 
   /* Colores de la interfaz */
   --color-fondo: hsl(var(--tono-principal), 10%, 92%);
@@ -42,62 +35,43 @@
   --color-complementario: hsl(var(--tono-complementario), 60%, 45%);
   --color-exito: hsl(120, 70%, 45%);
   --color-borde: hsl(var(--tono-principal), 20%, 80%);
+  --color-tablero-borde: rgba(30, 45, 80, 0.1);
+  --sombra-tablero-principal: 0 1.75rem 3.25rem rgba(30, 45, 80, 0.16);
+  --sombra-tablero-secundaria: 0 0.75rem 1.5rem rgba(30, 45, 80, 0.1);
+  --color-tablero-superior: #ffffff;
+  --color-tablero-medio: #eef1f8;
+  --color-tablero-inferior: #e3e8f3;
   --patron-geometrico-color: hsla(var(--tono-principal), 30%, 35%, 0.12);
+  --color-primario-rgb: 70, 131, 180;
+  --color-celda-destino: rgba(var(--color-primario-rgb), 0.1);
+  --color-celda-destino-oscura: rgba(var(--color-primario-rgb), 0.2);
 
-  /* Botones de control personalizados */
-  .boton--verde {
-    background-color: var(--color-exito);
-  }
-
-  .boton--verde:hover {
-    background-color: hsl(120, 70%, 35%);
-  }
-
-  .boton--naranja {
-    background-color: var(--color-ficha-6);
-  }
-
-  .boton--naranja:hover {
-    background-color: hsl(30, 80%, 40%);
-  }
-
-  .boton--rojo {
-    background-color: var(--color-ficha-1);
-  }
-
-  .boton--rojo:hover {
-    background-color: hsl(0, 80%, 50%);
-  }
-
-  /* Mantener colores personalizados en botones deshabilitados */
-  .boton--verde:disabled {
-    background-color: var(--color-exito);
-    color: white;
-    opacity: 0.6;
-  }
-
-  .boton--naranja:disabled {
-    background-color: var(--color-ficha-6);
-    color: white;
-    opacity: 0.6;
-  }
-
-  .boton--rojo:disabled {
-    background-color: var(--color-ficha-1);
-    color: white;
-    opacity: 0.6;
-  }
-
-
+  /* Colores auxiliares centralizados */
+  --color-boton-verde: var(--color-exito);
+  --color-boton-verde-hover: hsl(120, 70%, 35%);
+  --color-boton-naranja: var(--color-ficha-6);
+  --color-boton-naranja-hover: hsl(30, 80%, 40%);
+  --color-boton-rojo: var(--color-ficha-1);
+  --color-boton-rojo-hover: hsl(0, 80%, 50%);
+  --color-boton-secundario-hover: hsl(var(--tono-principal), 20%, 75%);
+  --color-boton-secundario-hover-dark: hsl(var(--tono-principal), 10%, 30%);
+  --color-modal-backdrop: rgba(0, 0, 0, 0.6);
+  --color-modal-panel-claro: rgba(255, 255, 255, 0.4);
+  --color-modal-panel-oscuro: rgba(30, 30, 30, 0.3);
+  --sombra-modal-panel-claro: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
+  --sombra-modal-panel-oscuro: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
+  --color-overlay-claro: rgba(255, 255, 255, 0.7);
+  --color-overlay-oscuro: rgba(0, 0, 0, 0.6);
+  --color-texto-desactivado: hsl(0, 0%, 50%);
+  --color-texto-invertido: #ffffff;
+  --color-panel-claro: #ffffff;
+  --boton-flotante-dimension: 3.125rem; /* 50px */
 
   /* Tipografía */
-  --fuente-principal: 'Segoe UI',
-  'Helvetica Neue',
-  Arial,
-  sans-serif;
+  --fuente-principal: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
 
   /* Tamaños */
-  --ficha-pequeña: 3rem;
+  --ficha-pequena: 3rem;
   --ficha-mediana: 4.5rem;
   --ficha-grande: 6rem;
 
@@ -217,14 +191,14 @@ body {
   padding: var(--espaciado-s);
   border: 0.0625rem solid var(--color-borde);
   border-radius: 0.25rem;
-  background-color: white;
+  background-color: var(--color-panel-claro);
   min-width: 8rem;
 }
 
 .controles__boton {
   padding: var(--espaciado-s) var(--espaciado-l);
   background-color: var(--color-primario);
-  color: white;
+  color: var(--color-texto-invertido);
   border: none;
   border-radius: 0.25rem;
   cursor: pointer;
@@ -246,7 +220,7 @@ body {
   display: flex;
   gap: var(--espaciado-xl);
   padding: 0.75rem 1.5rem;
-  background-color: white;
+  background-color: var(--color-panel-claro);
   border-radius: var(--radio-borde);
   box-shadow: var(--sombra-suave);
 }
@@ -292,23 +266,61 @@ body {
   padding: 0.6rem 1.2rem;
   border: none;
   border-radius: var(--radio-borde);
-  background-color: var(--color-primario);
-  color: white;
+  background-color: transparent;
+  color: var(--color-texto-invertido);
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.3s, transform 0.2s;
 }
 
 .botones-control__boton:hover {
-  background-color: var(--color-primario-oscuro);
   transform: translateY(-0.125rem);
 }
 
 .botones-control__boton:disabled {
-  background-color: var(--color-borde);
-  color: hsl(0, 0%, 50%);
+  opacity: 0.65;
+  color: var(--color-texto-desactivado);
   cursor: not-allowed;
   transform: none;
+}
+
+.boton--verde {
+  background-color: var(--color-boton-verde);
+}
+
+.boton--verde:hover:not(:disabled) {
+  background-color: var(--color-boton-verde-hover);
+}
+
+.boton--verde:disabled {
+  background-color: var(--color-boton-verde);
+  color: var(--color-texto-invertido);
+}
+
+.boton--naranja {
+  background-color: var(--color-boton-naranja);
+}
+
+.boton--naranja:hover:not(:disabled) {
+  background-color: var(--color-boton-naranja-hover);
+}
+
+.boton--naranja:disabled {
+  background-color: var(--color-boton-naranja);
+  color: var(--color-texto-invertido);
+}
+
+.boton--rojo {
+  background-color: var(--color-boton-rojo);
+}
+
+.boton--rojo:hover:not(:disabled) {
+  background-color: var(--color-boton-rojo-hover);
+}
+
+.boton--rojo:disabled {
+  background-color: var(--color-boton-rojo);
+  color: var(--color-texto-invertido);
 }
 
 /* ==========================================================================
@@ -325,12 +337,15 @@ body {
   display: grid;
   gap: var(--espaciado-s);
   padding: var(--espaciado);
-  background: linear-gradient(180deg, #ffffff 0%, #eef1f8 55%, #e3e8f3 100%);
+  background: linear-gradient(
+    180deg,
+    var(--color-tablero-superior) 0%,
+    var(--color-tablero-medio) 55%,
+    var(--color-tablero-inferior) 100%
+  );
   border-radius: 0.75rem;
-  border: 1px solid rgba(30, 45, 80, 0.1);
-  box-shadow:
-    0 1.75rem 3.25rem rgba(30, 45, 80, 0.16),
-    0 0.75rem 1.5rem rgba(30, 45, 80, 0.1);
+  border: 1px solid var(--color-tablero-borde);
+  box-shadow: var(--sombra-tablero-principal), var(--sombra-tablero-secundaria);
   transition: transform 0.3s ease;
 }
 
@@ -378,7 +393,7 @@ body {
 }
 
 .ficha--destino {
-  box-shadow: 0 0 0 0.1875rem white, 0 0 0 0.375rem var(--color-primario);
+  box-shadow: 0 0 0 0.1875rem var(--color-panel-claro), 0 0 0 0.375rem var(--color-primario);
 }
 
 /* ==========================================================================
@@ -394,24 +409,25 @@ body {
 }
 
 .botones-flotantes__boton {
-  width: 2.5rem;
-  height: 2.5rem;
+  width: var(--boton-flotante-dimension);
+  height: var(--boton-flotante-dimension);
   border-radius: 50%;
   background-color: var(--color-complementario);
-  color: white;
+  color: var(--color-texto-invertido);
   border: none;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   font-weight: bold;
-  box-shadow: 0 0.125rem 0.3125rem rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.2s ease;
+  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .botones-flotantes__boton:hover {
-  transform: translateY(-0.1875rem);
+  transform: translateY(-0.125rem);
   background-color: hsl(var(--tono-complementario), 70%, 40%);
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
 }
 
 /* RESPONSIVE - Adaptación a diferentes tamaños de pantalla */
