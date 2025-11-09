@@ -162,7 +162,6 @@
 body {
   font-family: var(--fuente-principal);
   font-size: 1rem;
-  line-height: 1.6;
   background-color: var(--color-fondo);
   color: var(--color-texto);
   padding: 3rem;
@@ -190,12 +189,15 @@ body {
    ========================================================================== */
 .cabecera {
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .cabecera__titulo {
   font-size: 2rem;
   color: var(--color-primario);
-  margin-bottom: 0.5rem;
 }
 
 .cabecera__instrucciones {
@@ -298,7 +300,6 @@ body {
 
 .tarjeta__icono {
   font-size: 1.2rem;
-  line-height: 1;
 }
 
 .tarjeta__contador {
@@ -415,7 +416,6 @@ body {
 .config-container__row {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
 .config-container__row--superior {
@@ -736,11 +736,11 @@ body {
   .tarjeta__acciones {
     flex-direction: column;
     align-items: stretch;
+    gap: 1rem;
   }
 
   .tarjeta__reloj {
     justify-content: center;
-    margin-top: 0.5rem;
   }
 
   .floating-buttons--left {

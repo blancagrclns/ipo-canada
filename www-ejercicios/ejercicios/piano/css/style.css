@@ -82,13 +82,11 @@ body {
 
 .cabecera__descripcion {
   font-size: 1.1rem;
-  line-height: 1.4; /* OK: elemento final */
   opacity: 0.95;
 }
 
 .cabecera__instrucciones {
   font-size: 0.95rem;
-  line-height: 1.4; /* OK: elemento final */
   opacity: 0.9;
   font-style: italic;
 }
@@ -139,7 +137,6 @@ body {
 
 .toast__mensaje {
   display: block;
-  line-height: 1.4; /* OK: elemento final */
 }
 
 /* ==========================================================================
@@ -188,10 +185,10 @@ body {
   font-family: inherit;
   position: relative;
   transition: all 0.15s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem; /* NUEVO: espaciado entre elementos internos */
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  justify-items: center;
+  gap: 0.25rem;
   user-select: none;
 }
 
@@ -204,8 +201,7 @@ body {
 .tecla__etiqueta {
   font-size: 0.85rem;
   font-weight: 600;
-  margin-top: auto; /* OK: empuja al final */
-  /* ELIMINADO: margin-bottom */
+  grid-row: 3;
 }
 
 .tecla__tecla-pc {
@@ -214,7 +210,7 @@ body {
   padding: 0.25rem 0.5rem;
   background-color: hsla(0, 0%, 0%, 0.1);
   border-radius: 4px;
-  /* ELIMINADO: margin-bottom */
+  grid-row: 1;
 }
 
 /* ==========================================================================
@@ -483,7 +479,6 @@ body {
 
 .modal-ayuda__texto {
   font-size: 0.9rem;
-  line-height: 1.6; /* OK: elemento final */
   color: var(--color-texto);
   /* ELIMINADO: margin */
 }
@@ -500,7 +495,6 @@ body {
 
 .modal-ayuda__lista-simple li {
   font-size: 0.9rem;
-  line-height: 1.5; /* OK: elemento final */
 }
 
 .modal-ayuda__teclado {
