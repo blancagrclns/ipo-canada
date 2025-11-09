@@ -52,7 +52,7 @@ body {
   font-family: var(--fuente-base);
   background-color: var(--color-fondo);
   color: var(--color-texto);
-  line-height: 1.6;
+  /* ELIMINADO: line-height (solo para elementos finales como <p>) */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -67,26 +67,29 @@ body {
   padding: calc(var(--espaciado-base) * 2);
   text-align: center;
   box-shadow: 0 4px 6px hsla(0, 0%, 0%, 0.1);
+  
+  /* NUEVO: usar gap en lugar de margin entre elementos hijos */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .cabecera__titulo {
   font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
   text-shadow: 0 2px 4px hsla(0, 0%, 0%, 0.2);
 }
 
 .cabecera__descripcion {
   font-size: 1.1rem;
+  line-height: 1.4; /* OK: elemento final */
   opacity: 0.95;
-  max-width: 600px;
-  margin: 0 auto 0.75rem;
 }
 
 .cabecera__instrucciones {
   font-size: 0.95rem;
+  line-height: 1.4; /* OK: elemento final */
   opacity: 0.9;
-  margin: 0 auto;
   font-style: italic;
 }
 
@@ -99,9 +102,9 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Centrar verticalmente el piano */
+  justify-content: center;
   gap: calc(var(--espaciado-base) * 2);
-  position: relative; /* Para el toast */
+  position: relative;
 }
 
 /* ==========================================================================
@@ -109,7 +112,7 @@ body {
    ========================================================================== */
 .toast {
   position: fixed;
-  top: calc(var(--espaciado-base) * 5); /* Debajo de los botones flotantes */
+  top: calc(var(--espaciado-base) * 5);
   right: var(--espaciado-base);
   background-color: hsl(220, 80%, 50%);
   color: white;
@@ -120,12 +123,10 @@ body {
   font-size: 0.95rem;
   max-width: 400px;
   
-  /* Estado inicial: oculto */
   opacity: 0;
   transform: translateX(400px);
   pointer-events: none;
   
-  /* Transición suave */
   transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
   z-index: 999;
 }
@@ -138,10 +139,11 @@ body {
 
 .toast__mensaje {
   display: block;
+  line-height: 1.4; /* OK: elemento final */
 }
 
 /* ==========================================================================
-   7. PIANO (CONTENEDOR DE TECLAS) - ESTÁTICO Y CENTRADO
+   7. PIANO (CONTENEDOR DE TECLAS)
    ========================================================================== */
 .piano {
   position: relative;
@@ -154,15 +156,11 @@ body {
     0 10px 30px hsla(0, 0%, 0%, 0.2),
     0 4px 10px hsla(0, 0%, 0%, 0.15);
   
-  /* IMPORTANTE: Piano se adapta al tamaño de la ventana */
   overflow-x: auto;
-  max-width: 95%; /* Se adapta al ancho disponible */
-  
-  /* El piano se mantiene centrado */
-  margin: 0 auto;
+  max-width: 95%;
 }
 
-/* Scrollbar personalizado para el piano */
+/* Scrollbar personalizado */
 .piano::-webkit-scrollbar {
   height: 10px;
 }
@@ -193,6 +191,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 0.25rem; /* NUEVO: espaciado entre elementos internos */
   user-select: none;
 }
 
@@ -205,8 +204,8 @@ body {
 .tecla__etiqueta {
   font-size: 0.85rem;
   font-weight: 600;
-  margin-top: auto;
-  margin-bottom: 0.5rem;
+  margin-top: auto; /* OK: empuja al final */
+  /* ELIMINADO: margin-bottom */
 }
 
 .tecla__tecla-pc {
@@ -215,7 +214,7 @@ body {
   padding: 0.25rem 0.5rem;
   background-color: hsla(0, 0%, 0%, 0.1);
   border-radius: 4px;
-  margin-bottom: 0.5rem;
+  /* ELIMINADO: margin-bottom */
 }
 
 /* ==========================================================================
@@ -269,7 +268,7 @@ body {
   z-index: 2;
 }
 
-/* Posicionamiento dinámico de teclas negras (se sobrescribe con JS inline) */
+/* Posicionamiento dinámico de teclas negras */
 .tecla--negra-1 {
   left: calc(
     var(--espaciado-base) * 2 + var(--tecla-blanca-ancho) -
@@ -368,26 +367,23 @@ body {
 }
 
 /* ==========================================================================
-   12. MODAL DE AYUDA MEJORADO - DOS COLUMNAS
+   12. MODAL DE AYUDA - DOS COLUMNAS
    ========================================================================== */
 .modal-ayuda {
   border: none;
   border-radius: 16px;
   padding: 0;
   width: 100%;
-  max-height: 90vh; /* Limitar altura */
+  max-height: 90vh;
   box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.3);
   
-  /* Centrado CORRECTO con transform */
   position: fixed;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%); /* ← CRÍTICO para centrar */
-  margin: 0;
+  transform: translate(-50%, -50%);
   
-  /* Animación */
   animation: aparecer 0.3s ease forwards;
-  overflow: auto; /* Evitar scroll externo */
+  overflow: auto;
 }
 
 .modal-ayuda::backdrop {
@@ -409,12 +405,11 @@ body {
   justify-content: space-between;
   align-items: center;
   border-radius: 16px 16px 0 0;
-  flex-shrink: 0; /* No se encoge */
+  flex-shrink: 0;
 }
 
 .modal-ayuda__titulo {
   font-size: 1.5rem;
-  margin: 0;
 }
 
 .modal-ayuda__cerrar {
@@ -429,7 +424,6 @@ body {
   display: grid;
   place-content: center;
   transition: background-color 0.2s ease;
-  line-height: 1;
 }
 
 .modal-ayuda__cerrar:hover {
@@ -445,7 +439,7 @@ body {
   padding: 2rem;
   background-color: white;
   border-radius: 0 0 16px 16px;
-  overflow-y: auto; /* Scroll si es necesario */
+  overflow-y: auto;
   flex: 1;
 }
 
@@ -454,7 +448,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
-   height: 100%;
+  height: 100%;
 }
 
 .modal-ayuda__columna {
@@ -466,7 +460,6 @@ body {
 .modal-ayuda__subtitulo {
   font-size: 1.2rem;
   color: var(--color-primario);
-  margin: 0 0 0.5rem 0;
   padding-bottom: 0.5rem;
   border-bottom: 2px solid var(--color-primario);
 }
@@ -476,46 +469,49 @@ body {
   padding: 1rem;
   border-radius: 8px;
   border-left: 3px solid var(--color-secundario);
+  
+  /* NUEVO: usar gap para espaciado interno */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
 .modal-ayuda__seccion-titulo {
   font-size: 1rem;
   color: var(--color-secundario);
-  margin: 0 0 0.5rem 0;
 }
 
 .modal-ayuda__texto {
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.6; /* OK: elemento final */
   color: var(--color-texto);
-  margin: 0 0 0.5rem 0;
-}
-
-.modal-ayuda__texto:last-child {
-  margin-bottom: 0;
+  /* ELIMINADO: margin */
 }
 
 .modal-ayuda__lista-simple {
-  margin: 0.5rem 0 0 1.25rem;
-  padding: 0;
+  padding-left: 1.25rem;
   list-style: disc;
+  
+  /* NUEVO: gap entre items */
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .modal-ayuda__lista-simple li {
-  margin-bottom: 0.35rem;
   font-size: 0.9rem;
-  line-height: 1.5;
+  line-height: 1.5; /* OK: elemento final */
 }
 
 .modal-ayuda__teclado {
-  margin-top: 0.75rem;
+  /* NUEVO: gap para separar strong y su contenido */
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
 }
 
 .modal-ayuda__teclado strong {
-  display: block;
   color: var(--color-primario);
-  margin-top: 0.75rem;
-  margin-bottom: 0.35rem;
   font-size: 0.9rem;
 }
 
@@ -528,7 +524,7 @@ kbd {
   border: 1px solid hsl(220, 15%, 80%);
   border-radius: 4px;
   box-shadow: 0 1px 2px hsla(0, 0%, 0%, 0.1);
-  margin: 0 0.15rem;
+  /* ELIMINADO: margin (se usa gap en el contenedor) */
 }
 
 /* ==========================================================================
@@ -543,14 +539,11 @@ kbd {
   max-height: 90vh;
   box-shadow: 0 10px 40px hsla(0, 0%, 0%, 0.3);
   
-  /* Centrado con transform */
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  margin: 0;
   
-  /* Animación */
   animation: aparecer 0.3s ease forwards;
   overflow: hidden;
 }
@@ -579,7 +572,6 @@ kbd {
 
 .modal-controles__titulo {
   font-size: 1.5rem;
-  margin: 0;
 }
 
 .modal-controles__cerrar {
@@ -594,7 +586,6 @@ kbd {
   display: grid;
   place-content: center;
   transition: background-color 0.2s ease;
-  line-height: 1;
 }
 
 .modal-controles__cerrar:hover {
@@ -714,7 +705,7 @@ kbd {
   font-size: 0.95rem;
 }
 
-/* Animación de aparición (reutilizada por ambos modales) */
+/* Animación de aparición */
 @keyframes aparecer {
   from {
     opacity: 0;
@@ -758,11 +749,6 @@ kbd {
     font-size: 0.85rem;
     padding: 0.75rem 1rem;
   }
-/*
-  .piano {
-    max-width: 100%;
-  }
-    */
   
   .modal-ayuda {
     width: 95%;

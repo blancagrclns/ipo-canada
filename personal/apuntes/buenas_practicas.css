@@ -1,4 +1,164 @@
 /* ==========================================================================
+   0. REGLAS FUNDAMENTALES DEL PROFESOR - ESPACIADO Y FLUJO
+   ==========================================================================
+   
+   REGLA 1: ❌ NO USAR margin → ✅ USAR gap
+   ──────────────────────────────────────────────────────────────────────
+   
+   ❌ MAL - Usando margin para separar elementos:
+   
+   .tarjeta__titulo {
+     margin-bottom: 1rem;
+   }
+   
+   .tarjeta__descripcion {
+     margin-bottom: 1.5rem;
+   }
+   
+   Problemas:
+   - Margin colapsa (margin-collapse): dos márgenes consecutivos se fusionan
+   - Difícil mantener consistencia: cada elemento tiene su propio espaciado
+   - No respeta el principio de "separación de responsabilidades"
+   - El último elemento suele necesitar margin-bottom: 0 (código extra)
+   
+   ✅ BIEN - Usando gap en el contenedor:
+   
+   .tarjeta {
+     display: flex;
+     flex-direction: column;
+     gap: 1rem;  ← UNA SOLA REGLA controla TODO el espaciado
+   }
+   
+   Ventajas:
+   - Gap NO colapsa → espaciado predecible y consistente
+   - Responsabilidad del CONTENEDOR, no de los hijos
+   - Cambiar el espaciado = cambiar UNA variable
+   - No hay "espaciado extra" al final
+   - Principio DRY (Don't Repeat Yourself)
+   
+   EXCEPCIONES donde margin SÍ es aceptable:
+   - margin: 0 auto → centrar horizontalmente (única forma estándar)
+   - margin-top/bottom en elementos con position: absolute/fixed (fuera del flujo)
+   - margin-inline en casos muy específicos de diseño tipográfico
+   
+   ──────────────────────────────────────────────────────────────────────
+   
+   REGLA 2: line-height SOLO EN ELEMENTOS FINALES
+   ──────────────────────────────────────────────────────────────────────
+   
+   ❌ MAL - line-height en contenedores:
+   
+   body {
+     line-height: 1.6;  ← Se hereda a TODOS los elementos
+   }
+   
+   .tarjeta {
+     line-height: 1.5;  ← Afecta incluso a botones, inputs, etc.
+   }
+   
+   Problemas:
+   - Botones y controles quedan con altura inconsistente
+   - Los elementos <input>, <select> heredan line-height no deseado
+   - Dificulta el control preciso del espaciado vertical
+   - Puede romper el diseño de componentes UI
+   
+   ✅ BIEN - line-height solo en elementos que MUESTRAN TEXTO:
+   
+   p, li, .texto, .descripcion {
+     line-height: 1.6;  ← Solo donde realmente se necesita
+   }
+   
+   Elementos FINALES que pueden tener line-height:
+   - <p>, <span>, <li>, <dd>, <dt>
+   - .tarjeta__descripcion, .tarjeta__texto
+   - .modal-ayuda__texto
+   - Cualquier elemento cuyo contenido directo sea SOLO texto
+   
+   Elementos que NO deben tener line-height:
+   - body, main, section, div (contenedores)
+   - Elementos con display: flex o display: grid
+   - Botones, inputs, selects (usan padding para altura)
+   
+   ──────────────────────────────────────────────────────────────────────
+   
+   REGLA 3: INLINE ES FINAL - Solo flex/grid en contenedores
+   ──────────────────────────────────────────────────────────────────────
+   
+   Concepto: "inline" no está hecho para meterle cosas, es FINAL
+   
+   ÁRBOL DEL DOM - Analogía:
+   
+   🌳 Raíz (body)
+      ├── 🌿 Rama (main)           ← display: flex/grid
+      │    ├── 🌿 Rama (.tarjeta)  ← display: flex/grid
+      │    │    ├── 🍃 Hoja (h2)   ← display: block (por defecto) → flujo normal
+      │    │    ├── 🍃 Hoja (p)    ← display: block → flujo normal + line-height
+      │    │    └── 🍃 Hoja (button) ← display: inline-block → flujo normal
+      │    └── 🌿 Rama (.otra-tarjeta)
+      └── 🌿 Rama (footer)
+   
+   ❌ MAL - Flujo normal en RAMAS (nodos intermedios):
+   
+   .tarjeta {
+      Sin display: flex → los hijos usan flujo normal (block/inline) 
+   }
+   
+   .tarjeta__titulo {
+     margin-bottom: 1rem;  ← Necesitas margin porque no hay gap
+   }
+   
+   .tarjeta__descripcion {
+     margin-bottom: 1.5rem;
+   }
+   
+   ✅ BIEN - Flex/Grid en RAMAS, flujo normal en HOJAS:
+   
+   .tarjeta {
+     display: flex;           ← Contenedor (rama) usa flex
+     flex-direction: column;
+     gap: 1rem;
+   }
+   
+   .tarjeta__titulo {
+      display: block por defecto → es una HOJA, OK 
+   }
+   
+   .tarjeta__descripcion {
+      display: block → HOJA que muestra texto 
+     line-height: 1.5;  ← Solo aquí, porque es final
+   }
+   
+   REGLA MENTAL:
+   - ¿Tiene hijos que necesitan distribuirse? → display: flex/grid (RAMA)
+   - ¿Su contenido directo es solo texto/imagen? → flujo normal (HOJA)
+   
+   Elementos que deben ser flex/grid (RAMAS):
+   - body, main, header, footer, section, article, nav
+   - Cualquier .contenedor, .tarjeta, .modal, .card, .panel
+   
+   Elementos que deben usar flujo normal (HOJAS):
+   - h1-h6, p, span, strong, em, a, button, input, label
+   - Cualquier elemento cuyo único propósito sea mostrar contenido
+   
+   ──────────────────────────────────────────────────────────────────────
+   
+   RESUMEN DE LAS 3 REGLAS:
+   
+   1. ❌ margin → ✅ gap (en contenedores flex/grid)
+   2. line-height SOLO en elementos finales que muestran texto
+   3. flex/grid en RAMAS (contenedores) → flujo normal en HOJAS (contenido)
+   
+   Estas reglas crean:
+   - Código más mantenible y predecible
+   - Menos bugs de espaciado (margin-collapse, line-height heredado)
+   - Separación clara de responsabilidades (contenedor vs. contenido)
+   - Diseño más robusto y escalable
+   
+   ========================================================================== 
+   
+   */
+
+/* ==========================================================================
    1. RESET MÍNIMO → CONSISTENCIA ENTRE NAVEGADORES (Introducción.pdf)
    ==========================================================================
    - box-sizing: border-box → el padding y border se incluyen en width/height.
@@ -59,18 +219,25 @@
    - display: flex + flex-direction: column → layout vertical controlado.
    - gap: 2rem → espaciado coherente entre header, main y footer (Gestalt: proximidad).
    - flex: 1 en .contenedor → empuja el footer al fondo incluso si el contenido es corto.
+   
+   ⚠️ NOTA: NO usamos line-height en body porque:
+   - body es un CONTENEDOR (rama del árbol), no un elemento final
+   - line-height se hereda a TODOS los descendientes (botones, inputs, etc.)
+   - Esto causa alturas inconsistentes en elementos UI
+   - Solo usamos line-height en elementos FINALES que muestran texto (<p>, <li>, etc.)
 */
 body {
   font-family: var(--fuente-principal);
   font-size: 1rem;
-  line-height: 1.6;
-  /* mejora legibilidad (Color&Fuentes&Espacio.pdf) */
+  /* ❌ NO: line-height: 1.6 → body es CONTENEDOR, no elemento final */
   background-color: var(--color-fondo);
   color: var(--color-texto);
   padding: 2rem;
   min-height: 100vh;
+  /* ✅ SÍ: display flex → body es RAMA del árbol DOM */
   display: flex;
   flex-direction: column;
+  /* ✅ SÍ: gap en lugar de margin → consistente, predecible, DRY */
   gap: 2rem;
 }
 
@@ -80,13 +247,19 @@ body {
    - Se evita el flujo normal (block/inline) en contenedores estructurales.
    - Solo se usa flujo normal en "hojas" del árbol DOM (texto, imágenes, etc.).
    - max-width + margin: 0 auto → centrado horizontal en pantallas anchas.
+   
+   ⚠️ EXCEPCIÓN: margin: 0 auto es aceptable para centrado horizontal
+   (no hay alternativa nativa con flex/grid para este caso específico)
 */
 .contenedor {
+  /* ✅ RAMA: usa flex para organizar sus hijos */
   display: flex;
   flex-direction: column;
+  /* ✅ gap en lugar de margin en hijos */
   gap: 2.5rem;
   flex: 1;
   max-width: 650px;
+  /* ✅ EXCEPCIÓN: margin auto para centrado horizontal */
   margin: 0 auto;
 }
 
@@ -94,6 +267,7 @@ body {
   text-align: center;
   font-size: 1.8rem;
   color: var(--color-primario);
+  /* ❌ NO: margin-bottom → el contenedor padre usa gap */
 }
 
 /* ==========================================================================
@@ -110,23 +284,28 @@ body {
   border-radius: 0.75rem;
   padding: 1.5rem;
 
+  /* ✅ RAMA: usa flex */
   display: flex;
   flex-direction: column;
+  /* ✅ gap controla TODO el espaciado interno → DRY */
   gap: 1rem;
 }
 
 .tarjeta__titulo {
   font-size: 1.35rem;
   color: var(--color-primario);
-  margin: 0;
+  /* ❌ NO: margin-bottom → el padre (.tarjeta) ya usa gap */
+  /* ✅ HOJA FINAL: puede quedarse en flujo normal (block por defecto) */
 }
 
 .tarjeta__dato {
   font-family: var(--fuente-mono);
   font-size: 1.1rem;
   font-variant-numeric: tabular-nums;
-  /* números alineados verticalmente */
+  /* ✅ HOJA FINAL que muestra texto → SÍ puede tener line-height */
+  line-height: 1.4;
 }
+
 /* 
   ➜ webAudioAPI.pdf - NUEVO
   Estilos para descripciones e información de estado de audio
@@ -134,13 +313,15 @@ body {
 .tarjeta__descripcion {
   font-size: 0.95rem;
   color: var(--color-audio-info);
+  /* ✅ HOJA FINAL → line-height OK */
   line-height: 1.5;
-  margin: 0;
 }
 
 .tarjeta__info {
   font-family: var(--fuente-mono);
   font-size: 0.9rem;
+  /* ✅ HOJA FINAL → line-height OK */
+  line-height: 1.4;
   color: var(--color-audio-info);
   padding: 0.5rem;
   background-color: hsl(var(--tono), 10%, 93%);
@@ -155,6 +336,9 @@ body {
    - Modificadores BEM: --primario / --secundario.
    - Transiciones suaves en hover/focus.
    - No se usan !important ni estilos inline.
+   
+   ⚠️ NOTA: Los botones son HOJAS finales → NO tienen display: flex
+   Usan padding para controlar su tamaño, no line-height
 */
 .btn {
   padding: 0.65rem 1.3rem;
@@ -166,6 +350,8 @@ body {
   font-weight: 600;
   cursor: pointer;
   transition: background-color 0.25s ease, color 0.25s ease;
+  /* ❌ NO: line-height → el botón usa padding para altura */
+  /* ✅ HOJA FINAL: flujo normal (inline-block por defecto en <button>) */
 }
 
 .btn:hover,
@@ -185,12 +371,16 @@ body {
   background-color: var(--color-secundario);
   color: white;
 }
+
 /* Acciones: contenedor de botones con espaciado */
 .tarjeta__acciones {
+  /* ✅ RAMA: contenedor de botones usa flex */
   display: flex;
+  /* ✅ gap para separar botones → NO margin en los .btn */
   gap: 0.75rem;
   flex-wrap: wrap;
 }
+
 /* ==========================================================================
    7. DRAG & DROP → ESTADOS VISUALES Y ACCESIBILIDAD (Introducción.pdf)
    ==========================================================================
@@ -203,6 +393,7 @@ body {
   min-height: 5.5rem;
   border: 2px dashed var(--color-borde);
   border-radius: 0.6rem;
+  /* ✅ RAMA: usa grid para centrar contenido */
   display: grid;
   place-content: center;
   text-align: center;
@@ -220,10 +411,13 @@ body {
   background-color: var(--color-secundario);
   color: white;
   border-radius: 0.6rem;
+  /* ✅ RAMA: usa grid para centrar el emoji */
   display: grid;
   place-content: center;
   cursor: grab;
   user-select: none;
+  /* ⚠️ EXCEPCIÓN: margin-top porque necesitamos separación del drop-zone */
+  /* (alternativa: envolver en un contenedor con gap) */
   margin-top: 1rem;
   transition: opacity 0.2s;
 }
@@ -242,6 +436,7 @@ body {
   /* referencia para los absolute internos */
   min-height: 8rem;
   border: 2px dashed var(--color-borde);
+  /* ⚠️ margin-block: aceptable en demos de posicionamiento */
   margin-block: 1rem;
   padding: 0.5rem;
 }
@@ -255,14 +450,17 @@ body {
   background: white;
   padding-inline: 0.25rem;
 }
+
 .demo-position__box {
   width: 3rem;
   height: 3rem;
+  /* ✅ RAMA: usa grid para centrar texto */
   display: grid;
   place-content: center;
   font-weight: 600;
   border-radius: 0.35rem;
 }
+
 /* ----------  relative  ---------- */
 .demo-position__box--rel {
   position: relative;
@@ -308,6 +506,7 @@ body {
 .demo-zindex {
   position: relative;
   height: 10rem;
+  /* ⚠️ margin-block: aceptable en demos */
   margin-block: 1rem;
 }
 
@@ -315,6 +514,7 @@ body {
   position: absolute;
   width: 10rem;
   height: 3rem;
+  /* ✅ RAMA: grid para centrar */
   display: grid;
   place-content: center;
   color: white;
@@ -347,10 +547,13 @@ body {
     TRANSFORMACIONES 2-D
     ------------------------------------------------------------------ */
 .demo-transforms {
+  /* ✅ RAMA: flex para distribuir items */
   display: flex;
   flex-wrap: wrap;
+  /* ✅ gap en lugar de margin en items */
   gap: 1.5rem;
   justify-content: center;
+  /* ⚠️ margin-block: aceptable en demos */
   margin-block: 1rem;
 }
 
@@ -359,6 +562,7 @@ body {
   height: 5rem;
   background: var(--color-primario);
   color: white;
+  /* ✅ RAMA: grid para centrar texto */
   display: grid;
   place-content: center;
   font-size: 0.8rem;
@@ -387,7 +591,9 @@ body {
     PSEUDOELEMENTOS  &  PSEUDOCLASES
     ------------------------------------------------------------------ */
 .demo-pseudos__texto {
-  margin-block-end: 1rem;
+  /* ✅ HOJA FINAL (párrafo) → SÍ puede tener line-height */
+  line-height: 1.6;
+  /* ❌ NO: margin-block-end → usar gap en el contenedor padre */
 }
 
 .demo-pseudos__cita {
@@ -441,12 +647,15 @@ body {
 
 /* ==========================================================================
    8. FOOTER → FLUJO NORMAL EN HOJA DEL ÁRBOL DOM (Introducción.pdf)
-   ========================================================================== */
+   ==========================================================================
+*/
 .pie {
   text-align: center;
   padding: 1.2rem 0;
   border-top: 1px solid var(--color-borde);
   font-size: 0.9rem;
+  /* ✅ HOJA FINAL → line-height OK */
+  line-height: 1.5;
   color: hsl(var(--tono), 20%, 45%);
 }
 

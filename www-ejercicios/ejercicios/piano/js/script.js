@@ -127,12 +127,10 @@ function cachearNodos() {
   APP.nodos.btnAyuda = document.querySelector('[data-accion="mostrar-ayuda"]');
   APP.nodos.modalControles = document.querySelector('[data-modal="controles"]');
   APP.nodos.modalAyuda = document.querySelector('[data-modal="ayuda"]');
-  APP.nodos.btnCerrarControles = document.querySelector(
-    '[data-accion="cerrar-controles"]'
-  );
-  APP.nodos.btnCerrarAyuda = document.querySelector(
-    '[data-accion="cerrar-ayuda"]'
-  );
+  APP.nodos.btnCerrarControles = document.querySelector('[data-accion="cerrar-controles"]');
+  APP.nodos.btnCerrarAyuda = document.querySelector('[data-accion="cerrar-ayuda"]');
+  
+  /* EXCEPCIÓN: id para <link> del tema */
   APP.nodos.darkThemeLink = document.getElementById("dark-theme");
 
   console.log("✅ Nodos del DOM cacheados correctamente.");
@@ -597,7 +595,7 @@ function alternarTema() {
     }
     localStorage.setItem("tema", "oscuro");
     mostrarToast("Tema oscuro activado");
-    console.log("🎨 Tema oscuro activado");
+    console.log("🌙 Tema oscuro activado");
   } else {
     APP.nodos.darkThemeLink.disabled = true;
     if (APP.nodos.btnTema) {
@@ -606,7 +604,7 @@ function alternarTema() {
     }
     localStorage.setItem("tema", "claro");
     mostrarToast("Tema claro activado");
-    console.log("🎨 Tema claro activado");
+    console.log("☀️ Tema claro activado");
   }
 }
 function cargarPreferenciaTema() {

@@ -9,10 +9,10 @@
    - Se usa const porque el objeto no se reasigna (aunque sus propiedades sí cambian).
 */
 const APP = {
-  temporizador: null,   // ID devuelto por setInterval (Intervalos.pdf). null = inactivo.
-  contador: 0,          // Estado del contador manual (número entero).
-  nodos: {},            // Caché de referencias DOM (mejora rendimiento).
-  
+  temporizador: null, // ID devuelto por setInterval (Intervalos.pdf). null = inactivo.
+  contador: 0, // Estado del contador manual (número entero).
+  nodos: {}, // Caché de referencias DOM (mejora rendimiento).
+
   /* ==========================================================================
      ESTADO DE LA WEB AUDIO API (webAudioAPI.pdf)
      ==========================================================================
@@ -21,13 +21,68 @@ const APP = {
      - El contexto comienza en estado 'suspended' (buena práctica UX)
      - Debe activarse mediante interacción del usuario (ej. clic en botón)
   */
-  audioCtx: null,       // AudioContext - gestiona el grafo de nodos de audio
+  audioCtx: null, // AudioContext - gestiona el grafo de nodos de audio
 };
 
 /* ==========================================================================
    2. CACHÉ DE NODOS DEL DOM → MEJORA RENDIMIENTO Y LEGIBILIDAD (README.md, Introducción.pdf)
    ==========================================================================
-   - Se usan selectores basados en atributos data-* (no en clases ni id).
+   
+   REGLA FUNDAMENTAL: ❌ NO USAR `id` PARA SELECCIONAR ELEMENTOS → ✅ USAR `data-*`
+   ──────────────────────────────────────────────────────────────────────────────
+   
+   ❌ MAL - Usando getElementById():
+   
+   // HTML:
+   <button id="btnIniciar">Iniciar</button>
+   <dialog id="modal-config">...</dialog>
+   
+   // JavaScript:
+   APP.nodos.btnIniciar = document.getElementById("btnIniciar");
+   APP.nodos.modal = document.getElementById("modal-config");
+   
+   Problemas:
+   - Los `id` deben ser únicos en TODO el documento (HTML5 estricto)
+   - No es semántico: `id` no indica la función del elemento
+   - Acoplamiento fuerte: cambiar el `id` rompe el JavaScript
+   - Inconsistencia: mezclar `id` con selectores de clase/atributo
+   - No reutilizable: no puedes tener múltiples elementos con el mismo `id`
+   
+   ✅ BIEN - Usando atributos data-* como selectores:
+   
+   // HTML:
+   <button data-accion="iniciar">Iniciar</button>
+   <dialog data-modal="configuracion">...</dialog>
+   
+   // JavaScript:
+   APP.nodos.btnIniciar = document.querySelector('[data-accion="iniciar"]');
+   APP.nodos.modal = document.querySelector('[data-modal="configuracion"]');
+   
+   Ventajas:
+   - Semántico: `data-accion` describe la función, `data-modal` el tipo
+   - Consistente: todo el código usa el mismo patrón (querySelector + data-*)
+   - Desacoplado: CSS usa clases (.btn), JS usa data-* ([data-accion])
+   - Reutilizable: puedes tener múltiples botones con data-accion="eliminar"
+   - Flexible: fácil seleccionar grupos → querySelectorAll('[data-accion]')
+   - Principio de separación de responsabilidades
+   
+   EXCEPCIONES donde `id` SÍ es aceptable:
+   - Elementos <link> y <script> → document.getElementById("dark-theme")
+   - Asociación <label for="input-id"> → requiere `id` en el input
+   - Fragmentos de URL → #seccion-contacto (navegación interna)
+   - ARIA → aria-labelledby="titulo-id" (accesibilidad)
+   
+   PATRÓN RECOMENDADO para atributos data-*:
+   - data-accion: para botones y elementos interactivos
+   - data-modal: para modales y diálogos
+   - data-control: para inputs y controles de formulario
+   - data-output: para elementos que muestran valores calculados
+   - data-toast: para mensajes emergentes
+   - data-estado: para indicadores de estado visual
+   
+   ──────────────────────────────────────────────────────────────────────────────
+   
+   - Se usan selectores basados en atributos data-* (NUNCA id ni clases).
    - Ventajas:
        * Desacopla la lógica de JavaScript del diseño visual (CSS usa clases, JS usa data-*).
        * Permite múltiples elementos con el mismo "rol" sin violar unicidad de id.
@@ -38,6 +93,7 @@ function cachearNodos() {
   APP.nodos = {
     // Temporizador
     tiempoSpan: document.querySelector('[data-tiempo]'),
+    /* ✅ CORRECTO: usar data-accion para acciones */
     btnIniciar: document.querySelector('[data-accion="iniciar"]'),
     btnDetener: document.querySelector('[data-accion="detener"]'),
 
@@ -91,7 +147,9 @@ function cachearNodos() {
 function iniciarTemporizador() {
   // Guard clause: si ya hay un intervalo activo, no hacer nada.
   if (APP.temporizador !== null) {
-    console.warn("⚠️ El temporizador ya está en ejecución. Ignorando nuevo intento.");
+    console.warn(
+      "⚠️ El temporizador ya está en ejecución. Ignorando nuevo intento."
+    );
     return;
   }
 
@@ -142,44 +200,44 @@ function activarDragDrop() {
   const { dropZone, dragItem } = APP.nodos;
 
   // Al comenzar a arrastrar
-  dragItem.addEventListener('dragstart', (e) => {
+  dragItem.addEventListener("dragstart", (e) => {
     // Opcional: pasa datos (aunque no se usen aquí)
-    e.dataTransfer.setData('text/plain', 'drag-item');
-    dragItem.classList.add('drag-item--active');
-    dragItem.setAttribute('aria-grabbed', 'true');
+    e.dataTransfer.setData("text/plain", "drag-item");
+    dragItem.classList.add("drag-item--active");
+    dragItem.setAttribute("aria-grabbed", "true");
     console.log("🖱️ Arrastre iniciado.");
   });
 
   // Al terminar el arrastre (soltar o cancelar)
-  dragItem.addEventListener('dragend', () => {
-    dragItem.classList.remove('drag-item--active');
-    dragItem.setAttribute('aria-grabbed', 'false');
+  dragItem.addEventListener("dragend", () => {
+    dragItem.classList.remove("drag-item--active");
+    dragItem.setAttribute("aria-grabbed", "false");
   });
 
   // Permitir soltar en la zona → ¡preventDefault() es obligatorio!
-  dropZone.addEventListener('dragover', (e) => {
+  dropZone.addEventListener("dragover", (e) => {
     e.preventDefault();
-    dropZone.classList.add('drop-zone--active');
+    dropZone.classList.add("drop-zone--active");
   });
 
   // Al salir del área de drop
-  dropZone.addEventListener('dragleave', () => {
-    dropZone.classList.remove('drop-zone--active');
+  dropZone.addEventListener("dragleave", () => {
+    dropZone.classList.remove("drop-zone--active");
   });
 
   // Al soltar el elemento
-  dropZone.addEventListener('drop', (e) => {
+  dropZone.addEventListener("drop", (e) => {
     e.preventDefault();
-    dropZone.classList.remove('drop-zone--active');
+    dropZone.classList.remove("drop-zone--active");
     dropZone.textContent = "✅ ¡Elemento soltado correctamente!";
 
     // Accesibilidad: anuncia el cambio a lectores de pantalla
-    dropZone.setAttribute('aria-live', 'polite');
+    dropZone.setAttribute("aria-live", "polite");
 
     // Opcional: desactiva futuros arrastres
     dragItem.draggable = false;
-    dragItem.style.opacity = '0.4';
-    dragItem.style.pointerEvents = 'none';
+    dragItem.style.opacity = "0.4";
+    dragItem.style.pointerEvents = "none";
 
     console.log("📦 Elemento soltado. Interacción completada.");
   });
@@ -259,11 +317,11 @@ function inicializarAudioContext() {
 function reproducirAudioSimple() {
   // 1. Asegurar que el AudioContext está inicializado
   inicializarAudioContext();
-  
+
   // 2. Actualizar estado visual en la UI
   APP.nodos.estadoAudioSimple.textContent = "Estado: Reproduciendo...";
   console.log("🎵 Iniciando reproducción de oscilador simple...");
-  
+
   /* 
      3. Crear el nodo fuente (README.md - Creación mediante constructor):
      - OscillatorNode(contexto, opciones) es el método recomendado
@@ -272,17 +330,17 @@ function reproducirAudioSimple() {
        * frequency: 220 (Hz, La3)
   */
   const source = new OscillatorNode(APP.audioCtx, {
-    type: "sine",      // Forma de onda sinusoidal (la más simple)
-    frequency: 220,    // La3 (220 Hz)
+    type: "sine", // Forma de onda sinusoidal (la más simple)
+    frequency: 220, // La3 (220 Hz)
   });
-  
+
   /* 
      4. Conectar el oscilador al destino (altavoces):
      - Grafo resultante: source → audioCtx.destination
      - Sin esta conexión, no se escucharía nada
   */
   source.connect(APP.audioCtx.destination);
-  
+
   /* 
      5. Programar inicio y fin de la reproducción:
      - currentTime: tiempo actual del contexto en segundos
@@ -292,13 +350,17 @@ function reproducirAudioSimple() {
        porque se agendan en el motor de audio
   */
   const inicio = APP.audioCtx.currentTime;
-  const duracion = 4;  // segundos
-  
+  const duracion = 4; // segundos
+
   source.start(inicio);
   source.stop(inicio + duracion);
-  
-  console.log(`🎵 Oscilador programado: inicio=${inicio.toFixed(2)}s, fin=${(inicio + duracion).toFixed(2)}s`);
-  
+
+  console.log(
+    `🎵 Oscilador programado: inicio=${inicio.toFixed(2)}s, fin=${(
+      inicio + duracion
+    ).toFixed(2)}s`
+  );
+
   /* 
      6. Actualizar UI cuando termine la reproducción:
      - setTimeout se usa para sincronizar la UI con el final del audio
@@ -342,11 +404,11 @@ function reproducirAudioSimple() {
 function reproducirAudioMulti() {
   // 1. Inicializar contexto
   inicializarAudioContext();
-  
+
   // 2. Actualizar UI
   APP.nodos.estadoAudioMulti.textContent = "Estado: Reproduciendo...";
   console.log("🎵 Iniciando reproducción de múltiples osciladores...");
-  
+
   /* 
      3. Crear primer oscilador (sinusoidal):
      - Frecuencia: 220 Hz (La3)
@@ -356,7 +418,7 @@ function reproducirAudioMulti() {
     type: "sine",
     frequency: 220,
   });
-  
+
   /* 
      4. Crear segundo oscilador (triangular):
      - Frecuencia: 210 Hz (ligeramente más grave que La3)
@@ -367,7 +429,7 @@ function reproducirAudioMulti() {
     type: "triangle",
     frequency: 210,
   });
-  
+
   /* 
      5. Conectar ambos osciladores al destino:
      - Grafo resultante: 
@@ -378,7 +440,7 @@ function reproducirAudioMulti() {
   */
   oscilador01.connect(APP.audioCtx.destination);
   oscilador02.connect(APP.audioCtx.destination);
-  
+
   /* 
      6. Programar tiempos de reproducción:
      - now: tiempo actual de referencia
@@ -387,23 +449,31 @@ function reproducirAudioMulti() {
      - Resultado: 1s solo osc01, 3s ambos, 0s solo no hay nada
   */
   const now = APP.audioCtx.currentTime;
-  
+
   const inicioOscilador01 = now;
-  const inicioOscilador02 = now + 1;  // Retraso de 1 segundo
+  const inicioOscilador02 = now + 1; // Retraso de 1 segundo
   const duracionOscilador01 = 4;
   const duracionOscilador02 = 3;
-  
+
   // Iniciar oscilador 1
   oscilador01.start(inicioOscilador01);
   oscilador01.stop(inicioOscilador01 + duracionOscilador01);
-  
+
   // Iniciar oscilador 2 (1 segundo después)
   oscilador02.start(inicioOscilador02);
   oscilador02.stop(inicioOscilador02 + duracionOscilador02);
-  
-  console.log(`🎵 Oscilador 1: ${inicioOscilador01.toFixed(2)}s → ${(inicioOscilador01 + duracionOscilador01).toFixed(2)}s`);
-  console.log(`🎵 Oscilador 2: ${inicioOscilador02.toFixed(2)}s → ${(inicioOscilador02 + duracionOscilador02).toFixed(2)}s`);
-  
+
+  console.log(
+    `🎵 Oscilador 1: ${inicioOscilador01.toFixed(2)}s → ${(
+      inicioOscilador01 + duracionOscilador01
+    ).toFixed(2)}s`
+  );
+  console.log(
+    `🎵 Oscilador 2: ${inicioOscilador02.toFixed(2)}s → ${(
+      inicioOscilador02 + duracionOscilador02
+    ).toFixed(2)}s`
+  );
+
   /* 
      7. Actualizar UI al finalizar:
      - Usar el tiempo máximo (oscilador que termina último)
@@ -412,7 +482,7 @@ function reproducirAudioMulti() {
     duracionOscilador01,
     inicioOscilador02 - inicioOscilador01 + duracionOscilador02
   );
-  
+
   setTimeout(() => {
     APP.nodos.estadoAudioMulti.textContent = "Estado: Detenido";
     console.log("🎵 Reproducción múltiple completada.");
@@ -451,11 +521,11 @@ function reproducirAudioMulti() {
 function reproducirAudioAcordes() {
   // 1. Inicializar contexto
   inicializarAudioContext();
-  
+
   // 2. Actualizar UI
   APP.nodos.estadoAudioAcordes.textContent = "Estado: Reproduciendo...";
   console.log("🎵 Iniciando reproducción de acorde (setValueAtTime)...");
-  
+
   /* 
      3. Crear oscilador SIN especificar frecuencia inicial:
      - La frecuencia por defecto es 440 Hz (La4)
@@ -463,20 +533,20 @@ function reproducirAudioAcordes() {
   */
   const source = new OscillatorNode(APP.audioCtx);
   source.connect(APP.audioCtx.destination);
-  
+
   /* 
      4. Definir frecuencias del acorde Do Mayor:
      - Valores precisos según el sistema temperado igual
      - Relaciones: Do4 < Mi4 < Sol4 < Do5 (ascendente)
   */
-  const do4 = 261.63;   // Do central (C4)
-  const mi4 = 329.63;   // Mi (E4) - tercera mayor
-  const sol4 = 392.00;  // Sol (G4) - quinta justa
-  const do5 = 523.25;   // Do alto (C5) - octava
-  
+  const do4 = 261.63; // Do central (C4)
+  const mi4 = 329.63; // Mi (E4) - tercera mayor
+  const sol4 = 392.0; // Sol (G4) - quinta justa
+  const do5 = 523.25; // Do alto (C5) - octava
+
   // Duración de cada nota
-  const duracionNota = 1.5;  // segundos
-  
+  const duracionNota = 1.5; // segundos
+
   /* 
      5. Programar cambios de frecuencia (setValueAtTime):
      - Se usa una variable 'tiempo' acumulativa
@@ -484,37 +554,41 @@ function reproducirAudioAcordes() {
      - Las notas suenan de forma escalonada (no hay transición gradual)
   */
   let tiempo = APP.audioCtx.currentTime;
-  
+
   // Nota 1: Do4
   source.frequency.setValueAtTime(do4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Do4 (${do4} Hz)`);
-  
+
   // Nota 2: Mi4 (1.5s después)
   tiempo += duracionNota;
   source.frequency.setValueAtTime(mi4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Mi4 (${mi4} Hz)`);
-  
+
   // Nota 3: Sol4 (1.5s después)
   tiempo += duracionNota;
   source.frequency.setValueAtTime(sol4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Sol4 (${sol4} Hz)`);
-  
+
   // Nota 4: Do5 (1.5s después)
   tiempo += duracionNota;
   source.frequency.setValueAtTime(do5, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Do5 (${do5} Hz)`);
-  
+
   /* 
      6. Iniciar y detener el oscilador:
      - start() sin argumentos = inicio inmediato
      - stop() programado al final de la última nota
   */
   source.start();
-  tiempo += duracionNota;  // Tiempo total = 4 × 1.5s = 6s
+  tiempo += duracionNota; // Tiempo total = 4 × 1.5s = 6s
   source.stop(tiempo);
-  
-  console.log(`🎵 Oscilador detenido en ${tiempo.toFixed(2)}s (duración total: ${(tiempo - APP.audioCtx.currentTime).toFixed(2)}s)`);
-  
+
+  console.log(
+    `🎵 Oscilador detenido en ${tiempo.toFixed(2)}s (duración total: ${(
+      tiempo - APP.audioCtx.currentTime
+    ).toFixed(2)}s)`
+  );
+
   // 7. Actualizar UI
   const duracionTotal = tiempo - APP.audioCtx.currentTime;
   setTimeout(() => {
@@ -565,25 +639,25 @@ function reproducirAudioAcordes() {
 function reproducirAudioRampas() {
   // 1. Inicializar contexto
   inicializarAudioContext();
-  
+
   // 2. Actualizar UI
   APP.nodos.estadoAudioRampas.textContent = "Estado: Reproduciendo...";
   console.log("🎵 Iniciando reproducción con rampas (linear/exponential)...");
-  
+
   // 3. Crear oscilador
   const source = new OscillatorNode(APP.audioCtx);
   source.connect(APP.audioCtx.destination);
-  
+
   // 4. Definir frecuencias
-  const do4 = 261.63;   // Do central
-  const mi4 = 329.63;   // Mi (tercera mayor)
-  const sol4 = 392.00;  // Sol (quinta justa)
-  
+  const do4 = 261.63; // Do central
+  const mi4 = 329.63; // Mi (tercera mayor)
+  const sol4 = 392.0; // Sol (quinta justa)
+
   // 5. Definir duraciones de cada sección
-  const duracionExponential = 1.5;  // Duración de la rampa exponencial
-  const duracionEstatica = 2;       // Duración de cada nota estática
-  const duracionLinear = 1.5;       // Duración de la rampa lineal
-  
+  const duracionExponential = 1.5; // Duración de la rampa exponencial
+  const duracionEstatica = 2; // Duración de cada nota estática
+  const duracionLinear = 1.5; // Duración de la rampa lineal
+
   /* 
      6. Programar secuencia de cambios:
      
@@ -592,7 +666,7 @@ function reproducirAudioRampas() {
   let tiempo = APP.audioCtx.currentTime;
   source.frequency.setValueAtTime(do4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Do4 estático (${do4} Hz)`);
-  
+
   /* 
      SECCIÓN 2: Transición exponencial Do4 → Mi4 (1.5 segundos)
      - Primero: fijar punto de inicio con setValueAtTime
@@ -602,11 +676,13 @@ function reproducirAudioRampas() {
   // CRÍTICO: fijar valor inicial para la rampa (sin esto, comportamiento indefinido)
   source.frequency.setValueAtTime(do4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Inicio rampa exponencial desde Do4`);
-  
+
   tiempo += duracionExponential;
   source.frequency.exponentialRampToValueAtTime(mi4, tiempo);
-  console.log(`🎵 ${tiempo.toFixed(2)}s: Fin rampa exponencial → Mi4 (${mi4} Hz)`);
-  
+  console.log(
+    `🎵 ${tiempo.toFixed(2)}s: Fin rampa exponencial → Mi4 (${mi4} Hz)`
+  );
+
   /* 
      SECCIÓN 3: Mi4 estático (2 segundos)
      - Fija el valor para mantener Mi4 antes de la siguiente rampa
@@ -614,7 +690,7 @@ function reproducirAudioRampas() {
   tiempo += duracionEstatica;
   source.frequency.setValueAtTime(mi4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Mi4 estático (${mi4} Hz)`);
-  
+
   /* 
      SECCIÓN 4: Transición lineal Mi4 → Sol4 (1.5 segundos)
      - Primero: fijar punto de inicio (ya está en Mi4 pero es buena práctica explicitarlo)
@@ -623,17 +699,17 @@ function reproducirAudioRampas() {
   tiempo += duracionLinear;
   source.frequency.linearRampToValueAtTime(sol4, tiempo);
   console.log(`🎵 ${tiempo.toFixed(2)}s: Fin rampa lineal → Sol4 (${sol4} Hz)`);
-  
+
   /* 
      SECCIÓN 5: Sol4 estático (2 segundos)
   */
   tiempo += duracionEstatica;
   console.log(`🎵 ${tiempo.toFixed(2)}s: Fin de la secuencia (Sol4 estático)`);
-  
+
   // 7. Iniciar y detener oscilador
   source.start();
   source.stop(tiempo);
-  
+
   // 8. Actualizar UI
   const duracionTotal = tiempo - APP.audioCtx.currentTime;
   setTimeout(() => {
@@ -684,11 +760,11 @@ function reproducirAudioRampas() {
 function reproducirAudioGain() {
   // 1. Inicializar contexto
   inicializarAudioContext();
-  
+
   // 2. Actualizar UI
   APP.nodos.estadoAudioGain.textContent = "Estado: Reproduciendo...";
   console.log("🎵 Iniciando reproducción con GainNode (fade-in)...");
-  
+
   /* 
      3. Crear el nodo fuente (oscilador):
      - Frecuencia: 440 Hz (La4, frecuencia estándar)
@@ -698,7 +774,7 @@ function reproducirAudioGain() {
     type: "sine",
     frequency: 440,
   });
-  
+
   /* 
      4. Crear el GainNode (nodo intermedio):
      - Constructor: new GainNode(contexto, opciones)
@@ -706,20 +782,20 @@ function reproducirAudioGain() {
      - Comenzamos con 0.01 (casi silencio) para hacer fade-in
   */
   const gainNode = new GainNode(APP.audioCtx, {
-    gain: 0.01  // Valor inicial muy bajo
+    gain: 0.01, // Valor inicial muy bajo
   });
-  
+
   /* 
      5. Conectar el grafo de nodos:
      - source → gainNode → destination
      - La señal pasa por el GainNode antes de llegar a los altavoces
      - IMPORTANTE: el orden de conexión importa
   */
-  source.connect(gainNode);           // Oscilador a Gain
-  gainNode.connect(APP.audioCtx.destination);  // Gain a altavoces
-  
+  source.connect(gainNode); // Oscilador a Gain
+  gainNode.connect(APP.audioCtx.destination); // Gain a altavoces
+
   console.log("🎵 Grafo: OscillatorNode → GainNode → Destination");
-  
+
   /* 
      6. Programar fade-in (incremento progresivo del volumen):
      - Inicio: gain = 0.01 (casi inaudible)
@@ -728,17 +804,21 @@ function reproducirAudioGain() {
      - Método: linearRampToValueAtTime (cambio gradual y constante)
   */
   const now = APP.audioCtx.currentTime;
-  const duracionFadeIn = 3;     // segundos
-  const duracionTotal = 5;      // segundos (incluyendo 2s de volumen constante)
-  
+  const duracionFadeIn = 3; // segundos
+  const duracionTotal = 5; // segundos (incluyendo 2s de volumen constante)
+
   // Fijar punto de inicio del fade-in
   gainNode.gain.setValueAtTime(0.01, now);
   console.log(`🎵 ${now.toFixed(2)}s: Gain inicial = 0.01 (casi silencio)`);
-  
+
   // Programar rampa lineal de volumen
   gainNode.gain.linearRampToValueAtTime(0.8, now + duracionFadeIn);
-  console.log(`🎵 ${(now + duracionFadeIn).toFixed(2)}s: Gain final = 0.8 (volumen cómodo)`);
-  
+  console.log(
+    `🎵 ${(now + duracionFadeIn).toFixed(
+      2
+    )}s: Gain final = 0.8 (volumen cómodo)`
+  );
+
   /* 
      7. Iniciar y detener el oscilador:
      - start(): comienza inmediatamente
@@ -746,9 +826,13 @@ function reproducirAudioGain() {
   */
   source.start(now);
   source.stop(now + duracionTotal);
-  
-  console.log(`🎵 Duración total: ${duracionTotal}s (${duracionFadeIn}s fade-in + ${duracionTotal - duracionFadeIn}s constante)`);
-  
+
+  console.log(
+    `🎵 Duración total: ${duracionTotal}s (${duracionFadeIn}s fade-in + ${
+      duracionTotal - duracionFadeIn
+    }s constante)`
+  );
+
   // 8. Actualizar UI al finalizar
   setTimeout(() => {
     APP.nodos.estadoAudioGain.textContent = "Estado: Detenido";
@@ -769,15 +853,15 @@ function init() {
   cachearNodos();
 
   // Asignar listeners para el temporizador
-  APP.nodos.btnIniciar.addEventListener('click', iniciarTemporizador);
-  APP.nodos.btnDetener.addEventListener('click', detenerTemporizador);
+  APP.nodos.btnIniciar.addEventListener("click", iniciarTemporizador);
+  APP.nodos.btnDetener.addEventListener("click", detenerTemporizador);
 
   // Asignar listener para el contador
-  APP.nodos.btnIncrementar.addEventListener('click', incrementarContador);
+  APP.nodos.btnIncrementar.addEventListener("click", incrementarContador);
 
   // Activar Drag & Drop
   activarDragDrop();
-  
+
   /* ==========================================================================
      ASIGNAR LISTENERS PARA WEB AUDIO API (webAudioAPI.pdf)
      ==========================================================================
@@ -786,19 +870,19 @@ function init() {
      - Los listeners usan el patrón data-audio-accion para claridad
   */
   // Oscilador simple
-  APP.nodos.btnAudioSimple.addEventListener('click', reproducirAudioSimple);
-  
+  APP.nodos.btnAudioSimple.addEventListener("click", reproducirAudioSimple);
+
   // Múltiples osciladores
-  APP.nodos.btnAudioMulti.addEventListener('click', reproducirAudioMulti);
-  
+  APP.nodos.btnAudioMulti.addEventListener("click", reproducirAudioMulti);
+
   // Acordes (setValueAtTime)
-  APP.nodos.btnAudioAcordes.addEventListener('click', reproducirAudioAcordes);
-  
+  APP.nodos.btnAudioAcordes.addEventListener("click", reproducirAudioAcordes);
+
   // Rampas (linear/exponential)
-  APP.nodos.btnAudioRampas.addEventListener('click', reproducirAudioRampas);
-  
+  APP.nodos.btnAudioRampas.addEventListener("click", reproducirAudioRampas);
+
   // GainNode
-  APP.nodos.btnAudioGain.addEventListener('click', reproducirAudioGain);
+  APP.nodos.btnAudioGain.addEventListener("click", reproducirAudioGain);
 
   console.log("✅ Aplicación lista. Esperando interacciones del usuario.");
 
@@ -807,37 +891,37 @@ function init() {
     Pequeña utilidad para resetear los contadores de las demos
     (opcional pero útil en clase)
     -------------------------------------------------------------- */
-  const resetBtn = document.createElement('button');
-  resetBtn.className = 'btn btn--secundario';
-  resetBtn.textContent = 'Resetear demos';
-  resetBtn.type = 'button';
-  resetBtn.addEventListener('click', () => {
+  const resetBtn = document.createElement("button");
+  resetBtn.className = "btn btn--secundario";
+  resetBtn.textContent = "Resetear demos";
+  resetBtn.type = "button";
+  resetBtn.addEventListener("click", () => {
     /* temporizador */
     if (APP.temporizador !== null) detenerTemporizador();
-    APP.nodos.tiempoSpan.textContent = '0';
+    APP.nodos.tiempoSpan.textContent = "0";
 
     /* contador */
     APP.contador = 0;
-    APP.nodos.cuentaSpan.textContent = '0';
+    APP.nodos.cuentaSpan.textContent = "0";
 
     /* drag & drop */
     const { dropZone, dragItem } = APP.nodos;
-    dropZone.textContent = 'Suelta aquí el cuadrado';
-    dropZone.removeAttribute('aria-live');
+    dropZone.textContent = "Suelta aquí el cuadrado";
+    dropZone.removeAttribute("aria-live");
     dragItem.draggable = true;
-    dragItem.style.opacity = '';
-    dragItem.style.pointerEvents = '';
-    
-    /* audio estados */
-    APP.nodos.estadoAudioSimple.textContent = 'Estado: Detenido';
-    APP.nodos.estadoAudioMulti.textContent = 'Estado: Detenido';
-    APP.nodos.estadoAudioAcordes.textContent = 'Estado: Detenido';
-    APP.nodos.estadoAudioRampas.textContent = 'Estado: Detenido';
-    APP.nodos.estadoAudioGain.textContent = 'Estado: Detenido';
+    dragItem.style.opacity = "";
+    dragItem.style.pointerEvents = "";
 
-    console.log('♻️  Demos restauradas');
+    /* audio estados */
+    APP.nodos.estadoAudioSimple.textContent = "Estado: Detenido";
+    APP.nodos.estadoAudioMulti.textContent = "Estado: Detenido";
+    APP.nodos.estadoAudioAcordes.textContent = "Estado: Detenido";
+    APP.nodos.estadoAudioRampas.textContent = "Estado: Detenido";
+    APP.nodos.estadoAudioGain.textContent = "Estado: Detenido";
+
+    console.log("♻️  Demos restauradas");
   });
-  document.querySelector('.pie').prepend(resetBtn);
+  document.querySelector(".pie").prepend(resetBtn);
 }
 
 /* ==========================================================================
@@ -847,8 +931,8 @@ function init() {
    - Si el DOM ya está cargado (ej. script en línea), ejecuta init() inmediatamente.
    - Si no, espera al evento DOMContentLoaded.
 */
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', init);
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", init);
 } else {
   init();
 }

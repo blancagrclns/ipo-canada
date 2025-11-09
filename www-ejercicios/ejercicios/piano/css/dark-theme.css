@@ -14,36 +14,10 @@
   --color-primario-hover: hsl(220, 80%, 55%);
   --color-secundario: hsl(280, 60%, 65%);
   
-  /* Ajustes específicos */
   --color-borde: hsl(220, 15%, 30%);
-  
-  /* IMPORTANTE: NO sobrescribir variables de las teclas del piano
-     Las teclas deben mantener su apariencia original
-  */
 }
 
-/* Ajustes específicos para elementos en tema oscuro */
-.panel-controles {
-  background-color: hsl(220, 15%, 20%);
-  border: 1px solid var(--color-borde);
-}
-
-.panel-controles__select {
-  background-color: hsl(220, 15%, 25%);
-  color: var(--color-texto);
-  border-color: var(--color-borde);
-}
-
-.panel-controles__select:hover {
-  border-color: var(--color-primario);
-}
-
-.panel-controles__info {
-  background-color: hsl(120, 30%, 20%);
-  border-left-color: hsl(120, 50%, 40%);
-  color: hsl(120, 40%, 85%);
-}
-
+/* Botones flotantes */
 .floating-buttons__button {
   background-color: hsl(220, 15%, 25%);
   color: var(--color-texto);
@@ -54,77 +28,13 @@
   background-color: hsl(220, 15%, 30%);
 }
 
-/* Modal en tema oscuro */
-.modal-ayuda__body {
-  background-color: hsl(220, 15%, 20%);
-}
-
-.modal-ayuda__item {
-  color: var(--color-texto);
-}
-
-.modal-ayuda__sublista {
-  color: hsl(220, 15%, 70%);
-}
-
-/* Estado visible en tema oscuro */
-.estado-visible {
-  background-color: hsl(220, 15%, 20%);
-  border: 1px solid var(--color-borde);
-}
-
-.estado-visible__info {
-  background-color: hsl(120, 30%, 20%);
-  border-left-color: hsl(120, 50%, 40%);
-  color: hsl(120, 40%, 85%);
-}
-
-.estado-visible__descripcion {
-  color: hsl(220, 15%, 70%);
-}
-
-/* Modal de controles en tema oscuro */
-.modal-controles__body {
-  background-color: hsl(220, 15%, 20%);
-}
-
-.modal-controles__label {
-  color: var(--color-texto);
-}
-
-.modal-controles__select {
-  background-color: hsl(220, 15%, 25%);
-  color: var(--color-texto);
-  border-color: var(--color-borde);
-}
-
-.modal-controles__select:hover {
-  border-color: var(--color-primario);
-}
-
-/* 
-  IMPORTANTE: Mejorar legibilidad de etiquetas en teclas blancas
-  Las teclas blancas mantienen su fondo blanco, pero las etiquetas
-  deben ser más oscuras para mejor contraste en tema oscuro
-*/
-.tecla--blanca .tecla__etiqueta,
-.tecla--blanca .tecla__tecla-pc {
-  color: hsl(0, 0%, 20%); /* Gris muy oscuro, casi negro */
-  font-weight: 700; /* Más negrita para mejor legibilidad */
-}
-
-/* Asegurar que el fondo del indicador de tecla PC sea visible */
-.tecla--blanca .tecla__tecla-pc {
-  background-color: hsla(0, 0%, 0%, 0.15);
-}
-
-/* Toast en tema oscuro */
+/* Toast */
 .toast {
   background-color: hsl(220, 70%, 45%);
   box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.4);
 }
 
-/* Modal de ayuda en tema oscuro */
+/* Modal de ayuda */
 .modal-ayuda__body {
   background-color: hsl(220, 15%, 20%);
 }
@@ -159,4 +69,34 @@ kbd {
   background-color: hsl(220, 15%, 25%);
   border-color: hsl(220, 15%, 40%);
   color: hsl(220, 15%, 90%);
+}
+
+/* Modal de controles */
+.modal-controles__body {
+  background-color: hsl(220, 15%, 20%);
+}
+
+.modal-controles__label {
+  color: var(--color-texto);
+}
+
+.modal-controles__select {
+  background-color: hsl(220, 15%, 25%);
+  color: var(--color-texto);
+  border-color: var(--color-borde);
+}
+
+.modal-controles__select:hover {
+  border-color: var(--color-primario);
+}
+
+/* Teclas blancas - mejor legibilidad */
+.tecla--blanca .tecla__etiqueta,
+.tecla--blanca .tecla__tecla-pc {
+  color: hsl(0, 0%, 20%);
+  font-weight: 700;
+}
+
+.tecla--blanca .tecla__tecla-pc {
+  background-color: hsla(0, 0%, 0%, 0.15);
 }
