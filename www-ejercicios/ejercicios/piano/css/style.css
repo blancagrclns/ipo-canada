@@ -34,11 +34,14 @@
   /* Espaciado */
   --espaciado-base: 1rem;
 
-  /* Dimensiones del piano */
-  --tecla-blanca-ancho: 60px;
-  --tecla-blanca-alto: 280px;
-  --tecla-negra-ancho: 38px;
-  --tecla-negra-alto: 180px;
+  /* Dimensiones del piano
+     - Ahora responsivas: clamp(min, preferred, max)
+     - Evita overflow horizontal al reducir teclas en pantallas estrechas
+  */
+  --tecla-blanca-ancho: clamp(36px, 6.5vw, 60px);
+  --tecla-blanca-alto: clamp(160px, 30vh, 280px);
+  --tecla-negra-ancho: clamp(22px, 4.2vw, 38px);
+  --tecla-negra-alto: clamp(100px, 18vh, 180px);
 
   /* Fuentes */
   --fuente-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -82,11 +85,13 @@ body {
 
 .cabecera__descripcion {
   font-size: 1.1rem;
+  line-height: 1.4; /* OK: elemento final */
   opacity: 0.95;
 }
 
 .cabecera__instrucciones {
   font-size: 0.95rem;
+  line-height: 1.4; /* OK: elemento final */
   opacity: 0.9;
   font-style: italic;
 }
@@ -137,6 +142,7 @@ body {
 
 .toast__mensaje {
   display: block;
+  line-height: 1.4; /* OK: elemento final */
 }
 
 /* ==========================================================================
@@ -153,11 +159,37 @@ body {
     0 10px 30px hsla(0, 0%, 0%, 0.2),
     0 4px 10px hsla(0, 0%, 0%, 0.15);
   
-  overflow-x: auto;
-  max-width: 95%;
+  /* Evitar scroll horizontal: las teclas ahora se adaptan vía variables responsivas */
+  overflow-x: hidden;
+  overflow-y: visible; /* permitir que las teclas no se corten verticalmente si usan absolute */
+  max-width: 100%;     /* usar todo el ancho disponible */
+
+  box-sizing: border-box;
+
+  /* asegurar altura mínima que contenga las teclas blancas + padding vertical */
+  min-height: calc(var(--tecla-blanca-alto) + (var(--espaciado-base) * 4));
+  /* dejar padding inferior extra por si hay teclas absolutas que se extiendan */
+  padding-bottom: calc(var(--espaciado-base) * 2.5);
+
+  /* mantener centrado en pantallas grandes, y permitir que el contenido se reduzca */
+  justify-content: center;
+  align-items: flex-end; /* asegura alineación correcta de teclas negras absolutas */
 }
 
-/* Scrollbar personalizado */
+/* Evitar que las teclas se encojan cuando el contenedor apura espacio */
+.tecla {
+  /* ...existing code... */
+  /* permitir ajuste proporcional si el contenedor se reduce */
+  flex: 0 0 auto; /* se mantiene ancho controlado por la variable responsiva */
+}
+
+/* Asegurar que las teclas blancas y negras se rendericen completas dentro del contenedor */
+.tecla--blanca,
+.tecla--negra {
+  box-sizing: border-box;
+}
+
+/* Mantener scrollbar visible y usable si el piano es más ancho que el viewport */
 .piano::-webkit-scrollbar {
   height: 10px;
 }
@@ -185,10 +217,10 @@ body {
   font-family: inherit;
   position: relative;
   transition: all 0.15s ease;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  justify-items: center;
-  gap: 0.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem; /* NUEVO: espaciado entre elementos internos */
   user-select: none;
 }
 
@@ -201,7 +233,8 @@ body {
 .tecla__etiqueta {
   font-size: 0.85rem;
   font-weight: 600;
-  grid-row: 3;
+  margin-top: auto; /* OK: empuja al final */
+  /* ELIMINADO: margin-bottom */
 }
 
 .tecla__tecla-pc {
@@ -210,7 +243,7 @@ body {
   padding: 0.25rem 0.5rem;
   background-color: hsla(0, 0%, 0%, 0.1);
   border-radius: 4px;
-  grid-row: 1;
+  /* ELIMINADO: margin-bottom */
 }
 
 /* ==========================================================================
@@ -479,6 +512,7 @@ body {
 
 .modal-ayuda__texto {
   font-size: 0.9rem;
+  line-height: 1.6; /* OK: elemento final */
   color: var(--color-texto);
   /* ELIMINADO: margin */
 }
@@ -495,6 +529,7 @@ body {
 
 .modal-ayuda__lista-simple li {
   font-size: 0.9rem;
+  line-height: 1.5; /* OK: elemento final */
 }
 
 .modal-ayuda__teclado {
