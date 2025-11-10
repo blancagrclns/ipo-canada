@@ -13,6 +13,8 @@ const APP = {
     filtroFreq: 8000,
     reverbMix: 0,
   },
+  // NUEVO: Guardado temporal de configuración antes de abrir el modal
+  configuracionTemporal: null,
   nodosAudio: {
     masterGain: null,
     filter: null,
@@ -127,8 +129,10 @@ function cachearNodos() {
   APP.nodos.btnAyuda = document.querySelector('[data-accion="mostrar-ayuda"]');
   APP.nodos.modalControles = document.querySelector('[data-modal="controles"]');
   APP.nodos.modalAyuda = document.querySelector('[data-modal="ayuda"]');
-  APP.nodos.btnCerrarControles = document.querySelector('[data-accion="cerrar-controles"]');
+  // ELIMINADO: APP.nodos.btnCerrarControles → ya no usamos el botón "×"
   APP.nodos.btnCerrarAyuda = document.querySelector('[data-accion="cerrar-ayuda"]');
+  APP.nodos.btnAceptarControles = document.querySelector('[data-accion="aceptar-controles"]');
+  APP.nodos.btnCancelarControles = document.querySelector('[data-accion="cancelar-controles"]');
   
   /* EXCEPCIÓN: id para <link> del tema */
   APP.nodos.darkThemeLink = document.getElementById("dark-theme");
@@ -154,22 +158,47 @@ function recalcularDimensionesTeclas() {
     return;
   }
 
-  const piano = APP.nodos.piano;
-  const rect = piano.getBoundingClientRect();
+  /* 
+     CRÍTICO: Medir el CONTENEDOR PADRE, no el piano
+     - El piano tiene justify-content: center → su width se adapta al contenido
+     - Necesitamos medir el espacio DISPONIBLE en el contenedor padre
+     - Esto permite que el piano crezca cuando hay más espacio
+  */
+  const contenedor = APP.nodos.piano.parentElement;
+  if (!contenedor) {
+    return;
+  }
+
+  // Forzar reflow
+  contenedor.offsetWidth;
+  
+  const rect = contenedor.getBoundingClientRect();
   if (!rect.width) {
     return;
   }
 
-  const estilos = getComputedStyle(piano);
+  const estilos = getComputedStyle(APP.nodos.piano);
   const paddingLeft = parseFloat(estilos.paddingLeft) || 0;
   const paddingRight = parseFloat(estilos.paddingRight) || 0;
   const gap = parseFloat(estilos.gap || estilos.columnGap || 0);
 
-  const anchoDisponible = rect.width - paddingLeft - paddingRight;
-  const espacioGaps = gap * Math.max(0, totalTeclasBlancas - 1);
-  const anchoUtil = anchoDisponible - espacioGaps;
+  // Restar padding del contenedor también
+  const estilosContenedor = getComputedStyle(contenedor);
+  const contenedorPaddingLeft = parseFloat(estilosContenedor.paddingLeft) || 0;
+  const contenedorPaddingRight = parseFloat(estilosContenedor.paddingRight) || 0;
 
-  if (anchoUtil <= 0) {
+  /* 
+     Ancho disponible = ancho del contenedor - paddings
+     Usamos un 95% del ancho disponible para dejar un pequeño margen
+  */
+  const anchoDisponible = rect.width - contenedorPaddingLeft - contenedorPaddingRight;
+  const anchoUtil = anchoDisponible * 0.95; // 95% del espacio disponible
+  
+  const espacioGaps = gap * Math.max(0, totalTeclasBlancas - 1);
+  const espacioPaddings = paddingLeft + paddingRight;
+  const anchoParaTeclas = anchoUtil - espacioGaps - espacioPaddings;
+
+  if (anchoParaTeclas <= 0) {
     return;
   }
 
@@ -185,19 +214,24 @@ function recalcularDimensionesTeclas() {
     0.65
   );
 
+  // Calcular ancho óptimo dentro de los límites min/max
   const anchoCalculado = Math.max(
     anchoMin,
-    Math.min(anchoMax, anchoUtil / totalTeclasBlancas)
+    Math.min(anchoMax, anchoParaTeclas / totalTeclasBlancas)
   );
   const altoBlanca = anchoCalculado * relacionBlanca;
   const anchoNegra = anchoCalculado * relacionNegraAncho;
   const altoNegra = altoBlanca * relacionNegraAlto;
 
   const root = document.documentElement;
+  
+  // Siempre establecer los valores
   root.style.setProperty("--tecla-blanca-ancho", `${anchoCalculado}px`);
   root.style.setProperty("--tecla-blanca-alto", `${altoBlanca}px`);
   root.style.setProperty("--tecla-negra-ancho", `${anchoNegra}px`);
   root.style.setProperty("--tecla-negra-alto", `${altoNegra}px`);
+  
+  console.log(`📐 Contenedor: ${rect.width.toFixed(0)}px | Teclas: blanca=${anchoCalculado.toFixed(1)}×${altoBlanca.toFixed(1)}px, negra=${anchoNegra.toFixed(1)}×${altoNegra.toFixed(1)}px`);
 }
 
 function actualizarVariablesDeTeclas(totalBlancas) {
@@ -293,6 +327,37 @@ function generarPiano(numOctavas) {
   const octavaInicial = 4;
   let contadorBlancas = 0;
 
+  // Conjunto para evitar asignar la misma tecla física a varias notas
+  const usedKeys = new Set();
+
+  // Mapeo de teclas ÚNICO por nota musical (no por octava)
+  // Cada nota musical se asigna a UNA SOLA tecla del ordenador
+  // TERCERA OCTAVA: Usamos teclas de la fila superior sin Shift (más accesibles)
+  const MAPEO_UNICO = {
+    // Primera octava (octava 0)
+    "C-0": "A", "C#-0": "W", "D-0": "S", "D#-0": "E", "E-0": "D", 
+    "F-0": "F", "F#-0": "T", "G-0": "G", "G#-0": "Y", "A-0": "H", "A#-0": "U", "B-0": "J",
+    
+    // Segunda octava (octava 1)
+    "C-1": "Z", "C#-1": "Q", "D-1": "X", "D#-1": "R", "E-1": "C", 
+    "F-1": "V", "F#-1": "I", "G-1": "B", "G#-1": "O", "A-1": "N", "A#-1": "P", "B-1": "M",
+    
+    // Tercera octava (octava 2) - TECLAS ACCESIBLES SIN SHIFT
+    // Fila de números (1-9) y algunas teclas adicionales (0, -, =)
+    "C-2": "1",  // Do
+    "C#-2": "2", // Do# (número 2 en lugar de !)
+    "D-2": "3",  // Re
+    "D#-2": "4", // Re# (número 4 en lugar de @)
+    "E-2": "5",  // Mi
+    "F-2": "6",  // Fa
+    "F#-2": "7", // Fa# (número 7 en lugar de $)
+    "G-2": "8",  // Sol
+    "G#-2": "9", // Sol# (número 9 en lugar de %)
+    "A-2": "0",  // La (número 0 en lugar de 6)
+    "A#-2": "-", // La# (guión en lugar de ^)
+    "B-2": "+"   // Si (igual en lugar de 7)
+  };
+
   for (let octava = 0; octava < numOctavas; octava++) {
     const octavaActual = octavaInicial + octava;
 
@@ -300,47 +365,44 @@ function generarPiano(numOctavas) {
       const frecuencia = notaBase.frecuencia * Math.pow(2, octava);
       const nota = `${notaBase.nota}${octavaActual}`;
 
-      // Determinar tecla del PC según la octava
-      let teclaPC = notaBase.teclaPC;
-      if (octava === 1) {
-        const teclaOctava2 = Object.entries(TECLAS_OCTAVA_2).find(
-          ([key, val]) => val === notaBase.nota.replace("#", "")
-        );
-        teclaPC = teclaOctava2 ? teclaOctava2[0].toUpperCase() : "";
-      } else if (octava === 2) {
-        const teclaOctava3 = Object.entries(TECLAS_OCTAVA_3).find(
-          ([key, val]) => val === notaBase.nota.replace("#", "")
-        );
-        teclaPC = teclaOctava3 ? teclaOctava3[0] : "";
+      // Crear clave única para buscar en el mapeo: "nota-octava"
+      const claveMapeo = `${notaBase.nota}-${octava}`;
+      const teclaPC = MAPEO_UNICO[claveMapeo] || "";
+
+      // Solo asignar si hay tecla y no está ya usada
+      let teclaFinal = "";
+      if (teclaPC && !usedKeys.has(teclaPC.toLowerCase())) {
+        teclaFinal = teclaPC;
+        usedKeys.add(teclaPC.toLowerCase());
       }
 
       const boton = document.createElement("button");
       boton.className = `tecla tecla--${notaBase.tipo}`;
       boton.dataset.nota = nota;
       boton.dataset.frecuencia = frecuencia;
+      if (teclaFinal) boton.dataset.teclaPc = teclaFinal.toLowerCase();
       boton.setAttribute("aria-label", `${notaBase.nombre} (${nota})`);
 
-      // Posicionamiento de teclas negras
+      // Posicionamiento de teclas negras según patrón real de piano
       if (notaBase.tipo === "negra") {
-        const posicion =
-          notaBase.posicion + (contadorBlancas - (index > 4 ? 1 : 0));
-        boton.classList.add(`tecla--negra-${posicion}`);
-        boton.style.left = `calc(var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * ${
-          posicion - 1
-        } - var(--tecla-negra-ancho) / 2)`;
+        // Calcular posición relativa dentro de la octava actual
+        const posicionEnOctava = notaBase.posicion;
+        const posicionAbsoluta = (octava * 7) + posicionEnOctava;
+        boton.classList.add(`tecla--negra-${posicionAbsoluta}`);
       } else {
         contadorBlancas++;
       }
 
-      // Contenido de la tecla
+      // Contenido de la tecla - MANTENER NOMBRES EN ESPAÑOL
       const etiqueta = document.createElement("span");
       etiqueta.className = "tecla__etiqueta";
-      etiqueta.textContent = notaBase.nombre;
+      etiqueta.textContent = notaBase.nombre; // Do, Re, Mi, etc.
 
-      if (teclaPC) {
+      // Añadir etiqueta de tecla del ordenador SOLO si existe
+      if (teclaFinal) {
         const teclaSpan = document.createElement("span");
         teclaSpan.className = "tecla__tecla-pc";
-        teclaSpan.textContent = teclaPC;
+        teclaSpan.textContent = teclaFinal.toUpperCase();
         boton.appendChild(teclaSpan);
       }
 
@@ -363,7 +425,7 @@ function generarPiano(numOctavas) {
     });
   });
 
-  console.log(`🎹 Piano generado con ${numOctavas} octava(s)`);
+  console.log(`🎹 Piano generado con ${numOctavas} octava(s), ${contadorBlancas} teclas blancas`);
 }
 
 /* ==========================================================================
@@ -439,10 +501,10 @@ function handleKeyDown(e) {
   const teclaPC = e.key.toLowerCase();
   let notaBuscada = null;
 
-  // Buscar en todas las teclas generadas
+  // Buscar en todas las teclas generadas usando data-tecla-pc
   APP.nodos.teclas.forEach((boton) => {
-    const teclaBoton = boton.querySelector(".tecla__tecla-pc");
-    if (teclaBoton && teclaBoton.textContent.toLowerCase() === teclaPC) {
+    const teclaDataset = boton.dataset.teclaPc; // Importante: dataset convierte 'tecla-pc' a 'teclaPc'
+    if (teclaDataset && teclaDataset === teclaPC) {
       notaBuscada = boton;
     }
   });
@@ -461,8 +523,8 @@ function handleKeyUp(e) {
   let notaBuscada = null;
 
   APP.nodos.teclas.forEach((boton) => {
-    const teclaBoton = boton.querySelector(".tecla__tecla-pc");
-    if (teclaBoton && teclaBoton.textContent.toLowerCase() === teclaPC) {
+    const teclaDataset = boton.dataset.teclaPc; // Importante: dataset convierte 'tecla-pc' a 'teclaPc'
+    if (teclaDataset && teclaDataset === teclaPC) {
       notaBuscada = boton;
     }
   });
@@ -480,15 +542,14 @@ function handleKeyUp(e) {
 function cambiarFormaOnda(e) {
   APP.formaOnda = e.target.value;
   console.log(`🎛️ Forma de onda: ${APP.formaOnda}`);
-  mostrarToast(`Forma de onda: ${obtenerNombreOnda(APP.formaOnda)}`);
+  // ELIMINADO: mostrarToast → solo mostrar al guardar cambios
 }
 
 function cambiarNumOctavas(e) {
   APP.configuracion.numOctavas = parseInt(e.target.value);
-  generarPiano(APP.configuracion.numOctavas);
-  const texto = APP.configuracion.numOctavas === 1 ? "octava" : "octavas";
-  mostrarToast(`Piano con ${APP.configuracion.numOctavas} ${texto}`);
-  console.log(`🎹 Octavas: ${APP.configuracion.numOctavas}`);
+  // NOTA: No regenerar el piano aquí, solo actualizar la configuración
+  // Se regenerará al guardar los cambios
+  console.log(`🎹 Octavas seleccionadas: ${APP.configuracion.numOctavas}`);
 }
 
 function cambiarVolumen(e) {
@@ -619,14 +680,105 @@ function cargarPreferenciaTema() {
    15. MODALES
    ========================================================================== */
 function abrirControles() {
+  // Guardar configuración actual antes de abrir el modal
+  APP.configuracionTemporal = {
+    formaOnda: APP.formaOnda,
+    numOctavas: APP.configuracion.numOctavas,
+    volumen: APP.configuracion.volumen,
+    filtroFreq: APP.configuracion.filtroFreq,
+    reverbMix: APP.configuracion.reverbMix,
+  };
+  
+  console.log("💾 Configuración guardada temporalmente:", APP.configuracionTemporal);
   APP.nodos.modalControles.showModal();
   console.log("🎛️ Modal de controles abierta");
 }
 
-function cerrarControles() {
+function aceptarControles() {
+  // Verificar si el número de octavas cambió
+  const octavasCambiaron = 
+    APP.configuracionTemporal.numOctavas !== APP.configuracion.numOctavas;
+  
+  if (octavasCambiaron) {
+    // Regenerar el piano con el nuevo número de octavas
+    generarPiano(APP.configuracion.numOctavas);
+    console.log(`🎹 Piano regenerado con ${APP.configuracion.numOctavas} octava(s)`);
+  }
+  
+  // Limpiar configuración temporal
+  APP.configuracionTemporal = null;
+  
+  // Cerrar el modal
   APP.nodos.modalControles.close();
-  console.log("✕ Modal de controles cerrada");
+  
+  // Mostrar confirmación
+  const texto = APP.configuracion.numOctavas === 1 ? "octava" : "octavas";
+  mostrarToast(`✓ Cambios guardados (${APP.configuracion.numOctavas} ${texto})`);
+  console.log("✓ Cambios de controles aceptados y aplicados");
 }
+
+function cancelarControles() {
+  // Restaurar la configuración guardada (descartar cambios)
+  if (APP.configuracionTemporal) {
+    console.log("↶ Restaurando configuración anterior:", APP.configuracionTemporal);
+    
+    // Restaurar valores en el objeto APP
+    APP.formaOnda = APP.configuracionTemporal.formaOnda;
+    APP.configuracion.numOctavas = APP.configuracionTemporal.numOctavas;
+    APP.configuracion.volumen = APP.configuracionTemporal.volumen;
+    APP.configuracion.filtroFreq = APP.configuracionTemporal.filtroFreq;
+    APP.configuracion.reverbMix = APP.configuracionTemporal.reverbMix;
+    
+    // Restaurar valores en los controles del DOM
+    APP.nodos.selectFormaOnda.value = APP.configuracionTemporal.formaOnda;
+    APP.nodos.selectOctavas.value = APP.configuracionTemporal.numOctavas;
+    APP.nodos.sliderVolumen.value = Math.round(APP.configuracionTemporal.volumen * 100);
+    APP.nodos.sliderFiltro.value = APP.configuracionTemporal.filtroFreq;
+    APP.nodos.sliderReverb.value = Math.round(APP.configuracionTemporal.reverbMix * 100);
+    
+    // Restaurar valores visuales de los outputs
+    APP.nodos.outputVolumen.textContent = `${Math.round(APP.configuracionTemporal.volumen * 100)}%`;
+    APP.nodos.outputFiltro.textContent = `${APP.configuracionTemporal.filtroFreq} Hz`;
+    APP.nodos.outputReverb.textContent = `${Math.round(APP.configuracionTemporal.reverbMix * 100)}%`;
+    
+    // Restaurar valores en el AudioContext si está inicializado
+    if (APP.nodosAudio.masterGain) {
+      APP.nodosAudio.masterGain.gain.setValueAtTime(
+        APP.configuracionTemporal.volumen,
+        APP.audioContext.currentTime
+      );
+    }
+    
+    if (APP.nodosAudio.filter) {
+      APP.nodosAudio.filter.frequency.setValueAtTime(
+        APP.configuracionTemporal.filtroFreq,
+        APP.audioContext.currentTime
+      );
+    }
+    
+    if (APP.nodosAudio.dryGain && APP.nodosAudio.wetGain) {
+      APP.nodosAudio.dryGain.gain.setValueAtTime(
+        1 - APP.configuracionTemporal.reverbMix,
+        APP.audioContext.currentTime
+      );
+      APP.nodosAudio.wetGain.gain.setValueAtTime(
+        APP.configuracionTemporal.reverbMix,
+        APP.audioContext.currentTime
+      );
+    }
+    
+    // Mostrar confirmación ANTES de limpiar
+    mostrarToast("Cambios descartados");
+    console.log("✕ Cambios descartados, configuración restaurada");
+    
+    // Limpiar configuración temporal AL FINAL
+    APP.configuracionTemporal = null;
+  }
+  
+  // Cerrar el modal
+  APP.nodos.modalControles.close();
+}
+
 function abrirAyuda() {
   APP.nodos.modalAyuda.showModal();
   console.log("❓ Modal de ayuda abierta");
@@ -646,7 +798,33 @@ function init() {
   cachearNodos();
   cargarPreferenciaTema();
   generarPiano(APP.configuracion.numOctavas);
-  window.addEventListener("resize", recalcularDimensionesTeclas);
+  
+  /* 
+     RESPONSIVIDAD MEJORADA: Recalcular dimensiones al redimensionar ventana
+     - Se usa requestAnimationFrame para optimizar el rendimiento
+     - Se cancelan cálculos pendientes antes de programar uno nuevo
+     - Esto funciona tanto al reducir como al agrandar la ventana
+  */
+  let resizeRAF = null;
+  
+  window.addEventListener("resize", () => {
+    // Cancelar cálculo pendiente si existe
+    if (resizeRAF) {
+      cancelAnimationFrame(resizeRAF);
+    }
+    
+    // Programar nuevo cálculo en el próximo frame de animación
+    resizeRAF = requestAnimationFrame(() => {
+      recalcularDimensionesTeclas();
+      resizeRAF = null;
+    });
+  });
+  
+  // Calcular dimensiones iniciales después de un pequeño delay
+  // para asegurar que el DOM esté completamente renderizado
+  requestAnimationFrame(() => {
+    recalcularDimensionesTeclas();
+  });
 
   // Event listeners - Controles
   APP.nodos.selectFormaOnda.addEventListener("change", cambiarFormaOnda);
@@ -662,19 +840,42 @@ function init() {
   // Event listeners - Modales y tema
   if (APP.nodos.btnControles) {
     APP.nodos.btnControles.addEventListener("click", abrirControles);
+    console.log("✅ Listener de 'Abrir Controles' añadido");
   }
   if (APP.nodos.btnTema) {
     APP.nodos.btnTema.addEventListener("click", alternarTema);
+    console.log("✅ Listener de 'Cambiar Tema' añadido");
   }
   if (APP.nodos.btnAyuda) {
     APP.nodos.btnAyuda.addEventListener("click", abrirAyuda);
+    console.log("✅ Listener de 'Abrir Ayuda' añadido");
   }
-  APP.nodos.btnCerrarControles.addEventListener("click", cerrarControles);
-  APP.nodos.btnCerrarAyuda.addEventListener("click", cerrarAyuda);
+  
+  // CRÍTICO: Verificar que los botones existen antes de añadir listeners
+  if (APP.nodos.btnAceptarControles) {
+    APP.nodos.btnAceptarControles.addEventListener("click", aceptarControles);
+    console.log("✅ Listener de 'Aceptar Controles' añadido");
+  } else {
+    console.error("❌ ERROR: No se encontró el botón de aceptar controles");
+  }
+  
+  if (APP.nodos.btnCancelarControles) {
+    APP.nodos.btnCancelarControles.addEventListener("click", cancelarControles);
+    console.log("✅ Listener de 'Cancelar Controles' añadido");
+  } else {
+    console.error("❌ ERROR: No se encontró el botón de cancelar controles");
+  }
+  
+  if (APP.nodos.btnCerrarAyuda) {
+    APP.nodos.btnCerrarAyuda.addEventListener("click", cerrarAyuda);
+    console.log("✅ Listener de 'Cerrar Ayuda' añadido");
+  }
 
-  // Cerrar modales con tecla Escape (funcionalidad nativa de <dialog>)
-  APP.nodos.modalControles.addEventListener("cancel", () => {
-    console.log("✕ Modal de controles cerrada con Escape");
+  // Interceptar Escape para descartar cambios
+  APP.nodos.modalControles.addEventListener("cancel", (e) => {
+    e.preventDefault(); // Prevenir cierre automático
+    cancelarControles(); // Descartar cambios y cerrar
+    console.log("✕ Modal de controles cerrada con Escape (cambios descartados)");
   });
 
   APP.nodos.modalAyuda.addEventListener("cancel", () => {
@@ -700,4 +901,3 @@ function init() {
    17. EJECUTAR CUANDO EL DOM ESTÉ LISTO
    ========================================================================== */
 init();
-

@@ -68,16 +68,10 @@
   <!-- Modal de CONTROLES -->
   <dialog class="modal-controles" data-modal="controles">
     <div class="modal-controles__contenido">
-      <header class="modal-controles__header">
-        <h2 class="modal-controles__titulo">⚙️ Controles de Sonido</h2>
-        <button 
-          class="modal-controles__cerrar" 
-          data-accion="cerrar-controles"
-          aria-label="Cerrar controles"
-        >
-          ✕
-        </button>
-      </header>
+      <!-- ACTUALIZADO: Header sin botón cerrar -->
+      <div class="modal-controles__header">
+        <h2 class="modal-controles__titulo">Controles de Sonido</h2>
+      </div>
 
       <div class="modal-controles__body">
         <!-- Forma de onda -->
@@ -168,6 +162,24 @@
             />
             <output class="modal-controles__output" data-output="reverb">0%</output>
           </div>
+        </div>
+
+        <!-- Contenedor de botones de acción -->
+        <div class="modal-controles__botones">
+          <button 
+            class="btn-cancelar" 
+            data-accion="cancelar-controles"
+            type="button"
+          >
+            Cancelar
+          </button>
+          <button 
+            class="btn-aceptar" 
+            data-accion="aceptar-controles"
+            type="button"
+          >
+            Guardar Cambios
+          </button>
         </div>
       </div>
     </div>

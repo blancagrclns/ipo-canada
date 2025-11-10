@@ -34,14 +34,23 @@
   /* Espaciado */
   --espaciado-base: 1rem;
 
-  /* Dimensiones del piano
-     - Ahora responsivas: clamp(min, preferred, max)
-     - Evita overflow horizontal al reducir teclas en pantallas estrechas
+  /* Dimensiones del piano - RESPONSIVAS CON CLAMP
+     - Se adaptan automáticamente al tamaño de la ventana
+     - min: tamaño mínimo en pantallas muy pequeñas
+     - preferred: valor ideal basado en viewport width/height
+     - max: tamaño máximo para pantallas grandes
   */
-  --tecla-blanca-ancho: clamp(36px, 6.5vw, 60px);
-  --tecla-blanca-alto: clamp(160px, 30vh, 280px);
-  --tecla-negra-ancho: clamp(22px, 4.2vw, 38px);
-  --tecla-negra-alto: clamp(100px, 18vh, 180px);
+  --tecla-blanca-ancho: 60px; /* Se recalcula dinámicamente desde JS */
+  --tecla-blanca-alto: 280px;  /* Se recalcula dinámicamente desde JS */
+  --tecla-negra-ancho: 38px;   /* Se recalcula dinámicamente desde JS */
+  --tecla-negra-alto: 180px;   /* Se recalcula dinámicamente desde JS */
+  
+  /* Valores de referencia para cálculos responsivos */
+  --tecla-blanca-ancho-min: 24px;
+  --tecla-blanca-ancho-max: 60px;
+  --relacion-tecla-blanca: 4.4;        /* alto/ancho */
+  --relacion-tecla-negra-ancho: 0.62;  /* ancho_negra/ancho_blanca */
+  --relacion-tecla-negra-alto: 0.65;   /* alto_negra/alto_blanca */
 
   /* Fuentes */
   --fuente-base: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -108,6 +117,10 @@ body {
   justify-content: center;
   gap: calc(var(--espaciado-base) * 2);
   position: relative;
+  
+  /* NUEVO: asegurar que el contenedor use todo el ancho disponible */
+  width: 100%;
+  max-width: 100%;
 }
 
 /* ==========================================================================
@@ -159,21 +172,21 @@ body {
     0 10px 30px hsla(0, 0%, 0%, 0.2),
     0 4px 10px hsla(0, 0%, 0%, 0.15);
   
-  /* Evitar scroll horizontal: las teclas ahora se adaptan vía variables responsivas */
-  overflow-x: hidden;
-  overflow-y: visible; /* permitir que las teclas no se corten verticalmente si usan absolute */
-  max-width: 100%;     /* usar todo el ancho disponible */
-
-  box-sizing: border-box;
-
-  /* asegurar altura mínima que contenga las teclas blancas + padding vertical */
+  /* CRÍTICO: NO limitar el ancho, permitir que crezca */
+  overflow-x: auto;
+  overflow-y: visible;
+  /* ELIMINADO: max-width: 100% → esto limitaba el crecimiento */
+  
+  /* Altura dinámica basada en las teclas */
   min-height: calc(var(--tecla-blanca-alto) + (var(--espaciado-base) * 4));
-  /* dejar padding inferior extra por si hay teclas absolutas que se extiendan */
   padding-bottom: calc(var(--espaciado-base) * 2.5);
 
-  /* mantener centrado en pantallas grandes, y permitir que el contenido se reduzca */
+  /* Centrar y alinear teclas */
   justify-content: center;
-  align-items: flex-end; /* asegura alineación correcta de teclas negras absolutas */
+  align-items: flex-end;
+  
+  /* Transiciones suaves al redimensionar */
+  transition: min-height 0.3s ease;
 }
 
 /* Evitar que las teclas se encojan cuando el contenedor apura espacio */
@@ -259,6 +272,9 @@ body {
     inset 0 -4px 8px hsla(0, 0%, 0%, 0.05);
   color: var(--color-texto);
   z-index: 1;
+  
+  /* Transiciones suaves al cambiar tamaño */
+  transition: width 0.3s ease, height 0.3s ease, transform 0.15s ease;
 }
 
 .tecla--blanca:hover {
@@ -295,39 +311,142 @@ body {
   position: absolute;
   top: calc(var(--espaciado-base) * 2);
   z-index: 2;
+  
+  /* Transiciones suaves al cambiar tamaño y posición */
+  transition: width 0.3s ease, height 0.3s ease, left 0.3s ease, transform 0.15s ease;
 }
 
-/* Posicionamiento dinámico de teclas negras */
-.tecla--negra-1 {
+/* Posicionamiento de teclas negras - PATRÓN REAL DE PIANO
+   
+   Fórmula correcta: cada tecla negra se posiciona entre dos teclas blancas
+   left = (índice_blanca × (ancho_blanca + gap)) + padding_izq - (ancho_negra / 2)
+   
+   Patrón por octava: C# D# _ F# G# A# 
+   (no hay negra entre Mi-Fa ni entre Si-Do)
+*/
+
+/* Primera octava - posiciones absolutas desde el inicio */
+.tecla--negra-1 { 
   left: calc(
-    var(--espaciado-base) * 2 + var(--tecla-blanca-ancho) -
-      var(--tecla-negra-ancho) / 2
-  );
-}
-.tecla--negra-2 {
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 1 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* C# - entre Do(0) y Re(1) */
+
+.tecla--negra-2 { 
   left: calc(
-    var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 2 -
-      var(--tecla-negra-ancho) / 2
-  );
-}
-.tecla--negra-4 {
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 2 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* D# - entre Re(1) y Mi(2) */
+
+.tecla--negra-4 { 
   left: calc(
-    var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 4 -
-      var(--tecla-negra-ancho) / 2
-  );
-}
-.tecla--negra-5 {
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 4 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* F# - entre Fa(3) y Sol(4) */
+
+.tecla--negra-5 { 
   left: calc(
-    var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 5 -
-      var(--tecla-negra-ancho) / 2
-  );
-}
-.tecla--negra-6 {
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 5 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* G# - entre Sol(4) y La(5) */
+
+.tecla--negra-6 { 
   left: calc(
-    var(--espaciado-base) * 2 + (var(--tecla-blanca-ancho) + 2px) * 6 -
-      var(--tecla-negra-ancho) / 2
-  );
-}
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 6 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* A# - entre La(5) y Si(6) */
+
+/* Segunda octava - 7 teclas blancas después */
+.tecla--negra-8 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 8 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* C# */
+
+.tecla--negra-9 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 9 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* D# */
+
+.tecla--negra-11 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 11 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* F# */
+
+.tecla--negra-12 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 12 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* G# */
+
+.tecla--negra-13 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 13 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* A# */
+
+/* Tercera octava - 14 teclas blancas después */
+.tecla--negra-15 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 15 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* C# */
+
+.tecla--negra-16 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 16 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* D# */
+
+.tecla--negra-18 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 18 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* F# */
+
+.tecla--negra-19 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 19 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* G# */
+
+.tecla--negra-20 { 
+  left: calc(
+    var(--espaciado-base) * 2 +
+    (var(--tecla-blanca-ancho) + 2px) * 20 - 
+    (var(--tecla-negra-ancho) / 2)
+  ); 
+} /* A# */
 
 .tecla--negra:hover {
   background: linear-gradient(180deg, hsl(0, 0%, 20%) 0%, hsl(0, 0%, 15%) 100%);
@@ -734,6 +853,75 @@ kbd {
   font-size: 0.95rem;
 }
 
+/* NUEVO: Contenedor de botones de acción */
+.modal-controles__botones {
+  display: flex;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+/* ACTUALIZADO: Botón de aceptar (ahora en un contenedor flex) */
+.btn-aceptar {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  color: white;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px hsla(220, 80%, 50%, 0.3);
+}
+
+.btn-aceptar:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px hsla(220, 80%, 50%, 0.4);
+}
+
+.btn-aceptar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px hsla(220, 80%, 50%, 0.3);
+}
+
+.btn-aceptar:focus {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
+/* NUEVO: Botón de cancelar */
+.btn-cancelar {
+  flex: 1;
+  padding: 0.75rem 1.5rem;
+  border: 2px solid hsl(220, 15%, 70%);
+  border-radius: 8px;
+  background: white;
+  color: var(--color-texto);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.1);
+}
+
+.btn-cancelar:hover {
+  background-color: hsl(220, 15%, 95%);
+  border-color: hsl(220, 15%, 60%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.15);
+}
+
+.btn-cancelar:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px hsla(0, 0%, 0%, 0.1);
+}
+
+.btn-cancelar:focus {
+  outline: 3px solid var(--color-primario);
+  outline-offset: 2px;
+}
+
 /* Animación de aparición */
 @keyframes aparecer {
   from {
@@ -750,13 +938,6 @@ kbd {
    14. RESPONSIVE
    ========================================================================== */
 @media (max-width: 768px) {
-  :root {
-    --tecla-blanca-ancho: 45px;
-    --tecla-blanca-alto: 220px;
-    --tecla-negra-ancho: 30px;
-    --tecla-negra-alto: 140px;
-  }
-
   .cabecera__titulo {
     font-size: 2rem;
   }
@@ -828,5 +1009,29 @@ kbd {
   
   .modal-controles__output {
     text-align: left;
+  }
+}
+
+/* Ajustes adicionales para pantallas muy pequeñas */
+@media (max-width: 480px) {
+  .cabecera__titulo {
+    font-size: 1.5rem;
+  }
+  
+  .cabecera__descripcion,
+  .cabecera__instrucciones {
+    font-size: 0.85rem;
+  }
+  
+  .piano {
+    padding: calc(var(--espaciado-base) * 1.5);
+    overflow-x: auto; /* Permitir scroll en pantallas muy pequeñas */
+  }
+}
+
+/* Ajustes para pantallas muy grandes */
+@media (min-width: 1920px) {
+  .contenedor {
+    max-width: 1200px;
   }
 }
