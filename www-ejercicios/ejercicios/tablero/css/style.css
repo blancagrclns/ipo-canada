@@ -19,16 +19,16 @@
 
 :root {
   /* Colores principales */
-  --color-primario: #6366f1;
-  --color-secundario: #8b5cf6;
-  --color-acento: #ec4899;
-  --color-fondo: #ede6f1;
-  --color-superficie: #ede6f1;
-  --color-texto: #1e293b;
-  --color-texto-secundario: #000000;
-  --color-borde: #e2e8f0;
-  --color-sombra: rgba(0, 0, 0, 0.1);
-  
+  --color-primario: #009688;         /* teal */
+  --color-secundario: #26a69a;       /* light teal */
+  --color-acento: #ff9800;           /* orange */
+  --color-fondo: #f5f5f5;            /* light gray */
+  --color-superficie: #ffffff;        /* white */
+  --color-texto: #263238;            /* dark blue gray */
+  --color-texto-secundario: #607d8b; /* blue gray */
+  --color-borde: #b0bec5;            /* blue gray border */
+  --color-sombra: rgba(0, 150, 136, 0.1); /* teal shadow */
+
   /* Colores para las fichas */
   --color-ficha-1: #ef4444;
   --color-ficha-2: #f59e0b;
@@ -68,39 +68,39 @@
   --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
   
   /* Colores adicionales */
-  --color-inset-box-shadow: rgba(0, 0, 0, 0.1);
-  --color-linear-gradient-start: #667eea15;
-  --color-linear-gradient-end: #764ba215;
-  --color-celda-vacia: white;
-  --color-celda-vacia-destino: #667eea15;
+  --color-inset-box-shadow: rgba(0, 150, 136, 0.1);
+  --color-linear-gradient-start: #00968815;
+  --color-linear-gradient-end: #26a69a15;
+  --color-celda-vacia: #ffffff;
+  --color-celda-vacia-destino: #00968815;
 
   /* Fondos */
-  --background-body: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --background-body: linear-gradient(135deg, #009688 0%, #26a69a 100%);
   --background-cabecera: var(--color-superficie);
   --background-cabecera-titulo: linear-gradient(135deg, var(--color-primario), var(--color-acento));
   --background-estado-juego-item: linear-gradient(135deg, var(--color-linear-gradient-start), var(--color-linear-gradient-end));
   --background-estado-juego-valor: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
-  --background-tablero: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  --background-tablero: linear-gradient(135deg, #e0f2f1, #b2dfdb);
   --background-ficha-hover: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
   --background-celda-vacia-destino: linear-gradient(135deg, var(--color-celda-vacia-destino), var(--color-linear-gradient-end));
   
   /* Colores para el body y otros selectores */
   --color-body-background: var(--background-body);
   --color-body-text: var(--color-texto);
-  --color-botones-control-before: rgba(255, 255, 255, 0.3);
+  --color-botones-control-before: rgba(0, 150, 136, 0.1);
   --color-boton-verde-hover-shadow: rgba(16, 185, 129, 0.3);
   --color-boton-naranja-hover-shadow: rgba(245, 158, 11, 0.3);
   --color-boton-rojo-hover-shadow: rgba(239, 68, 68, 0.3);
-  --color-tablero-inset-shadow: rgba(0, 0, 0, 0.1);
-  --color-tablero-background-1: #cadbeb;
-  --color-tablero-background-2: #c6c9ce;
-  --color-ficha-destino-shadow: rgba(99, 102, 241, 0.2);
-  --color-tablero-etiqueta-background-1: #0b143b15;
-  --color-tablero-etiqueta-background-2: #764ba215;
-  --color-dark-estado-juego-background-1: #667eea25;
-  --color-dark-estado-juego-background-2: #764ba225;
-  --color-dark-tablero-background-1: #2d3748;
-  --color-dark-tablero-background-2: #4a5568;
+  --color-tablero-inset-shadow: rgba(0, 150, 136, 0.1);
+  --color-tablero-background-1: #e0f2f1;
+  --color-tablero-background-2: #b2dfdb;
+  --color-ficha-destino-shadow: rgba(0, 150, 136, 0.2);
+  --color-tablero-etiqueta-background-1: #00968815;
+  --color-tablero-etiqueta-background-2: #26a69a15;
+  --color-dark-estado-juego-background-1: #00968825;
+  --color-dark-estado-juego-background-2: #26a69a25;
+  --color-dark-tablero-background-1: #263238;
+  --color-dark-tablero-background-2: #37474f;
   --color-dark-ficha-background: rgba(255, 255, 255, 0.1);
   --color-dark-ficha-border: rgba(255, 255, 255, 0.2);
   --color-dark-ficha-hover-background: rgba(255, 255, 255, 0.2);
@@ -122,7 +122,9 @@ body {
   flex-direction: column;
   gap: var(--espaciado-sm);
   overflow-x: hidden;
-  overflow-y: hidden; /* Evitar scroll vertical en body */
+  overflow-y: hidden; /* Evita el overflow vertical */
+  align-items: center; /* Centra horizontalmente el contenido */
+  /* Elimina justify-content: center para evitar que el tablero quede abajo */
 }
 
 /* ==========================================================================
@@ -133,14 +135,18 @@ body {
   display: grid; /* Cambiar a grid */
   grid-template-columns: auto 1fr auto; /* Tres columnas: botón, contenido, acciones */
   align-items: center; /* Centrar verticalmente los elementos */
-  gap: var(--espaciado-sm); /* Espaciado entre columnas */
-  padding: var(--espaciado-lg);
+  padding: var(--espaciado-sm); /* Reducido aún más desde var(--espaciado-md) */
+  gap: var(--espaciado-xs); /* Reducido desde var(--espaciado-sm) */
   background: var(--background-cabecera);
   border-radius: var(--radio-xl);
   box-shadow: var(--sombra-lg);
   animation: slideDown 0.6s ease-out;
   flex-direction: column; /* Cambiar a disposición vertical */
   align-items: center; /* Centrar horizontalmente los elementos */
+  width: 100%;         /* Ocupa toda la anchura disponible */
+  max-width: none;     /* Elimina cualquier restricción de ancho máximo */
+  /* max-height: 20vh; /* Limita la altura máxima de la cabecera */
+  /* overflow: hidden; /* Oculta cualquier contenido que exceda la altura */
 }
 
 @keyframes slideDown {
@@ -162,8 +168,8 @@ body {
 }
 
 .cabecera__titulo {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
+  font-size: clamp(1.25rem, 3vw, 1.75rem); /* Reducido aún más */
+  font-weight: 900;
   background: var(--background-cabecera-titulo);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -184,8 +190,9 @@ body {
 
 .cabecera__descripcion {
   color: var(--color-cabecera-descripcion);
-  font-size: clamp(0.875rem, 2vw, 1rem);
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem); /* Reducido aún más */
   max-width: 600px;
+  text-align: center; /* Centra el texto de la descripción */
 }
 
 /* Navegación de acciones rápidas */
@@ -203,9 +210,10 @@ body {
 .nav-acciones {
   position: absolute;
   align-items: center;
-  right: 5rem; /* Mantener los botones alineados a la derecha */
+  right: 2rem; /* Separado del margen derecho, antes era var(--espaciado-sm) */
   display: flex;
   gap: var(--espaciado-xs);
+  flex-wrap: wrap; /* Permite que los botones se envuelvan en pantallas pequeñas */
 }
 
 .nav-acciones__boton {
@@ -213,8 +221,8 @@ body {
   border: 2px solid var(--color-borde);
   color: var(--color-texto);
   border-radius: var(--radio-md);
-  padding: var(--espaciado-xs) var(--espaciado-sm);
-  font-size: 1.25rem;
+  padding: calc(var(--espaciado-xs) * 0.5) var(--espaciado-xs); /* Más compacto */
+  font-size: clamp(0.7rem, 1.5vw, 0.875rem); /* Responsive */
   cursor: pointer;
   transition: all var(--transicion-normal);
   display: inline-flex;
@@ -244,28 +252,19 @@ body {
 .contenedor-principal {
   background: var(--color-superficie);
   border-radius: var(--radio-xl);
-  padding: var(--espaciado-lg);
+  padding: var(--espaciado-sm);
+  margin-top: var(--espaciado-xs);  /* Reducido desde 1.5rem a 0.5rem */
+  margin-bottom: 1.5rem;
   box-shadow: var(--sombra-xl);
-  max-width: 1000px;
-  margin: 0 auto;
+ 
   width: 100%;
-  max-height: 85vh; /* Ajustar altura para evitar overflow */
-  overflow-y: auto; /* Scroll interno cuando sea necesario */
-  animation: fadeIn 0.8s ease-out;
+  max-width: 700px;    /* Reducido desde 900px */
+  /* Elimina max-height y overflow-y para evitar scroll innecesario */
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-lg);
-}
-
-@keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  gap: var(--espaciado-md); /* Reducido desde var(--espaciado-lg) */
+  align-items: center; /* Centra horizontalmente el contenido interno */
+  /* Elimina justify-content: center */
 }
 
 /* ==========================================================================
@@ -275,19 +274,19 @@ body {
 .estado-juego {
   display: flex;
   justify-content: center;
-  gap: var(--espaciado-lg);
+  gap: var(--espaciado-md); /* Reducido desde var(--espaciado-lg) */
   flex-wrap: wrap;
 }
 
 .estado-juego__item {
   background: var(--background-estado-juego-item);
   border-radius: var(--radio-lg);
-  padding: var(--espaciado-md);
+  padding: var(--espaciado-sm); /* Reducido desde var(--espaciado-md) */
   display: flex;
   flex-direction: column;
   gap: var(--espaciado-xs);
   align-items: center;
-  min-width: 150px;
+  min-width: 120px; /* Reducido desde 150px */
   box-shadow: var(--sombra-sm);
   transition: all var(--transicion-normal);
 }
@@ -298,7 +297,7 @@ body {
 }
 
 .estado-juego__etiqueta {
-  font-size: 0.875rem;
+  font-size: 0.75rem; /* Reducido desde 0.875rem */
   color: var(--color-texto-secundario);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -306,7 +305,7 @@ body {
 }
 
 .estado-juego__valor {
-  font-size: 2rem;
+  font-size: 1.75rem; /* Reducido desde 2rem */
   font-weight: 800;
   background: var(--background-estado-juego-valor);
   -webkit-background-clip: text;
@@ -327,8 +326,8 @@ body {
 }
 
 .botones-control__boton {
-  padding: var(--espaciado-sm) var(--espaciado-md);
-  font-size: 1rem;
+  padding: var(--espaciado-xs) var(--espaciado-sm); /* Reducido desde var(--espaciado-sm) var(--espaciado-md) */
+  font-size: 0.875rem; /* Reducido desde 1rem */
   font-weight: 600;
   border: none;
   border-radius: var(--radio-md);
@@ -337,7 +336,7 @@ body {
   box-shadow: var(--sombra-md);
   position: relative;
   overflow: hidden;
-  min-width: 140px;
+  min-width: 120px; /* Reducido desde 140px */
 }
 
 .botones-control__boton::before {
@@ -412,8 +411,11 @@ body {
   justify-content: center;
   align-items: center;
   padding: var(--espaciado-lg);
-  min-height: 400px;
+  min-height: 250px; /* Reduce la altura mínima del tablero */
   gap: var(--espaciado-xl);
+  width: 100%;
+  box-sizing: border-box;
+  /* Elimina height: 100% para evitar estiramiento vertical */
 }
 
 .tablero {
@@ -441,6 +443,31 @@ body {
   justify-content: center;
   background-size: cover;
   background-position: center;
+}
+
+/* Colores de las fichas */
+.ficha--color-0 { background-color: var(--color-ficha-1); }
+.ficha--color-1 { background-color: var(--color-ficha-2); }
+.ficha--color-2 { background-color: var(--color-ficha-3); }
+.ficha--color-3 { background-color: var(--color-ficha-4); }
+.ficha--color-4 { background-color: var(--color-ficha-5); }
+.ficha--color-5 { background-color: var(--color-ficha-6); }
+.ficha--color-6 { background-color: var(--color-ficha-7); }
+
+/* Tamaños de las fichas */
+.ficha--size-pequena {
+  width: var(--ficha-pequena);
+  height: var(--ficha-pequena);
+}
+
+.ficha--size-mediana {
+  width: var(--ficha-mediana);
+  height: var(--ficha-mediana);
+}
+
+.ficha--size-grande {
+  width: var(--ficha-grande);
+  height: var(--ficha-grande);
 }
 
 .ficha::before {
@@ -609,67 +636,90 @@ body {
    RESPONSIVE
    ========================================================================== */
 
+@media (max-width: 1024px) {
+  .nav-acciones {
+    right: 1rem; /* También separa en pantallas medianas */
+  }
+  
+  .nav-acciones__boton {
+    padding: calc(var(--espaciado-xs) * 0.4) calc(var(--espaciado-xs) * 0.8);
+    font-size: 0.8rem;
+  }
+}
+
 @media (max-width: 768px) {
-  body {
-    padding: var(--espaciado-sm);
-  }
-  
   .cabecera {
-    padding: var(--espaciado-md);
+    padding: var(--espaciado-xs); /* Reducir padding en móviles */
+    gap: calc(var(--espaciado-xs) * 0.5);
   }
   
-  .contenedor-principal {
-    padding: var(--espaciado-md);
+  .cabecera__titulo {
+    font-size: clamp(1rem, 4vw, 1.5rem); /* Más pequeño en móviles */
   }
   
-  .estado-juego {
-    gap: var(--espaciado-sm);
+  .cabecera__descripcion {
+    font-size: clamp(0.65rem, 2vw, 0.75rem);
+    max-width: 90%;
   }
   
-  .estado-juego__item {
-    min-width: 120px;
-    padding: var(--espaciado-sm);
-  }
-  
-  .estado-juego__valor {
-    font-size: 1.5rem;
-  }
-  
-  .botones-control {
-    flex-direction: column;
-  }
-  
-  .botones-control__boton {
+  .nav-acciones {
+    position: static; /* Quitar posición absoluta en móviles */
+    margin-top: var(--espaciado-xs);
+    justify-content: center;
     width: 100%;
   }
   
-  .tablero-contenedor--doble {
-    flex-direction: column;
-    gap: var(--espaciado-md);
-  }
-  
-  .tablero {
-    padding: var(--espaciado-sm);
+  .nav-acciones__boton {
+    padding: calc(var(--espaciado-xs) * 0.6) var(--espaciado-xs);
+    font-size: 0.75rem;
+    min-width: auto;
+    flex: 1;
+    max-width: 120px;
   }
 }
 
 @media (max-width: 480px) {
-  :root {
-    --ficha-pequena: 40px;
-    --ficha-mediana: 55px;
-    --ficha-grande: 70px;
+  .cabecera {
+    padding: calc(var(--espaciado-xs) * 0.75);
   }
   
   .cabecera__titulo {
-    font-size: 1.5rem;
+    font-size: clamp(0.9rem, 5vw, 1.25rem);
+    font-weight: 800;
   }
   
-  .estado-juego__etiqueta {
-    font-size: 0.75rem;
+  .cabecera__descripcion {
+    font-size: clamp(0.6rem, 2.5vw, 0.7rem);
+    line-height: 1.3;
   }
   
-  .estado-juego__valor {
-    font-size: 1.25rem;
+  .nav-acciones__boton {
+    padding: calc(var(--espaciado-xs) * 0.5) calc(var(--espaciado-xs) * 0.75);
+    font-size: 0.7rem;
+    gap: 0.25rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .cabecera {
+    padding: calc(var(--espaciado-xs) * 0.5);
+  }
+  
+  .cabecera__titulo {
+    font-size: 1rem;
+  }
+  
+  .cabecera__descripcion {
+    font-size: 0.65rem;
+  }
+  
+  .nav-acciones {
+    gap: calc(var(--espaciado-xs) * 0.5);
+  }
+  
+  .nav-acciones__boton {
+    padding: calc(var(--espaciado-xs) * 0.4) calc(var(--espaciado-xs) * 0.6);
+    font-size: 0.65rem;
   }
 }
 
@@ -699,4 +749,15 @@ body {
 .tablero--activo::after {
   display: none;
 }
+
+/* ==========================================================================
+   TABLERO GRID LAYOUTS
+   ========================================================================== */
+
+.tablero--cols-2 { grid-template-columns: repeat(2, 1fr); }
+.tablero--cols-3 { grid-template-columns: repeat(3, 1fr); }
+.tablero--cols-4 { grid-template-columns: repeat(4, 1fr); }
+.tablero--cols-5 { grid-template-columns: repeat(5, 1fr); }
+.tablero--cols-6 { grid-template-columns: repeat(6, 1fr); }
+.tablero--cols-7 { grid-template-columns: repeat(7, 1fr); }
 
