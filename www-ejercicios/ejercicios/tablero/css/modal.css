@@ -5,253 +5,489 @@
    - Propiedades compartidas por todos los tipos de modal
    - Establecen apariencia básica y comportamientos de interacción
    ========================================================================== */
+
 .modal {
   border: none;
-  border-radius: var(--radio-borde);
+  border-radius: var(--radio-xl);
   padding: 0;
-  box-shadow: var(--sombra-fuerte);
+  box-shadow: var(--sombra-xl);
+  /* ✅ EXCEPCIÓN: margin auto para centrado */
   margin: auto;
+  max-width: 90vw;
 }
 
 /* Fondo semi-transparente con desenfoque para profundidad */
 .modal::backdrop {
-  background-color: var(--color-modal-backdrop);
-  backdrop-filter: blur(0.1875rem);
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(8px);
+  animation: fadeIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal__contenido {
   padding: var(--espaciado-xl);
+  /* ✅ RAMA: usa flex */
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-l);
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-md);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.95));
+  backdrop-filter: blur(10px);
+  border-radius: var(--radio-xl);
+  animation: slideInUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes slideInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
 .modal__titulo {
-  color: var(--color-primario);
-  /* Eliminamos margin-bottom: var(--espaciado-l); */
-  padding-bottom: var(--espaciado-s);
-  border-bottom: 0.125rem solid var(--color-borde);
-  font-size: 1.8rem;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-acento));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  padding-bottom: var(--espaciado-sm);
+  border-bottom: 2px solid var(--color-borde);
+  letter-spacing: -0.02em;
+  animation: slideInFromTop 0.5s ease-out;
 }
 
-/* Agrupación de botones con espaciado consistente */
+@keyframes slideInFromTop {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.modal__mensaje {
+  color: var(--color-texto-secundario);
+  font-size: 1rem;
+  /* ✅ HOJA FINAL → puede tener line-height */
+  line-height: 1.6;
+}
+
 .modal__botones {
+  /* ✅ RAMA: usa flex */
   display: flex;
   justify-content: center;
-  gap: var(--espaciado);
-  /* Eliminamos margin-top: var(--espaciado-l); */
-  /* El gap en .modal__contenido ya maneja este espaciado */
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-sm);
+  flex-wrap: wrap;
+  /* ❌ ELIMINADO: margin-top → modal__contenido usa gap */
 }
 
 /* Estilo base para botones de acción en modales */
 .modal__boton {
-  padding: var(--espaciado-s) var(--espaciado-l);
-  background-color: var(--color-primario);
-  color: var(--color-texto-invertido);
+  padding: var(--espaciado-sm) var(--espaciado-lg);
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  color: white;
   border: none;
-  border-radius: 0.25rem;
+  border-radius: var(--radio-md);
   cursor: pointer;
   font-weight: 600;
-  transition: background-color 0.3s, transform 0.2s;
-  min-width: 8.75rem; /* 140px */
+  font-size: 1rem;
+  transition: all var(--transicion-normal);
+  min-width: 140px;
+  box-shadow: var(--sombra-md);
+  /* ✅ MANTENER: position relative necesario para ::before absoluto */
+  position: relative;
+  overflow: hidden;
+}
+
+.modal__boton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.modal__boton:hover::before {
+  width: 300px;
+  height: 300px;
 }
 
 .modal__boton:hover {
-  background-color: var(--color-primario-oscuro);
-  transform: translateY(-0.125rem);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--sombra-lg);
+}
+
+.modal__boton:active {
+  transform: translateY(0) scale(0.98);
 }
 
 /* Variante secundaria para botones menos prominentes */
 .modal__boton--secundario {
-  background-color: var(--color-borde);
+  background: linear-gradient(135deg, var(--color-borde), var(--color-texto-secundario));
   color: var(--color-texto);
 }
 
 .modal__boton--secundario:hover {
-  background-color: var(--color-boton-secundario-hover);
+  background: linear-gradient(135deg, #cbd5e1, #94a3b8);
 }
 
 /* ==========================================================================
-   MODAL DE ESTADÍSTICAS/VICTORIA:
-   - Diseño conciso para mostrar resultados del juego
-   - Énfasis visual en estadísticas importantes
+   MODAL DE CONFIGURACIÓN
    ========================================================================== */
+
+#modal-config {
+  max-width: 500px;
+  width: 90%;
+}
+
+.controles {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-md);
+}
+
+.controles__grupo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-xs);
+}
+
+.controles__etiqueta {
+  font-weight: 600;
+  color: var(--color-texto);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.controles__selector,
+.controles__numero {
+  padding: var(--espaciado-sm);
+  border: 2px solid var(--color-borde);
+  border-radius: var(--radio-md);
+  font-size: 1rem;
+  background: white;
+  transition: all var(--transicion-normal);
+  cursor: pointer;
+}
+
+.controles__selector:hover,
+.controles__numero:hover {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.controles__selector:focus,
+.controles__numero:focus {
+  outline: none;
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* ==========================================================================
+   MODAL DE ESTADÍSTICAS/VICTORIA
+   ========================================================================== */
+
 #modal-victoria {
-  max-width: 90%;
-  width: 25rem; /* 400px */
+  max-width: 450px;
+  width: 90%;
 }
 
 #modal-victoria .modal__contenido {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-l);
 }
 
+#modal-victoria .modal__titulo {
+  font-size: 2.5rem;
+  animation: bounce 0.6s ease-out;
+}
 
-#modal-victoria .modal__estadisticas {
-  background-color: var(--color-primario-claro);
-  padding: var(--espaciado);
-  border-radius: var(--radio-borde);
-  /* Eliminamos margin-bottom: var(--espaciado-l); */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  25% {
+    transform: translateY(-10px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(-5px);
+  }
+}
+
+.modal__estadisticas {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.1), rgba(139, 92, 246, 0.1));
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 2px solid rgba(99, 102, 241, 0.2);
+  /* ✅ RAMA: usa flex */
+  display: flex;
+  flex-direction: column;
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-sm);
   font-weight: 600;
+  animation: scaleIn 0.5s ease-out 0.2s both;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.modal__estadisticas p {
+  font-size: 1rem;
+  color: var(--color-texto);
+  /* ✅ RAMA: usa flex para distribuir contenido */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  white-space: nowrap;
+  text-align: center;
+  /* ✅ HOJA FINAL → puede tener line-height */
+  line-height: 1.4;
+}
+
+.modal__estadisticas span {
+  font-size: 1.5rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-acento));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: var(--color-acento); /* Color llamativo */
 }
 
 /* ==========================================================================
-   MODAL DE AYUDA:
-   - Layout amplio para contenido educacional/instructivo
-   - Secciones claras con jerarquía visual
+   MODAL DE AYUDA
    ========================================================================== */
+
 #modal-ayuda {
-  max-width: 95%;
-  width: 90%; 
+  max-width: 900px;
+  width: 95%;
 }
 
 #modal-ayuda .modal__contenido {
   text-align: left;
+  max-height: 80vh;
+  overflow-y: auto;
+  padding-right: var(--espaciado-sm);
+}
+
+#modal-ayuda .modal__contenido::-webkit-scrollbar {
+  width: 8px;
+}
+
+#modal-ayuda .modal__contenido::-webkit-scrollbar-track {
+  background: var(--color-fondo);
+  border-radius: var(--radio-md);
+}
+
+#modal-ayuda .modal__contenido::-webkit-scrollbar-thumb {
+  background: var(--color-primario);
+  border-radius: var(--radio-md);
 }
 
 #modal-ayuda .modal__titulo {
   text-align: center;
+  font-size: 2rem;
 }
 
-/* Layout de múltiples columnas para mejor organización */
 .modal-ayuda__secciones {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--espaciado-l);
-  justify-content: space-between;
-  /* Eliminamos margin-bottom: var(--espaciado-xl); */
+  /* ✅ RAMA: usa grid */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-lg);
 }
 
 .modal-ayuda__seccion {
-  flex: 1;
-  min-width: 15.625rem; /* 250px */
-  /* Eliminamos margin-bottom: var(--espaciado); */
-  padding: var(--espaciado);
-  border-radius: var(--radio-borde);
-  background-color: var(--color-modal-panel-claro);
-  box-shadow: var(--sombra-modal-panel-claro);
-  
-  /* Añadimos estructura flex para gestionar espaciado interno */
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(248, 250, 252, 0.9));
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 2px solid var(--color-borde);
+  box-shadow: var(--sombra-sm);
+  transition: all var(--transicion-normal);
+  /* ✅ RAMA: usa flex */
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado);
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-sm);
+}
+
+.modal-ayuda__seccion:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--sombra-md);
+  border-color: var(--color-primario);
 }
 
 .modal-ayuda__subtitulo {
   font-size: 1.25rem;
-  color: var(--color-primario-oscuro);
-  /* Eliminamos margin-bottom: var(--espaciado-s); */
+  font-weight: 700;
+  color: var(--color-primario);
+  padding-bottom: var(--espaciado-xs);
+  border-bottom: 2px solid var(--color-primario);
   display: flex;
   align-items: center;
-  border-bottom: 0.0625rem solid var(--color-borde);
-  padding-bottom: var(--espaciado-s);
+  gap: var(--espaciado-xs);
 }
 
-/* Listas con buen espaciado para legibilidad */
+.modal-ayuda__subtitulo::before {
+  content: '▸';
+  font-size: 1.5rem;
+}
+
 .modal-ayuda__lista {
-  padding-left: var(--espaciado-l);
-  /* Eliminamos margin-bottom: var(--espaciado); */
-  /* El gap en .modal-ayuda__seccion ya maneja este espaciado */
-  
-  /* Reemplazamos line-height con estructura flex */
+  padding-left: var(--espaciado-lg);
+  /* ✅ RAMA: usa flex */
   display: flex;
   flex-direction: column;
-  gap: var(--espaciado-s); /* Para el espaciado entre elementos de la lista */
+  /* ✅ gap en lugar de margin */
+  gap: var(--espaciado-xs);
+  list-style: none;
 }
 
 .modal-ayuda__lista li {
-  /* Eliminamos margin-bottom: var(--espaciado-s); */
-  /* El gap en .modal-ayuda__lista ya maneja este espaciado */
-  padding-top: 0.25em;
-  padding-bottom: 0.25em;
+  /* ✅ MANTENER: position relative necesario para ::before absoluto */
+  position: relative;
+  padding-left: var(--espaciado-sm);
+  /* ✅ HOJA FINAL → puede tener line-height */
+  line-height: 1.6;
+  color: var(--color-texto);
+}
+
+.modal-ayuda__lista li::before {
+  content: '→';
+  /* ✅ MANTENER: position absolute justificado */
+  position: absolute;
+  left: 0;
+  color: var(--color-primario);
+  font-weight: bold;
+}
+
+.modal-ayuda__lista strong {
+  color: var(--color-primario);
+  font-weight: 700;
 }
 
 /* ==========================================================================
-   TEMA OSCURO (para los modales)
+   MODAL DE JUEGO DETENIDO
    ========================================================================== */
-[data-theme="dark"] .modal {
-  background-color: var(--modal-bg, hsl(var(--tono-principal), 15%, 12%));
-  color: var(--color-texto);
-  border: 0.0625rem solid var(--color-borde);
-}
 
-[data-theme="dark"] .modal__titulo {
-  color: var(--color-primario);
-  border-bottom-color: var(--color-borde);
-}
-
-[data-theme="dark"] .modal__boton--secundario {
-  background-color: var(--color-borde);
-  color: var(--color-texto);
-}
-
-[data-theme="dark"] .modal__boton--secundario:hover {
-  background-color: var(--color-boton-secundario-hover-dark);
-}
-
-[data-theme="dark"] #modal-victoria .modal__estadisticas {
-  background-color: var(--color-primario-claro);
-  color: var(--color-texto);
-}
-
-[data-theme="dark"] .modal-ayuda__seccion {
-  background-color: var(--color-modal-panel-oscuro);
-  box-shadow: var(--sombra-modal-panel-oscuro);
-}
-
-[data-theme="dark"] .modal-ayuda__subtitulo {
-  color: var(--color-primario);
-}
-
-/* ==========================================================================
-   MODAL DE JUEGO DETENIDO - Variante visual del modal de estadísticas
-   ========================================================================== */
 #modal-detenido {
-  max-width: 90%;
-  width: 25rem; /* 400px */
+  max-width: 450px;
+  width: 90%;
 }
 
 #modal-detenido .modal__contenido {
   text-align: center;
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-l);
 }
 
 #modal-detenido .modal__mensaje {
-  /* Eliminamos margin-bottom: var(--espaciado-l); */
-  /* El gap en el contenedor ya maneja este espaciado */
-  color: var(--color-texto);
+  color: var(--color-texto-secundario);
+  font-size: 1.125rem;
 }
 
 #modal-detenido .modal__estadisticas {
-  background-color: var(--color-celda-destino);
-  padding: var(--espaciado);
-  border-radius: var(--radio-borde);
-  /* Eliminamos margin-bottom: var(--espaciado-l); */
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(220, 38, 38, 0.1));
+  padding: var(--espaciado-lg);
+  border-radius: var(--radio-lg);
+  border: 2px solid rgba(239, 68, 68, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-sm);
   font-weight: 600;
-  border: 0.0625rem solid var(--color-borde);
 }
 
-/* Versión para tema oscuro */
-[data-theme="dark"] #modal-detenido .modal__estadisticas {
-  background-color: var(--color-modal-panel-oscuro);
+#modal-detenido .modal__estadisticas p {
+  font-size: 1.125rem;
   color: var(--color-texto);
-  border-color: var(--color-borde);
+}
+
+#modal-detenido .modal__estadisticas span {
+  font-weight: 800;
+  color: var(--color-primario);
 }
 
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
-@media (max-width: 48rem) { /* 768px */
-  .modal-ayuda__secciones {
+
+@media (max-width: 768px) {
+  .modal__contenido {
+    padding: var(--espaciado-lg);
+  }
+  
+  .modal__titulo {
+    font-size: 1.5rem;
+  }
+  
+  .modal__botones {
     flex-direction: column;
   }
   
-  .modal-ayuda__seccion {
+  .modal__boton {
     width: 100%;
+  }
+  
+  .modal-ayuda__secciones {
+    grid-template-columns: 1fr;
+  }
+  
+  #modal-ayuda .modal__contenido {
+    max-height: 70vh;
   }
 }
 
+@media (max-width: 480px) {
+  .modal {
+    max-width: 95vw;
+  }
+  
+  .modal__contenido {
+    padding: var(--espaciado-md);
+    gap: var(--espaciado-sm);
+  }
+  
+  .modal__estadisticas {
+    padding: var(--espaciado-md);
+  }
+  
+  .modal__estadisticas p {
+    font-size: 1rem;
+    flex-direction: column;
+    gap: var(--espaciado-xs);
+  }
+  
+  .modal__estadisticas span {
+    font-size: 1.25rem;
+  }
+}

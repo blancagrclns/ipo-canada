@@ -1,134 +1,361 @@
 /* ==========================================================================
-   TEMA OSCURO - Variante cromática completa de la interfaz
-   ==========================================================================
-   - Sobreescribe selectivamente variables y propiedades del tema claro
-   - Mantiene coherencia visual y buena legibilidad
-   - Reduce fatiga visual en condiciones de baja iluminación
-*/
-
-/* ==========================================================================
-   VARIABLES TEMA OSCURO
-   - Redefine colores base manteniendo tonalidades armónicas
-   - Ajusta contraste para asegurar legibilidad
+   TEMA OSCURO - Diseño moderno siguiendo buenas prácticas
    ========================================================================== */
+
 [data-theme="dark"] {
-  /* Paleta principal ajustada para modo oscuro */
-  --color-fondo: hsl(var(--tono-principal), 15%, 10%);
-  --color-texto: hsl(var(--tono-principal), 10%, 90%);
-  --color-primario: hsl(var(--tono-principal), var(--saturacion-principal), 55%);
-  --color-primario-claro: hsl(var(--tono-principal), 30%, 25%);
-  --color-primario-oscuro: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
-  --color-complementario: hsl(var(--tono-complementario), 70%, 55%);
-  --color-exito: hsl(120, 70%, 45%);
-  --color-borde: hsl(var(--tono-principal), 15%, 30%);
-  --patron-geometrico-color: hsla(0, 0%, 100%, 0.07);
-  --color-panel-claro: hsl(var(--tono-principal), 20%, 18%);
-  --color-tablero-superior: hsl(var(--tono-principal), 20%, 25%);
-  --color-tablero-medio: hsl(var(--tono-principal), 20%, 20%);
-  --color-tablero-inferior: hsl(var(--tono-principal), 20%, 14%);
-  --color-tablero-borde: rgba(255, 255, 255, 0.06);
-  --sombra-tablero-principal: 0 1.25rem 3rem rgba(0, 0, 0, 0.45);
-  --sombra-tablero-secundaria: 0 0.5rem 1.25rem rgba(0, 0, 0, 0.35);
+  /* Colores principales - Sobrescribir los del archivo principal */
+  --color-primario: #818cf8;
+  --color-secundario: #a78bfa;
+  --color-acento: #f472b6;
+  --color-fondo: #0f172a;
+  --color-superficie: #1e293b;
+  --color-texto: #f1f5f9;
+  --color-texto-secundario: #cbd5e1;
+  --color-borde: #334155;
+  --color-sombra: rgba(0, 0, 0, 0.7);
   
-  /* Variables específicas para componentes en tema oscuro */
-  --tablero-bg: hsl(var(--tono-principal), 15%, 15%);
-  --ficha-sombra: rgba(0, 0, 0, 0.5);
-  --modal-bg: hsl(var(--tono-principal), 15%, 12%);
-  --modal-sombra: rgba(0, 0, 0, 0.6);
-  --modal-title-color: var(--color-primario);
-  
-  /* Variables para sombras adaptadas a fondo oscuro */
-  --sombra-suave: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.3);
-  --sombra-media: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.4);
-  --sombra-fuerte: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.5);
+  /* Sombras mejoradas para modo oscuro */
+  --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
+  --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+  --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
+  --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
 }
 
-/* ==========================================================================
-   ESTRUCTURA GENERAL
-   - Ajusta fondo y colores base para toda la interfaz
-   ========================================================================== */
+/* Body - Fondo oscuro con degradado elegante */
 [data-theme="dark"] body {
-  background-color: var(--color-fondo);
-  background-image:
-    repeating-linear-gradient(
-      135deg,
-      transparent 0 22px,
-      var(--patron-geometrico-color) 22px 23px
-    ),
-    linear-gradient(
-      135deg,
-      hsl(var(--tono-principal), 20%, 8%) 0%,
-      hsl(var(--tono-principal), 15%, 12%) 100%
-    );
-  background-size: 32px 32px, 100% 100%;
-  background-attachment: fixed, fixed;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   color: var(--color-texto);
 }
 
-/* ==========================================================================
-   CABECERA
-   - Acentúa título y delimita secciones con bordes sutiles
-   ========================================================================== */
+/* Cabecera - Superficie oscura con brillo sutil */
 [data-theme="dark"] .cabecera {
-  border-bottom-color: var(--color-borde);
+  background: linear-gradient(135deg, #1e293b, #334155);
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.2);
 }
 
 [data-theme="dark"] .cabecera__titulo {
-  color: var(--color-primario);
+  background: linear-gradient(135deg, #818cf8, #f472b6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(129, 140, 248, 0.3);
 }
 
-/* ==========================================================================
-   CONTROLES
-   - Ajusta apariencia del panel de configuración y sus elementos
-   ========================================================================== */
+[data-theme="dark"] .cabecera__descripcion {
+  color: var(--color-texto-secundario);
+  line-height: 1.5;
+}
+
+/* Navegación - Botones con efecto neón */
+[data-theme="dark"] .nav-acciones__boton {
+  background: rgba(30, 41, 59, 0.8);
+  border: 2px solid rgba(129, 140, 248, 0.3);
+  color: var(--color-texto);
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="dark"] .nav-acciones__boton:hover {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-fondo);
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
+}
+
+/* Contenedor principal - Superficie con profundidad */
+[data-theme="dark"] .contenedor-principal {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  box-shadow: var(--sombra-xl), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(129, 140, 248, 0.1);
+}
+
+/* Estado del juego - Cards con brillo */
+[data-theme="dark"] .estado-juego__item {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), rgba(167, 139, 250, 0.1));
+  box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.05);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .estado-juego__item:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(129, 140, 248, 0.2);
+  border-color: var(--color-primario);
+}
+
+[data-theme="dark"] .estado-juego__etiqueta {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .estado-juego__valor {
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 10px rgba(129, 140, 248, 0.3));
+}
+
+/* Botones de control - Gradientes vibrantes */
+[data-theme="dark"] .boton--verde {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .boton--verde:hover {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+[data-theme="dark"] .boton--naranja {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .boton--naranja:hover {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+[data-theme="dark"] .boton--rojo {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .boton--rojo:hover {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(239, 68, 68, 0.5);
+}
+
+/* Tablero - Superficie oscura con profundidad */
+[data-theme="dark"] .tablero {
+  background: linear-gradient(135deg, #0f172a, #1e293b);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(129, 140, 248, 0.1);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .tablero::after {
+  color: var(--color-texto-secundario);
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.3);
+  line-height: 1.4;
+}
+
+[data-theme="dark"] .tablero--activo::after {
+  display: none;
+}
+
+/* Fichas - Efectos de brillo y profundidad */
+[data-theme="dark"] .ficha {
+  box-shadow: var(--sombra-md), 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="dark"] .ficha:hover {
+  box-shadow: var(--sombra-lg), 0 0 25px rgba(129, 140, 248, 0.4);
+}
+
+[data-theme="dark"] .ficha::before {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
+}
+
+/* Celdas vacías */
+[data-theme="dark"] .celda-vacia {
+  background: rgba(30, 41, 59, 0.5);
+  border: 2px dashed rgba(129, 140, 248, 0.3);
+}
+
+[data-theme="dark"] .celda-vacia--destino {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), rgba(167, 139, 250, 0.1));
+  border-color: var(--color-primario);
+  box-shadow: 0 0 20px rgba(129, 140, 248, 0.2);
+}
+
+/* Etiquetas del tablero */
+[data-theme="dark"] .tablero__etiqueta {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.2), rgba(167, 139, 250, 0.2));
+  color: var(--color-primario);
+  text-shadow: 0 0 10px rgba(129, 140, 248, 0.3);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+/* Controles de configuración */
 [data-theme="dark"] .controles {
-  background-color: var(--color-primario-claro);
-  border: 0.0625rem solid var(--color-borde);
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.8), rgba(51, 65, 85, 0.8));
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  box-shadow: var(--sombra-md);
+  backdrop-filter: blur(10px);
 }
 
 [data-theme="dark"] .controles__selector,
 [data-theme="dark"] .controles__numero {
-  background-color: hsl(var(--tono-principal), 15%, 20%);
-  border-color: var(--color-borde);
+  background: rgba(15, 23, 42, 0.8);
+  border-color: rgba(129, 140, 248, 0.3);
   color: var(--color-texto);
 }
 
-[data-theme="dark"] .controles__boton {
-  background-color: var(--color-primario);
+[data-theme="dark"] .controles__selector:focus,
+[data-theme="dark"] .controles__numero:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.2);
 }
 
-[data-theme="dark"] .controles__boton:hover {
-  background-color: var(--color-primario-oscuro);
+[data-theme="dark"] .controles__etiqueta {
+  color: var(--color-texto-secundario);
+}
+
+/* Scrollbar personalizado */
+[data-theme="dark"] .contenedor-principal::-webkit-scrollbar {
+  width: 10px;
+}
+
+[data-theme="dark"] .contenedor-principal::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] .contenedor-principal::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] .contenedor-principal::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
 }
 
 /* ==========================================================================
-   ESTADO DEL JUEGO
-   - Panel de información con fondo adaptado al tema oscuro
+   MODALES - Modo oscuro
    ========================================================================== */
-[data-theme="dark"] .estado-juego {
-  background-color: var(--color-primario-claro);
-  box-shadow: var(--sombra-media);
+
+/* Modal backdrop */
+[data-theme="dark"] .modal::backdrop {
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(10px);
 }
 
-/* ==========================================================================
-   TABLERO
-   - Área principal de juego con sombras adaptadas a fondo oscuro
-   ========================================================================== */
-[data-theme="dark"] .ficha:hover {
-  box-shadow: 0 0.375rem 0.75rem var(--ficha-sombra);
+/* Contenido del modal */
+[data-theme="dark"] .modal__contenido {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  box-shadow: var(--sombra-xl), 0 0 50px rgba(129, 140, 248, 0.2);
 }
 
-/* ==========================================================================
-   BOTONES FLOTANTES Y DE CONTROL
-   - Ajusta colores y efectos visuales para mejor visibilidad
-   ========================================================================== */
-[data-theme="dark"] .botones-control__boton,
-[data-theme="dark"] .botones-flotantes__boton {
-  background-color: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
-  color: var(--color-texto-invertido);
+/* Título del modal */
+[data-theme="dark"] .modal__titulo {
+  background: linear-gradient(135deg, #818cf8, #a78bfa);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  border-bottom-color: rgba(129, 140, 248, 0.3);
+  text-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
 }
 
-[data-theme="dark"] .botones-control__boton:hover,
-[data-theme="dark"] .botones-flotantes__boton:hover {
-  background-color: hsl(var(--tono-principal), var(--saturacion-principal), 50%);
+/* Mensaje del modal */
+[data-theme="dark"] .modal__mensaje {
+  color: var(--color-texto-secundario);
+}
+
+/* Botones del modal */
+[data-theme="dark"] .modal__boton {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.3);
+}
+
+[data-theme="dark"] .modal__boton:hover {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(129, 140, 248, 0.5);
+}
+
+[data-theme="dark"] .modal__boton--secundario {
+  background: linear-gradient(135deg, rgba(51, 65, 85, 0.8), rgba(71, 85, 105, 0.8));
+  border: 1px solid rgba(129, 140, 248, 0.3);
+}
+
+[data-theme="dark"] .modal__boton--secundario:hover {
+  background: linear-gradient(135deg, rgba(71, 85, 105, 0.9), rgba(100, 116, 139, 0.9));
+  box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.2);
+}
+
+/* Estadísticas del modal */
+[data-theme="dark"] .modal__estadisticas {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.15), rgba(167, 139, 250, 0.15));
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  box-shadow: var(--sombra-sm), 0 0 15px rgba(129, 140, 248, 0.1);
+}
+
+[data-theme="dark"] .modal__estadisticas p {
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .modal__estadisticas span {
+  color: var(--color-acento);
+}
+
+/* Modal de configuración */
+[data-theme="dark"] #modal-config .controles {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.6), rgba(51, 65, 85, 0.6));
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .controles__selector,
+[data-theme="dark"] .controles__numero {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .controles__selector:hover,
+[data-theme="dark"] .controles__numero:hover {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+[data-theme="dark"] .controles__selector:focus,
+[data-theme="dark"] .controles__numero:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+}
+
+/* Modal de ayuda */
+[data-theme="dark"] #modal-ayuda .modal__contenido {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+}
+
+[data-theme="dark"] .modal-ayuda__seccion {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(51, 65, 85, 0.7));
+  border: 1px solid rgba(129, 140, 248, 0.2);
+  box-shadow: var(--sombra-sm);
+}
+
+[data-theme="dark"] .modal-ayuda__seccion:hover {
+  border-color: var(--color-primario);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.15);
+}
+
+[data-theme="dark"] .modal-ayuda__subtitulo {
+  color: var(--color-primario);
+  border-bottom-color: rgba(129, 140, 248, 0.3);
+}
+
+[data-theme="dark"] .modal-ayuda__lista li {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .modal-ayuda__lista li::before {
+  color: var(--color-primario);
+}
+
+[data-theme="dark"] .modal-ayuda__lista strong {
+  color: var(--color-acento);
+}
+
+/* Scrollbar del modal de ayuda */
+[data-theme="dark"] #modal-ayuda .modal__contenido::-webkit-scrollbar {
+  width: 8px;
+}
+
+[data-theme="dark"] #modal-ayuda .modal__contenido::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] #modal-ayuda .modal__contenido::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] #modal-ayuda .modal__contenido::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
 }

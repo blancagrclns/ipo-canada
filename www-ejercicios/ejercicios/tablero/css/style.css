@@ -1,7 +1,66 @@
-/* style.css */
-/* Proyecto Tablero */
+/* ==========================================================================
+   PROYECTO TABLERO - Hoja de estilos principal
+   ========================================================================== */
 
-/* RESET MÍNIMO - Consistencia entre navegadores */
+/* ==========================================================================
+   VARIABLES CSS - Colores, tamaños y animaciones
+   ========================================================================== */
+
+:root {
+  /* Colores principales */
+  --color-primario: #6366f1;
+  --color-secundario: #8b5cf6;
+  --color-acento: #ec4899;
+  --color-fondo: #f8fafc;
+  --color-superficie: #ffffff;
+  --color-texto: #1e293b;
+  --color-texto-secundario: #64748b;
+  --color-borde: #e2e8f0;
+  --color-sombra: rgba(0, 0, 0, 0.1);
+  
+  /* Colores para las fichas */
+  --color-ficha-1: #ef4444;
+  --color-ficha-2: #f59e0b;
+  --color-ficha-3: #10b981;
+  --color-ficha-4: #3b82f6;
+  --color-ficha-5: #8b5cf6;
+  --color-ficha-6: #ec4899;
+  --color-ficha-7: #06b6d4;
+  
+  /* Tamaños de fichas */
+  --ficha-pequena: 50px;
+  --ficha-mediana: 70px;
+  --ficha-grande: 90px;
+  
+  /* Espaciados */
+  --espaciado-xs: 0.5rem;
+  --espaciado-sm: 1rem;
+  --espaciado-md: 1.5rem;
+  --espaciado-lg: 2rem;
+  --espaciado-xl: 3rem;
+  
+  /* Bordes */
+  --radio-sm: 0.375rem;
+  --radio-md: 0.5rem;
+  --radio-lg: 0.75rem;
+  --radio-xl: 1rem;
+  
+  /* Transiciones */
+  --transicion-rapida: 150ms ease-in-out;
+  --transicion-normal: 300ms ease-in-out;
+  --transicion-lenta: 500ms ease-in-out;
+  
+  /* Sombras */
+  --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* ==========================================================================
+   RESET Y ESTILOS BASE
+   ========================================================================== */
+
 *,
 *::before,
 *::after {
@@ -10,372 +69,340 @@
   padding: 0;
 }
 
-/* VARIABLES CSS - Diseño cromático centralizado con HSL */
-:root {
-  /* Colores principales con base HSL */
-  --tono-principal: 210;
-  --tono-complementario: calc(var(--tono-principal) + 180);
-  --saturacion-principal: 70%;
-
-  /* Paleta de colores para fichas */
-  --color-ficha-1: hsl(0, 80%, 60%); /* Rojo */
-  --color-ficha-2: hsl(120, 70%, 50%); /* Verde */
-  --color-ficha-3: hsl(240, 70%, 60%); /* Azul */
-  --color-ficha-4: hsl(60, 80%, 50%); /* Amarillo */
-  --color-ficha-5: hsl(300, 70%, 60%); /* Magenta */
-  --color-ficha-6: hsl(30, 80%, 50%); /* Naranja */
-  --color-ficha-7: hsl(180, 70%, 40%); /* Cian */
-
-  /* Colores de la interfaz */
-  --color-fondo: hsl(var(--tono-principal), 10%, 92%);
-  --color-texto: hsl(var(--tono-principal), 30%, 20%);
-  --color-primario: hsl(var(--tono-principal), var(--saturacion-principal), 50%);
-  --color-primario-claro: hsl(var(--tono-principal), var(--saturacion-principal), 92%);
-  --color-primario-oscuro: hsl(var(--tono-principal), var(--saturacion-principal), 40%);
-  --color-complementario: hsl(var(--tono-complementario), 60%, 45%);
-  --color-exito: hsl(120, 70%, 45%);
-  --color-borde: hsl(var(--tono-principal), 20%, 80%);
-  --color-tablero-borde: rgba(30, 45, 80, 0.1);
-  --sombra-tablero-principal: 0 1.75rem 3.25rem rgba(30, 45, 80, 0.16);
-  --sombra-tablero-secundaria: 0 0.75rem 1.5rem rgba(30, 45, 80, 0.1);
-  --color-tablero-superior: #ffffff;
-  --color-tablero-medio: #eef1f8;
-  --color-tablero-inferior: #e3e8f3;
-  --patron-geometrico-color: hsla(var(--tono-principal), 30%, 35%, 0.12);
-  --color-primario-rgb: 70, 131, 180;
-  --color-celda-destino: rgba(var(--color-primario-rgb), 0.1);
-  --color-celda-destino-oscura: rgba(var(--color-primario-rgb), 0.2);
-
-  /* Colores auxiliares centralizados */
-  --color-boton-verde: var(--color-exito);
-  --color-boton-verde-hover: hsl(120, 70%, 35%);
-  --color-boton-naranja: var(--color-ficha-6);
-  --color-boton-naranja-hover: hsl(30, 80%, 40%);
-  --color-boton-rojo: var(--color-ficha-1);
-  --color-boton-rojo-hover: hsl(0, 80%, 50%);
-  --color-boton-secundario-hover: hsl(var(--tono-principal), 20%, 75%);
-  --color-boton-secundario-hover-dark: hsl(var(--tono-principal), 10%, 30%);
-  --color-modal-backdrop: rgba(0, 0, 0, 0.6);
-  --color-modal-panel-claro: rgba(255, 255, 255, 0.4);
-  --color-modal-panel-oscuro: rgba(30, 30, 30, 0.3);
-  --sombra-modal-panel-claro: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.05);
-  --sombra-modal-panel-oscuro: 0 0.125rem 0.5rem rgba(0, 0, 0, 0.2);
-  --color-overlay-claro: rgba(255, 255, 255, 0.7);
-  --color-overlay-oscuro: rgba(0, 0, 0, 0.6);
-  --color-texto-desactivado: hsl(0, 0%, 50%);
-  --color-texto-invertido: #ffffff;
-  --color-panel-claro: #ffffff;
-  --boton-flotante-dimension: 3.125rem; /* 50px */
-
-  /* Tipografía */
-  --fuente-principal: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-
-  /* Tamaños */
-  --ficha-pequena: 3rem;
-  --ficha-mediana: 4.5rem;
-  --ficha-grande: 6rem;
-
-  /* Espaciado */
-  --espaciado: 1rem;
-  --espaciado-xs: 0.25rem;
-  --espaciado-s: 0.5rem;
-  --espaciado-m: 1rem;
-  --espaciado-l: 1.5rem;
-  --espaciado-xl: 2rem;
-  --espaciado-xxl: 3rem;
-
-  /* Bordes y sombras */
-  --radio-borde: 0.5rem;
-  --sombra-suave: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1);
-  --sombra-media: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.15);
-  --sombra-fuerte: 0 0.5rem 1.5rem rgba(0, 0, 0, 0.2);
-}
-
-/* BODY - Configuración general y layout */
 body {
-  font-family: var(--fuente-principal);
-  /* Fondo con tema de tablero */
-  background-color: var(--color-fondo);
-  background-image:
-    repeating-linear-gradient(
-      135deg,
-      transparent 0 22px,
-      var(--patron-geometrico-color) 22px 23px
-    ),
-    linear-gradient(
-      135deg,
-      hsl(var(--tono-principal), 15%, 88%) 0%,
-      hsl(var(--tono-principal), 10%, 96%) 100%
-    );
-  background-size: 32px 32px, 100% 100%;
-  background-attachment: fixed, fixed;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   color: var(--color-texto);
-  /* Eliminamos line-height: 1.6; */
-  /* Reemplazamos con padding y usamos flex para el texto */
   min-height: 100vh;
+  max-height: 100vh; /* Limitar altura máxima */
+  padding: var(--espaciado-sm); /* Reducir padding */
   display: flex;
   flex-direction: column;
-  padding: var(--espaciado);
-  transition: background 0.4s ease, color 0.4s ease;
-}
-
-/* CABECERA - Título y descripción del juego */
-.cabecera {
-  text-align: center;
-  padding: var(--espaciado);
-  /* Eliminamos margin-bottom: var(--espaciado); */
-  border-bottom: 0.0625rem solid var(--color-borde);
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-s);
-}
-
-.cabecera__titulo {
-  color: var(--color-primario-oscuro);
-  font-size: 2rem;
-  /* Eliminamos margin-bottom: var(--espaciado-s); */
-  /* El gap en .cabecera ya maneja este espaciado */
-}
-
-.cabecera__descripcion {
-  color: var(--color-texto);
-  max-width: 40rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-}
-
-/* CONTENEDOR PRINCIPAL - Layout general de la aplicación */
-.contenedor-principal {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  /* Añadir gap para incluir espaciado entre cabecera y contenedor */
-  gap: var(--espaciado);
-  max-width: 75rem;
-  /* 1200px */
-  margin: 0 auto;
-  width: 100%;
-}
-
-/* CONTROLES - Panel de configuración del juego */
-.controles {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: var(--espaciado);
-  padding: var(--espaciado);
-  background-color: var(--color-primario-claro);
-  border-radius: var(--radio-borde);
-  width: 100%;
-  max-width: 50rem;
-  /* 800px */
-}
-
-.controles__grupo {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-s);
-}
-
-.controles__etiqueta {
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.controles__selector,
-.controles__numero {
-  padding: var(--espaciado-s);
-  border: 0.0625rem solid var(--color-borde);
-  border-radius: 0.25rem;
-  background-color: var(--color-panel-claro);
-  min-width: 8rem;
-}
-
-.controles__boton {
-  padding: var(--espaciado-s) var(--espaciado-l);
-  background-color: var(--color-primario);
-  color: var(--color-texto-invertido);
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s, transform 0.1s;
-  align-self: flex-end;
-}
-
-.controles__boton:hover {
-  background-color: var(--color-primario-oscuro);
-}
-
-.controles__boton:active {
-  transform: scale(0.98);
-}
-
-/* ESTADO DEL JUEGO - Indicadores de tiempo y movimientos */
-.estado-juego {
-  display: flex;
-  gap: var(--espaciado-xl);
-  padding: 0.75rem 1.5rem;
-  background-color: var(--color-panel-claro);
-  border-radius: var(--radio-borde);
-  box-shadow: var(--sombra-suave);
-}
-
-.estado-juego__item {
-  display: flex;
-  align-items: center;
-  gap: var(--espaciado-s);
-}
-
-.estado-juego__etiqueta {
-  font-weight: 600;
-  display: flex;
-  flex-direction: column;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-}
-
-.estado-juego__valor {
-  font-size: 1.1rem;
-  font-variant-numeric: tabular-nums;
-  /* Sirve para alinear correctamente los números */
-  min-width: 3rem;
-  text-align: right;
-  display: flex;
-  flex-direction: column;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
+  gap: var(--espaciado-sm);
+  overflow-x: hidden;
+  overflow-y: hidden; /* Evitar scroll vertical en body */
 }
 
 /* ==========================================================================
-   BOTONES DE CONTROL - Pausar y detener el juego
+   CABECERA
    ========================================================================== */
-.botones-control {
+
+.cabecera {
+  background: var(--color-superficie);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-lg);
+  box-shadow: var(--sombra-lg);
+  text-align: center;
+  animation: slideDown 0.6s ease-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative; /* Para posicionar el nav */
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.cabecera__titulo {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-acento));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
+}
+
+.cabecera__descripcion {
+  color: var(--color-texto-secundario);
+  font-size: clamp(0.875rem, 2vw, 1rem);
+  max-width: 600px;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   NAVEGACIÓN DE ACCIONES
+   ========================================================================== */
+
+.nav-acciones {
+  position: absolute;
+  top: 1rem; /* Ajustar para que esté a la altura del título */
+  right: 1rem; /* Mantener los botones alineados a la derecha */
+  display: flex;
+  gap: var(--espaciado-xs);
+}
+
+.nav-acciones__boton {
+  background: var(--color-fondo);
+  border: 2px solid var(--color-borde);
+  color: var(--color-texto);
+  border-radius: var(--radio-md);
+  padding: var(--espaciado-xs) var(--espaciado-sm);
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: all var(--transicion-normal);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-acciones__boton:hover {
+  background: var(--color-primario);
+  border-color: var(--color-primario);
+  color: var(--color-superficie);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: var(--sombra-md);
+}
+
+.nav-acciones__boton:active {
+  background: var(--color-secundario);
+  border-color: var(--color-secundario);
+  color: var(--color-superficie);
+  transform: translateY(0) scale(0.98);
+}
+
+/* ==========================================================================
+   CONTENEDOR PRINCIPAL
+   ========================================================================== */
+
+.contenedor-principal {
+  background: var(--color-superficie);
+  border-radius: var(--radio-xl);
+  padding: var(--espaciado-lg);
+  box-shadow: var(--sombra-xl);
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  max-height: 85vh; /* Ajustar altura para evitar overflow */
+  overflow-y: auto; /* Scroll interno cuando sea necesario */
+  animation: fadeIn 0.8s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-lg);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* ==========================================================================
+   ESTADO DEL JUEGO
+   ========================================================================== */
+
+.estado-juego {
   display: flex;
   justify-content: center;
-  gap: var(--espaciado);
-  /* Eliminamos margin-top: var(--espaciado); */
-  /* El gap en .contenedor-principal ya maneja este espaciado */
+  gap: var(--espaciado-lg);
+  flex-wrap: wrap;
+}
+
+.estado-juego__item {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  border-radius: var(--radio-lg);
+  padding: var(--espaciado-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--espaciado-xs);
+  align-items: center;
+  min-width: 150px;
+  box-shadow: var(--sombra-sm);
+  transition: all var(--transicion-normal);
+}
+
+.estado-juego__item:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--sombra-md);
+}
+
+.estado-juego__etiqueta {
+  font-size: 0.875rem;
+  color: var(--color-texto-secundario);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
+}
+
+.estado-juego__valor {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   BOTONES DE CONTROL
+   ========================================================================== */
+
+.botones-control {
+  display: flex;
+  gap: var(--espaciado-sm);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .botones-control__boton {
-  padding: 0.6rem 1.2rem;
-  border: none;
-  border-radius: var(--radio-borde);
-  background-color: transparent;
-  color: var(--color-texto-invertido);
+  padding: var(--espaciado-sm) var(--espaciado-md);
+  font-size: 1rem;
   font-weight: 600;
+  border: none;
+  border-radius: var(--radio-md);
   cursor: pointer;
-  transition: background-color 0.3s, transform 0.2s;
+  transition: all var(--transicion-normal);
+  box-shadow: var(--sombra-md);
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
 }
 
-.botones-control__boton:hover {
-  transform: translateY(-0.125rem);
+.botones-control__boton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.botones-control__boton:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.boton--verde {
+  background: var(--color-ficha-3); /* Usar color de ficha 3 */
+  color: var(--color-superficie);
+}
+
+.boton--verde:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(16, 185, 129, 0.3);
+}
+
+.boton--naranja {
+  background: var(--color-ficha-2); /* Usar color de ficha 2 */
+  color: var(--color-superficie);
+}
+
+.boton--naranja:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(245, 158, 11, 0.3);
+}
+
+.boton--rojo {
+  background: var(--color-ficha-1); /* Usar color de ficha 1 */
+  color: var(--color-superficie);
+}
+
+.boton--rojo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(239, 68, 68, 0.3);
 }
 
 .botones-control__boton:disabled {
-  opacity: 0.65;
-  color: var(--color-texto-desactivado);
+  opacity: 0.5;
   cursor: not-allowed;
   transform: none;
 }
 
-.boton--verde {
-  background-color: var(--color-boton-verde);
+.botones-control__boton:disabled:hover {
+  transform: none;
+  box-shadow: var(--sombra-md);
 }
 
-.boton--verde:hover:not(:disabled) {
-  background-color: var(--color-boton-verde-hover);
-}
-
-.boton--verde:disabled {
-  background-color: var(--color-boton-verde);
-  color: var(--color-texto-invertido);
-}
-
-.boton--naranja {
-  background-color: var(--color-boton-naranja);
-}
-
-.boton--naranja:hover:not(:disabled) {
-  background-color: var(--color-boton-naranja-hover);
-}
-
-.boton--naranja:disabled {
-  background-color: var(--color-boton-naranja);
-  color: var(--color-texto-invertido);
-}
-
-.boton--rojo {
-  background-color: var(--color-boton-rojo);
-}
-
-.boton--rojo:hover:not(:disabled) {
-  background-color: var(--color-boton-rojo-hover);
-}
-
-.boton--rojo:disabled {
-  background-color: var(--color-boton-rojo);
-  color: var(--color-texto-invertido);
+.botones-control__boton:active:not(:disabled) {
+  transform: translateY(0) scale(0.98);
 }
 
 /* ==========================================================================
-   TABLERO - Contenedor principal del juego
+   TABLERO
    ========================================================================== */
+
 .tablero-contenedor {
-  width: 100%;
   display: flex;
   justify-content: center;
-  padding: var(--espaciado);
+  align-items: center;
+  padding: var(--espaciado-lg);
+  min-height: 400px;
+  gap: var(--espaciado-xl);
 }
 
 .tablero {
   display: grid;
-  gap: var(--espaciado-s);
-  padding: var(--espaciado);
-  background: linear-gradient(
-    180deg,
-    var(--color-tablero-superior) 0%,
-    var(--color-tablero-medio) 55%,
-    var(--color-tablero-inferior) 100%
-  );
-  border-radius: 0.75rem;
-  border: 1px solid var(--color-tablero-borde);
-  box-shadow: var(--sombra-tablero-principal), var(--sombra-tablero-secundaria);
-  transition: transform 0.3s ease;
+  gap: var(--espaciado-xs);
+  padding: var(--espaciado-md);
+  background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+  border-radius: var(--radio-lg);
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all var(--transicion-normal);
 }
 
 /* ==========================================================================
-   FICHAS - Elementos interactivos del tablero
+   FICHAS
    ========================================================================== */
+
 .ficha {
-  position: relative;
-  border-radius: 0.25rem;
   cursor: grab;
-  transition: transform 0.3s, box-shadow 0.3s;
+  border-radius: var(--radio-md);
+  transition: all var(--transicion-normal);
+  box-shadow: var(--sombra-md);
+  position: relative;
   display: flex;
-  justify-content: center;
   align-items: center;
-  user-select: none;
+  justify-content: center;
+  background-size: cover;
+  background-position: center;
+}
+
+.ficha::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0));
+  opacity: 0;
+  transition: opacity var(--transicion-normal);
+}
+
+.ficha:hover::before {
+  opacity: 1;
 }
 
 .ficha:hover {
-  transform: translateY(-0.1875rem);
-  box-shadow: var(--sombra-media);
-  z-index: 2;
+  transform: translateY(-4px) scale(1.05);
+  box-shadow: var(--sombra-lg);
 }
 
 .ficha:active {
   cursor: grabbing;
+  transform: scale(0.95);
 }
 
-/* Formas de fichas - variantes visuales */
+/* Formas de fichas */
 .ficha--cuadrado {
-  border-radius: 0.25rem;
+  border-radius: var(--radio-md);
 }
 
 .ficha--circulo {
@@ -383,96 +410,228 @@ body {
 }
 
 .ficha--triangulo {
+  border-radius: var(--radio-sm);
   clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
 }
 
-/* Estados de arrastre - feedback visual */
+/* Estados de arrastre */
 .ficha--arrastrando {
-  opacity: 0.6;
-  transform: scale(0.95);
+  opacity: 0.5;
+  transform: scale(1.1);
+  cursor: grabbing;
+  filter: brightness(1.2);
 }
 
 .ficha--destino {
-  box-shadow: 0 0 0 0.1875rem var(--color-panel-claro), 0 0 0 0.375rem var(--color-primario);
+  animation: pulse 0.6s ease-in-out infinite;
+  border: 3px dashed var(--color-primario);
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.2);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.08);
+  }
 }
 
 /* ==========================================================================
-   BOTONES FLOTANTES - Ayuda y selector de tema
+   MODO DOS TABLEROS
    ========================================================================== */
-.botones-flotantes {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  display: flex;
-  gap: var(--espaciado-s);
-  z-index: 100;
+
+.tablero-contenedor--doble {
+  flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.botones-flotantes__boton {
-  width: var(--boton-flotante-dimension);
-  height: var(--boton-flotante-dimension);
-  border-radius: 50%;
-  background-color: var(--color-complementario);
-  color: var(--color-texto-invertido);
-  border: none;
+.tablero-wrapper {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  font-weight: bold;
-  box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+  gap: var(--espaciado-sm);
 }
 
-.botones-flotantes__boton:hover {
-  transform: translateY(-0.125rem);
-  background-color: hsl(var(--tono-complementario), 70%, 40%);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
+.tablero__etiqueta {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-primario);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: var(--espaciado-xs) var(--espaciado-md);
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  border-radius: var(--radio-md);
 }
 
-/* RESPONSIVE - Adaptación a diferentes tamaños de pantalla */
-@media (max-width: 48rem) {
+.tablero--origen {
+  border: 2px solid var(--color-primario);
+}
 
-  /* 768px */
-  .controles {
-    flex-direction: column;
-    align-items: center;
+.tablero--destino {
+  border: 2px solid var(--color-secundario);
+}
+
+.celda-vacia {
+  background: white;
+  border: 2px dashed var(--color-borde);
+  border-radius: var(--radio-md);
+  transition: all var(--transicion-normal);
+}
+
+.celda-vacia--destino {
+  background: linear-gradient(135deg, #667eea15, #764ba215);
+  border-color: var(--color-primario);
+  border-style: solid;
+  animation: shimmer 1s infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% {
+    opacity: 0.6;
   }
-
-  .controles__grupo {
-    width: 100%;
-    max-width: 18.75rem;
-    /* 300px */
+  50% {
+    opacity: 1;
   }
+}
 
+/* ==========================================================================
+   MODO ROMPECABEZAS
+   ========================================================================== */
+
+.ficha--rompecabezas {
+  background-repeat: no-repeat;
+  box-shadow: var(--sombra-md), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+}
+
+.cargando-mensaje {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--espaciado-xl);
+  font-size: 1.125rem;
+  color: var(--color-texto-secundario);
+  animation: fadeInOut 1.5s ease-in-out infinite;
+}
+
+@keyframes fadeInOut {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ==========================================================================
+   UTILIDADES
+   ========================================================================== */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ==========================================================================
+   RESPONSIVE
+   ========================================================================== */
+
+@media (max-width: 768px) {
+  body {
+    padding: var(--espaciado-sm);
+  }
+  
+  .cabecera {
+    padding: var(--espaciado-md);
+  }
+  
+  .contenedor-principal {
+    padding: var(--espaciado-md);
+  }
+  
   .estado-juego {
+    gap: var(--espaciado-sm);
+  }
+  
+  .estado-juego__item {
+    min-width: 120px;
+    padding: var(--espaciado-sm);
+  }
+  
+  .estado-juego__valor {
+    font-size: 1.5rem;
+  }
+  
+  .botones-control {
     flex-direction: column;
-    gap: var(--espaciado-s);
-    align-items: center;
+  }
+  
+  .botones-control__boton {
+    width: 100%;
+  }
+  
+  .tablero-contenedor--doble {
+    flex-direction: column;
+    gap: var(--espaciado-md);
+  }
+  
+  .tablero {
+    padding: var(--espaciado-sm);
   }
 }
 
-@media (max-width: 30rem) {
-
-  /* 480px */
+@media (max-width: 480px) {
+  :root {
+    --ficha-pequena: 40px;
+    --ficha-mediana: 55px;
+    --ficha-grande: 70px;
+  }
+  
   .cabecera__titulo {
     font-size: 1.5rem;
   }
-
-  .ficha {
-    /* Reducción sutil para acomodar en pantallas pequeñas */
-    transform: scale(0.9);
+  
+  .estado-juego__etiqueta {
+    font-size: 0.75rem;
   }
-
-  .botones-flotantes {
-    top: 0.5rem;
-    right: 0.5rem;
+  
+  .estado-juego__valor {
+    font-size: 1.25rem;
   }
 }
 
-/* Igualar tamaño mínimo para botones de control */
-.botones-control__boton {
-  min-width: 9rem; /* ajusta según lo que mide el botón más largo */
+/* ==========================================================================
+   ANIMACIONES ADICIONALES
+   ========================================================================== */
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.tablero::after {
+  content: 'Configura y pulsa "Comenzar juego"';
+  display: block;
   text-align: center;
+  color: var(--color-texto-secundario);
+  font-size: 1.125rem;
+  padding: var(--espaciado-xl);
+  line-height: 1.4;
+  animation: float 3s ease-in-out infinite;
 }
 
+.tablero--activo::after {
+  display: none;
+}
+
+/* Fin del archivo - TODOS los estilos de modo oscuro están en dark-theme.css */

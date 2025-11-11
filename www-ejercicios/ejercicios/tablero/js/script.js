@@ -295,6 +295,9 @@ function generarTablero() {
   // Limpiar tablero existente
   TABLERO.nodos.tablero.innerHTML = '';
   
+  // Remover la clase que muestra el mensaje inicial
+  TABLERO.nodos.tablero.classList.add('tablero--activo');
+  
   // Generar colores para las filas (cada fila tiene un color específico)
   generarColores();
   
