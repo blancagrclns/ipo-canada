@@ -22,43 +22,47 @@
 
 
 <body>
-    <header class="cabecera">
-      <!-- Columna 1: Botón "Volver a inicio" -->
-      <nav class="cabecera__navegador" aria-label="Navegación principal">
-        <button class="nav-acciones__boton" data-accion="volver-inicio" aria-label="Volver a inicio" title="Inicio">
+  <header class="cabecera">
+    <!-- Columna 1: Botón "Volver a inicio" -->
+    <nav class="cabecera__navegador" aria-label="Navegación principal">
+      <a href="../../index.html" aria-label="Volver a inicio">
+        <button class="nav-acciones__boton" data-accion="volver-inicio" title="Inicio">
           ⬅️ <span class="sr-only">Volver a inicio</span>
         </button>
-      </nav>
+      </a>
+    </nav>
 
-      <!-- Columna 2: Título y descripción -->
-      <div class="cabecera__contenido">
-        <h1 class="cabecera__titulo">Proyecto Tablero</h1>
-        <p class="cabecera__descripcion">
-          Intercambia fichas para conseguir filas del mismo color. Arrastra y suelta para intercambiar.
-        </p>
-      </div>
+    <!-- Columna 2: Título y descripción -->
+    <div class="cabecera__contenido">
+      <h1 class="cabecera__titulo">Proyecto Tablero</h1>
+      <p class="cabecera__descripcion">
+        Intercambia fichas para conseguir filas del mismo color. Arrastra y suelta para intercambiar.
+      </p>
+    </div>
 
-      <!-- Columna 3: Navegación de acciones rápidas -->
-      <nav class="nav-acciones" role="navigation" aria-label="Acciones de la aplicación">
-        <ul class="nav-acciones__lista" style="list-style:none;display:flex;gap:.5rem;justify-content:center;padding:0;margin:.5rem 0 0 0;">
-          <li>
-            <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración" title="Configuración">
-              ⚙️ <span class="sr-only"></span>
-            </button>
-          </li>
-          <li>
-            <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
-              ❓ <span class="sr-only"></span>
-            </button>
-          </li>
-          <li>
-            <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
-              🌓 <span class="sr-only"></span>
-            </button>
-          </li>
-        </ul>
-      </nav>
-    </header>
+    <!-- Columna 3: Navegación de acciones rápidas -->
+    <nav class="nav-acciones" role="navigation" aria-label="Acciones de la aplicación">
+      <ul class="nav-acciones__lista"
+        style="list-style:none;display:flex;gap:.5rem;justify-content:center;padding:0;margin:.5rem 0 0 0;">
+        <li>
+          <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración"
+            title="Configuración">
+            ⚙️ <span class="sr-only"></span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
+            ❓ <span class="sr-only"></span>
+          </button>
+        </li>
+        <li>
+          <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
+            🌓 <span class="sr-only"></span>
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
   <main class="contenedor-principal">
     <dialog id="modal-config" class="modal" data-modal="configuracion">
@@ -85,8 +89,8 @@
 
           <div class="controles__grupo">
             <label for="tamanoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
-            <input type="number" id="tamanoTablero" class="controles__numero" data-configuracion="tamano-tablero" min="2" max="7"
-              value="3" aria-label="Tamaño del tablero">
+            <input type="number" id="tamanoTablero" class="controles__numero" data-configuracion="tamano-tablero"
+              min="2" max="7" value="3" aria-label="Tamaño del tablero">
           </div>
 
           <div class="controles__grupo">
@@ -120,7 +124,8 @@
     <section class="botones-control">
       <button id="inicio" class="botones-control__boton boton--verde" data-control="iniciar">Comenzar juego</button>
       <button id="btnPausa" class="botones-control__boton boton--naranja" data-control="pausar" disabled>Pausar</button>
-      <button id="btnDetener" class="botones-control__boton boton--rojo" data-control="detener" disabled>Detener juego</button>
+      <button id="btnDetener" class="botones-control__boton boton--rojo" data-control="detener" disabled>Detener
+        juego</button>
     </section>
 
     <section class="tablero-contenedor">
@@ -139,7 +144,8 @@
         </div>
         <div class="modal__botones">
           <button id="cerrar-modal" class="modal__boton" data-accion="reiniciar-juego">Jugar de nuevo</button>
-          <button id="solo-cerrar-modal" class="modal__boton modal__boton--secundario" data-accion="cerrar-modal-victoria">Cerrar</button>
+          <button id="solo-cerrar-modal" class="modal__boton modal__boton--secundario"
+            data-accion="cerrar-modal-victoria">Cerrar</button>
         </div>
       </div>
     </dialog>
