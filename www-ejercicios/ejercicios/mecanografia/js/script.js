@@ -7,7 +7,6 @@ import {
   ocultarModoBilingue
 } from './bilingue.js';
 
-
 // Arrays de palabras por dificultad
 const palabrasDefault = ['casa', 'perro', 'gato', 'sol', 'luna', 'agua', 'fuego', 'tierra', 'viento', 'mar', 'cielo', 'montaña', 'río', 'bosque', 'flor', 'árbol', 'piedra', 'estrella', 'nube', 'lluvia'];
 const palabrasFaciles = ["sol", "pan", "mar", "voz", "sal", "flor", "pez", "tren", "luz", "rey", "mil", "mes", "club", "cruz", "sed", "gas", "fin", "dos", "tres", "bien"];
@@ -15,20 +14,10 @@ const palabrasMedias = ["reloj", "pared", "salud", "hotel", "canal", "animal", "
 const palabrasDificiles = ["murciélago", "teléfono", "pájaro", "brújula", "rápido", "próximo", "esdrújula", "químico", "físico", "político", "artístico", "matemático", "gramático", "técnico", "médico", "plástico", "músico", "lógico", "económico", "histórico"];
 const palabrasMuyDificiles = ["dígamelo", "repíteselo", "cuéntamelo", "devuélvemelo", "explícaselo", "entrégaselo", "tráemelo", "díselo", "muéstramelo", "regrésámelo", "préstamelo", "confírmamelo", "recuérdaselo", "lléváselo", "envíáselo", "compréndémelo", "tradúcémelo", "aclárámelo", "organízámelo", "resuélvémelo"];
 
-
-// Elementos del DOM
+// Elementos del DOM - USANDO LOS IDs CORRECTOS DEL HTML
 const btnComienzo = document.getElementById('btnComienzo');
 const btnPausa = document.getElementById('btnPausa');
 const btnFin = document.getElementById('btnFin');
-const btnAyuda = document.getElementById('btnAyuda');
-const btnConfiguracion = document.getElementById('btnConfiguracion');
-const cerrarModal = document.getElementById('cerrarModal');
-const modalAyuda = document.getElementById('modalAyuda');
-const cerrarConfiguracion = document.getElementById('cerrarConfiguracion');
-const btnAceptarConfiguracion = document.getElementById('btnAceptarConfiguracion');
-const modalConfiguracion = document.getElementById('modalConfiguracion');
-const cerrarStats = document.getElementById('cerrarStats');
-const modalStats = document.getElementById('modalStats');
 const tiempoSpan = document.getElementById('tiempo');
 const palabrasCorrectasSpan = document.getElementById('palabrasCorrectas');
 const palabrasIncorrectasSpan = document.getElementById('palabrasIncorrectas');
@@ -39,7 +28,6 @@ const tiempoMaxInput = document.getElementById('tiempoMax');
 const statsTiempo = document.getElementById('statsTiempo');
 const statsCorrectas = document.getElementById('statsCorrectas');
 const statsFalladas = document.getElementById('statsFalladas');
-
 
 // Variables de estado
 let intervaloTemporizador = null;
@@ -73,6 +61,8 @@ function cambiarDificultad(nivel) {
 
 // Función para iniciar el test
 function iniciarTest() {
+  console.log('=== INICIANDO TEST ===');
+  
   tiempoTranscurrido = 0;
   palabrasCorrectas = 0;
   palabrasFalladas = 0;
@@ -80,33 +70,41 @@ function iniciarTest() {
   tiempoSpan.textContent = tiempoTranscurrido;
   palabrasCorrectasSpan.textContent = palabrasCorrectas;
   palabrasIncorrectasSpan.textContent = palabrasFalladas;
-  numPalabrasObjetivo = parseInt(numPalabrasInput.value) || null;
+  
+  // ✅ Leer configuración del modal
+  numPalabrasObjetivo = parseInt(numPalabrasInput.value) || 15;
   tiempoMaximo = parseInt(tiempoMaxInput.value) || null;
+  
+  console.log('Configuración:', { numPalabrasObjetivo, tiempoMaximo });
 
-
+  // ✅ Verificar modo bilingüe del checkbox del modal
   const modoBilingueCheckbox = document.getElementById('modoBilingue');
-  modoBilingueActivo = modoBilingueCheckbox && modoBilingueCheckbox.checked;
+  modoBilingueActivo = modoBilingueCheckbox ? modoBilingueCheckbox.checked : false;
+  
+  console.log('Modo bilingüe checkbox encontrado:', !!modoBilingueCheckbox);
+  console.log('Modo bilingüe activo:', modoBilingueActivo);
 
-
+  // ✅ Deshabilitar configuración durante el test
   if (modoBilingueCheckbox) {
     modoBilingueCheckbox.disabled = true;
+    
     const idiomaOrigen = document.getElementById('idiomaOrigen');
     const idiomaDestino = document.getElementById('idiomaDestino');
     if (idiomaOrigen) idiomaOrigen.disabled = true;
     if (idiomaDestino) idiomaDestino.disabled = true;
-    const opcionesBilingue = document.getElementById('opcionesBilingue');
-    if (opcionesBilingue) opcionesBilingue.classList.add('config-container__group--disabled');
   }
 
-
+  // ✅ Iniciar según el modo
   if (modoBilingueActivo) {
+    console.log('Iniciando test bilingüe...');
     iniciarTestBilingue();
   } else {
+    console.log('Iniciando test normal...');
     ocultarModoBilingue();
     cambiarPalabra();
   }
 
-
+  // ✅ Configurar interfaz
   entrada.disabled = false;
   entrada.focus();
   btnComienzo.disabled = true;
@@ -114,7 +112,7 @@ function iniciarTest() {
   btnFin.disabled = false;
   btnPausa.textContent = 'Pausar';
 
-
+  // ✅ Iniciar temporizador
   intervaloTemporizador = setInterval(() => {
     if (!pausado) {
       tiempoTranscurrido++;
@@ -125,6 +123,8 @@ function iniciarTest() {
       }
     }
   }, 1000);
+  
+  console.log('Test iniciado correctamente');
 }
 
 function togglePausa() {
@@ -260,10 +260,16 @@ function detenerTest() {
 
 // Función para mostrar modal de estadísticas
 function mostrarStats() {
-  statsTiempo.textContent = tiempoTranscurrido;
-  statsCorrectas.textContent = palabrasCorrectas;
-  statsFalladas.textContent = palabrasFalladas;
-  modalStats.classList.add('active');
+  if (statsTiempo && statsCorrectas && statsFalladas) {
+    statsTiempo.textContent = tiempoTranscurrido;
+    statsCorrectas.textContent = palabrasCorrectas;
+    statsFalladas.textContent = palabrasFalladas;
+  }
+  
+  // ✅ Usar el modal definido en window
+  if (window.modalStats) {
+    window.modalStats.showModal();
+  }
 }
 
 
@@ -276,24 +282,25 @@ function toggleModalConfiguracion() {
 }
 
 // Event listeners
-btnComienzo.addEventListener('click', iniciarTest);
-btnPausa.addEventListener('click', togglePausa);
-btnFin.addEventListener('click', () => {
-  detenerTest();
-  mostrarStats();
-});
+if (btnComienzo) {
+  btnComienzo.addEventListener('click', iniciarTest);
+  console.log('Event listener para btnComienzo añadido');
+}
 
-// Resetear cuando se cierra el modal de estadísticas
-cerrarStats.addEventListener('click', () => {
-  modalStats.classList.remove('active');
-  resetearTest();
-});
-btnAyuda.addEventListener('click', toggleModal);
-btnConfiguracion.addEventListener('click', toggleModalConfiguracion);
-cerrarModal.addEventListener('click', toggleModal);
-cerrarConfiguracion.addEventListener('click', toggleModalConfiguracion);
-btnAceptarConfiguracion.addEventListener('click', toggleModalConfiguracion);
-entrada.addEventListener('keydown', verificarEntrada);
+if (btnPausa) {
+  btnPausa.addEventListener('click', togglePausa);
+}
+
+if (btnFin) {
+  btnFin.addEventListener('click', () => {
+    detenerTest();
+    mostrarStats();
+  });
+}
+
+if (entrada) {
+  entrada.addEventListener('keydown', verificarEntrada);
+}
 
 // Inicializar modo bilingüe con API
 inicializarModoBilingue({
@@ -350,3 +357,7 @@ window.addEventListener('click', (event) => {
 
 // Detener test al cerrar la página
 window.addEventListener('beforeunload', detenerTest);
+
+// ==========================================================================
+// FIN DEL ARCHIVO - La gestión de modo bilingüe está en theme-toggle.js
+// ==========================================================================

@@ -33,3 +33,10 @@
 .tarjeta__traduccion-container:hover::after {
   opacity: 1;
 }
+
+/* MODO OSCURO PARA TOOLTIP */
+[data-theme="dark"] .tarjeta__traduccion-container::after {
+  background-color: var(--tooltip-bg);
+  color: var(--color-accento);
+  box-shadow: 0 2px 6px var(--shadow-tooltip);
+}
