@@ -5,15 +5,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+<!-- CSS -->
+  <link rel="stylesheet" href="/www-ejercicios/css-globales/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="css/style.css" /> <!-- Estilo individual -->
+  <link rel="stylesheet" href="/www-ejercicios/css-globales/modal.css"> <!-- Modales globales para todas las páginas -->
+
+  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/css-globales/dark-theme.css" disabled> <!-- Modo oscuro para todas las páginas -->
+
   <link rel="stylesheet" href="css/bilingue.css" />
-  <link rel="stylesheet" href="css/modal.css" />
-  <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled />
+
   <!-- Favicon -->
   <link rel="icon" href="favicon.ico" type="image/x-icon">
   <!-- JS -->
   <script type="module" src="js/script.js"></script>
   <script type="module" src="js/theme-toggle.js"></script>
+   <title>Mecanografía</title>
 </head>
 
 <body>
@@ -182,7 +188,7 @@
       <div class="modal__contenido">
         <h2 class="modal__titulo">¡Test Completado!</h2>
         <div class="modal__estadisticas">
-          <p>Tiempo transcurrido: <span id="statsTiempo">0</span> segundos</p>
+          <p>Tiempo transcurrido: <span id="statsTiempo">  0</span> segundos</p>
           <p>Palabras acertadas: <span id="statsCorrectas">0</span></p>
           <p>Palabras falladas: <span id="statsFalladas">0</span></p>
         </div>

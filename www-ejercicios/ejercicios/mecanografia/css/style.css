@@ -15,66 +15,11 @@
 }
 
 /* ==========================================================================
-   VARIABLES CSS - Colores, tamaños y animaciones
-   ========================================================================== */
-
-:root {
-  /* Colores principales */
-  --color-primario: #6366f1;
-  --color-secundario: #8b5cf6;
-  --color-acento: #ec4899;
-  --color-fondo: #ede6f1;
-  --color-superficie: #ede6f1;
-  --color-texto: #1e293b;
-  --color-texto-secundario: #5e5a5a;
-  --color-borde: #e2e8f0;
-  --color-sombra: rgba(0, 0, 0, 0.1);
-  
-  /* Espaciados */
-  --espaciado-xs: 0.5rem;
-  --espaciado-sm: 1rem;
-  --espaciado-md: 1.5rem;
-  --espaciado-lg: 2rem;
-  --espaciado-xl: 3rem;
-  
-  /* Bordes */
-  --radio-sm: 0.375rem;
-  --radio-md: 0.5rem;
-  --radio-lg: 0.75rem;
-  --radio-xl: 1rem;
-  
-  /* Transiciones */
-  --transicion-rapida: 150ms ease-in-out;
-  --transicion-normal: 300ms ease-in-out;
-  --transicion-lenta: 500ms ease-in-out;
-  
-  /* Sombras */
-  --sombra-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
-  
-  /* Fondos */
-  --background-body: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --background-cabecera: var(--color-superficie);
-  --background-cabecera-titulo: linear-gradient(135deg, var(--color-primario), var(--color-acento));
-}
-
-/* ==========================================================================
    BODY
    ========================================================================== */
 
 body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-  background: var(--background-body);
-  color: var(--color-texto);
-  min-height: 100vh;
   max-height: 100vh;
-  padding: var(--espaciado-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-sm);
-  overflow-x: hidden;
   overflow-y: hidden;
 }
 
@@ -83,98 +28,112 @@ body {
    ========================================================================== */
 
 .cabecera {
-  display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--espaciado-sm);
-  padding: var(--espaciado-lg);
-  background: var(--background-cabecera);
-  border-radius: var(--radio-xl);
-  box-shadow: var(--sombra-lg);
-  animation: slideDown 0.6s ease-out;
-}
-
-@keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-.cabecera__navegador {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-}
-
-.cabecera__titulo {
-  font-size: clamp(1.75rem, 4vw, 2.5rem);
-  font-weight: 700;
-  background: var(--background-cabecera-titulo);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  letter-spacing: -0.02em;
-  margin: 0;
-  flex-grow: 1;
-  text-align: center;
-}
-
-.cabecera__contenido {
-  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: var(--espaciado-xs);
+  width: 100%;
+  max-width: none;
 }
 
 .cabecera__descripcion {
   color: var(--color-texto-secundario);
-  font-size: clamp(0.875rem, 2vw, 1rem);
-  max-width: 600px;
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
 }
 
+
 /* ==========================================================================
-   NAVEGACIÓN DE ACCIONES
+   NAVEGACIÓN DE ACCIONES - OVERRIDE
    ========================================================================== */
 
 .nav-acciones {
   position: absolute;
-  align-items: center;
-  right: 5rem;
+  right: 2rem;
+  justify-content: flex-end;
+}
+/* ==========================================================================
+   BOTONES DE CONTROL
+   ========================================================================== */
+
+.botones-control {
   display: flex;
-  gap: var(--espaciado-xs);
+  gap: var(--espaciado-sm);
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-.nav-acciones__boton {
-  background: var(--color-fondo);
-  border: 2px solid var(--color-borde);
-  color: var(--color-texto);
-  border-radius: var(--radio-md);
+.botones-control__boton {
   padding: var(--espaciado-xs) var(--espaciado-sm);
-  font-size: 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radio-md);
   cursor: pointer;
   transition: all var(--transicion-normal);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
+  box-shadow: var(--sombra-md);
+  position: relative;
+  overflow: hidden;
+  min-width: 120px;
 }
 
-.nav-acciones__boton:hover {
-  background: var(--color-primario);
-  border-color: var(--color-primario);
+.botones-control__boton::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: var(--color-botones-control-before);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.botones-control__boton:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.boton--verde {
+  background: var(--color-ficha-3);
   color: var(--color-superficie);
-  transform: translateY(-2px) scale(1.05);
+}
+
+.boton--verde:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px var(--color-boton-verde-hover-shadow);
+}
+
+.boton--naranja {
+  background: var(--color-ficha-2);
+  color: var(--color-superficie);
+}
+
+.boton--naranja:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px var(--color-boton-naranja-hover-shadow);
+}
+
+.boton--rojo {
+  background: var(--color-ficha-1);
+  color: var(--color-superficie);
+}
+
+.boton--rojo:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px var(--color-boton-rojo-hover-shadow);
+}
+
+.botones-control__boton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.botones-control__boton:disabled:hover {
+  transform: none;
   box-shadow: var(--sombra-md);
 }
 
-.nav-acciones__boton:active {
-  background: var(--color-secundario);
-  border-color: var(--color-secundario);
-  color: var(--color-superficie);
+.botones-control__boton:active:not(:disabled) {
   transform: translateY(0) scale(0.98);
 }
 
