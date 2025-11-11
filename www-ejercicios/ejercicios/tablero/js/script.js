@@ -292,53 +292,30 @@ function finalizarJuego() {
  * Genera el tablero de juego con fichas aleatorias
  */
 function generarTablero() {
-  // Limpiar tablero existente
   TABLERO.nodos.tablero.innerHTML = '';
   
-  // Remover la clase que muestra el mensaje inicial
   TABLERO.nodos.tablero.classList.add('tablero--activo');
   
-  // Generar colores para las filas (cada fila tiene un color específico)
   generarColores();
   
-  // Configurar CSS Grid para el tablero
   const n = TABLERO.config.ladoTablero;
-  TABLERO.nodos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+  TABLERO.nodos.tablero.classList.remove('tablero--cols-2', 'tablero--cols-3', 'tablero--cols-4', 'tablero--cols-5', 'tablero--cols-6', 'tablero--cols-7');
+  TABLERO.nodos.tablero.classList.add(`tablero--cols-${n}`);
   
-  // Determinar tamano de fichas en CSS
-  let tamanoFichaCss;
-  switch (TABLERO.config.tamanoFicha) {
-    case 'pequena':
-      tamanoFichaCss = 'var(--ficha-pequena)';
-      break;
-    case 'grande':
-      tamanoFichaCss = 'var(--ficha-grande)';
-      break;
-    default:
-      tamanoFichaCss = 'var(--ficha-mediana)';
-  }
-  
-  // Generar fichas en orden aleatorio pero manteniendo coherencia
-  // (el mismo número de fichas de cada color)
   const fichas = [];
   
-  // Para cada fila
   for (let i = 0; i < n; i++) {
-    // Para cada columna
     for (let j = 0; j < n; j++) {
-      // Crear ficha con el color correspondiente a la fila
       const ficha = document.createElement('div');
       ficha.className = `ficha ficha--${TABLERO.config.formaFicha}`;
+      ficha.classList.add(`ficha--size-${TABLERO.config.tamanoFicha}`);
+      ficha.classList.add(`ficha--color-${i}`);
       ficha.setAttribute('data-ficha', '');
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
-      ficha.setAttribute('data-color', i); // Asignamos el color correspondiente a la fila
-      ficha.style.width = tamanoFichaCss;
-      ficha.style.height = tamanoFichaCss;
-      ficha.style.backgroundColor = TABLERO.estado.colores[i];
+      ficha.setAttribute('data-color', i);
       ficha.draggable = true;
       
-      // Event listeners para arrastrar y soltar
       ficha.addEventListener('dragstart', iniciarArrastre);
       ficha.addEventListener('dragend', finalizarArrastre);
       ficha.addEventListener('dragover', permitirSoltar);
@@ -349,10 +326,8 @@ function generarTablero() {
     }
   }
   
-  // Desordenar fichas aleatoriamente
   fichas.sort(() => Math.random() - 0.5);
   
-  // Agregar fichas al tablero
   fichas.forEach(ficha => {
     TABLERO.nodos.tablero.appendChild(ficha);
   });
@@ -463,17 +438,13 @@ function soltarFicha(e) {
  * @param {HTMLElement} ficha2 - Segunda ficha
  */
 function intercambiarFichas(ficha1, ficha2) {
-  // Guardar valores originales
   const color1 = ficha1.dataset.color;
   const color2 = ficha2.dataset.color;
-  const bg1 = ficha1.style.backgroundColor;
-  const bg2 = ficha2.style.backgroundColor;
   
-  // Intercambiar colores
   ficha1.dataset.color = color2;
   ficha2.dataset.color = color1;
-  ficha1.style.backgroundColor = bg2;
-  ficha2.style.backgroundColor = bg1;
+  ficha1.className = ficha1.className.replace(/ficha--color-\d+/, `ficha--color-${color2}`);
+  ficha2.className = ficha2.className.replace(/ficha--color-\d+/, `ficha--color-${color1}`);
 }
 
 /**

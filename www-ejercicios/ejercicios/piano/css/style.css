@@ -113,14 +113,15 @@ body {
   padding: calc(var(--espaciado-base) * 3) var(--espaciado-base);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* Centra los hijos verticalmente */
+  justify-content: center; /* Centra los hijos horizontalmente */
   gap: calc(var(--espaciado-base) * 2);
   position: relative;
-  
-  /* NUEVO: asegurar que el contenedor use todo el ancho disponible */
+
+  /* ✅ Ajustar el ancho máximo para pantallas grandes */
   width: 100%;
-  max-width: 100%;
+  max-width: 1200px; /* Asegura que el contenido no se expanda demasiado */
+  margin: 0 auto; /* Centra horizontalmente el contenedor */
 }
 
 /* ==========================================================================
@@ -171,12 +172,15 @@ body {
   box-shadow: 
     0 10px 30px hsla(0, 0%, 0%, 0.2),
     0 4px 10px hsla(0, 0%, 0%, 0.15);
-  
-  /* CRÍTICO: NO limitar el ancho, permitir que crezca */
+
+  /* ✅ Centrar el piano en su contenedor */
+  width: max-content; /* Ajusta el ancho al contenido */
+  margin: 0 auto; /* Centra horizontalmente */
+
+  /* Mantener scroll horizontal en pantallas pequeñas */
   overflow-x: auto;
   overflow-y: visible;
-  /* ELIMINADO: max-width: 100% → esto limitaba el crecimiento */
-  
+
   /* Altura dinámica basada en las teclas */
   min-height: calc(var(--tecla-blanca-alto) + (var(--espaciado-base) * 4));
   padding-bottom: calc(var(--espaciado-base) * 2.5);
@@ -184,41 +188,14 @@ body {
   /* Centrar y alinear teclas */
   justify-content: center;
   align-items: flex-end;
-  
+
   /* Transiciones suaves al redimensionar */
   transition: min-height 0.3s ease;
 }
 
 /* Evitar que las teclas se encojan cuando el contenedor apura espacio */
 .tecla {
-  /* ...existing code... */
-  /* permitir ajuste proporcional si el contenedor se reduce */
-  flex: 0 0 auto; /* se mantiene ancho controlado por la variable responsiva */
-}
-
-/* Asegurar que las teclas blancas y negras se rendericen completas dentro del contenedor */
-.tecla--blanca,
-.tecla--negra {
-  box-sizing: border-box;
-}
-
-/* Mantener scrollbar visible y usable si el piano es más ancho que el viewport */
-.piano::-webkit-scrollbar {
-  height: 10px;
-}
-
-.piano::-webkit-scrollbar-track {
-  background: hsl(0, 0%, 20%);
-  border-radius: 5px;
-}
-
-.piano::-webkit-scrollbar-thumb {
-  background: hsl(0, 0%, 50%);
-  border-radius: 5px;
-}
-
-.piano::-webkit-scrollbar-thumb:hover {
-  background: hsl(0, 0%, 60%);
+  flex-shrink: 0; /* Las teclas mantienen su tamaño */
 }
 
 /* ==========================================================================
@@ -853,185 +830,11 @@ kbd {
   font-size: 0.95rem;
 }
 
-/* NUEVO: Contenedor de botones de acción */
-.modal-controles__botones {
-  display: flex;
-  gap: 1rem;
-  margin-top: 0.5rem;
-}
-
-/* ACTUALIZADO: Botón de aceptar (ahora en un contenedor flex) */
-.btn-aceptar {
-  flex: 1;
-  padding: 0.75rem 1.5rem;
-  border: none;
-  border-radius: 8px;
-  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px hsla(220, 80%, 50%, 0.3);
-}
-
-.btn-aceptar:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px hsla(220, 80%, 50%, 0.4);
-}
-
-.btn-aceptar:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px hsla(220, 80%, 50%, 0.3);
-}
-
-.btn-aceptar:focus {
-  outline: 3px solid var(--color-primario);
-  outline-offset: 2px;
-}
-
-/* NUEVO: Botón de cancelar */
-.btn-cancelar {
-  flex: 1;
-  padding: 0.75rem 1.5rem;
-  border: 2px solid hsl(220, 15%, 70%);
-  border-radius: 8px;
-  background: white;
-  color: var(--color-texto);
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 8px hsla(0, 0%, 0%, 0.1);
-}
-
-.btn-cancelar:hover {
-  background-color: hsl(220, 15%, 95%);
-  border-color: hsl(220, 15%, 60%);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px hsla(0, 0%, 0%, 0.15);
-}
-
-.btn-cancelar:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px hsla(0, 0%, 0%, 0.1);
-}
-
-.btn-cancelar:focus {
-  outline: 3px solid var(--color-primario);
-  outline-offset: 2px;
-}
-
-/* Animación de aparición */
-@keyframes aparecer {
-  from {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
-  }
-}
-
 /* ==========================================================================
    14. RESPONSIVE
    ========================================================================== */
-@media (max-width: 768px) {
-  .cabecera__titulo {
-    font-size: 2rem;
-  }
-  
-  .cabecera__descripcion {
-    font-size: 1rem;
-  }
-  
-  .cabecera__instrucciones {
-    font-size: 0.85rem;
-  }
-  
-  .toast {
-    top: auto;
-    bottom: var(--espaciado-base);
-    right: var(--espaciado-base);
-    left: var(--espaciado-base);
-    max-width: none;
-    font-size: 0.85rem;
-    padding: 0.75rem 1rem;
-  }
-  
-  .modal-ayuda {
-    width: 95%;
-    max-width: 95%;
-  }
-  
-  /* Una columna en móvil */
-  .modal-ayuda__columnas {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-  
-  .modal-ayuda__header {
-    padding: 1rem;
-  }
-  
-  .modal-ayuda__titulo {
-    font-size: 1.1rem;
-  }
-  
-  .modal-ayuda__body {
-    padding: 1.5rem;
-  }
-  
-  .modal-controles {
-    width: 95%;
-    max-width: 95%;
-  }
-  
-  .modal-controles__header {
-    padding: 1rem;
-  }
-  
-  .modal-controles__titulo {
-    font-size: 1.2rem;
-  }
-  
-  .modal-controles__body {
-    padding: 1.5rem;
-    gap: 1.25rem;
-  }
-  
-  .modal-controles__slider-container {
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0.5rem;
-  }
-  
-  .modal-controles__output {
-    text-align: left;
-  }
-}
-
-/* Ajustes adicionales para pantallas muy pequeñas */
-@media (max-width: 480px) {
-  .cabecera__titulo {
-    font-size: 1.5rem;
-  }
-  
-  .cabecera__descripcion,
-  .cabecera__instrucciones {
-    font-size: 0.85rem;
-  }
-  
-  .piano {
-    padding: calc(var(--espaciado-base) * 1.5);
-    overflow-x: auto; /* Permitir scroll en pantallas muy pequeñas */
-  }
-}
-
-/* Ajustes para pantallas muy grandes */
 @media (min-width: 1920px) {
   .contenedor {
-    max-width: 1200px;
+    max-width: 1400px; /* Ajustar el ancho máximo para pantallas muy grandes */
   }
 }

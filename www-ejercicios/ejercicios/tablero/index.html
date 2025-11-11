@@ -23,35 +23,42 @@
 
 <body>
     <header class="cabecera">
-      <!-- NAV: acciones rápidas (configuración, ayuda, modo oscuro) -->
-    <nav class="nav-acciones" role="navigation" aria-label="Acciones de la aplicación">
-      <ul class="nav-acciones__lista" style="list-style:none;display:flex;gap:.5rem;justify-content:center;padding:0;margin:.5rem 0 0 0;">
-        <li>
-          <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración" title="Configuración">
-            ⚙️ <span class="sr-only"></span>
-          </button>
-        </li>
-        <li>
-          <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
-            ❓ <span class="sr-only"></span>
-          </button>
-        </li>
-        <li>
-          <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
-            🌓 <span class="sr-only"></span>
-          </button>
-        </li>
-      </ul>
-    </nav>
-      
-    <h1 class="cabecera__titulo">Proyecto Tablero</h1>
-    
-    <p class="cabecera__descripcion">
-      Intercambia fichas para conseguir filas del mismo color. Arrastra y suelta para intercambiar.
-    </p>
+      <!-- Columna 1: Botón "Volver a inicio" -->
+      <nav class="cabecera__navegador" aria-label="Navegación principal">
+        <button class="nav-acciones__boton" data-accion="volver-inicio" aria-label="Volver a inicio" title="Inicio">
+          ⬅️ <span class="sr-only">Volver a inicio</span>
+        </button>
+      </nav>
 
-    
-  </header>
+      <!-- Columna 2: Título y descripción -->
+      <div class="cabecera__contenido">
+        <h1 class="cabecera__titulo">Proyecto Tablero</h1>
+        <p class="cabecera__descripcion">
+          Intercambia fichas para conseguir filas del mismo color. Arrastra y suelta para intercambiar.
+        </p>
+      </div>
+
+      <!-- Columna 3: Navegación de acciones rápidas -->
+      <nav class="nav-acciones" role="navigation" aria-label="Acciones de la aplicación">
+        <ul class="nav-acciones__lista" style="list-style:none;display:flex;gap:.5rem;justify-content:center;padding:0;margin:.5rem 0 0 0;">
+          <li>
+            <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración" title="Configuración">
+              ⚙️ <span class="sr-only"></span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
+              ❓ <span class="sr-only"></span>
+            </button>
+          </li>
+          <li>
+            <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
+              🌓 <span class="sr-only"></span>
+            </button>
+          </li>
+        </ul>
+      </nav>
+    </header>
 
   <main class="contenedor-principal">
     <dialog id="modal-config" class="modal" data-modal="configuracion">

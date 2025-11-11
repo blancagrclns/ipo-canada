@@ -166,7 +166,7 @@ function mostrarModalDetenido() {
         TABLERO.MODALES.elementos.btnCerrarModalDetenido = btnCerrarDetenido;
 
         if (document.documentElement.getAttribute('data-theme') === 'dark') {
-          modalDetenido.classList.add('dark-theme');
+          modalDetenido.classList.add('modal--dark-theme');
         }
 
         actualizarEstadisticasModalDetenido(modalDetenido);

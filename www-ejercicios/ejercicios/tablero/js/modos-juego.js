@@ -101,13 +101,12 @@ function generarFichasTableroOrigen(tablero, tamanoFichaCss) {
       // Crear ficha con color según la fila
       const ficha = document.createElement('div');
       ficha.className = `ficha ficha--${TABLERO.config.formaFicha}`;
+      ficha.classList.add(`ficha--size-${TABLERO.config.tamanoFicha}`);
+      ficha.classList.add(`ficha--color-${i}`);
       ficha.setAttribute('data-ficha', '');
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-color', i);
-      ficha.style.width = tamanoFichaCss;
-      ficha.style.height = tamanoFichaCss;
-      ficha.style.backgroundColor = TABLERO.estado.colores[i];
       ficha.draggable = true;
       
       // Event listeners para arrastrar
@@ -134,10 +133,9 @@ function generarCeldasVaciasDestino(tablero, tamanoFichaCss) {
       // Crear celda vacía
       const celda = document.createElement('div');
       celda.className = 'celda-vacia';
+      celda.classList.add(`celda--size-${TABLERO.config.tamanoFicha}`);
       celda.setAttribute('data-fila', i);
       celda.setAttribute('data-columna', j);
-      celda.style.width = tamanoFichaCss;
-      celda.style.height = tamanoFichaCss;
       
       // Event listeners para soltar fichas
       celda.addEventListener('dragover', permitirSoltarEnDestino);
@@ -354,17 +352,12 @@ function crearFichasRompecabezas(n, tamanoFichaCss) {
     for (let j = 0; j < n; j++) {
       const ficha = document.createElement('div');
       ficha.className = `ficha ficha--${TABLERO.config.formaFicha} ficha--rompecabezas`;
+      ficha.classList.add(`ficha--size-${TABLERO.config.tamanoFicha}`);
+      ficha.classList.add(`ficha--puzzle-position-${i}-${j}`);
       ficha.setAttribute('data-ficha', '');
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-posicion-correcta', `${i}-${j}`);
-      ficha.style.width = tamanoFichaCss;
-      ficha.style.height = tamanoFichaCss;
-      
-      // Configurar fondo con la sección correspondiente de la imagen
-      ficha.style.backgroundImage = `url('images/paisaje1.jpg')`;
-      ficha.style.backgroundSize = `${n * 100}%`;
-      ficha.style.backgroundPosition = `${j * 100 / (n-1)}% ${i * 100 / (n-1)}%`;
       
       ficha.draggable = true;
       
