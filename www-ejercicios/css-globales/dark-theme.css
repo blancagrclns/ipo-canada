@@ -2,6 +2,10 @@
    TEMA OSCURO - Diseño moderno siguiendo buenas prácticas
    ========================================================================== */
 
+/* ==========================================================================
+   GENERAL - Modo oscuro
+   ========================================================================== */
+
 [data-theme="dark"] {
   /* Colores principales - Sobrescribir los del archivo principal */
   --color-primario: #818cf8;
@@ -19,15 +23,20 @@
   --sombra-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   --sombra-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.6), 0 4px 6px -2px rgba(0, 0, 0, 0.4);
   --sombra-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.7), 0 10px 10px -5px rgba(0, 0, 0, 0.5);
+  
+  --tooltip-bg: rgba(30, 41, 59, 0.95);
+  --tooltip-shadow: var(--sombra-md);
 }
 
-/* Body - Fondo oscuro con degradado elegante */
 [data-theme="dark"] body {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   color: var(--color-texto);
 }
 
-/* Cabecera - Superficie oscura con brillo sutil */
+/* ==========================================================================
+   TABLERO - Modo oscuro
+   ========================================================================== */
+
 [data-theme="dark"] .cabecera {
   background: linear-gradient(135deg, #1e293b, #334155);
   box-shadow: var(--sombra-lg), 0 0 30px rgba(129, 140, 248, 0.1);
@@ -47,7 +56,6 @@
   line-height: 1.5;
 }
 
-/* Navegación - Botones con efecto neón */
 [data-theme="dark"] .nav-acciones__boton {
   background: rgba(30, 41, 59, 0.8);
   border: 2px solid rgba(129, 140, 248, 0.3);
@@ -62,14 +70,12 @@
   box-shadow: 0 0 20px rgba(129, 140, 248, 0.5);
 }
 
-/* Contenedor principal - Superficie con profundidad */
 [data-theme="dark"] .contenedor-principal {
   background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   box-shadow: var(--sombra-xl), inset 0 1px 0 rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(129, 140, 248, 0.1);
 }
 
-/* Estado del juego - Cards con brillo */
 [data-theme="dark"] .estado-juego__item {
   background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), rgba(167, 139, 250, 0.1));
   box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.05);
@@ -94,7 +100,6 @@
   filter: drop-shadow(0 0 10px rgba(129, 140, 248, 0.3));
 }
 
-/* Botones de control - Gradientes vibrantes */
 [data-theme="dark"] .boton--verde {
   background: linear-gradient(135deg, #10b981, #059669);
   box-shadow: var(--sombra-md), 0 0 20px rgba(16, 185, 129, 0.3);
@@ -122,7 +127,6 @@
   box-shadow: var(--sombra-lg), 0 0 30px rgba(239, 68, 68, 0.5);
 }
 
-/* Tablero - Superficie oscura con profundidad */
 [data-theme="dark"] .tablero {
   background: linear-gradient(135deg, #0f172a, #1e293b);
   box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6), 0 0 30px rgba(129, 140, 248, 0.1);
@@ -139,7 +143,6 @@
   display: none;
 }
 
-/* Fichas - Efectos de brillo y profundidad */
 [data-theme="dark"] .ficha {
   box-shadow: var(--sombra-md), 0 0 15px rgba(0, 0, 0, 0.3);
 }
@@ -213,6 +216,155 @@
 }
 
 [data-theme="dark"] .contenedor-principal::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
+}
+
+/* ==========================================================================
+   MECANOGRAFÍA - Modo oscuro
+   ========================================================================== */
+
+[data-theme="dark"] .contenedor {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  box-shadow: var(--sombra-xl), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(129, 140, 248, 0.1);
+}
+
+[data-theme="dark"] .tarjeta {
+  background: linear-gradient(135deg, rgba(30, 41, 59, 0.7), rgba(51, 65, 85, 0.7));
+  box-shadow: var(--sombra-md), 0 0 20px rgba(129, 140, 248, 0.05);
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .tarjeta__titulo {
+  color: var(--color-primario);
+}
+
+[data-theme="dark"] .tarjeta__dato {
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .tarjeta__palabra,
+[data-theme="dark"] .tarjeta__traduccion {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .tarjeta__subcontenedor,
+[data-theme="dark"] .tarjeta__reloj {
+  background: linear-gradient(135deg, rgba(129, 140, 248, 0.1), rgba(167, 139, 250, 0.1));
+  border: 1px solid rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .tarjeta__contador {
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .tarjeta__input {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(129, 140, 248, 0.3);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .tarjeta__input:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+}
+
+[data-theme="dark"] .tarjeta__input:disabled {
+  background: rgba(51, 65, 85, 0.5);
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .btn--iniciar {
+  background: linear-gradient(135deg, #10b981, #059669);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(16, 185, 129, 0.3);
+}
+
+[data-theme="dark"] .btn--iniciar:hover:not(:disabled) {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(16, 185, 129, 0.5);
+}
+
+[data-theme="dark"] .btn--pausar {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="dark"] .btn--pausar:hover:not(:disabled) {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(245, 158, 11, 0.5);
+}
+
+[data-theme="dark"] .btn--finalizar {
+  background: linear-gradient(135deg, #ef4444, #dc2626);
+  box-shadow: var(--sombra-md), 0 0 20px rgba(239, 68, 68, 0.3);
+}
+
+[data-theme="dark"] .btn--finalizar:hover:not(:disabled) {
+  box-shadow: var(--sombra-lg), 0 0 30px rgba(239, 68, 68, 0.5);
+}
+
+[data-theme="dark"] .config-container__subcontenedor {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(129, 140, 248, 0.2);
+}
+
+[data-theme="dark"] .config-container__label {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .config-container__input,
+[data-theme="dark"] .config-container__select {
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .config-container__input:hover,
+[data-theme="dark"] .config-container__select:hover {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.1);
+}
+
+[data-theme="dark"] .config-container__input:focus,
+[data-theme="dark"] .config-container__select:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+}
+
+[data-theme="dark"] .config-container__select:disabled {
+  background: rgba(51, 65, 85, 0.5);
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .config-container__arrow {
+  color: var(--color-acento);
+}
+
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn {
+  background: rgba(51, 65, 85, 0.8);
+}
+
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light + .tgl-btn:after {
+  background: rgba(100, 116, 139, 1);
+}
+
+[data-theme="dark"] .checkbox-wrapper-6 .tgl-light:checked + .tgl-btn {
+  background: rgba(16, 185, 129, 0.5);
+}
+
+[data-theme="dark"] .contenedor::-webkit-scrollbar {
+  width: 10px;
+}
+
+[data-theme="dark"] .contenedor::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] .contenedor::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  border-radius: var(--radio-md);
+}
+
+[data-theme="dark"] .contenedor::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
 }
 
@@ -306,6 +458,17 @@
 [data-theme="dark"] .controles__numero:focus {
   border-color: var(--color-primario);
   box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+}
+
+[data-theme="dark"] .controles__selector:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: rgba(51, 65, 85, 0.3);
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .controles__etiqueta {
+  color: var(--color-texto-secundario);
 }
 
 /* Modal de ayuda */
