@@ -4,21 +4,26 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<!-- GLOBAL -->
   <!-- CSS -->
-<!-- CSS -->
-  <link rel="stylesheet" href="/www-ejercicios/css-globales/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/modal.css"> <!-- Modales globales para todas las páginas -->
+  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/globales/css/dark-theme.css" disabled> <!-- Modo oscuro para todas las páginas -->
+
+  <!-- JS-->
+  <script src="/www-ejercicios/globales/js/global-navigation.js"></script>
+
+<!-- INDIVIDUAL -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" /> <!-- Estilo individual -->
-  <link rel="stylesheet" href="/www-ejercicios/css-globales/modal.css"> <!-- Modales globales para todas las páginas -->
-
-  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/css-globales/dark-theme.css" disabled> <!-- Modo oscuro para todas las páginas -->
-
   <link rel="stylesheet" href="css/bilingue.css" />
 
-  <!-- Favicon -->
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <!-- JS -->
   <script type="module" src="js/script.js"></script>
-  <script type="module" src="js/theme-toggle.js"></script>
+
+<!-- Favicon -->
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
    <title>Mecanografía</title>
 </head>
 
@@ -27,7 +32,7 @@
     <nav class="cabecera__navegador" aria-label="Navegación principal">
       <a href="../../index.html" aria-label="Volver a inicio">
         <button class="nav-acciones__boton" data-accion="volver-inicio" title="Inicio">
-          ⬅️ <span class="sr-only">Volver a inicio</span>
+          ⬅️
         </button>
       </a>
     </nav>
@@ -43,17 +48,17 @@
         <li>
           <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración"
             title="Configuración">
-            ⚙️ <span class="sr-only"></span>
+            ⚙️ 
           </button>
         </li>
         <li>
           <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
-            ❓ <span class="sr-only"></span>
+            ❓ 
           </button>
         </li>
         <li>
           <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
-            🌓 <span class="sr-only"></span>
+            🌓 
           </button>
         </li>
       </ul>
@@ -61,6 +66,47 @@
   </header>
 
   <main class="contenedor">
+    <!-- Panel de configuración lateral (oculto por defecto) -->
+    <aside id="panel-config" class="panel-config">
+      <div class="panel-config__contenido">
+        <div class="panel-config__header">
+          <h2 class="panel-config__titulo">⚙️ Configuración del Test</h2>
+          <button class="panel-config__cerrar" data-accion="cerrar-panel" aria-label="Cerrar panel">×</button>
+        </div>
+        <div class="controles">
+          <div class="controles__grupo">
+            <label for="numPalabras" class="controles__etiqueta">Número de palabras:</label>
+            <input type="number" id="numPalabras" class="controles__numero" min="1" value="15" />
+          </div>
+          <div class="controles__grupo">
+            <label for="tiempoMax" class="controles__etiqueta">Tiempo máximo (seg):</label>
+            <input type="number" id="tiempoMax" class="controles__numero" min="1" value="60" />
+          </div>
+          <div class="controles__grupo">
+            <label class="controles__etiqueta">Modo bilingüe:</label>
+            <div class="checkbox-wrapper-6">
+              <input class="tgl tgl-light" id="modoBilingue" type="checkbox" />
+              <label class="tgl-btn" for="modoBilingue"></label>
+            </div>
+          </div>
+          <div class="controles__grupo">
+            <label class="controles__etiqueta">Dirección de traducción:</label>
+            <div class="config-container__select-group">
+              <select id="idiomaOrigen" class="controles__selector" disabled>
+                <option value="en">Inglés</option>
+                <option value="es">Español</option>
+              </select>
+              <span class="config-container__arrow">→</span>
+              <select id="idiomaDestino" class="controles__selector" disabled>
+                <option value="es">Español</option>
+                <option value="en">Inglés</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
     <!-- Área del test -->
     <section class="tarjeta tarjeta--test">
       <h2 class="tarjeta__titulo">Test de Mecanografía</h2>
@@ -105,48 +151,6 @@
       </div>
     </section>
 
-    <!-- Modal de configuración -->
-    <dialog id="modal-config" class="modal">
-      <div class="modal__contenido">
-        <h2 class="modal__titulo">⚙️ Configuración del Test</h2>
-        <div class="controles">
-          <div class="controles__grupo">
-            <label for="numPalabras" class="controles__etiqueta">Número de palabras:</label>
-            <input type="number" id="numPalabras" class="controles__numero" min="1" value="15" />
-          </div>
-          <div class="controles__grupo">
-            <label for="tiempoMax" class="controles__etiqueta">Tiempo máximo (seg):</label>
-            <input type="number" id="tiempoMax" class="controles__numero" min="1" value="60" />
-          </div>
-          <div class="controles__grupo">
-            <label class="controles__etiqueta">Modo bilingüe:</label>
-            <div class="checkbox-wrapper-6">
-              <input class="tgl tgl-light" id="modoBilingue" type="checkbox" />
-              <label class="tgl-btn" for="modoBilingue"></label>
-            </div>
-          </div>
-          <div class="controles__grupo">
-            <label class="controles__etiqueta">Dirección de traducción:</label>
-            <div class="config-container__select-group">
-              <select id="idiomaOrigen" class="controles__selector" disabled>
-                <option value="en">Inglés</option>
-                <option value="es">Español</option>
-              </select>
-              <span class="config-container__arrow">→</span>
-              <select id="idiomaDestino" class="controles__selector" disabled>
-                <option value="es">Español</option>
-                <option value="en">Inglés</option>
-              </select>
-            </div>
-          </div>
-        </div>
-        <div class="modal__botones">
-          <button class="modal__boton" onclick="document.getElementById('modal-config').close()">Aceptar</button>
-          <button class="modal__boton modal__boton--secundario" onclick="document.getElementById('modal-config').close()">Cancelar</button>
-        </div>
-      </div>
-    </dialog>
-
     <!-- Modal explicativo de "Ayuda" -->
     <dialog id="modal-ayuda" class="modal">
       <div class="modal__contenido">
@@ -174,6 +178,17 @@
             <ul class="modal-ayuda__lista">
               <li>Verás una palabra en un idioma</li>
               <li>Deberás escribir su traducción en el otro idioma</li>
+            </ul>
+          </div>
+          <div class="modal-ayuda__seccion">
+            <h3 class="modal-ayuda__subtitulo">Modo dificultad</h3>
+            <ul class="modal-ayuda__lista">
+              <a>Presiona las siguientes teclas para cambiar el modo de juego:</a>
+              <li>1.- Palabras agudas</li>
+              <li>2.- Palabras llanas</li>
+              <li>3.- Palabras esdrújulas</li>
+              <li>4.- Palabras sobreesdrújulas/acentos</li>
+              
             </ul>
           </div>
         </div>

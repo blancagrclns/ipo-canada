@@ -28,6 +28,14 @@
   --tooltip-shadow: var(--sombra-md);
 }
 
+/* Asegurar que el Mapa use rejilla clara y fondo oscuro cuando el tema global esté activo */
+[data-theme="dark"] .mapa {
+  /* Use variables so the base style composes the full background-image
+     and we avoid conflicting background-image declarations. */
+  --grid-color: rgba(255,255,255,0.06);
+  --map-bg: linear-gradient(180deg, #041018 0%, #071521 100%);
+}
+
 [data-theme="dark"] body {
   background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
   color: var(--color-texto);
@@ -521,4 +529,53 @@
 
 [data-theme="dark"] #modal-ayuda .modal__contenido::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(135deg, var(--color-secundario), var(--color-acento));
+}
+
+/* ==========================================================================
+   PANEL DE CONFIGURACIÓN LATERAL - Modo oscuro
+   ========================================================================== */
+
+[data-theme="dark"] .panel-config {
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  border-left: 1px solid rgba(129, 140, 248, 0.3);
+  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+[data-theme="dark"] .panel-config__header {
+  border-bottom-color: rgba(129, 140, 248, 0.3);
+}
+
+[data-theme="dark"] .panel-config__titulo {
+  color: var(--color-primario);
+}
+
+[data-theme="dark"] .panel-config__cerrar {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .panel-config__cerrar:hover {
+  background: rgba(129, 140, 248, 0.2);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .controles__etiqueta {
+  color: var(--color-texto-secundario);
+}
+
+[data-theme="dark"] .controles__numero,
+[data-theme="dark"] .controles__selector {
+  background: rgba(15, 23, 42, 0.9);
+  border-color: rgba(129, 140, 248, 0.3);
+  color: var(--color-texto);
+}
+
+[data-theme="dark"] .controles__numero:focus,
+[data-theme="dark"] .controles__selector:focus {
+  border-color: var(--color-primario);
+  box-shadow: 0 0 0 3px rgba(129, 140, 248, 0.25);
+}
+
+[data-theme="dark"] .controles__selector:disabled {
+  background: rgba(51, 65, 85, 0.5);
+  color: var(--color-texto-secundario);
 }

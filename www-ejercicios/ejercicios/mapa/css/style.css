@@ -1,6 +1,7 @@
-﻿/* ==========================================================================
-   1. RESET Y CONFIGURACIÓN BASE
+/* ==========================================================================
+   RESET Y ESTILOS BASE
    ========================================================================== */
+
 *,
 *::before,
 *::after {
@@ -10,792 +11,481 @@
 }
 
 /* ==========================================================================
-   2. VARIABLES CSS
+   BODY
    ========================================================================== */
-:root {
-  /* Paleta cromática base */
-  --tono: 150;
-  --tono-complementario: calc(var(--tono) + 180);
 
-  /* Colores semánticos */
-  --color-fondo: hsl(var(--tono), 15%, 96%);
-  --color-primario: hsl(var(--tono), 60%, 45%);
-  --color-primario-claro: hsl(var(--tono), 60%, 95%);
-  --color-secundario: hsl(var(--tono-complementario), 65%, 50%);
-  --color-texto: hsl(var(--tono), 20%, 15%);
-  --color-borde: hsl(var(--tono), 15%, 75%);
-  --color-marcador: hsl(var(--tono-complementario), 75%, 55%);
-  --color-leyenda-fondo: hsl(0, 0%, 100%);
-  --color-leyenda-sombra: hsla(0, 0%, 0%, 0.2);
-  --boton-flotante-dimension: 3.125rem;
-  --color-boton-flotante-bg: var(--color-leyenda-fondo);
-  --color-boton-flotante-text: var(--color-texto);
-  --shadow-boton-flotante: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
-
-  /* Tipografía */
-  --fuente-principal: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  --fuente-titulo: Georgia, "Times New Roman", serif;
-}
-
-/* ==========================================================================
-   3. ESTILOS GLOBALES DEL BODY
-   ========================================================================== */
 body {
-  font-family: var(--fuente-principal);
-  font-size: 1rem;
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
-  padding: 1rem;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  overflow-x: hidden;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  max-height: 100vh;
+  overflow-y: hidden;
 }
 
 /* ==========================================================================
-   4. BOTONES FLOTANTES 
+   CABECERA
    ========================================================================== */
-/* Posicionamiento fixed para mantenerlos visibles al hacer scroll */
-.floating-buttons {
-  position: fixed;
-  top: 1rem;
-  right: 1rem;
-  z-index: 1000;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-}
 
-.floating-buttons__button {
-  width: var(--boton-flotante-dimension);
-  height: var(--boton-flotante-dimension);
-  border: 2px solid var(--color-primario);
-  background-color: var(--color-boton-flotante-bg);
-  color: var(--color-boton-flotante-text);
-  border-radius: 50%;
-  font-size: 1.3rem;
-  cursor: pointer;
-  display: grid;
-  place-content: center;
-  box-shadow: var(--shadow-boton-flotante);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-.floating-buttons__button:hover {
-  transform: translateY(-0.125rem);
-  background-color: var(--color-primario-claro);
-  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.25);
-}
-
-.floating-buttons__button:active {
-  transform: translateY(0);
-}
-
-/* ==========================================================================
-   5. HEADER (título e instrucciones)
-   ========================================================================== */
 .cabecera {
-  text-align: center;
-  max-width: 1200px;
-  margin: 0 auto;
-  width: 100%;
-  padding-bottom: 0.5rem;
-  display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  width: 100%;
+  max-width: none;
 }
 
-.cabecera__titulo {
-  font-family: var(--fuente-titulo);
-  font-size: clamp(1.3rem, 3.5vw, 2rem); 
-  color: var(--color-primario);
-}
-
-.cabecera__instrucciones {
-  font-size: clamp(0.85rem, 1.8vw, 1rem); 
-  color: var(--color-texto);
-  max-width: 42rem;
-  margin: 0 auto;
+.cabecera__descripcion {
+  color: var(--color-texto-secundario);
+  font-size: clamp(0.7rem, 1.5vw, 0.8rem);
 }
 
 /* ==========================================================================
-   6. CONTENEDOR PRINCIPAL
+   NAVEGACIÓN DE ACCIONES - OVERRIDE
    ========================================================================== */
+
+.nav-acciones {
+  position: absolute;
+  right: 2rem;
+  justify-content: flex-end;
+}
+
+/* ==========================================================================
+   MAPA - ESTILOS PRINCIPALES
+   ========================================================================== */
+
+/* --- Contenedor principal (sobrescribe/ajusta la clase global `.contenedor` para este ejercicio) --- */
 .contenedor {
+  width: 100%;
+  max-width: 1000px;
+  padding: 1.75rem;
+  overflow-y: hidden;
+  border-radius: 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.98), rgba(250,251,252,0.98));
+  box-shadow: 0 30px 60px rgba(3, 57, 53, 0.25), inset 0 6px 20px rgba(255,255,255,0.6);
+}
+
+/* Wrapper que contiene el panel blanco interior y controles */
+.mapa-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
-  flex: 1;
-  max-width: 1200px;
-  margin: 0 auto;
+  gap: var(--espaciado-md);
   width: 100%;
 }
 
-/* ==========================================================================
-   7. MAPA (contenedor de la imagen y los puntos)
-   ========================================================================== */
-.mapa {
-  /* position: relative es el contexto para los ítems con position: absolute */
-  position: relative;
-  
-  /* aspect-ratio mantiene la proporción de la imagen */
-  width: 100%;
-  aspect-ratio: 16 / 10;
-  
-  /* Imagen de fondo  */
-  /* background-image: url('../img/mapa-ciudad.jpg'); */
-  background-size: cover;
-  background-position: center;
-  background-color: var(--color-primario-claro);
-  
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 16px var(--color-leyenda-sombra);
-  overflow: hidden;
-  
-  /* Transición suave al cambiar de tema */
-  transition: box-shadow 0.3s ease, background-color 0.3s ease;
-}
-
-/* ==========================================================================
-   8. MARCADORES DENTRO DEL MAPA
-   ========================================================================== */
-
-/* Marcador visual (círculo pulsante) */
-.mapa__marcador {
-  width: calc(2rem * var(--escala-marcador));
-  height: calc(2rem * var(--escala-marcador));
-  background-color: var(--color-marcador, var(--color-primario)); 
-  border-radius: 50%;
+/* Top controls: estilo de pills con iconos pequeños encima del mapa */
+.mapa__controles {
   display: flex;
+  gap: 1rem; /* más espacio entre controles */
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  position: relative;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  /* El tamaño del emoji se controla desde aquí */
-  font-size: calc(1.1rem * var(--escala-marcador));
+  padding: 0.75rem 1rem; /* mayor área clicable */
+  font-size: 1rem; /* botones un poco más grandes */
 }
 
-/* Animación de pulso con ::before usando color dinámico */
-.mapa__marcador::before {
-  content: '';
+.mapa__boton-vista {
+ 
+  padding: var(--espaciado-sm) var(--espaciado-md);
+  border: none;
+  border-radius: var(--radio-md);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transicion-normal);
+  min-height: 44px;
+  color: white;
+  box-shadow: var(--sombra-md);
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
+
+}
+
+
+
+.mapa__boton-vista:hover { transform: translateY(-3px); }
+
+.mapa__boton-vista--activo {
+  background: linear-gradient(135deg, var(--color-primario), var(--color-secundario));
+  color: var(--color-superficie);
+  box-shadow: 0 10px 30px rgba(2,48,43,0.12);
+}
+
+/* --- Panel interior blanco que actúa como 'mapa card' --- */
+.mapa-card {
+  background: var(--color-superficie);
+  border-radius: 0.75rem;
+  padding: 1.25rem 1.25rem 2rem 1.25rem;
+  box-shadow: 0 30px 60px rgba(2,48,43,0.12), inset 0 2px 8px rgba(0,0,0,0.03);
+  border: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Área de mapa dentro de la card (espacio blanco amplio) */
+.mapa {
+  /* Grid variables (tuneables) */
+  --grid-size: 36px;
+  --grid-thickness: 1px;
+  --grid-color: rgba(2,48,43,0.06);
+
+  position: relative;
+  width: 100%;
+  height: 520px;
+  /* base white background + horizontal and vertical grid overlays
+     NOTE: grid layers must be listed first so they render above the base background */
+  --grid-color: rgba(2,48,43,0.09); /* a bit stronger so it's visible on white */
+  /* Fondo base del mapa (se puede sobreescribir en modo oscuro mediante --map-bg) */
+  --map-bg: linear-gradient(180deg, #ffffff 0%, #fbfbfb 100%);
+  background-image:
+    repeating-linear-gradient(90deg, var(--grid-color) 0 var(--grid-thickness), transparent var(--grid-thickness) calc(var(--grid-size))),
+    repeating-linear-gradient(0deg, var(--grid-color) 0 var(--grid-thickness), transparent var(--grid-thickness) calc(var(--grid-size))),
+    var(--map-bg);
+  background-size: auto, auto, auto;
+  background-position: 0 0, 0 0, 0 0;
+
+  border-radius: 0.6rem;
+  border: 1px solid rgba(0,0,0,0.03);
+  box-shadow: inset 0 6px 18px rgba(0,0,0,0.04);
+  overflow: hidden;
+}
+
+/* Cuando se quiere un marco interior redondeado más pronunciado (ejemplo) */
+.mapa-inner-padding { padding: 1rem; height: 100%; box-sizing: border-box; }
+
+/* --- Marcadores: circulares con color por tipo --- */
+.mapa__item { position: absolute; transform: translate(-50%, -50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; z-index: 20; }
+
+.mapa__marcador {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  color: var(--color-superficie);
+  font-weight: 800;
+  font-size: 1.1rem;
+  border: 4px solid rgba(255,255,255,0.9);
+  box-shadow: 0 8px 24px rgba(2,48,43,0.18);
+  cursor: pointer;
+  transition: transform var(--transicion-normal), box-shadow var(--transicion-normal);
+  position: relative;
+}
+
+
+.mapa__marcador:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 18px 40px rgba(2,48,43,0.2); }
+
+/* Heartbeat / expanding ring effect adapted from the provided `.circle` sample
+   Applied to .mapa__marcador. If prefixed sizes conflict with responsive rules,
+   the responsive media queries later in the file will override them. */
+.mapa__marcador {
+  /* base variables for sizing; --escala-marcador is controlled from JS */
+  --marcador-size: 70px;
+  --marcador-border: 4px;
+  --marcador-font: 1.1rem;
+  --marcador-ring-border: 10px;
+
+  width: calc(var(--marcador-size) * var(--escala-marcador, 1));
+  height: calc(var(--marcador-size) * var(--escala-marcador, 1));
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  color: var(--color-superficie);
+  font-weight: 800;
+  font-size: calc(var(--marcador-font) * var(--escala-marcador, 1));
+  border: calc(var(--marcador-border) * var(--escala-marcador, 1)) solid rgba(255,255,255,0.9);
+  box-shadow: 0 8px 24px rgba(2,48,43,0.18);
+  cursor: pointer;
+  transition: transform var(--transicion-normal), box-shadow var(--transicion-normal);
+  position: relative; /* needed for pseudo-elements */
+  z-index: 1; /* ensure marker content sits above the animated rings */
+}
+
+.mapa__marcador::before,
+.mapa__marcador::after {
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  background-color: var(--color-marcador, var(--color-primario));
-  opacity: 0.6;
-  animation: pulso 2s infinite;
-  /* IMPORTANTE: transform-origin para centrar la animación */
-  transform-origin: center;
-}
-
-/* Keyframes para la animación de pulso */
-@keyframes pulso {
-  0% {
-    transform: translate(-50%, -50%) scale(1);
-    opacity: 0.6;
-  }
-  100% {
-    transform: translate(-50%, -50%) scale(2.5);
-    opacity: 0;
-  }
-}
-
-/* Efecto hover en el marcador */
-.mapa__item:hover .mapa__marcador {
-  transform: scale(1.15);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
-}
-
-/* Icono dentro del marcador */
-.mapa__marcador-icono {
-  position: relative;
-  z-index: 1;
-  /* El tamaño se hereda del padre (.mapa__marcador) */
-  font-size: inherit;
-  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.3));
-  /* Asegurar que el emoji se mantenga centrado */
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* ==========================================================================
-   9. LEYENDA (tooltip que aparece al hacer hover)
-   ========================================================================== */
-.mapa__leyenda {
-  /* 
-    position: absolute permite posicionarla relativa al ítem padre
-    bottom: 100% la coloca encima del marcador
-  */
-  position: absolute;
-  bottom: calc(100% + 0.85rem);
-  left: 50%;
-  
-  /* transform: translateX centra horizontalmente la leyenda */
-  transform: translateX(-50%);
-
-  /* Estilos visuales */
-  background-color: var(--color-leyenda-fondo);
-  padding: 1.1rem;
-  border-radius: 0.6rem;
-  box-shadow: 0 6px 20px var(--color-leyenda-sombra);
-  
-  /* Ancho mínimo y máximo */
-  min-width: 220px;
-  max-width: 300px;
-  
-  /* Inicialmente oculta (opacity y visibility) */
-  opacity: 0;
-  visibility: hidden;
-  
-  /* z-index: 100 asegura que esté sobre todo */
-  z-index: 100;
-  
-  /* Transiciones suaves para aparecer/desaparecer */
-  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease, background-color 0.3s ease;
-  
-  /* white-space: normal permite que el texto haga saltos de línea */
-  white-space: normal;
-  
-  /* pointer-events: none evita que la leyenda interfiera con el hover */
+  /* base centered; animation will scale this element */
+  transform: translate(-50%, -50%) scale(1);
+  width: calc(var(--marcador-size) * var(--escala-marcador, 1));
+  height: calc(var(--marcador-size) * var(--escala-marcador, 1));
+  border: calc(var(--marcador-ring-border) * var(--escala-marcador, 1)) solid rgba(var(--marcador-rgba, 255,255,255), 0.45);
+  border-radius: 100%;
+  animation: latido linear 3s infinite;
   pointer-events: none;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
+  z-index: 0; /* behind the marker */
 }
 
-/* Flecha inferior de la leyenda usando ::after */
-.mapa__leyenda::after {
-  content: "";
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  
-  /* Triángulo creado con borders */
-  border: 9px solid transparent;
-  border-top-color: var(--color-leyenda-fondo);
-  
-  /* Transición para el cambio de tema */
-  transition: border-top-color 0.3s ease;
+.mapa__marcador::after { animation-delay: -1.5s; }
+
+@keyframes latido {
+  0% { transform: translate(-50%, -50%) scale(1); border-color: rgba(var(--marcador-rgba, 255,255,255), 0.45); opacity: 1; }
+  100% { transform: translate(-50%, -50%) scale(1.7); border-color: rgba(var(--marcador-rgba, 255,255,255), 0); opacity: 0; }
 }
 
-/* Mostrar leyenda al hacer hover en el ítem */
-.mapa__item:hover .mapa__leyenda {
-  opacity: 1;
-  visibility: visible;
-  
-  /* Pequeño desplazamiento hacia arriba al aparecer */
-  transform: translateX(-50%) translateY(-6px);
-}
+/* Icon sizing inside marker (alternate name `icono` accepted) */
+.mapa__marcador .icono { width: 42px; height: 42px; margin-top: 12px; margin-left: 14.5px; }
+.mapa__marcador .icon { /* keep previous icon rule in sync */ width: 42px; height: 42px; margin-top: 12px; margin-left: 14.5px; }
 
-/* Título de la leyenda */
-.mapa__leyenda h3 {
-  font-size: 1.15rem;
-  color: var(--color-primario);
-  font-family: var(--fuente-titulo);
-  font-weight: 600;
-}
+/* Paleta por categoría (puedes usar estas clases en JS al crear marcadores) */
+.mapa__marcador--restaurante { background: linear-gradient(135deg,#ef4444,#f97373); --marcador-rgba: 239,68,68; }
+.mapa__marcador--cafe { background: linear-gradient(135deg,#f59e0b,#fbbf24); --marcador-rgba: 245,158,11; }
+.mapa__marcador--bar { background: linear-gradient(135deg,#3b82f6,#60a5fa); --marcador-rgba: 59,130,246; }
+.mapa__marcador--otros { background: linear-gradient(135deg,#8b5cf6,#a78bfa); --marcador-rgba: 139,92,246; }
 
-/* Descripción de la leyenda */
-.mapa__leyenda p {
-  font-size: 0.95rem;
+/* Pequeños tamaños alternativos */
+.mapa__marcador--small { width: 40px; height: 40px; font-size: .9rem; border-width:3px; }
+.mapa__marcador--large { width: 72px; height: 72px; font-size:1.25rem; border-width:4px; }
+
+/* Icono (emoji) dentro del marcador mantendrá contraste; si usas imágenes, ponlas como background-image */
+.mapa__marcador .icon { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)); }
+
+/* Leyenda / tooltip sencilla (aparece al hover) */
+.mapa__leyenda {
+  background: rgba(255,255,255,0.98);
   color: var(--color-texto);
+  border: 1px solid rgba(0,0,0,0.04);
+  padding: 0.45rem 0.6rem;
+  border-radius: var(--radio-md);
+  box-shadow: 0 8px 24px rgba(2,48,43,0.08);
+  font-size: 0.9rem;
+  max-width: 240px;
+  text-align: left;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity var(--transicion-rapida), transform var(--transicion-rapida);
+  pointer-events: none;
+  z-index: 30;
 }
 
-/* ==========================================================================
-   10. RESPONSIVE 
-   ========================================================================== */
-@media (max-width: 768px) {
-  body {
-    padding: 1rem;
-  }
-  
-  .floating-buttons {
-    top: 0.75rem;
-    right: 0.75rem;
-  }
-  
-  .floating-buttons__button {
-    width: calc(var(--boton-flotante-dimension) * 0.8);
-    height: calc(var(--boton-flotante-dimension) * 0.8);
-    font-size: 1.1rem;
-  }
-  
-  .cabecera__titulo {
-    font-size: 1.5rem;
-  }
-  
-  .cabecera__instrucciones {
-    font-size: 0.9rem;
-  }
-  
-  .mapa {
-    aspect-ratio: 4 / 3;
-  }
-  
-  .mapa__leyenda {
-    /* En móviles, asegurar que la leyenda no se salga de la pantalla */
-    max-width: calc(100vw - 3rem);
-  }
-  
-  .mapa__marcador {
-    width: 18px;
-    height: 18px;
-    border-width: 2px;
-  }
+.mapa__item:hover .mapa__leyenda,
+.mapa__item[aria-expanded="true"] .mapa__leyenda { opacity: 1; transform: translateY(0); pointer-events: auto; }
+
+.mapa__leyenda__titulo { font-weight: 800; color: var(--color-primario); margin-bottom: 0.2rem; }
+.mapa__leyenda__descripcion { color: var(--color-texto-secundario); font-size:0.85rem; }
+
+/* Flecha de la leyenda */
+.mapa__leyenda::after { content: ""; position: absolute; bottom: -6px; left: 50%; transform: translateX(-50%); border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid rgba(255,255,255,0.98); }
+
+/* Modo adición: pequeño panel inferior izquierdo dentro del mapa (botones claros) */
+.mapa__modo-adicion { position:absolute; left:1rem; bottom:1rem; background: var(--color-superficie); border-radius:var(--radio-md); padding:0.65rem 0.85rem; box-shadow:0 8px 24px rgba(2,48,43,0.08); border:1px solid rgba(0,0,0,0.04); z-index:40; }
+
+/* Botón flotante para añadir marcador */
+.btn-flotante-add {
+  position: fixed;
+  right: 7.5rem;
+  bottom: 1.5rem;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  background: radial-gradient(circle at 30% 30%, #f59e0b 0%, #f97316 25%, #6ee7b7 60%, #009688 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 18px 48px rgba(2,48,43,0.22);
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 80;
+  transition: transform 180ms ease, box-shadow 180ms ease;
 }
 
-/* ==========================================================================
-   11. PANEL LATERAL (
-   ========================================================================== */
-.panel {
+.btn-flotante-add::before {
+  content: "+";
+  font-weight: 800;
+  color: #7c3aed;
+  font-size: 1.6rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+
+/* Botón flotante para eliminar marcador (a la derecha del add) */
+.btn-flotante-del {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  display: inline-grid;
+  place-items: center;
+  background: radial-gradient(circle at 30% 30%, #2563eb 0%, #0891b2 60%, #0e7490 100%);
+  color: #fff;
+  border: none;
+  box-shadow: 0 18px 48px rgba(37,99,235,0.22);
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 80;
+  transition: transform 180ms ease, box-shadow 180ms ease;
+}
+
+.btn-flotante-del::before {
+  content: "🗑️";
+  font-weight: 800;
+  font-size: 1.6rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.18);
+}
+
+.btn-flotante-del:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 26px 64px rgba(37,99,235,0.28);
+}
+
+/* Accessibility focus states */
+.mapa__boton-vista:focus,
+.mapa__marcador:focus,
+.btn-flotante-add:focus,
+.btn-flotante-del:focus,
+.formulario-item button:focus { outline: 3px solid rgba(129, 199, 191, 0.25); outline-offset: 3px; }
+
+/* Entrada visual de marcadores (pop) */
+@keyframes markerPop { 0%{ transform: translate(-50%, -40%) scale(.6); opacity:0 } 70%{ transform: translate(-50%,-100%) scale(1.05); opacity:1 } 100%{ transform: translate(-50%,-100%) scale(1) } }
+.mapa__item--animado .mapa__marcador{ animation: markerPop 380ms cubic-bezier(.2,.9,.2,1); }
+
+/* Responsive tweaks */
+@media (max-width: 900px) { .mapa { height: 64vh; } .btn-flotante-add{ width:64px;height:64px;font-size:1.4rem;} }
+@media (max-width: 420px) { .mapa { height: 56vh; } .mapa__marcador{ width:44px;height:44px } .mapa__boton-vista{ min-width:44px;height:36px } }
+
+/* ==============================
+   PANEL DE CONFIGURACIÓN LATERAL
+   ============================== */
+.panel-config {
   position: fixed;
   top: 0;
-  right: -320px;
-  width: 320px;
+  right: 0;
+  width: 340px;
+  max-width: 100vw;
   height: 100vh;
-  background-color: var(--color-leyenda-fondo);
-  box-shadow: -4px 0 16px var(--color-leyenda-sombra);
-  z-index: 900;
-  transition: right 0.3s ease, background-color 0.3s ease;
-  overflow-y: auto;
-  padding: 1.5rem;
+  background: var(--color-superficie, #fff);
+  box-shadow: -8px 0 32px rgba(2,48,43,0.12);
+  border-left: 1px solid rgba(0,0,0,0.04);
+  z-index: 120;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(.7,.2,.2,1);
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  pointer-events: none;
+}
+.panel-config--abierto {
+  transform: translateX(0);
+  pointer-events: auto;
+}
+.panel-config__contenido {
+  padding: 2rem 1.5rem 1.5rem 1.5rem;
+  overflow-y: auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.panel-config__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.2rem;
+}
+.panel-config__titulo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-primario, #009688);
+}
+.panel-config__cerrar {
+  background: none;
+  border: none;
+  font-size: 2rem;
+  color: var(--color-texto, #333);
+  cursor: pointer;
+  padding: 0 0.5rem;
+  line-height: 1;
+  transition: color 0.2s;
+}
+.panel-config__cerrar:hover {
+  color: var(--color-secundario, #7c3aed);
 }
 
-.panel--abierto {
-  right: 0;
-}
-
+/* ==============================
+   PANEL CONTENIDO Y SECCIONES
+   ============================== */
 .panel__contenido {
   display: flex;
   flex-direction: column;
   gap: 2rem;
 }
-
-.panel__header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-bottom: 1rem;
-  border-bottom: 2px solid var(--color-borde);
-}
-
-.panel__titulo {
-  font-size: 1.5rem;
-  color: var(--color-primario);
-  margin: 0;
-}
-
-.panel__cerrar {
-  width: 2rem;
-  height: 2rem;
-  border: none;
-  background: transparent;
-  color: var(--color-texto);
-  font-size: 1.5rem;
-  cursor: pointer;
-  border-radius: 0.25rem;
-  transition: background-color 0.2s ease;
-}
-
-.panel__cerrar:hover {
-  background-color: var(--color-primario-claro);
-}
-
 .panel__seccion {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  margin-bottom: 0.5rem;
 }
-
 .panel__subtitulo {
-  font-size: 1.1rem;
-  color: var(--color-primario);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--color-primario, #009688);
+  margin-bottom: 0.7rem;
+  letter-spacing: 0.01em;
 }
 
+/* ==============================
+   CONTROLES DE FILTRO
+   ============================== */
 .panel__controles {
   display: flex;
-  flex-direction: column;
   gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.5rem;
 }
-
 .btn--filtro {
-  padding: 0.65rem 1rem;
-  border: 2px solid var(--color-borde);
-  background-color: var(--color-leyenda-fondo);
-  color: var(--color-texto);
-  border-radius: 0.4rem;
-  font-size: 0.95rem;
-  cursor: pointer;
-  text-align: left;
-  transition: all 0.2s ease;
-}
-
-.btn--filtro:hover {
-  background-color: var(--color-primario-claro);
-  border-color: var(--color-primario);
-}
-
-/* Botón de filtro activo (para selección múltiple) */
-.btn--filtro-activo {
-  background-color: var(--color-primario);
-  color: white;
-  border-color: var(--color-primario);
-}
-
-.btn--filtro-activo:hover {
-  background-color: var(--color-primario-oscuro);
-  border-color: var(--color-primario-oscuro);
-}
-
-.panel__control-grupo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-}
-
-.panel__control-grupo label {
-  font-size: 0.9rem;
-  color: var(--color-texto);
-}
-
-.panel__control-grupo input[type="range"] {
-  width: 100%;
-  accent-color: var(--color-primario);
-}
-
-.panel__control-grupo output {
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--color-primario);
-  font-variant-numeric: tabular-nums;
-}
-
-/* ==========================================================================
-   12. WRAPPER DEL MAPA
-   ========================================================================== */
-.mapa-wrapper {
-  position: relative;
-  width: 100%;
-}
-
-/* ==========================================================================
-   13. CONTROLES DE VISTA EN EL MAPA 
-   ========================================================================== */
-.mapa__controles {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  z-index: 50;
-  display: flex;
-  gap: 0.5rem;
-  background-color: hsla(0, 0%, 100%, 0.95);
-  padding: 0.5rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 2px 8px var(--color-leyenda-sombra);
-  transition: background-color 0.3s ease;
-}
-
-.mapa__boton-vista {
-  padding: 0.5rem 0.75rem;
-  border: 2px solid var(--color-borde);
-  background-color: transparent;
-  color: var(--color-texto);
-  border-radius: 0.3rem;
-  font-size: 0.9rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.mapa__boton-vista:hover {
-  background-color: var(--color-primario-claro);
-  border-color: var(--color-primario);
-}
-
-.mapa__boton-vista--activo {
-  background-color: var(--color-primario);
-  color: white;
-  border-color: var(--color-primario);
-}
-
-/* ==========================================================================
-   14. TIPOS DE MARCADORES
-   ========================================================================== */
-:root {
-  --escala-marcador: 1.2;
-}
-
-.mapa__marcador--restaurante {
-  background-color: hsl(350, 75%, 55%);
-  border-color: hsl(350, 75%, 35%);
-}
-
-.mapa__marcador--cafe {
-  background-color: hsl(30, 70%, 55%);
-  border-color: hsl(30, 70%, 35%);
-}
-
-.mapa__marcador--bar {
-  background-color: hsl(210, 75%, 55%);
-  border-color: hsl(210, 75%, 35%);
-}
-
-/* ==========================================================================
-   15. ARRASTRE DE ÍTEMS 
-   ========================================================================== */
-.mapa__item {
-  /* Asegurar que position: absolute funcione correctamente */
-  position: absolute;
-  cursor: grab;
-}
-
-.mapa__item:active {
-  cursor: grabbing;
-}
-
-.mapa__item--arrastrando {
-  opacity: 0.5;
-  cursor: grabbing;
-}
-
-/* ==========================================================================
-   16. MODO ADICIÓN DE PUNTOS 
-   ========================================================================== */
-.mapa__modo-adicion {
-  position: absolute;
-  top: 4rem; /* Posicionado más alto pero sin cubrir controles */
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 50;
-  background-color: var(--color-primario);
-  color: white;
-  padding: 0.65rem 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px var(--color-leyenda-sombra);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 0.75rem;
-  max-width: 90%; /* Evita que se salga en móviles */
-}
-
-.mapa__modo-adicion p {
-  margin: 0;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-/* Mejorar visibilidad del botón cancelar */
-.mapa__modo-adicion .btn--secundario {
-  background-color: white;
-  color: var(--color-primario);
-  border: 2px solid white;
-  padding: 0.4rem 0.85rem;
-  font-size: 0.85rem;
-  white-space: nowrap;
-}
-
-.mapa__modo-adicion .btn--secundario:hover {
-  background-color: var(--color-primario-claro);
-  border-color: white;
-  color: var(--color-primario);
-}
-
-/* ==========================================================================
-   17. DIALOG PARA NUEVO ÍTEM 
-   ========================================================================== */
-.formulario-item {
-  border: none;
-  border-radius: 0.75rem;
-  padding: 0;
-  max-width: 500px;
-  width: 90vw;
-  box-shadow: 0 8px 24px var(--color-leyenda-sombra);
-  margin: auto;
-}
-
-.formulario-item::backdrop {
-  background-color: hsla(0, 0%, 0%, 0.5);
-}
-
-.formulario-item__form {
-  padding: 1.75rem; 
-  background-color: var(--color-leyenda-fondo);
-  border-radius: 0.75rem;
-  max-height: 85vh;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
-.formulario-item__titulo {
-  font-size: 1.4rem; 
-  color: var(--color-primario);
-}
-
-.formulario-item__campo {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-}
-
-.formulario-item__campo label {
-  font-weight: 600;
-  color: var(--color-texto);
-  font-size: 0.95rem;
-}
-
-.formulario-item__ayuda {
-  font-size: 0.8rem;
-  color: var(--color-texto);
-  opacity: 0.7;
-  font-style: italic;
-}
-
-.formulario-item__campo input[type="text"],
-.formulario-item__campo select,
-.formulario-item__campo textarea {
-  width: 100%;
-  padding: 0.65rem;
-  border: 1px solid var(--color-borde);
-  border-radius: 0.375rem;
-  font-family: inherit;
-  font-size: 0.95rem;
-  background-color: var(--color-fondo);
-  color: var(--color-texto);
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.formulario-item__campo input[type="text"]:focus,
-.formulario-item__campo select:focus,
-.formulario-item__campo textarea:focus {
-  outline: none;
-  border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px hsla(var(--tono), 60%, 50%, 0.1);
-}
-
-.formulario-item__campo input::placeholder,
-.formulario-item__campo textarea::placeholder {
-  color: var(--color-texto);
-  opacity: 0.5;
-}
-
-/* Campo oculto para nuevo tipo */
-.formulario-item__campo--oculto {
-  display: none;
-}
-
-.formulario-item__campo--visible {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  animation: aparecer 0.3s ease;
-  padding-top: 0.75rem;
-  border-top: 1px solid var(--color-borde);
-}
-
-.formulario-item__acciones {
-  display: flex;
-  gap: 0.75rem;
-  justify-content: flex-end;
-}
-
-.btn {
-  padding: 0.65rem 1.3rem;
-  border: 2px solid var(--color-primario);
-  border-radius: 0.35rem;
+  background: #fff;
+  color: var(--color-primario, #009688);
+  border: 2px solid var(--color-primario, #009688);
+  border-radius: var(--radio-md, 0.5rem);
+  padding: 0.5rem 1.1rem;
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.25s ease;
+  box-shadow: 0 2px 8px rgba(2,48,43,0.08);
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s, border-color 0.2s;
+}
+.btn--filtro[aria-pressed="true"], .btn--filtro.active {
+  background: var(--color-secundario, #7c3aed);
+  color: #fff;
+  border-color: var(--color-secundario, #7c3aed);
+  box-shadow: 0 4px 16px rgba(124,58,237,0.12);
+}
+.btn--filtro:hover {
+  background: var(--color-secundario, #7c3aed);
+  color: #fff;
+  border-color: var(--color-secundario, #7c3aed);
 }
 
-.btn--primario {
-  background-color: var(--color-primario);
-  color: white;
+/* ==============================
+   GRUPOS DE CONTROLES
+   ============================== */
+.panel__control-grupo {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  margin-bottom: 0.7rem;
+}
+.panel__control-grupo label {
+  font-size: 0.98rem;
+  color: var(--color-texto, #333);
+  font-weight: 500;
+}
+.panel__control-grupo input[type="range"] {
+  flex: 1;
+  accent-color: var(--color-primario, #009688);
+  margin: 0 0.5rem;
+  height: 2.5px;
+}
+.panel__control-grupo output {
+  font-size: 0.95rem;
+  color: var(--color-secundario, #7c3aed);
+  font-weight: 600;
+  min-width: 48px;
+  text-align: right;
 }
 
-.btn--primario:hover {
-  background-color: hsl(var(--tono), 60%, 40%);
-}
-
-.btn--secundario {
-  background-color: hsl(var(--tono), 10%, 90%);
-  color: var(--color-primario);
-  border: 2px solid var(--color-primario);
-}
-
-.btn--secundario:hover {
-  background-color: var(--color-primario);
-  color: white;
-}
-
-/* ==========================================================================
-   18. RESPONSIVE
-   ========================================================================== */
-@media (max-width: 768px) {
-  .panel {
-    width: 280px;
-    right: -280px;
-    padding: 1rem;
+/* Responsive para panel lateral */
+@media (max-width: 600px) {
+  .panel-config {
+    width: 100vw;
+    max-width: 100vw;
+    padding: 0;
   }
-  
-  .mapa__controles {
-    flex-wrap: wrap;
-    max-width: calc(100% - 2rem);
-  }
-  
-  .btn-flotante-add {
-    bottom: 1rem;
-    right: 1rem;
-    width: 3rem;
-    height: 3rem;
-    font-size: 1.3rem;
-  }
-  
-  .formulario-item {
-    max-width: calc(100vw - 2rem);
+  .panel-config__contenido {
+    padding: 1rem 0.5rem 1rem 0.5rem;
   }
 }
 
-/* ==========================================================================
-   19. BOTÓN FLOTANTE PARA AÑADIR
-   ========================================================================== */
-.btn-flotante-add {
-  position: fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  width: 3.5rem;
-  height: 3.5rem;
-  background-color: var(--color-primario);
-  color: white;
-  border: none;
-  border-radius: 50%;
-  font-size: 1.5rem;
-  cursor: pointer;
-  box-shadow: 0 4px 16px var(--color-leyenda-sombra);
-  z-index: 800;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.btn-flotante-add:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 20px var(--color-leyenda-sombra);
-}
-
-.btn-flotante-add:active {
-  transform: scale(0.95);
-}
 

@@ -4,19 +4,29 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- GLOBAL -->
   <!-- CSS -->
-  <link rel="stylesheet" href="/www-ejercicios/css-globales/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/modal.css"> <!-- Modales globales para todas las páginas -->
+  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/globales/css/dark-theme.css" disabled> <!-- Modo oscuro para todas las páginas -->
+
+  <!-- JS-->
+  <script src="/www-ejercicios/globales/js/global-navigation.js"></script>
+
+<!-- INDIVIDUAL -->
+  <!-- CSS -->
   <link rel="stylesheet" href="css/style.css" /> <!-- Estilo individual -->
-  <link rel="stylesheet" href="/www-ejercicios/css-globales/modal.css"> <!-- Modales globales para todas las páginas -->
-  <link rel="stylesheet" href="css/modos-juego.css">
-  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/css-globales/dark-theme.css" disabled> <!-- Modo oscuro para todas las páginas -->
-  <!-- Favicon -->
-  <link rel="icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/modos-juego.css" />
+
   <!-- JS -->
   <script defer src="js/script.js"></script>
   <script defer src="js/modales.js"></script>
   <script defer src="js/modos-juego.js"></script>
-  <script defer src="js/theme-toggle.js"></script>
+
+
+<!-- Favicon -->
+  <link rel="icon" href="images/favicon.png" type="image/x-icon">
   <title>Tablero - Juego de Fichas</title>
 </head>
 
@@ -28,7 +38,7 @@
     <nav class="cabecera__navegador" aria-label="Navegación principal">
       <a href="../../index.html" aria-label="Volver a inicio">
         <button class="nav-acciones__boton" data-accion="volver-inicio" title="Inicio">
-          ⬅️ <span class="sr-only">Volver a inicio</span>
+          ⬅️
         </button>
       </a>
     </nav>
@@ -48,17 +58,17 @@
         <li>
           <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración"
             title="Configuración">
-            ⚙️ <span class="sr-only"></span>
+            ⚙️
           </button>
         </li>
         <li>
           <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
-            ❓ <span class="sr-only"></span>
+            ❓
           </button>
         </li>
         <li>
           <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
-            🌓 <span class="sr-only"></span>
+            🌓
           </button>
         </li>
       </ul>
@@ -66,9 +76,13 @@
   </header>
 
   <main class="contenedor-principal">
-    <dialog id="modal-config" class="modal" data-modal="configuracion">
-      <div class="modal__contenido">
-        <h2 class="modal__titulo">Configuración del juego</h2>
+    <!-- Panel de configuración lateral (oculto por defecto) -->
+    <aside id="panel-config" class="panel-config">
+      <div class="panel-config__contenido">
+        <div class="panel-config__header">
+          <h2 class="panel-config__titulo">⚙️ Configuración del juego</h2>
+          <button class="panel-config__cerrar" data-accion="cerrar-panel" aria-label="Cerrar panel">×</button>
+        </div>
         <section class="controles">
           <div class="controles__grupo">
             <label for="modoJuego" class="controles__etiqueta">Modo de juego:</label>
@@ -78,7 +92,6 @@
               <option value="rompecabezas">Rompecabezas</option>
             </select>
           </div>
-
           <div class="controles__grupo">
             <label for="tamanoFicha" class="controles__etiqueta">Tamaño de la ficha:</label>
             <select id="tamanoFicha" class="controles__selector" data-configuracion="tamano-ficha">
@@ -87,13 +100,11 @@
               <option value="grande">Grande</option>
             </select>
           </div>
-
           <div class="controles__grupo">
             <label for="tamanoTablero" class="controles__etiqueta">Tamaño del tablero:</label>
             <input type="number" id="tamanoTablero" class="controles__numero" data-configuracion="tamano-tablero"
               min="2" max="7" value="3" aria-label="Tamaño del tablero">
           </div>
-
           <div class="controles__grupo">
             <label for="formaFicha" class="controles__etiqueta">Forma de fichas:</label>
             <select id="formaFicha" class="controles__selector" data-configuracion="forma-ficha">
@@ -103,13 +114,9 @@
             </select>
           </div>
         </section>
-
-        <div class="modal__botones">
-          <button class="modal__boton" data-accion="guardar-configuracion">Aceptar</button>
-          <button class="modal__boton modal__boton--secundario" data-accion="cerrar-configuracion">Cerrar</button>
-        </div>
+       
       </div>
-    </dialog>
+    </aside>
 
     <section class="estado-juego">
       <div class="estado-juego__item">

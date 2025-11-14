@@ -115,7 +115,7 @@ function iniciarJuego() {
   TABLERO.config.ladoTablero = parseInt(TABLERO.nodos.controlTamanoTablero.value, 10);
   TABLERO.config.tamanoFicha = TABLERO.nodos.controlTamanoFicha.value;
   TABLERO.config.formaFicha = TABLERO.nodos.controlFormaFicha.value;
-  TABLERO.config.modoJuego = TABLERO.nodos.controlModoJuego.value; // Leer modo de juego seleccionado
+  TABLERO.config.modoJuego = TABLERO.nodos.controlModoJuego.value;
   
   // Validar tamano de tablero
   if (TABLERO.config.ladoTablero < 2 || TABLERO.config.ladoTablero > 7) {
@@ -143,6 +143,12 @@ function iniciarJuego() {
       // Modo normal (original)
       generarTablero();
   }
+  
+  // Añadir clase tablero--activo a TODOS los tableros para ocultar el mensaje
+  const todosLosTableros = document.querySelectorAll('.tablero');
+  todosLosTableros.forEach(tablero => {
+    tablero.classList.add('tablero--activo');
+  });
   
   // Iniciar temporizador
   iniciarTemporizador();
@@ -196,6 +202,12 @@ function detenerJuego() {
   
   // Actualizar estado del juego
   TABLERO.estado.juegoIniciado = false;
+  
+  // Remover clase tablero--activo de TODOS los tableros para mostrar el mensaje nuevamente
+  const todosLosTableros = document.querySelectorAll('.tablero');
+  todosLosTableros.forEach(tablero => {
+    tablero.classList.remove('tablero--activo');
+  });
   
   // Actualizar UI para reflejar fin de juego
   actualizarUI();
@@ -294,6 +306,7 @@ function finalizarJuego() {
 function generarTablero() {
   TABLERO.nodos.tablero.innerHTML = '';
   
+  // Añadir clase tablero--activo para ocultar el mensaje
   TABLERO.nodos.tablero.classList.add('tablero--activo');
   
   generarColores();

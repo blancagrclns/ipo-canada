@@ -54,7 +54,7 @@
 
 body {
   max-height: 100vh;
-  overflow-y: hidden;
+  overflow-y: auto;
 }
 
 /* ==========================================================================
@@ -91,7 +91,8 @@ body {
   padding: var(--espaciado-sm);
   margin-top: var(--espaciado-xs);
   margin-bottom: 1.5rem;
-  max-width: 700px;
+  width: fit-content;
+  max-width: 95vw;
   gap: var(--espaciado-md);
   align-items: center;
 }
@@ -238,22 +239,24 @@ body {
 .tablero-contenedor {
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
   padding: var(--espaciado-lg);
   min-height: 250px;
-  gap: var(--espaciado-xl);
+  gap: 40px;
   width: 100%;
   box-sizing: border-box;
 }
 
 .tablero {
   display: grid;
-  gap: var(--espaciado-xs);
+  gap: 6px;
   padding: var(--espaciado-md);
   background: linear-gradient(135deg, var(--color-tablero-background-1), var(--color-tablero-background-2));
   border-radius: var(--radio-lg);
   box-shadow: inset 0 2px 8px var(--color-tablero-inset-shadow);
   transition: all var(--transicion-normal);
+  width: fit-content;
+  height: fit-content;
 }
 
 /* ==========================================================================
@@ -364,8 +367,10 @@ body {
    ========================================================================== */
 
 .tablero-contenedor--doble {
-  flex-direction: row;
-  flex-wrap: wrap;
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: nowrap;
 }
 
 .tablero-wrapper {
@@ -399,6 +404,8 @@ body {
   border: 2px dashed var(--color-borde);
   border-radius: var(--radio-md);
   transition: all var(--transicion-normal);
+  width: var(--ficha-mediana);
+  height: var(--ficha-mediana);
 }
 
 .celda-vacia--destino {
@@ -468,7 +475,7 @@ body {
 }
 
 .tablero--activo::after {
-  display: none;
+  content: none;
 }
 
 /* ==========================================================================

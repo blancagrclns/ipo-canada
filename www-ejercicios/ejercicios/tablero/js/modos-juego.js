@@ -276,7 +276,6 @@ function verificarVictoriaDosTableros() {
 function cargarImagenRompecabezas() {
   return new Promise((resolve, reject) => {
     const imagen = new Image();
-    imagen.crossOrigin = "Anonymous"; // Agregar para evitar problemas CORS
     
     imagen.onload = () => {
       TABLERO.MODOS.estado.imagenRompecabezas = imagen;
@@ -285,16 +284,14 @@ function cargarImagenRompecabezas() {
     };
     
     imagen.onerror = (err) => {
-      console.error('Error al cargar la imagen del rompecabezas:', err);
-      // En caso de error, usamos una imagen de fallback
-      alert('No se pudo cargar la imagen del rompecabezas. Se usará un tablero de colores.');
+      console.error('Error al cargar la imagen del rompecabezas');
+      alert('No se pudo cargar la imagen del rompecabezas.');
       TABLERO.config.modoJuego = 'normal';
-      generarTablero(); // Fallback al modo normal
+      generarTablero();
       reject(err);
     };
     
-    // Asegurar que la ruta es correcta usando ruta absoluta y añadiendo timestamp
-    imagen.src = 'images/paisaje1.jpg?' + new Date().getTime();
+    imagen.src = 'images/paisaje1.jpg';
   });
 }
 
@@ -302,37 +299,27 @@ function cargarImagenRompecabezas() {
  * Genera un tablero con una imagen dividida para el modo rompecabezas
  */
 function generarTableroRompecabezas() {
-  // Limpiar tablero existente
   TABLERO.nodos.tablero.innerHTML = '';
+  TABLERO.nodos.tablero.classList.add('tablero--activo');
   
-  // Eliminar clases de modo dos tableros si existieran
   document.querySelector('.tablero-contenedor').classList.remove('tablero-contenedor--doble');
   
-  // Configurar CSS Grid para el tablero
   const n = TABLERO.config.ladoTablero;
-  TABLERO.nodos.tablero.style.gridTemplateColumns = `repeat(${n}, 1fr)`;
+  TABLERO.nodos.tablero.classList.remove('tablero--cols-2', 'tablero--cols-3', 'tablero--cols-4', 'tablero--cols-5', 'tablero--cols-6', 'tablero--cols-7');
+  TABLERO.nodos.tablero.classList.add(`tablero--cols-${n}`);
   
-  // Determinar tamano de fichas
-  let tamanoFichaCss = obtenerTamanoFichaCss();
+  TABLERO.nodos.tablero.innerHTML = '<div class="cargando-mensaje">Cargando imagen...</div>';
   
-  // Mostrar mensaje de carga
-  TABLERO.nodos.tablero.innerHTML = '<div class="cargando-mensaje">Cargando imagen del rompecabezas...</div>';
-  
-  // Si la imagen no está cargada, cargarla
   if (!TABLERO.MODOS.estado.imagenCargada) {
     cargarImagenRompecabezas()
       .then(() => {
-        // Limpiar mensaje de carga
         TABLERO.nodos.tablero.innerHTML = '';
-        crearFichasRompecabezas(n, tamanoFichaCss);
+        crearFichasRompecabezas(n);
       })
-      .catch(() => {
-        // El error ya está manejado en la función cargarImagenRompecabezas
-      });
+      .catch(() => {});
   } else {
-    // Limpiar mensaje de carga
     TABLERO.nodos.tablero.innerHTML = '';
-    crearFichasRompecabezas(n, tamanoFichaCss);
+    crearFichasRompecabezas(n);
   }
 }
 
@@ -341,27 +328,42 @@ function generarTableroRompecabezas() {
  * @param {number} n - Tamano del tablero
  * @param {string} tamanoFichaCss - Tamano CSS para las fichas
  */
-function crearFichasRompecabezas(n, tamanoFichaCss) {
+function crearFichasRompecabezas(n) {
   const fichas = [];
   const imagen = TABLERO.MODOS.estado.imagenRompecabezas;
-  const anchoPieza = imagen.width / n;
-  const altoPieza = imagen.height / n;
   
-  // Para cada posición correcta, crear una ficha con el fragmento correspondiente
+  let tamanoFicha;
+  switch (TABLERO.config.tamanoFicha) {
+    case 'pequena':
+      tamanoFicha = 50;
+      break;
+    case 'grande':
+      tamanoFicha = 90;
+      break;
+    default:
+      tamanoFicha = 70;
+  }
+  
+  const tamanoTotal = tamanoFicha * n;
+  const anchoPieza = tamanoTotal / n;
+  const altoPieza = tamanoTotal / n;
+  
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
       const ficha = document.createElement('div');
       ficha.className = `ficha ficha--${TABLERO.config.formaFicha} ficha--rompecabezas`;
       ficha.classList.add(`ficha--size-${TABLERO.config.tamanoFicha}`);
-      ficha.classList.add(`ficha--puzzle-position-${i}-${j}`);
       ficha.setAttribute('data-ficha', '');
       ficha.setAttribute('data-fila', i);
       ficha.setAttribute('data-columna', j);
       ficha.setAttribute('data-posicion-correcta', `${i}-${j}`);
       
+      ficha.style.backgroundImage = `url('images/paisaje1.jpg')`;
+      ficha.style.backgroundSize = `${tamanoTotal}px ${tamanoTotal}px`;
+      ficha.style.backgroundPosition = `-${j * anchoPieza}px -${i * altoPieza}px`;
+      
       ficha.draggable = true;
       
-      // Event listeners para arrastrar y soltar
       ficha.addEventListener('dragstart', iniciarArrastre);
       ficha.addEventListener('dragend', finalizarArrastre);
       ficha.addEventListener('dragover', permitirSoltar);
@@ -372,10 +374,8 @@ function crearFichasRompecabezas(n, tamanoFichaCss) {
     }
   }
   
-  // Desordenar fichas aleatoriamente
   fichas.sort(() => Math.random() - 0.5);
   
-  // Asignar posiciones actuales
   let index = 0;
   for (let i = 0; i < n; i++) {
     for (let j = 0; j < n; j++) {
@@ -385,7 +385,6 @@ function crearFichasRompecabezas(n, tamanoFichaCss) {
     }
   }
   
-  // Agregar fichas al tablero
   fichas.forEach(ficha => {
     TABLERO.nodos.tablero.appendChild(ficha);
   });

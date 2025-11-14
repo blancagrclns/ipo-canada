@@ -5,13 +5,15 @@ const APP = {
   nodos: {},
   items: [],
   temaOscuro: false,
+  temaMapa: false, // Tema LOCAL del mapa (inicialmente false = claro)
   vistaActual: 'todos',
   categoriasActivas: new Set(['todos']),
   modoAdicion: false,
   itemArrastrando: null,
   configuracion: {
     tamanoMapa: 100,
-    escalaMarcar: 1.2
+    escalaMarcar: 1.2,
+    gridBase: 36 /* referencia en px para calcular --grid-size */
   },
   tiposPersonalizados: {},
   coloresPersonalizados: {} 
@@ -77,9 +79,11 @@ const DATOS_MAPA = [
 function cachearNodos() {
   APP.nodos = {
     mapa: document.querySelector('[data-mapa]'),
-    btnTema: document.querySelector('[data-accion="cambiar-tema"]'),
+    btnTema: document.querySelector('[data-accion="cambiar-tema"]'), // Este es el botón correcto
+    btnTemaMapa: document.querySelector('[data-accion="cambiar-tema-mapa"]'),
     btnPanel: document.querySelector('[data-accion="abrir-panel"]'),
-    darkThemeLink: document.getElementById('dark-theme'),
+    darkThemeLink: document.getElementById('dark-theme'), // Tema GLOBAL
+    darkThemeMapa: document.getElementById('dark-theme-mapa'), // Tema LOCAL del mapa
     
     // Panel lateral
     panel: document.querySelector('[data-panel]'),
@@ -132,7 +136,7 @@ function crearItem(item) {
   
   // Aplicar color personalizado
   const color = generarColorPorTipo(item.tipo);
-  marcador.style.backgroundColor = color;
+  // Aplicar color mediante variable CSS (evitar manipular background directo)
   marcador.style.setProperty('--color-marcador', color);
   
   // Icono según tipo
@@ -159,6 +163,9 @@ function crearItem(item) {
   // Configurar drag & drop
   configurarDragDrop(itemElement, item);
   
+  // Añadir event listener para eliminar marcador
+  itemElement.addEventListener('click', handleEliminarMarcador);
+
   return itemElement;
 }
 
@@ -212,8 +219,6 @@ function generarColorPorTipo(tipo) {
   APP.coloresPersonalizados[tipo] = color;
   guardarColoresPersonalizados();
   
-  console.log(`🎨 Color generado para "${tipo}": ${color}`);
-  
   return color;
 }
 
@@ -237,31 +242,30 @@ function renderizarItems() {
     APP.nodos.mapa.appendChild(itemElement);
     configurarDragDrop(itemElement, item);
   });
-  
-  console.log(`✅ ${itemsFiltrados.length} puntos renderizados (categorías activas: ${Array.from(APP.categoriasActivas).join(', ')})`);
 }
 
 /* ==========================================================================
    7. GESTIÓN DEL TEMA OSCURO
    ========================================================================== */
 function alternarTema() {
-  APP.temaOscuro = !APP.temaOscuro;
-  APP.nodos.darkThemeLink.disabled = !APP.temaOscuro;
-  if (APP.nodos.btnTema) {
-    APP.nodos.btnTema.textContent = APP.temaOscuro ? '\u2600' : '\u263D';
-  }
-  localStorage.setItem('temaOscuro', APP.temaOscuro);
-  console.log(`🎨 Tema ${APP.temaOscuro ? 'oscuro' : 'claro'} activado.`);
+  // Tema LOCAL del mapa
+  APP.temaMapa = !APP.temaMapa;
+  if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = !APP.temaMapa; 
+  // No cambiar el símbolo del botón
+  localStorage.setItem('temaMapa', APP.temaMapa);
 }
 
 function cargarPreferenciaTema() {
-  const temaGuardado = localStorage.getItem('temaOscuro');
-  if (temaGuardado === 'true') {
-    APP.temaOscuro = true;
-    APP.nodos.darkThemeLink.disabled = false;
-    if (APP.nodos.btnTema) {
-      APP.nodos.btnTema.textContent = '\u2600';
-    }
+  // Cargar preferencia del tema LOCAL del mapa
+  const temaMapaGuardado = localStorage.getItem('temaMapa');
+  if (temaMapaGuardado === 'true') {
+    APP.temaMapa = true;
+    if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = false; 
+    // No cambiar el símbolo del botón
+  } else {
+    APP.temaMapa = false;
+    if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = true; 
+   
   }
 }
 
@@ -274,7 +278,6 @@ function alternarPanel() {
   if (APP.nodos.btnPanel) {
     APP.nodos.btnPanel.setAttribute('aria-expanded', estaAbierto);
   }
-  console.log(`📋 Panel ${estaAbierto ? 'abierto' : 'cerrado'}.`);
 }
 
 function cerrarPanel() {
@@ -327,8 +330,6 @@ function cambiarVista(categoria) {
   });
   
   renderizarItems();
-  
-  console.log(`🗺️ Categorías activas: ${Array.from(APP.categoriasActivas).join(', ')}`);
 }
 
 /* ==========================================================================
@@ -336,16 +337,19 @@ function cambiarVista(categoria) {
    ========================================================================== */
 function ajustarTamanoMapa(valor) {
   APP.configuracion.tamanoMapa = parseFloat(valor);
-  APP.nodos.mapa.style.width = `${valor}%`;
+  // Usar variable CSS para controlar la anchura del mapa (mantenido en CSS)
+  APP.nodos.mapa.style.setProperty('--map-width', `${valor}%`);
+  // Ajustar tamaño de la rejilla: basamos el cálculo en gridBase (px) y la escala %
+  const base = APP.configuracion.gridBase || 36;
+  const nueva = Math.max(8, Math.round(base * (parseFloat(valor) / 100))); // mínimo 8px
+  APP.nodos.mapa.style.setProperty('--grid-size', `${nueva}px`);
   APP.nodos.outputTamano.textContent = `${valor}%`;
-  console.log(`📏 Tamaño del mapa ajustado a: ${valor}%`);
 }
 
 function ajustarTamanoMarcador(valor) {
   APP.configuracion.escalaMarcar = parseFloat(valor);
   document.documentElement.style.setProperty('--escala-marcador', valor);
   APP.nodos.outputMarcador.textContent = `${valor}x`;
-  console.log(`📌 Tamaño de marcadores ajustado a: ${valor}x`);
 }
 
 /* ==========================================================================
@@ -355,17 +359,16 @@ let coordenadasTemporales = null;
 
 function activarModoAdicion() {
   APP.modoAdicion = true;
-  APP.nodos.modoAdicionDiv.style.display = 'flex';
-  APP.nodos.mapa.style.cursor = 'crosshair';
-  console.log('➕ Modo adición activado. Haz clic en el mapa.');
+  // Mostrar indicador de modo adición mediante clase (CSS controla display)
+  APP.nodos.modoAdicionDiv.classList.add('mapa__modo-adicion--visible');
+  APP.nodos.mapa.classList.add('mapa--modo-adicion');
 }
 
 function cancelarModoAdicion() {
   APP.modoAdicion = false;
   coordenadasTemporales = null; 
-  APP.nodos.modoAdicionDiv.style.display = 'none';
-  APP.nodos.mapa.style.cursor = '';
-  console.log('❌ Modo adición cancelado.');
+  APP.nodos.modoAdicionDiv.classList.remove('mapa__modo-adicion--visible');
+  APP.nodos.mapa.classList.remove('mapa--modo-adicion');
 }
 
 function handleClickMapa(e) {
@@ -386,10 +389,8 @@ function handleClickMapa(e) {
   
   // Solo ocultar el modal de adición, NO resetear coordenadas
   APP.modoAdicion = false;
-  APP.nodos.modoAdicionDiv.style.display = 'none';
-  APP.nodos.mapa.style.cursor = '';
-  
-  console.log(`📍 Coordenadas capturadas: (${x.toFixed(2)}%, ${y.toFixed(2)}%)`);
+  APP.nodos.modoAdicionDiv.classList.remove('mapa__modo-adicion--visible');
+  APP.nodos.mapa.classList.remove('mapa--modo-adicion');
 }
 
 function handleSubmitNuevoItem(e) {
@@ -429,8 +430,6 @@ function handleSubmitNuevoItem(e) {
     
     // Guardar tipos personalizados
     guardarTiposPersonalizados();
-    
-    console.log(`🏷️ Nuevo tipo creado: "${tipo}" con icono ${nuevoIcono}`);
   }
   
   const nuevoItem = {
@@ -464,8 +463,6 @@ function handleSubmitNuevoItem(e) {
   } else {
     renderizarItems();
   }
-  
-  console.log('✅ Nuevo punto añadido:', nuevoItem.nombre, `(tipo: ${tipo}) en (${nuevoItem.x}%, ${nuevoItem.y}%)`);
 }
 
 /* ==========================================================================
@@ -476,22 +473,19 @@ function configurarDragDrop(itemElement, item) {
   itemElement.addEventListener('dragstart', (e) => {
     APP.itemArrastrando = item;
     itemElement.setAttribute('aria-grabbed', 'true');
-    itemElement.style.opacity = '0.5';
+  // Indicar arrastre con clase (CSS define estilos visuales)
+  itemElement.classList.add('mapa__item--arrastrando');
     
     // Guardar referencia del elemento en el dataTransfer
     e.dataTransfer.effectAllowed = 'move';
     e.dataTransfer.setData('text/plain', item.id);
-    
-    console.log(`🖐️ Arrastrando: ${item.nombre}`);
   });
   
   // Evento dragend
   itemElement.addEventListener('dragend', (e) => {
     itemElement.setAttribute('aria-grabbed', 'false');
-    itemElement.style.opacity = '1';
+  itemElement.classList.remove('mapa__item--arrastrando');
     APP.itemArrastrando = null;
-    
-    console.log(`✋ Finalizado arrastre de: ${item.nombre}`);
   });
 }
 
@@ -521,8 +515,6 @@ function handleDropMapa(e) {
     
     guardarItems();
     renderizarItems();
-    
-    console.log(`📍 ${APP.itemArrastrando.nombre} reposicionado a (${x.toFixed(2)}%, ${y.toFixed(2)}%)`);
   }
   
   APP.itemArrastrando = null;
@@ -563,8 +555,6 @@ function agregarBotonVistaRapida(tipo, icono) {
   
   // NO añadir event listener aquí - usar delegación de eventos
   controlesMapa.appendChild(nuevoBoton);
-  
-  console.log(`🔘 Botón de vista rápida añadido: ${tipo}`);
 }
 
 function agregarBotonPanel(tipo, icono) {
@@ -581,13 +571,10 @@ function agregarBotonPanel(tipo, icono) {
   
   // NO añadir event listener aquí - usar delegación de eventos
   panelControles.appendChild(nuevoBoton);
-  
-  console.log(`🔘 Botón de panel añadido: ${tipo}`);
 }
 
 function guardarTiposPersonalizados() {
   localStorage.setItem('tiposPersonalizados', JSON.stringify(APP.tiposPersonalizados));
-  console.log(`💾 Tipos personalizados guardados: ${Object.keys(APP.tiposPersonalizados).length}`);
 }
 
 function guardarColoresPersonalizados() {
@@ -605,17 +592,14 @@ function cargarTiposPersonalizados() {
       agregarBotonVistaRapida(tipo, icono);
       agregarBotonPanel(tipo, icono);
     });
-    
-    console.log(`🏷️ ${Object.keys(APP.tiposPersonalizados).length} tipos personalizados cargados.`);
   } else {
-    console.log('📋 No hay tipos personalizados guardados.');
+    
   }
   
   // Cargar colores personalizados
   const colores = localStorage.getItem('coloresPersonalizados');
   if (colores) {
     APP.coloresPersonalizados = JSON.parse(colores);
-    console.log(`🎨 ${Object.keys(APP.coloresPersonalizados).length} colores personalizados cargados.`);
   }
 }
 
@@ -630,10 +614,8 @@ function cargarItems() {
   const itemsGuardados = localStorage.getItem('mapaItems');
   if (itemsGuardados) {
     APP.items = JSON.parse(itemsGuardados);
-    console.log(`💾 ${APP.items.length} ítems cargados desde localStorage.`);
   } else {
     APP.items = [...DATOS_MAPA];
-    console.log(`📦 ${APP.items.length} ítems cargados desde datos iniciales.`);
   }
 }
 
@@ -641,9 +623,8 @@ function cargarItems() {
    14. INICIALIZACIÓN DE LA APLICACIÓN
    ========================================================================== */
 function init() {
-  console.log("🚀 Inicializando mapa interactivo con variantes...");
-  
   cachearNodos();
+  
   cargarPreferenciaTema();
   cargarTiposPersonalizados();
   cargarItems();
@@ -652,6 +633,11 @@ function init() {
   APP.nodos.controlMarcador.value = APP.configuracion.escalaMarcar;
   APP.nodos.outputMarcador.textContent = `${APP.configuracion.escalaMarcar}x`;
   document.documentElement.style.setProperty('--escala-marcador', APP.configuracion.escalaMarcar);
+  // Inicializar control de tamaño del mapa y la rejilla
+  if (APP.nodos.controlTamano) {
+    APP.nodos.controlTamano.value = APP.configuracion.tamanoMapa;
+    ajustarTamanoMapa(APP.configuracion.tamanoMapa);
+  }
   
   // Event listeners - Tema y panel
   if (APP.nodos.btnTema) {
@@ -705,7 +691,6 @@ function init() {
     APP.nodos.inputNuevoTipo.required = false;
     
     coordenadasTemporales = null;
-    console.log('❌ Formulario cancelado.');
   });
   
   // Event listener - Select de tipo 
@@ -715,8 +700,6 @@ function init() {
       APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--oculto');
       APP.nodos.campoNuevoTipo.classList.add('formulario-item__campo--visible');
       APP.nodos.inputNuevoTipo.required = true;
-      
-      console.log('📝 Campos de nuevo tipo mostrados.');
     } else {
       // Ocultar campos para nuevo tipo
       APP.nodos.campoNuevoTipo.classList.remove('formulario-item__campo--visible');
@@ -726,8 +709,6 @@ function init() {
       // Limpiar valores de los campos ocultos
       APP.nodos.inputNuevoTipo.value = '';
       APP.nodos.inputIcono.value = '';
-      
-      console.log('🙈 Campos de nuevo tipo ocultados.');
     }
   });
   
@@ -737,8 +718,6 @@ function init() {
   
   // Renderizar ítems iniciales
   renderizarItems();
-  
-  console.log("✅ Mapa listo con todas las variantes implementadas.");
 }
 
 /* ==========================================================================
@@ -748,4 +727,32 @@ if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
+}
+
+// Activar modo eliminación
+let modoEliminacion = false;
+
+// Activar modo eliminación
+const btnFlotanteDel = document.querySelector('.btn-flotante-del');
+if (btnFlotanteDel) {
+  btnFlotanteDel.addEventListener('click', () => {
+    modoEliminacion = true;
+    document.body.classList.add('modo-eliminacion-activo');
+  });
+}
+
+// Eliminar marcador al hacer clic en él si está activo el modo eliminación
+function handleEliminarMarcador(e) {
+  if (!modoEliminacion) return;
+  const itemElement = e.currentTarget;
+  const itemId = parseInt(itemElement.getAttribute('data-item-id'));
+  const idx = APP.items.findIndex(i => i.id === itemId);
+  if (idx !== -1) {
+    const nombre = APP.items[idx].nombre;
+    APP.items.splice(idx, 1);
+    guardarItems();
+    renderizarItems();
+  }
+  modoEliminacion = false;
+  document.body.classList.remove('modo-eliminacion-activo');
 }

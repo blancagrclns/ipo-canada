@@ -150,7 +150,7 @@ body {
   margin: 0 auto;
   width: 100%;
   max-height: 85vh;
-  overflow-y: auto;
+  overflow: hidden;
   animation: fadeIn 0.8s ease-out;
   display: flex;
   flex-direction: column;
@@ -376,62 +376,20 @@ body {
 }
 
 /* ==========================================================================
-   CONFIGURACIÓN
+   CONFIGURACIÓN - Solo estilos específicos de mecanografía
    ========================================================================== */
 
-.config-container__row {
+.config-container__select-group {
   display: flex;
-  gap: var(--espaciado-sm);
-}
-
-.config-container__row--superior {
-  flex-wrap: wrap;
-}
-
-.config-container__row--inferior {
-  flex-direction: column;
-}
-
-.config-container__subcontenedor {
-  background: rgba(255, 255, 255, 0.8);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-md);
-  padding: var(--espaciado-sm);
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-xs);
-  flex: 1;
-  min-width: 200px;
   align-items: center;
-  text-align: center;
+  gap: var(--espaciado-xs);
+  justify-content: flex-start;
 }
 
-.config-container__subcontenedor--completo {
-  width: 100%;
-  min-width: auto;
-}
-
-.config-container__label {
-  font-weight: 600;
-  color: var(--color-texto);
-  font-size: 0.9rem;
-}
-
-.config-container__input {
-  padding: var(--espaciado-xs);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-sm);
-  background: white;
-  font-size: 1rem;
-  transition: all var(--transicion-normal);
-  text-align: center;
-  max-width: 8rem;
-}
-
-.config-container__input:focus {
-  outline: none;
-  border-color: var(--color-primario);
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+.config-container__arrow {
+  font-weight: bold;
+  color: var(--color-primario);
+  font-size: 1.2rem;
 }
 
 .checkbox-wrapper-6 .tgl {
@@ -478,103 +436,6 @@ body {
   background: #9FD6AE;
 }
 
-.config-container__select-group {
-  display: flex;
-  align-items: center;
-  gap: var(--espaciado-xs);
-  justify-content: center;
-}
-
-.config-container__select {
-  padding: var(--espaciado-xs);
-  border: 1px solid var(--color-borde);
-  border-radius: var(--radio-sm);
-  background: white;
-  font-size: 0.9rem;
-  transition: all var(--transicion-normal);
-}
-
-.config-container__select:disabled {
-  background: rgba(226, 232, 240, 0.5);
-  color: var(--color-texto-secundario);
-  cursor: not-allowed;
-}
-
-.config-container__arrow {
-  font-weight: bold;
-  color: var(--color-primario);
-}
-
-.config-container__bilingue {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-sm);
-  align-items: center;
-  text-align: center;
-}
-
-.config-container__toggle-group {
-  display: flex;
-  align-items: center;
-  gap: var(--espaciado-sm);
-}
-
-.config-container__opciones {
-  display: flex;
-  flex-direction: column;
-  gap: var(--espaciado-xs);
-}
-
-/* ==========================================================================
-   UTILIDADES
-   ========================================================================== */
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border-width: 0;
-}
-
-.input--ok {
-  border-color: #10b981;
-  background-color: rgba(16, 185, 129, 0.1);
-}
-
-.input--error {
-  border-color: #ef4444;
-  background-color: rgba(239, 68, 68, 0.1);
-}
-
-.tarjeta__palabra--ok {
-  color: #10b981;
-}
-
-.tarjeta__palabra--error {
-  color: #ef4444;
-}
-
-.is-shaking {
-  animation: shake 0.3s;
-}
-
-@keyframes shake {
-  0%, 100% {
-    transform: translateX(0);
-  }
-  25% {
-    transform: translateX(-5px);
-  }
-  75% {
-    transform: translateX(5px);
-  }
-}
-
 /* ==========================================================================
    RESPONSIVE
    ========================================================================== */
@@ -590,14 +451,6 @@ body {
   
   .contenedor {
     padding: var(--espaciado-md);
-  }
-  
-  .config-container__row--superior {
-    flex-direction: column;
-  }
-  
-  .config-container__subcontenedor {
-    min-width: auto;
   }
   
   .tarjeta__acciones {

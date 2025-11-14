@@ -1,0 +1,135 @@
+/* Fondo semitransparente para el modal */
+.formulario-item {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0,0,0,0.35);
+  z-index: 1000;
+  border: none;
+  padding: 0;
+}
+
+/* Ocultar el dialog por defecto (solo visible con showModal) */
+.formulario-item:not([open]) {
+  display: none !important;
+  pointer-events: none;
+  opacity: 0;
+}
+
+/* Opcional: desactivar interacción visual si se fuerza visible sin open */
+.formulario-item[aria-hidden="true"] {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+/* Modal centrado */
+.formulario-item__form {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+  padding: 2rem 2.5rem;
+  min-width: 320px;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  font-family: inherit;
+}
+
+/* Título */
+.formulario-item__titulo {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #222;
+  text-align: center;
+}
+
+/* Campos */
+.formulario-item__campo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.formulario-item__campo label {
+  font-size: 1rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.formulario-item__campo input,
+.formulario-item__campo select,
+.formulario-item__campo textarea {
+  padding: 0.5rem 0.7rem;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #f9fafb;
+  transition: border-color 0.2s;
+}
+
+.formulario-item__campo input:focus,
+.formulario-item__campo select:focus,
+.formulario-item__campo textarea:focus {
+  border-color: #2563eb;
+  outline: none;
+}
+
+.formulario-item__ayuda {
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+/* Campo condicional oculto */
+.formulario-item__campo--oculto {
+  display: none;
+}
+
+/* Acciones */
+.formulario-item__acciones {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.btn {
+  padding: 0.5rem 1.2rem;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn--primario {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn--primario:hover {
+  background: #1d4ed8;
+}
+
+.btn--secundario {
+  background: #e5e7eb;
+  color: #222;
+}
+
+.btn--secundario:hover {
+  background: #d1d5db;
+}
+
+/* Responsive */
+@media (max-width: 500px) {
+  .formulario-item__form {
+    padding: 1rem;
+    min-width: unset;
+    max-width: 95vw;
+  }
+}

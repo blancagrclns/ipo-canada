@@ -272,15 +272,6 @@ function mostrarStats() {
   }
 }
 
-
-function toggleModal() {
-  modalAyuda.classList.toggle('active');
-}
-
-function toggleModalConfiguracion() {
-  modalConfiguracion.classList.toggle('active');
-}
-
 // Event listeners
 if (btnComienzo) {
   btnComienzo.addEventListener('click', iniciarTest);
@@ -341,23 +332,13 @@ document.addEventListener('keydown', (event) => {
   }
 });
 
-// Cerrar modales al hacer clic fuera
+// Cerrar modal específico de estadísticas al hacer clic fuera
 window.addEventListener('click', (event) => {
-  if (event.target === modalAyuda) {
-    toggleModal();
-  }
-  if (event.target === modalConfiguracion) {
-    toggleModalConfiguracion();
-  }
-  if (event.target === modalStats) {
-    modalStats.classList.remove('active');
+  if (event.target === window.modalStats) {
+    window.modalStats.close();
     resetearTest();
   }
 });
 
 // Detener test al cerrar la página
 window.addEventListener('beforeunload', detenerTest);
-
-// ==========================================================================
-// FIN DEL ARCHIVO - La gestión de modo bilingüe está en theme-toggle.js
-// ==========================================================================

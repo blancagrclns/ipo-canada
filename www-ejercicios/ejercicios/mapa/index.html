@@ -5,95 +5,116 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mapa Interactivo</title>
-  <link rel="stylesheet" href="css/style.css">
-    <!-- Favicon -->
+  <!-- GLOBAL -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/global.css"> <!-- Estilo global para todas las páginas -->
+  <link rel="stylesheet" href="/www-ejercicios/globales/css/modal.css"> <!-- Modales globales para todas las páginas -->
+  <link id="dark-theme" rel="stylesheet" href="/www-ejercicios/globales/css/dark-theme.css" disabled>
+  <!-- Modo oscuro para todas las páginas -->
+
+  <!-- JS-->
+  <script src="/www-ejercicios/globales/js/global-navigation.js"></script>
+
+  <!-- INDIVIDUAL -->
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/style.css" /> <!-- Estilo individual -->
+  <link rel="stylesheet" href="css/add-bookmark.css" /> <!-- Estilo para el modal de añadir marcador -->
+  <link id="dark-theme-mapa" rel="stylesheet" href="css/dark-theme-mapa.css" disabled>
+
+  <!-- JS -->
+  <script type="module" src="js/script.js"></script>
+
+  <!-- Tema oscuro LOCAL para este ejercicio (inicialmente desactivado) -->
+
+
+  <!-- Favicon -->
   <link rel="icon" href="img/mapa-del-tesoro.png" type="image/x-icon">
-  
-  <!-- CSS del tema oscuro (inicialmente desactivado) -->
-  <link id="dark-theme" rel="stylesheet" href="css/dark-theme.css" disabled>
-  
-  <!-- defer: se ejecuta después de que el DOM esté listo -->
-  <script defer src="js/script.js"></script>
 </head>
 
 <body>
-  <!-- Botones flotantes -->
-  <div class="floating-buttons" role="toolbar" aria-label="Acciones rápidas">
-    <button class="floating-buttons__button" data-accion="cambiar-tema" aria-label="Cambiar tema">
-      &#9790;
-    </button>
-    <button class="floating-buttons__button" data-accion="abrir-panel" aria-label="Abrir panel de control">
-      &#9881;
-    </button>
-  </div>
 
   <header class="cabecera">
-    <h1 class="cabecera__titulo">Mapa Interactivo de Puntos de Interés</h1>
-    <p class="cabecera__instrucciones">
-      Explora el mapa pasando el cursor sobre los puntos. Usa los filtros para mostrar categorías específicas o combina varias a la vez.
-    </p>
+    <nav class="cabecera__navegador" aria-label="Navegación principal">
+      <a href="../../index.html" aria-label="Volver a inicio">
+        <button class="nav-acciones__boton" data-accion="volver-inicio" title="Inicio">
+          ⬅️
+        </button>
+      </a>
+    </nav>
+    <div class="cabecera__contenido">
+      <h1 class="cabecera__titulo">Mapa Interactivo de Puntos de Interés</h1>
+      <p class="cabecera__descripcion">
+        Explora el mapa pasando el cursor sobre los puntos. Usa los filtros para mostrar categorías específicas o
+        combina varias a la vez.
+      </p>
+    </div>
+    <nav class="nav-acciones" role="navigation" aria-label="Acciones de la aplicación">
+      <ul class="nav-acciones__lista"
+        style="list-style:none;display:flex;gap:.5rem;justify-content:center;padding:0;margin:.5rem 0 0 0;">
+        <li>
+          <button class="nav-acciones__boton" data-accion="abrir-configuracion" aria-label="Abrir configuración"
+            title="Configuración">
+            ⚙️
+          </button>
+        </li>
+        <li>
+          <button class="nav-acciones__boton" data-accion="mostrar-ayuda" aria-label="Mostrar ayuda" title="Ayuda">
+            ❓
+          </button>
+        </li>
+        <li>
+          <button class="nav-acciones__boton" data-accion="cambiar-tema" aria-label="Cambiar tema" title="Cambiar tema">
+            🌓
+          </button>
+        </li>
+      </ul>
+    </nav>
   </header>
 
   <main class="contenedor">
-    <!-- Panel lateral de controles -->
-    <aside class="panel" data-panel aria-label="Panel de control de visualización">
-      <div class="panel__header">
-        <h2 class="panel__titulo">Configuración</h2>
-        <button class="panel__cerrar" data-accion="cerrar-panel" aria-label="Cerrar panel">✕</button>
-      </div>
-      
-      <div class="panel__contenido">
-        <!-- Filtro de vistas -->
-        <section class="panel__seccion">
-          <h3 class="panel__subtitulo">Vista del Mapa</h3>
-          <div class="panel__controles">
-            <button class="btn btn--filtro" data-vista="todos" aria-pressed="true">Todos</button>
-            <button class="btn btn--filtro" data-vista="restaurante" aria-pressed="false">🍽️ Restaurantes</button>
-            <button class="btn btn--filtro" data-vista="cafe" aria-pressed="false">☕ Cafés</button>
-            <button class="btn btn--filtro" data-vista="bar" aria-pressed="false">🍺 Bares</button>
-          </div>
-        </section>
 
-        <!-- Tamaño del mapa -->
-        <section class="panel__seccion">
-          <h3 class="panel__subtitulo">Tamaño del Mapa</h3>
-          <div class="panel__control-grupo">
-            <label for="tamanoMapa">Escala:</label>
-            <input 
-              type="range" 
-              id="tamanoMapa" 
-              data-control="tamano"
-              min="80" 
-              max="120" 
-              value="100" 
-              step="5"
-              aria-valuemin="80"
-              aria-valuemax="120"
-              aria-valuenow="100">
-            <output data-output="tamano">100%</output>
-          </div>
-        </section>
+    <!-- Panel de configuración lateral (oculto por defecto) -->
+    <aside id="panel-config" class="panel-config">
+      <div class="panel-config__contenido">
+        <div class="panel-config__header">
+          <h2 class="panel-config__titulo">⚙️Configuración del Mapa</h2>
+          <button class="panel-config__cerrar" data-accion="cerrar-panel" aria-label="Cerrar panel">×</button>
+        </div>
 
-        <!-- Tamaño de marcadores -->
-        <section class="panel__seccion">
-          <h3 class="panel__subtitulo">Tamaño de Marcadores</h3>
-          <div class="panel__control-grupo">
-            <label for="tamanoMarcador">Escala:</label>
-            <input 
-              type="range" 
-              id="tamanoMarcador" 
-              data-control="marcador"
-              min="0.8" 
-              max="5" 
-              value="1.2" 
-              step="0.1"
-              aria-valuemin="0.8"
-              aria-valuemax="5"
-              aria-valuenow="1.2">
-            <output data-output="marcador">1.2x</output>
-          </div>
-        </section>
-      </div>
+        <div class="panel__contenido">
+          <!-- Filtro de vistas -->
+          <section class="panel__seccion">
+            <h3 class="panel__subtitulo">Vista del Mapa</h3>
+            <div class="panel__controles">
+              <button class="btn btn--filtro" data-vista="todos" aria-pressed="true">Todos</button>
+              <button class="btn btn--filtro" data-vista="restaurante" aria-pressed="false">🍽️ Restaurantes</button>
+              <button class="btn btn--filtro" data-vista="cafe" aria-pressed="false">☕ Cafés</button>
+              <button class="btn btn--filtro" data-vista="bar" aria-pressed="false">🍺 Bares</button>
+            </div>
+          </section>
+
+          <!-- Tamaño del mapa -->
+          <section class="panel__seccion">
+            <h3 class="panel__subtitulo">Tamaño del Mapa</h3>
+            <div class="panel__control-grupo">
+              <label for="tamanoMapa">Escala:</label>
+              <input type="range" id="tamanoMapa" data-control="tamano" min="80" max="120" value="100" step="5"
+                aria-valuemin="80" aria-valuemax="120" aria-valuenow="100">
+              <output data-output="tamano">100%</output>
+            </div>
+          </section>
+
+          <!-- Tamaño de marcadores -->
+          <section class="panel__seccion">
+            <h3 class="panel__subtitulo">Tamaño de Marcadores</h3>
+            <div class="panel__control-grupo">
+              <label for="tamanoMarcador">Escala:</label>
+              <input type="range" id="tamanoMarcador" data-control="marcador" min="0.8" max="5" value="1.2" step="0.1"
+                aria-valuemin="0.8" aria-valuemax="5" aria-valuenow="1.2">
+              <output data-output="marcador">1.2x</output>
+            </div>
+          </section>
+        </div>
     </aside>
 
     <!-- Contenedor del mapa -->
@@ -129,15 +150,10 @@
     <dialog class="formulario-item" data-dialog-item>
       <form class="formulario-item__form" data-form-item>
         <h2 class="formulario-item__titulo">Nuevo Punto de Interés</h2>
-        
+
         <div class="formulario-item__campo">
           <label for="itemNombre">Nombre del punto:</label>
-          <input 
-            type="text" 
-            id="itemNombre" 
-            name="nombre" 
-            placeholder="Ej: Universidad de Toronto"
-            required>
+          <input type="text" id="itemNombre" name="nombre" placeholder="Ej: Universidad de Toronto" required>
           <small class="formulario-item__ayuda">El nombre específico de este lugar</small>
         </div>
 
@@ -155,33 +171,19 @@
         <!-- Campo condicional para nuevo tipo -->
         <div class="formulario-item__campo formulario-item__campo--oculto" data-campo-nuevo-tipo>
           <label for="itemNuevoTipo">Nombre del nuevo tipo (en plural):</label>
-          <input 
-            type="text" 
-            id="itemNuevoTipo" 
-            name="nuevoTipo" 
-            data-input-nuevo-tipo
+          <input type="text" id="itemNuevoTipo" name="nuevoTipo" data-input-nuevo-tipo
             placeholder="Ej: universidades, cines, museos">
           <small class="formulario-item__ayuda">Escribe el nombre de la categoría en plural</small>
-          
+
           <label for="itemIconoNuevo">Icono (emoji):</label>
-          <input 
-            type="text" 
-            id="itemIconoNuevo" 
-            name="iconoNuevo" 
-            data-input-icono 
-            maxlength="2" 
-            placeholder="🏛️">
+          <input type="text" id="itemIconoNuevo" name="iconoNuevo" data-input-icono maxlength="2" placeholder="🏛️">
           <small class="formulario-item__ayuda">Un emoji que represente esta categoría</small>
         </div>
 
         <div class="formulario-item__campo">
           <label for="itemDescripcion">Descripción:</label>
-          <textarea 
-            id="itemDescripcion" 
-            name="descripcion" 
-            rows="3" 
-            placeholder="Información adicional sobre este punto..."
-            required></textarea>
+          <textarea id="itemDescripcion" name="descripcion" rows="3"
+            placeholder="Información adicional sobre este punto..." required></textarea>
         </div>
 
         <div class="formulario-item__acciones">
@@ -190,16 +192,54 @@
         </div>
       </form>
     </dialog>
+    <!-- Modal explicativo de "Ayuda" -->
+    <dialog id="modal-ayuda" class="modal">
+      <div class="modal__contenido">
+        <h2 class="modal__titulo">❓ Guía de la Aplicación Mapa</h2>
+        <div class="modal-ayuda__secciones">
+          <div class="modal-ayuda__seccion">
+            <h3 class="modal-ayuda__subtitulo">Funcionamiento Básico</h3>
+            <p>La aplicación muestra un mapa interactivo con puntos de interés. Al pasar el cursor sobre un punto, se
+              revela una leyenda informativa.</p>
+            <ul class="modal-ayuda__lista">
+              <li>Los puntos de interés se adaptan al tamaño del mapa y pantalla.</li>
+              <li>La leyenda muestra el título y descripción del punto seleccionado.</li>
+            </ul>
+          </div>
+          <div class="modal-ayuda__seccion">
+            <h3 class="modal-ayuda__subtitulo">Gestión de Puntos de Interés</h3>
+            <ul class="modal-ayuda__lista">
+              <li><strong>Add</strong>: Añade un nuevo punto de interés al mapa. Debes indicar su posición y la
+                información que mostrará.</li>
+              <li><strong>Del</strong>: Elimina el punto de interés seleccionado del mapa.</li>
+            </ul>
+          </div>
+          <div class="modal-ayuda__seccion">
+            <h3 class="modal-ayuda__subtitulo">Adaptabilidad</h3>
+            <ul class="modal-ayuda__lista">
+              <li>El mapa y los puntos se ajustan automáticamente al tamaño de la ventana.</li>
+            </ul>
+          </div>
+          <div class="modal-ayuda__seccion">
+            <h3 class="modal-ayuda__subtitulo">Almacén de Ítems</h3>
+            <ul class="modal-ayuda__lista">
+              <li>Los puntos de interés se gestionan desde un almacén interno y se añaden al mapa al iniciar la
+                aplicación.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="modal__botones">
+          <button class="modal__boton" onclick="document.getElementById('modal-ayuda').close()">Entendido</button>
+        </div>
+      </div>
+    </dialog>
+
   </main>
 
   <!-- Botón para añadir nuevos puntos -->
-  <button class="btn-flotante-add" data-accion="activar-adicion" aria-label="Añadir nuevo punto de interés">
-    ➕
-  </button>
+  <button class="btn-flotante-add" data-accion="activar-adicion" aria-label="Añadir nuevo punto de interés"></button>
+  <!-- Botón para eliminar marcador -->
+  <button class="btn-flotante-del" data-accion="activar-eliminacion" aria-label="Eliminar marcador"></button>
 </body>
 
 </html>
-
-
-
-
