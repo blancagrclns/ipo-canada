@@ -12,10 +12,51 @@ class GlobalNavigation {
     this.setupConfigPanel();
     this.setupHelpModal();
     this.setupEscapeKey();
+    this.setupCrossPageThemeSync(); // Nueva funcionalidad
   }
 
   // ==========================================================================
-  // GESTIÓN DEL TEMA OSCURO
+  // SINCRONIZACIÓN DE TEMA ENTRE PÁGINAS
+  // ==========================================================================
+  
+  setupCrossPageThemeSync() {
+    // Escuchar cambios de localStorage desde otras ventanas/pestañas
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'tema') {
+        this.aplicarTemaDesdeStorage(e.newValue);
+      }
+    });
+
+    // Escuchar eventos personalizados dentro de la misma página
+    window.addEventListener('themeChanged', (e) => {
+      this.aplicarTema(e.detail.theme);
+    });
+  }
+
+  aplicarTemaDesdeStorage(nuevoTema) {
+    const html = document.documentElement;
+    const darkThemeLink = document.getElementById('dark-theme');
+    
+    if (nuevoTema === 'dark') {
+      this.activarModoOscuro(html, darkThemeLink);
+    } else {
+      this.activarModoClaro(html, darkThemeLink);
+    }
+  }
+
+  aplicarTema(tema) {
+    const html = document.documentElement;
+    const darkThemeLink = document.getElementById('dark-theme');
+    
+    if (tema === 'dark') {
+      this.activarModoOscuro(html, darkThemeLink);
+    } else {
+      this.activarModoClaro(html, darkThemeLink);
+    }
+  }
+
+  // ==========================================================================
+  // GESTIÓN DEL TEMA OSCURO (Modificado)
   // ==========================================================================
   
   setupThemeToggle() {
@@ -33,7 +74,7 @@ class GlobalNavigation {
       this.activarModoClaro(html, darkThemeLink);
     }
 
-    // Event listener para toggle
+    // Event listener para toggle (modificado)
     btnTema.addEventListener('click', () => {
       this.toggleTema(html, darkThemeLink);
     });
@@ -41,11 +82,18 @@ class GlobalNavigation {
 
   toggleTema(html, darkThemeLink) {
     const isDark = html.getAttribute('data-theme') === 'dark';
+    const nuevoTema = isDark ? 'light' : 'dark';
+    
     if (isDark) {
       this.activarModoClaro(html, darkThemeLink);
     } else {
       this.activarModoOscuro(html, darkThemeLink);
     }
+    
+    // Disparar evento para sincronización en la misma página
+    window.dispatchEvent(new CustomEvent('themeChanged', {
+      detail: { theme: nuevoTema }
+    }));
   }
 
   activarModoOscuro(html, darkThemeLink) {
