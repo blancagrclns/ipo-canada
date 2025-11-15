@@ -4,8 +4,7 @@
 const APP = {
   nodos: {},
   items: [],
-  temaOscuro: false,
-  temaMapa: false, // Tema LOCAL del mapa (inicialmente false = claro)
+  // Eliminar temaOscuro y temaMapa, solo usar tema global
   vistaActual: 'todos',
   categoriasActivas: new Set(['todos']),
   modoAdicion: false,
@@ -13,7 +12,7 @@ const APP = {
   configuracion: {
     tamanoMapa: 100,
     escalaMarcar: 1.2,
-    gridBase: 36 /* referencia en px para calcular --grid-size */
+    gridBase: 36
   },
   tiposPersonalizados: {},
   coloresPersonalizados: {} 
@@ -68,8 +67,8 @@ const DATOS_MAPA = [
     tipo: 'bar',
     nombre: "La Taberna del Puerto",
     descripcion: "Tapas y vinos. Ambiente marinero. Abierto de 18:00 a 02:00.",
-    x: 50,
-    y: 85
+    x: 58,
+    y: 44
   }
 ];
 
@@ -79,37 +78,19 @@ const DATOS_MAPA = [
 function cachearNodos() {
   APP.nodos = {
     mapa: document.querySelector('[data-mapa]'),
-    btnTema: document.querySelector('[data-accion="cambiar-tema"]'), // Este es el botón correcto
-    btnTemaMapa: document.querySelector('[data-accion="cambiar-tema-mapa"]'),
-    btnPanel: document.querySelector('[data-accion="abrir-panel"]'),
-    darkThemeLink: document.getElementById('dark-theme'), // Tema GLOBAL
-    darkThemeMapa: document.getElementById('dark-theme-mapa'), // Tema LOCAL del mapa
-    
-    // Panel lateral
-    panel: document.querySelector('[data-panel]'),
+    panel: document.getElementById('panel-config'),
+    btnPanel: document.querySelector('[data-accion="abrir-configuracion"]'),
     btnCerrarPanel: document.querySelector('[data-accion="cerrar-panel"]'),
-    botonesVista: document.querySelectorAll('[data-vista]'),
-    
-    // Controles del panel
-    controlTamano: document.querySelector('[data-control="tamano"]'),
+    controlTamano: document.getElementById('tamanoMapa'),
     outputTamano: document.querySelector('[data-output="tamano"]'),
-    controlMarcador: document.querySelector('[data-control="marcador"]'),
+    controlMarcador: document.getElementById('tamanoMarcador'),
     outputMarcador: document.querySelector('[data-output="marcador"]'),
-    
-    // Controles rápidos en el mapa
-    botonesVistaRapida: document.querySelectorAll('[data-vista-rapida]'),
-    
-    // Modo adición
     btnActivarAdicion: document.querySelector('[data-accion="activar-adicion"]'),
-    modoAdicionDiv: document.querySelector('[data-modo-adicion]'),
     btnCancelarAdicion: document.querySelector('[data-accion="cancelar-adicion"]'),
-    
-    // Dialog para nuevo ítem
+    modoAdicionDiv: document.querySelector('[data-modo-adicion]'),
     dialogItem: document.querySelector('[data-dialog-item]'),
     formItem: document.querySelector('[data-form-item]'),
     btnCancelarForm: document.querySelector('[data-accion="cancelar-form"]'),
-    
-    // Nuevos nodos para tipos personalizados
     selectTipo: document.querySelector('[data-select-tipo]'),
     campoNuevoTipo: document.querySelector('[data-campo-nuevo-tipo]'),
     inputNuevoTipo: document.querySelector('[data-input-nuevo-tipo]'),
@@ -137,7 +118,7 @@ function crearItem(item) {
   // Aplicar color personalizado
   const color = generarColorPorTipo(item.tipo);
   // Aplicar color mediante variable CSS (evitar manipular background directo)
-  marcador.style.setProperty('--color-marcador', color);
+  marcador.style.setProperty('--color-marcador', generarColorPorTipo(item.tipo));
   
   // Icono según tipo
   const icono = document.createElement('span');
@@ -242,31 +223,6 @@ function renderizarItems() {
     APP.nodos.mapa.appendChild(itemElement);
     configurarDragDrop(itemElement, item);
   });
-}
-
-/* ==========================================================================
-   7. GESTIÓN DEL TEMA OSCURO
-   ========================================================================== */
-function alternarTema() {
-  // Tema LOCAL del mapa
-  APP.temaMapa = !APP.temaMapa;
-  if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = !APP.temaMapa; 
-  // No cambiar el símbolo del botón
-  localStorage.setItem('temaMapa', APP.temaMapa);
-}
-
-function cargarPreferenciaTema() {
-  // Cargar preferencia del tema LOCAL del mapa
-  const temaMapaGuardado = localStorage.getItem('temaMapa');
-  if (temaMapaGuardado === 'true') {
-    APP.temaMapa = true;
-    if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = false; 
-    // No cambiar el símbolo del botón
-  } else {
-    APP.temaMapa = false;
-    if (APP.nodos.darkThemeMapa) APP.nodos.darkThemeMapa.disabled = true; 
-   
-  }
 }
 
 /* ==========================================================================
@@ -624,8 +580,6 @@ function cargarItems() {
    ========================================================================== */
 function init() {
   cachearNodos();
-  
-  cargarPreferenciaTema();
   cargarTiposPersonalizados();
   cargarItems();
   
@@ -640,13 +594,12 @@ function init() {
   }
   
   // Event listeners - Tema y panel
-  if (APP.nodos.btnTema) {
-    APP.nodos.btnTema.addEventListener('click', alternarTema);
-  }
   if (APP.nodos.btnPanel) {
     APP.nodos.btnPanel.addEventListener('click', alternarPanel);
   }
-  APP.nodos.btnCerrarPanel.addEventListener('click', cerrarPanel);
+  if (APP.nodos.btnCerrarPanel) {
+    APP.nodos.btnCerrarPanel.addEventListener('click', cerrarPanel);
+  }
   
   // Event listeners - Vistas (USANDO DELEGACIÓN DE EVENTOS)
   document.querySelector('.panel__controles').addEventListener('click', (e) => {

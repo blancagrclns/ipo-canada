@@ -140,67 +140,65 @@ body {
   border-radius: 0.6rem;
   border: 1px solid rgba(0,0,0,0.03);
   box-shadow: inset 0 6px 18px rgba(0,0,0,0.04);
-  overflow: hidden;
+  overflow: hidden; /* Evitar que los marcadores se salgan */
 }
 
 /* Cuando se quiere un marco interior redondeado más pronunciado (ejemplo) */
 .mapa-inner-padding { padding: 1rem; height: 100%; box-sizing: border-box; }
 
-/* --- Marcadores: circulares con color por tipo --- */
-.mapa__item { position: absolute; transform: translate(-50%, -50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; z-index: 20; }
-
-.mapa__marcador {
-  width: 56px;
-  height: 56px;
-  border-radius: 50%;
-  display: inline-grid;
-  place-items: center;
-  color: var(--color-superficie);
-  font-weight: 800;
-  font-size: 1.1rem;
-  border: 4px solid rgba(255,255,255,0.9);
-  box-shadow: 0 8px 24px rgba(2,48,43,0.18);
-  cursor: pointer;
-  transition: transform var(--transicion-normal), box-shadow var(--transicion-normal);
-  position: relative;
+/* --- Marcadores: circulares con color por tipo (TAMAÑO REDUCIDO) --- */
+.mapa__item { 
+  position: absolute; 
+  transform: translate(-50%, -50%); 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 0.3rem; 
+  z-index: 20;
+  /* Límites para evitar que se salgan del mapa */
+  min-left: 15px;
+  min-top: 15px;
+  max-width: calc(100% - 30px);
+  max-height: calc(100% - 30px);
 }
 
-
-.mapa__marcador:hover { transform: translateY(-8px) scale(1.05); box-shadow: 0 18px 40px rgba(2,48,43,0.2); }
-
-/* Heartbeat / expanding ring effect adapted from the provided `.circle` sample
-   Applied to .mapa__marcador. If prefixed sizes conflict with responsive rules,
-   the responsive media queries later in the file will override them. */
+/* UNIFICAR ESTILOS - Solo una definición de marcador */
 .mapa__marcador {
   /* base variables for sizing; --escala-marcador is controlled from JS */
-  --marcador-size: 70px;
-  --marcador-border: 4px;
-  --marcador-font: 1.1rem;
-  --marcador-ring-border: 10px;
+  --marcador-size: 32px; /* Tamaño reducido */
+  --marcador-border: 2px; 
+  --marcador-font: 0.8rem; 
+  --marcador-ring-border: 4px; 
 
   width: calc(var(--marcador-size) * var(--escala-marcador, 1));
   height: calc(var(--marcador-size) * var(--escala-marcador, 1));
   border-radius: 50%;
   display: inline-grid;
   place-items: center;
-  color: var(--color-superficie);
+  /* NO aplicar background genérico aquí - dejar que las clases específicas prevalezcan */
+  color: white;
   font-weight: 800;
   font-size: calc(var(--marcador-font) * var(--escala-marcador, 1));
   border: calc(var(--marcador-border) * var(--escala-marcador, 1)) solid rgba(255,255,255,0.9);
-  box-shadow: 0 8px 24px rgba(2,48,43,0.18);
+  box-shadow: 0 4px 12px rgba(2,48,43,0.18); 
   cursor: pointer;
   transition: transform var(--transicion-normal), box-shadow var(--transicion-normal);
-  position: relative; /* needed for pseudo-elements */
-  z-index: 1; /* ensure marker content sits above the animated rings */
+  position: relative; 
+  z-index: 1; 
 }
 
+.mapa__marcador:hover { 
+  transform: translateY(-4px) scale(1.05); 
+  box-shadow: 0 8px 20px rgba(2,48,43,0.2); 
+}
+
+/* Anillos animados para el efecto heartbeat */
 .mapa__marcador::before,
 .mapa__marcador::after {
   content: "";
   position: absolute;
   top: 50%;
   left: 50%;
-  /* base centered; animation will scale this element */
   transform: translate(-50%, -50%) scale(1);
   width: calc(var(--marcador-size) * var(--escala-marcador, 1));
   height: calc(var(--marcador-size) * var(--escala-marcador, 1));
@@ -208,7 +206,7 @@ body {
   border-radius: 100%;
   animation: latido linear 3s infinite;
   pointer-events: none;
-  z-index: 0; /* behind the marker */
+  z-index: 0;
 }
 
 .mapa__marcador::after { animation-delay: -1.5s; }
@@ -218,22 +216,58 @@ body {
   100% { transform: translate(-50%, -50%) scale(1.7); border-color: rgba(var(--marcador-rgba, 255,255,255), 0); opacity: 0; }
 }
 
-/* Icon sizing inside marker (alternate name `icono` accepted) */
-.mapa__marcador .icono { width: 42px; height: 42px; margin-top: 12px; margin-left: 14.5px; }
-.mapa__marcador .icon { /* keep previous icon rule in sync */ width: 42px; height: 42px; margin-top: 12px; margin-left: 14.5px; }
+/* Icon sizing inside marker (mejorado para visibilidad) */
+.mapa__marcador-icono {
+  color: white;
+  font-size: 1.2em;
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
 
-/* Paleta por categoría (puedes usar estas clases en JS al crear marcadores) */
-.mapa__marcador--restaurante { background: linear-gradient(135deg,#ef4444,#f97373); --marcador-rgba: 239,68,68; }
-.mapa__marcador--cafe { background: linear-gradient(135deg,#f59e0b,#fbbf24); --marcador-rgba: 245,158,11; }
-.mapa__marcador--bar { background: linear-gradient(135deg,#3b82f6,#60a5fa); --marcador-rgba: 59,130,246; }
-.mapa__marcador--otros { background: linear-gradient(135deg,#8b5cf6,#a78bfa); --marcador-rgba: 139,92,246; }
+.mapa__marcador .icono,
+.mapa__marcador .icon { 
+  width: 18px; 
+  height: 18px; 
+  margin-top: 4px; 
+  margin-left: 6px; 
+  filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25));
+}
 
-/* Pequeños tamaños alternativos */
-.mapa__marcador--small { width: 40px; height: 40px; font-size: .9rem; border-width:3px; }
-.mapa__marcador--large { width: 72px; height: 72px; font-size:1.25rem; border-width:4px; }
+/* Paleta por categoría - ASEGURAR QUE EL BAR ESTÉ INCLUIDO con máxima especificidad */
+.mapa__marcador--restaurante { 
+  background: linear-gradient(135deg,#ef4444,#f97373) !important; 
+  --marcador-rgba: 239,68,68; 
+}
+.mapa__marcador--cafe { 
+  background: linear-gradient(135deg,#f59e0b,#fbbf24) !important; 
+  --marcador-rgba: 245,158,11; 
+}
+.mapa__marcador--bar { 
+  background: linear-gradient(135deg,#3b82f6,#60a5fa) !important; 
+  --marcador-rgba: 59,130,246; 
+}
+.mapa__marcador--otros { 
+  background: linear-gradient(135deg,#8b5cf6,#a78bfa) !important; 
+  --marcador-rgba: 139,92,246; 
+}
 
-/* Icono (emoji) dentro del marcador mantendrá contraste; si usas imágenes, ponlas como background-image */
-.mapa__marcador .icon { filter: drop-shadow(0 2px 4px rgba(0,0,0,0.25)); }
+/* Pequeños tamaños alternativos (actualizados) */
+.mapa__marcador--small { 
+  --marcador-size: 24px;
+  --marcador-font: 0.7rem;
+  --marcador-border: 2px;
+}
+.mapa__marcador--large { 
+  --marcador-size: 40px;
+  --marcador-font: 1rem;
+  --marcador-border: 3px;
+}
 
 /* Leyenda / tooltip sencilla (aparece al hover) */
 .mapa__leyenda {
@@ -336,9 +370,23 @@ body {
 @keyframes markerPop { 0%{ transform: translate(-50%, -40%) scale(.6); opacity:0 } 70%{ transform: translate(-50%,-100%) scale(1.05); opacity:1 } 100%{ transform: translate(-50%,-100%) scale(1) } }
 .mapa__item--animado .mapa__marcador{ animation: markerPop 380ms cubic-bezier(.2,.9,.2,1); }
 
-/* Responsive tweaks */
-@media (max-width: 900px) { .mapa { height: 64vh; } .btn-flotante-add{ width:64px;height:64px;font-size:1.4rem;} }
-@media (max-width: 420px) { .mapa { height: 56vh; } .mapa__marcador{ width:44px;height:44px } .mapa__boton-vista{ min-width:44px;height:36px } }
+/* Responsive tweaks (actualizados para marcadores más pequeños) */
+@media (max-width: 900px) { 
+  .mapa { height: 64vh; } 
+  .btn-flotante-add { width: 64px; height: 64px; font-size: 1.4rem; }
+  .mapa__marcador { 
+    --marcador-size: 28px; 
+    --marcador-font: 0.7rem; 
+  }
+}
+@media (max-width: 420px) { 
+  .mapa { height: 56vh; } 
+  .mapa__marcador { 
+    --marcador-size: 24px; 
+    --marcador-font: 0.6rem;
+  }
+  .mapa__boton-vista { min-width: 44px; height: 36px; }
+}
 
 /* ==============================
    PANEL DE CONFIGURACIÓN LATERAL
